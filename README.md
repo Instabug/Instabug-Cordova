@@ -10,7 +10,7 @@ The purpose of this plugin is to simplify the process of integrating the Instabu
 ### Installation
 Currently, this plugin can only be installed via the Command-Line Interface.
 ```
-cordova plugin add https://github.com/Instabug/sdk-platforms/Instabug-Cordova-Plugin
+cordova plugin add https://github.com/Instabug/instabug-cordova
 ```
 ## Usage
 To initialize Instabug in your app, you only need to make one call to the plugin: __activate__. This method requires your app's token and your desired invocation event, and can take a wide range of optional parameters for configuration.
