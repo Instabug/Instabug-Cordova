@@ -1,23 +1,21 @@
 package com.wodify.cordova.plugin.instabug;
 
-import java.lang.IllegalStateException;
-import java.io.File;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.JSONException;
-
 import android.content.Intent;
 import android.net.Uri;
+
+import com.instabug.library.IBGInvocationEvent;
+import com.instabug.library.IBGInvocationMode;
+import com.instabug.library.Instabug;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import com.instabug.library.Instabug;
-import com.instabug.library.IBGInvocationEvent;
-import com.instabug.library.IBGInvocationMode;
+import java.io.File;
 
 /**
  * This plugin initializes Instabug.  
@@ -63,7 +61,7 @@ public class IBPlugin extends CordovaPlugin {
         super.initialize(cordova, webView);
 
         // Initialize intent so that extras can be attached subsequently
-        activationIntent = new Intent(cordova.getActivity(), IBPluginActivity.class);
+        activationIntent = new Intent(cordova.getActivity(), com.wodify.cordova.plugin.instabug.IBPluginActivity.class);
 
         options = new JSONObject();
     }
@@ -210,13 +208,13 @@ public class IBPlugin extends CordovaPlugin {
         IBGInvocationMode iMode = parseInvocationMode(mode);
 
         try {
-            Instabug instabug = Instabug.getInstance();
+            //Instabug instabug = Instabug.getInstance();
 
             if (iMode != null) {
                 // Invoke specific mode if possible
-                instabug.invoke(iMode);
+                Instabug.invoke(iMode);
             } else {
-                instabug.invoke();
+                Instabug.invoke();
             }
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
@@ -232,7 +230,7 @@ public class IBPlugin extends CordovaPlugin {
      */
     private void showIntroDialog(final CallbackContext callbackContext) {
         try {
-            Instabug.getInstance().showIntroMessage();
+            Instabug.showIntroMessage();
             callbackContext.success();
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
@@ -266,7 +264,7 @@ public class IBPlugin extends CordovaPlugin {
                 int hexColor = Integer.parseInt(hColor, 16)+0xFF000000;
 
                 try {
-                    Instabug.getInstance().setPrimaryColor(hexColor);
+                    Instabug.setPrimaryColor(hexColor);
                 } catch (IllegalStateException e) {
                     callbackContext.error(errorMsg);
                 }
@@ -288,7 +286,7 @@ public class IBPlugin extends CordovaPlugin {
     private void setUserEmail(final CallbackContext callbackContext, String email) {
         if (email != null && email.length() > 0) {
             try {
-                Instabug.getInstance().setUserEmail(email);
+                Instabug.setUserEmail(email);
                 callbackContext.success();
             } catch (IllegalStateException e) {
                 callbackContext.error(errorMsg);
@@ -307,7 +305,7 @@ public class IBPlugin extends CordovaPlugin {
     private void setUserName(final CallbackContext callbackContext, String name) {
         if (name != null && name.length() > 0) {
             try {
-                Instabug.getInstance().setUsername(name);
+                Instabug.setUsername(name);
                 callbackContext.success();
             } catch (IllegalStateException e) {
                 callbackContext.error(errorMsg);
@@ -326,7 +324,7 @@ public class IBPlugin extends CordovaPlugin {
     private void setUserData(final CallbackContext callbackContext, String data) {
         if (data != null && data.length() > 0) {
             try {
-                Instabug.getInstance().setUserData(data);
+                Instabug.setUserData(data);
                 callbackContext.success();
             } catch (IllegalStateException e) {
                 callbackContext.error(errorMsg);
@@ -368,7 +366,7 @@ public class IBPlugin extends CordovaPlugin {
                 // we won't be able to notify the containing app when
                 // Instabug API call fails, so we check ourselves.
                 try {
-                    Instabug.getInstance().setFileAttachment(uri);
+                    Instabug.setFileAttachment(uri,file.getName());
                     callbackContext.success();
                 } catch (IllegalStateException e) {
                     callbackContext.error(errorMsg);
@@ -392,7 +390,7 @@ public class IBPlugin extends CordovaPlugin {
     private void addLog(final CallbackContext callbackContext, String log) {
         if (log != null && log.length() > 0) {
             try {
-                Instabug.getInstance().log(log);
+                Instabug.log(log);
                 callbackContext.success();
             } catch (IllegalStateException e) {
                 callbackContext.error(errorMsg);
@@ -408,7 +406,7 @@ public class IBPlugin extends CordovaPlugin {
      */
     private void clearLog(final CallbackContext callbackContext) {
         try {
-            Instabug.getInstance().clearLog();
+            Instabug.clearLog();
             callbackContext.success();
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
@@ -428,7 +426,7 @@ public class IBPlugin extends CordovaPlugin {
 
         if (iEvent != null) {
             try {
-                Instabug.getInstance().changeInvocationEvent(iEvent);
+                Instabug.changeInvocationEvent(iEvent);
                 callbackContext.success();
             } catch (IllegalStateException e) {
                 callbackContext.error(errorMsg);
@@ -444,7 +442,7 @@ public class IBPlugin extends CordovaPlugin {
      */
     private void disable(final CallbackContext callbackContext) {
         try {
-            Instabug.getInstance().disable();
+            Instabug.disable();
             callbackContext.success();
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
@@ -459,7 +457,7 @@ public class IBPlugin extends CordovaPlugin {
      */
     private void enable(final CallbackContext callbackContext) {
         try {
-            Instabug.getInstance().enable();
+            Instabug.enable();
             callbackContext.success();
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
@@ -474,7 +472,7 @@ public class IBPlugin extends CordovaPlugin {
      */
     private void getIsEnabled(final CallbackContext callbackContext) {
         try {
-            boolean enabled = Instabug.getInstance().isEnabled();
+            boolean enabled = Instabug.isEnabled();
             callbackContext.success(enabled ? 1 : 0);
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
@@ -489,7 +487,7 @@ public class IBPlugin extends CordovaPlugin {
      */
     private void getIsInvoked(final CallbackContext callbackContext) {
         try {
-            boolean invoked = Instabug.getInstance().isSDKInvoked();
+            boolean invoked = Instabug.isSDKInvoked();
             callbackContext.success(invoked ? 1 : 0);
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
@@ -504,7 +502,7 @@ public class IBPlugin extends CordovaPlugin {
      */
     private void getIsDebugEnabled(final CallbackContext callbackContext) {
         try {
-            boolean enabled = Instabug.getInstance().isDebugEnabled();
+            boolean enabled = Instabug.isDebugEnabled();
             callbackContext.success(enabled ? 1 : 0);
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
