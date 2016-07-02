@@ -40,17 +40,25 @@
 	</config-file>
 	
 	<config-file target="AndroidManifest.xml" parent="/manifest/application">
+		
 	    <activity android:name="com.wodify.cordova.plugin.instabug.IBPluginActivity" 
 	        android:launchMode="singleInstance"
 	        android:theme="@android:style/Theme.NoDisplay"
 	        android:configChanges="keyboardHidden|orientation|screenSize" />
 	    <activity android:name="com.instabug.library.InstabugFeedbackActivity" />
-	    <service android:name="com.instabug.library.network.UploadCacheService" />
-	    <receiver android:name="com.instabug.library.network.InstabugNetworkReceiver">
+
+        <service android:name="com.instabug.library.InstabugSessionUploaderService"/>
+        <service android:name="com.instabug.library.InstabugIssueUploaderService"/>
+        <service android:name="com.instabug.library.InstabugMessageUploaderService"/>
+        <service android:name="com.instabug.library.InstabugFeaturesFetcherService"/>
+        <service android:name="com.instabug.library.gcm.InstabugGcmRegistrationIntentService"/>
+
+	    <receiver android:name="com.instabug.library.InstabugNetworkReceiver">
 	        <intent-filter>
 	            <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
 	        </intent-filter>
 	    </receiver>
+
 	</config-file>
 	
 	<config-file target="AndroidManifest.xml" parent="/manifest">
