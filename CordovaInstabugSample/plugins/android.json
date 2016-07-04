@@ -1,0 +1,22 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.instabug.cordovainstabugsample"
+        },
+        "com.wodify.cordova.plugin.instabug": {
+            "PACKAGE_NAME": "com.instabug.cordovainstabugsample"
+        }
+    },
+    "dependent_plugins": {
+        "me.tonny.cordova.plugins.multidex": {
+            "PACKAGE_NAME": "com.instabug.cordovainstabugsample"
+        }
+    }
+}

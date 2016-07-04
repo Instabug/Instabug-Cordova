@@ -1,0 +1,28 @@
+{
+    "cordova-plugin-whitelist": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-whitelist@1"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "com.wodify.cordova.plugin.instabug": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/Instabug/instabug-cordova",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "me.tonny.cordova.plugins.multidex": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/jwall149/cordova-multidex",
+            "subdir": "."
+        },
+        "is_top_level": false,
+        "variables": {}
+    }
+}

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    id="com.wodify.cordova.plugin.instabug"
+    version="0.0.1">
+
+	<name>instabug-cordova</name>
+	
+	<description>Cordova plugin for integrating Instabug in your application.</description>
+	
+	<repo>https://github.com/Instabug/instabug-cordova</repo>
+	
+	<keyword>instabug, crash reports, in-app feedback</keyword>
+
+	<license>Apache 2.0 License</license>
+	
+	<author>Elizabeth Rego , Hossam Hassan</author>
+
+	<!-- cordova -->
+	<engines>
+		<engine name="cordova" version=">=3.7.0"/>
+	</engines>
+	
+	<!-- dependencies -->
+    	<dependency id="me.tonny.cordova.plugins.multidex" url="https://github.com/jwall149/cordova-multidex" />
+
+	<!-- js -->
+	<js-module src="www/instabug.js" name="Instabug">
+		<clobbers target="cordova.plugins.instabug" />
+	</js-module>
+
+    	<!-- android -->
+	<platform name="android">
+		<config-file target="res/xml/config.xml" parent="/*">
+	    <feature name="IBPlugin" >
+	        <param name="android-package" value="com.wodify.cordova.plugin.instabug.IBPlugin"/>
+	        <param name="onload" value="true" />
+	    </feature>
+	</config-file>
+	
+	<config-file target="AndroidManifest.xml" parent="/manifest/application">
+		
+	    <activity android:name="com.wodify.cordova.plugin.instabug.IBPluginActivity" 
+	        android:launchMode="singleInstance"
+	        android:theme="@android:style/Theme.NoDisplay"
+	        android:configChanges="keyboardHidden|orientation|screenSize" />
+	    <activity android:name="com.instabug.library.InstabugFeedbackActivity" />
+
+        <service android:name="com.instabug.library.InstabugSessionUploaderService"/>
+        <service android:name="com.instabug.library.InstabugIssueUploaderService"/>
+        <service android:name="com.instabug.library.InstabugMessageUploaderService"/>
+        <service android:name="com.instabug.library.InstabugFeaturesFetcherService"/>
+        <service android:name="com.instabug.library.gcm.InstabugGcmRegistrationIntentService"/>
+
+	    <receiver android:name="com.instabug.library.InstabugNetworkReceiver">
+	        <intent-filter>
+	            <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+	        </intent-filter>
+	    </receiver>
+
+	</config-file>
+	
+	<config-file target="AndroidManifest.xml" parent="/manifest">
+	    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+	    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+	    <uses-permission android:name="android.permission.INTERNET" />
+	    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+	</config-file>
+	
+	<framework src="build.gradle" custom="true" type="gradleReference" />
+	
+	<source-file src="src/android/IBPluginActivity.java" target-dir="src/com/wodify/cordova-plugin-instabug" />
+		<source-file src="src/android/IBPlugin.java" target-dir="src/com/wodify/cordova-plugin-instabug" />
+	</platform>
+
+    	<!-- ios -->
+	<platform name="ios">
+		<config-file target="config.xml" parent="/*">
+            		<feature name="IBPlugin">
+                		<param name="ios-package" value="IBPlugin" />
+                		<param name="onload" value="true" />
+            		</feature>
+        	</config-file>
+
+		<resource-file src="src/ios/Instabug.bundle" />
+        	<framework src="src/ios/Instabug.framework" custom="true" />
+
+		<header-file src="src/ios/IBPlugin.h" />
+        	<source-file src="src/ios/IBPlugin.m" />
+
+        	<framework src="AVFoundation.framework" />
+        	<framework src="CoreMotion.framework" />
+        	<framework src="CoreGraphics.framework" />
+        	<framework src="CoreTelephony.framework" />
+        	<framework src="SystemConfiguration.framework" />
+        	<framework src="UIKit.framework" />
+	</platform>
+
+</plugin>
