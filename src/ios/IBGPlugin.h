@@ -1,6 +1,6 @@
 #import <Cordova/CDVPlugin.h>
 
-@interface IBPlugin : CDVPlugin 
+@interface IBGPlugin : CDVPlugin 
 
 - (void) activate:(CDVInvokedUrlCommand*)command;
 

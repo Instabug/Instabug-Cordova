@@ -15,7 +15,7 @@ import com.instabug.library.IBGColorTheme;
 import com.instabug.library.IBGFloatingButtonEdge;
 import com.instabug.library.Feature;
 
-public class IBPluginActivity extends CordovaActivity
+public class IBGPluginActivity extends CordovaActivity
 {
     // Reference to builder
     private Instabug.Builder builder;
@@ -33,7 +33,7 @@ public class IBPluginActivity extends CordovaActivity
         // Retrieve initialization options
         Bundle options = getIntent().getExtras();
 
-        IBGInvocationEvent event = IBPlugin.parseInvocationEvent(options.getString("invocationEvent"));
+        IBGInvocationEvent event = IBGPlugin.parseInvocationEvent(options.getString("invocationEvent"));
 
         if (event != null) {
             // Initialize builder with invocation event if possible
@@ -57,7 +57,7 @@ public class IBPluginActivity extends CordovaActivity
         builder.build();
 
         // Finish activity (required for no-display theme)
-        IBPluginActivity.this.finish();
+        IBGPluginActivity.this.finish();
     }
 
     /**
@@ -93,7 +93,7 @@ public class IBPluginActivity extends CordovaActivity
      *        String shortcode for IBGInvocationMode
      */
     private void setDefaultInvocationMode(String mode) {
-        IBGInvocationMode iMode = IBPlugin.parseInvocationMode(mode);
+        IBGInvocationMode iMode = IBGPlugin.parseInvocationMode(mode);
 
         if (iMode != null) {
             builder.setDefaultInvocationMode(iMode);
