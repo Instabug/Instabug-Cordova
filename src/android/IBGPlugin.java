@@ -20,7 +20,7 @@ import java.io.File;
 /**
  * This plugin initializes Instabug.  
  */
-public class IBPlugin extends CordovaPlugin {
+public class IBGPlugin extends CordovaPlugin {
 
     // Reference to intent that start activity
     // to initialize Instabug
@@ -61,7 +61,7 @@ public class IBPlugin extends CordovaPlugin {
         super.initialize(cordova, webView);
 
         // Initialize intent so that extras can be attached subsequently
-        activationIntent = new Intent(cordova.getActivity(), com.wodify.cordova.plugin.instabug.IBPluginActivity.class);
+        activationIntent = new Intent(cordova.getActivity(), com.wodify.cordova.plugin.instabug.IBGPluginActivity.class);
 
         options = new JSONObject();
     }

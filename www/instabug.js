@@ -45,7 +45,7 @@ Instabug.activate = function (token, event, options, success, error) {
 	var validatedEvent = getInvocationEvents()[event];
 
 	if (validatedEvent) {
-		exec(success, error, 'IBPlugin', 'activate', [ token, validatedEvent, options ]);
+		exec(success, error, 'IBGPlugin', 'activate', [ token, validatedEvent, options ]);
 	} else {
 		console.log('Could not activate Instabug - invocation event "' + event + '" is not valid.');
 	}
@@ -55,80 +55,80 @@ Instabug.invoke = function (mode, success, error) {
 	var validatedMode = getInvocationModes()[mode];
 
 	if (validatedMode) {
-		exec(success, error, 'IBPlugin', 'invoke', [ validatedMode ]);
+		exec(success, error, 'IBGPlugin', 'invoke', [ validatedMode ]);
 	} else {
-		exec(success, error, 'IBPlugin', 'invoke', []);
+		exec(success, error, 'IBGPlugin', 'invoke', []);
 		console.log('Could not apply mode to invocation - "' + mode + '" is not valid.');
 	}
 };
 
 Instabug.showIntro = function(success, error) {
-	exec(success, error, 'IBPlugin', 'showIntroDialog', []);
+	exec(success, error, 'IBGPlugin', 'showIntroDialog', []);
 };
 
 Instabug.setPrimaryColor = function (hexColor, success, error) {
-	exec(success, error, 'IBPlugin', 'setPrimaryColor', [ hexColor ]);
+	exec(success, error, 'IBGPlugin', 'setPrimaryColor', [ hexColor ]);
 };
 
 Instabug.setUserEmail = function (email, success, error) {
-	exec(success, error, 'IBPlugin', 'setUserEmail', [ email ]);
+	exec(success, error, 'IBGPlugin', 'setUserEmail', [ email ]);
 };
 
 Instabug.setUserName = function (name, success, error) {
-	exec(success, error, 'IBPlugin', 'setUserName', [ name ]);
+	exec(success, error, 'IBGPlugin', 'setUserName', [ name ]);
 };
 
 Instabug.setUserData = function (data, success, error) {
-	exec(success, error, 'IBPlugin', 'setUserData', [ data ]);
+	exec(success, error, 'IBGPlugin', 'setUserData', [ data ]);
 };
 
 Instabug.addFile = function (filePath, success, error) {
-	exec(success, error, 'IBPlugin', 'addFile', [ filePath ]);
+	exec(success, error, 'IBGPlugin', 'addFile', [ filePath ]);
 }
 
 Instabug.addLog = function (content, success, error) {
-	exec(success, error, 'IBPlugin', 'addLog', [ content ]);
+	exec(success, error, 'IBGPlugin', 'addLog', [ content ]);
 };
 
 Instabug.clearLog = function (success, error) {
-	exec(success, error, 'IBPlugin', 'clearLog', []);
+	exec(success, error, 'IBGPlugin', 'clearLog', []);
 };
 
 Instabug.changeInvocationEvent = function (event, success, error) {
 	var validatedEvent = getInvocationEvents()[event];
 
 	if (validatedEvent) {
-		exec(success, error, 'IBPlugin', 'changeInvocationEvent', [ validatedEvent ]);
+		exec(success, error, 'IBGPlugin', 'changeInvocationEvent', [ validatedEvent ]);
 	} else {
 		console.log('Could not change invocation event - "' + event + '" is not valid.');
 	}
 };
 
 Instabug.disable = function (success, error) {
-	exec(success, error, 'IBPlugin', 'disable', []);
+	exec(success, error, 'IBGPlugin', 'disable', []);
 };
 
 Instabug.enable = function (success, error) {
-	exec(success, error, 'IBPlugin', 'enable', []);
+	exec(success, error, 'IBGPlugin', 'enable', []);
 };
 
 Instabug.isEnabled = function (success, error) {
-	exec(success, error, 'IBPlugin', 'isEnabled', []);
+	exec(success, error, 'IBGPlugin', 'isEnabled', []);
 };
 
 Instabug.isInvoked = function (success, error) {
-	exec(success, error, 'IBPlugin', 'isInvoked', []);
+	exec(success, error, 'IBGPlugin', 'isInvoked', []);
 };
 
 Instabug.isDebugEnabled = function (success, error) {
-	exec(success, error, 'IBPlugin', 'isDebugEnabled', []);
+	exec(success, error, 'IBGPlugin', 'isDebugEnabled', []);
 };
 
 Instabug.setLocale = function (locale, success, error) {
 	var validatedLocale = getLocales()[locale];
 
 	if (validatedLocale) {
-		exec(success, error, 'IBPlugin', 'setLocale', [ validatedLocale ]);
+		exec(success, error, 'IBGPlugin', 'setLocale', [ validatedLocale ]);
 	} else {
 		console.log('Could not set locale - "' + locale + '" is not valid.');
 	}

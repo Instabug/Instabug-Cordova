@@ -1,10 +1,10 @@
-#import "IBPlugin.h"
+#import "IBGPlugin.h"
 #import <Instabug/Instabug.h>
 
 /**
  * This plugin initializes Instabug.
  */
-@implementation IBPlugin
+@implementation IBGPlugin
 
 /**
  * Intializes Instabug and sets provided options.

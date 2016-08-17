@@ -5,7 +5,7 @@
 
  Copyright:  (c) 2014 by Instabug, Inc., all rights reserved.
 
- Version:    5.0.0
+ Version:    5.3.2
  */
 
 //===========================================================================================================================================
@@ -51,6 +51,11 @@
  */
 + (void)invokeWithInvocationMode:(IBGInvocationMode)invocationMode;
 
+/**
+ *  Dismiss Instabug
+ */
++ (void)dismiss;
+
 //===========================================================================================================================================
 
 //===========================================================================================================================================
@@ -77,7 +82,7 @@
  *  @param format format
  *  @param ...    ...
  */
-void IBGLog(NSString *format, ...);
+OBJC_EXTERN void IBGLog(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
 
 /**
  *  Adds custom logs that will be sent with each report. A convenience method for Swift, identical to IBGLog().
@@ -91,7 +96,14 @@ void IBGLog(NSString *format, ...);
  *  @param format    format
  *  @param arguments arguments
  */
-+ (void)IBGLog:(NSString *)format withArguments:(va_list)arguments;
++ (void)IBGLog:(NSString *)format withArguments:(va_list)arguments DEPRECATED_MSG_ATTRIBUTE("Starting from (v5.3). Use IBGLog:(NSString *)log instead.");
+
+/**
+ *  Adds custom logs that will be sent with each report
+ *
+ *  @param log log message
+ */
++ (void)IBGLog:(NSString *)log;
 
 /**
  *  Sets whether to track the user's steps while using the app or not
@@ -110,6 +122,15 @@ void IBGLog(NSString *format, ...);
 + (void)setCrashReportingEnabled:(BOOL)isReportingCrashes;
 
 /**
+ *  Sets whether In-App Conversations button and notifications are displayed or not
+ *  If set to NO it disables push notifications as well
+ *
+ *  Default = YES
+ *  @param isInAppConversationsEnabled isInAppConversationsEnabled
+ */
++ (void)setInAppConversationsEnabled:(BOOL)isInAppConversationsEnabled;
+
+/**
  *  Sets the block of code that gets executed just before sending the bug report.
  *
  *  @param preSendingBlock preSendingBlock
@@ -117,9 +138,31 @@ void IBGLog(NSString *format, ...);
 + (void)setPreSendingBlock:(void (^)())preSendingBlock;
 
 /**
+ *  Sets the block of code that gets executed just before the SDK UI is presented.
+ *
+ *  @param preInvocationBlock preInvocationBlock
+ */
++ (void)setPreInvocationBlock:(void (^)())preInvocationBlock;
+
+/**
+ *  Sets the block of code that gets executed after the SDK UI is dismissed.
+ *  @param issueState issue state after SDK dismiss.
+ *  @param feedbackType Sent feedback type. Or will be set to IBGFeedbackTypeBug in case user dismissed SDK without
+ *  selecting report type, So you might need to check issueState before feedbackType.
+ *  @see IBGFeedbackType
+ */
++ (void)setPostInvocationBlock:(void (^)(IBGIssueState issueState, IBGFeedbackType feedbackType))postInvocationBlock;
+/**
  * Presents a quick tip UI educating the user on how to invoke SDK with the currently set invocation event
  */
 + (void)showIntroMessage;
+
+/**
+ * Enabled/disable the attachment of an initial screenshot when reporting a bug/imporovement
+ * @param willTakeScreenshot willTakeScreenshot
+ */
+
++ (void)setWillTakeScreenshot:(BOOL)willTakeScreenshot;
 
 /**
  *  Sets the default value of the email field and hides the email field from the reporting UI
@@ -136,6 +179,20 @@ void IBGLog(NSString *format, ...);
  *  @param userName userName
  */
 + (void)setUserName:(NSString *)userName;
+
+/**
+ *  Enable/disable screenshot view when reporting a bug/improvement.
+ *
+ *  Default: If you don't use this method the default behaviour will be to show screenshot view when reporting a bug but not when reporting a feedback
+ *  @param willShowScreenshotView Pass YES to show screenshot view for both feedback and bug reporting and NO to
+ *  disable it for both
+ */
++ (void)setWillShowScreenshotView:(BOOL)willShowScreenshotView;
+
+/**
+ *  Get number of unread messages , Or will be set to -1 incase of SDK not initialized
+ */
++ (NSInteger)getUnreadMessagesCount;
 
 //===========================================================================================================================================
 
@@ -243,25 +300,42 @@ void IBGLog(NSString *format, ...);
  */
 + (void)setScreenshotCapturingBlock:(CGImageRef (^)())screenshotCapturingBlock;
 
+/**
+ *  Append tags of reported feedback, bug or crash to previously added tags.
+ *
+ *  @param tag tag
+ *  @param ... ...
+ */
++ (void)addTags:(NSString *)tag, ... NS_REQUIRES_NIL_TERMINATION;
+
+/**
+ *  Adds custom addTags that will append tags of reported feedback, bug or crash to previously added tags. A convenience method for Swift, identical to [Instabug addTags:@"",@""].
+ *
+ *  Put following function in your swift project:
+ *  func addTags(str: String, _ arguments: CVarArgType...) -> Void {
+ *      return withVaList(arguments) { Instabug.addTags(str, withArguments :$0) }
+ *  }
+ *  And use it like this addTags("tag1","tag2","tag3")
+ *
+ *  @param tag    tag
+ *  @param arguments arguments
+ */
++ (void)addTags:(NSString *)tag withArguments:(va_list)arguments;
+
+/**
+ *  Manually removes all tags of reported feedback, bug or crash.
+ */
++ (void)resetTags;
+
+/**
+ *  Get all tags of reported feedback, bug or crash.
+ */
++ (NSArray *)getTags;
 //===========================================================================================================================================
 
 //===========================================================================================================================================
 /** @name SDK Reporting */
 //===========================================================================================================================================
-
-/**
- *  Manually reports a bug without showing any UI elements
- *  @param comment comment(optional)
- *  @param screenshot screenshot(optional)
- */
-+ (void)reportBugWithComment:(NSString *)comment screenshot:(UIImage *)screenshot;
-
-/**
- *  Manually send a feedback without showing any UI elements
- *  @param comment comment(optional)
- *  @param screenshot screenshot(optional)
- */
-+ (void)reportFeedbackWithComment:(NSString *)comment screenshot:(UIImage *)screenshot;
 
 /**
  *  Manually reports an exception
@@ -270,5 +344,47 @@ void IBGLog(NSString *format, ...);
 + (void)reportException:(NSException *)exception;
 
 //===========================================================================================================================================
+
+//===========================================================================================================================================
+/** @name In-App Conversations */
+//===========================================================================================================================================
+
+/**
+ *  Open conversations view
+ */
++ (void)invokeConversations;
+
+//===========================================================================================================================================
+
+//===========================================================================================================================================
+/** @name Push Notifications */
+//===========================================================================================================================================
+
+/**
+ *  Use this method to check if push notification is from Instabug
+ *
+ *  @return YES if APN payload contains the key "IBGHost"
+ */
++ (BOOL)isInstabugNotification:(NSDictionary *)notification;
+
+/**
+ *  Use this method to set Apple Push Notification token to enable receiving Instabug push notifications.
+ *  You should call this method after receiving token in [AppDelegate didRegisterForRemoteNotificationsWithDeviceToken:]
+ *  and pass received token.
+ *
+ *  @param deviceToken device token
+ */
++ (void)didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken;
+
+/**
+ *  Call it to allow Instabug to handle remote notifications. Instabug will check if notification is from Instabug
+ *  server and handle it. otherwise it will do nothing.
+ *  You should call this method in [AppDelegate application:didReceiveRemoteNotification:] and pass received userInfo
+ *  Or [AppDelegate application:didFinishLaunchingWithOptions:] and pass 
+ *  [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey]
+ *
+ *  @param userInfo remote notification
+ */
++ (void)didReceiveRemoteNotification:(NSDictionary *)userInfo;
 
 @end

@@ -33,15 +33,15 @@
     	<!-- android -->
 	<platform name="android">
 		<config-file target="res/xml/config.xml" parent="/*">
-	    <feature name="IBPlugin" >
-	        <param name="android-package" value="com.wodify.cordova.plugin.instabug.IBPlugin"/>
+	    <feature name="IBGPlugin" >
+	        <param name="android-package" value="com.wodify.cordova.plugin.instabug.IBGPlugin"/>
 	        <param name="onload" value="true" />
 	    </feature>
 	</config-file>
 	
 	<config-file target="AndroidManifest.xml" parent="/manifest/application">
 		
-	    <activity android:name="com.wodify.cordova.plugin.instabug.IBPluginActivity" 
+	    <activity android:name="com.wodify.cordova.plugin.instabug.IBGPluginActivity" 
 	        android:launchMode="singleInstance"
 	        android:theme="@android:style/Theme.NoDisplay"
 	        android:configChanges="keyboardHidden|orientation|screenSize" />
@@ -72,15 +72,15 @@
 	
 	<framework src="build.gradle" custom="true" type="gradleReference" />
 	
-	<source-file src="src/android/IBPluginActivity.java" target-dir="src/com/wodify/cordova-plugin-instabug" />
-		<source-file src="src/android/IBPlugin.java" target-dir="src/com/wodify/cordova-plugin-instabug" />
+	<source-file src="src/android/IBGPluginActivity.java" target-dir="src/com/wodify/cordova-plugin-instabug" />
+		<source-file src="src/android/IBGPlugin.java" target-dir="src/com/wodify/cordova-plugin-instabug" />
 	</platform>
 
     	<!-- ios -->
 	<platform name="ios">
 		<config-file target="config.xml" parent="/*">
-            		<feature name="IBPlugin">
-                		<param name="ios-package" value="IBPlugin" />
+            		<feature name="IBGPlugin">
+                		<param name="ios-package" value="IBGPlugin" />
                 		<param name="onload" value="true" />
             		</feature>
         	</config-file>
@@ -88,8 +88,8 @@
 		<resource-file src="src/ios/Instabug.bundle" />
         	<framework src="src/ios/Instabug.framework" custom="true" />
 
-		<header-file src="src/ios/IBPlugin.h" />
-        	<source-file src="src/ios/IBPlugin.m" />
+		<header-file src="src/ios/IBGPlugin.h" />
+        	<source-file src="src/ios/IBGPlugin.m" />
 
         	<framework src="AVFoundation.framework" />
         	<framework src="CoreMotion.framework" />
