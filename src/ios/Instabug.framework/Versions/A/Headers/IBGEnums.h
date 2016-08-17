@@ -12,7 +12,7 @@
 /**
  *  The event used to invoke the feedback form
  */
-typedef enum IBGInvocationEvent {
+typedef NS_ENUM(NSInteger, IBGInvocationEvent) {
     //  No event will be registered to show the feedback form, you'll need to code your own and call the method showFeedbackForm
     IBGInvocationEventNone,
     //  Shaking the device while in any screen to show the feedback form
@@ -25,32 +25,55 @@ typedef enum IBGInvocationEvent {
     IBGInvocationEventRightEdgePan,
     //  Shows a floating button on top of all views, when pressed it takes a screenshot
     IBGInvocationEventFloatingButton
-} IBGInvocationEvent;
+};
 
 /**
  *  The color theme of the different UI elements
  */
-typedef enum IBGColorTheme {
+typedef NS_ENUM(NSInteger, IBGColorTheme) {
     IBGColorThemeLight,
     IBGColorThemeDark
-} IBGColorTheme;
+};
 
 /**
  *  The mode used upon invocating the SDK
  */
-typedef enum IBGInvocationMode {
+typedef NS_ENUM(NSInteger, IBGInvocationMode) {
     IBGInvocationModeNA,
     IBGInvocationModeBugReporter,
     IBGInvocationModeFeedbackSender
-} IBGInvocationMode;
+};
+
+/**
+ *  Type of feedback to be submit
+ */
+typedef NS_ENUM(NSInteger, IBGFeedbackType) {
+    IBGFeedbackTypeBug,
+    IBGFeedbackTypeFeedback,
+    IBGFeedbackTypeCrash
+};
+
+/**
+ *  State of Issue after SDK dismiss
+ */
+typedef NS_ENUM(NSInteger, IBGIssueState) {
+    // Issue is submitted
+    IBGIssueSubmitted,
+    // Issue is cancelled
+    IBGIssueCancelled,
+    // Issue is in progress, adding extra screenshot
+    IBGIssueInProgress
+};
 
 /**
  *  The supported locales
  */
-typedef enum IBGLocale {
+typedef NS_ENUM(NSInteger, IBGLocale) {
     IBGLocaleArabic,
     IBGLocaleChineseSimplified,
     IBGLocaleChineseTraditional,
+    IBGLocaleCzech,
+    IBGLocaleDanish,
     IBGLocaleEnglish,
     IBGLocaleFrench,
     IBGLocaleGerman,
@@ -63,5 +86,5 @@ typedef enum IBGLocale {
     IBGLocaleSpanish,
     IBGLocaleSwedish,
     IBGLocaleTurkish
-} IBGLocale;
+};
 //===========================================================================================================================================

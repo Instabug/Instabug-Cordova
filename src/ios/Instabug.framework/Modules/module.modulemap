@@ -1,0 +1,8 @@
+
+framework module Instabug {
+    umbrella header "Instabug.h"
+    
+    export *
+    module * { export * }
+}
+
