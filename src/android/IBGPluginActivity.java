@@ -1,4 +1,4 @@
-package com.wodify.cordova.plugin.instabug;
+package com.instabug.cordova.plugin;
 
 import java.lang.Integer;
 import java.lang.Float;

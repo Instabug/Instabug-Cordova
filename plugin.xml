@@ -2,7 +2,7 @@
 
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    id="com.wodify.cordova.plugin.instabug"
+    id="com.instabug.cordova.plugin"
     version="0.0.1">
 
 	<name>instabug-cordova</name>
@@ -34,14 +34,14 @@
 	<platform name="android">
 		<config-file target="res/xml/config.xml" parent="/*">
 	    <feature name="IBGPlugin" >
-	        <param name="android-package" value="com.wodify.cordova.plugin.instabug.IBGPlugin"/>
+	        <param name="android-package" value="com.instabug.cordova.plugin.IBGPlugin"/>
 	        <param name="onload" value="true" />
 	    </feature>
 	</config-file>
 	
 	<config-file target="AndroidManifest.xml" parent="/manifest/application">
 		
-	    <activity android:name="com.wodify.cordova.plugin.instabug.IBGPluginActivity" 
+	    <activity android:name="com.instabug.cordova.plugin.IBGPluginActivity" 
 	        android:launchMode="singleInstance"
 	        android:theme="@android:style/Theme.NoDisplay"
 	        android:configChanges="keyboardHidden|orientation|screenSize" />
@@ -72,8 +72,8 @@
 	
 	<framework src="build.gradle" custom="true" type="gradleReference" />
 	
-	<source-file src="src/android/IBGPluginActivity.java" target-dir="src/com/wodify/cordova-plugin-instabug" />
-		<source-file src="src/android/IBGPlugin.java" target-dir="src/com/wodify/cordova-plugin-instabug" />
+	<source-file src="src/android/IBGPluginActivity.java" target-dir="src/com/instabug/cordova-plugin" />
+		<source-file src="src/android/IBGPlugin.java" target-dir="src/com/instabug/cordova-plugin" />
 	</platform>
 
     	<!-- ios -->

@@ -1,4 +1,4 @@
-package com.wodify.cordova.plugin.instabug;
+package com.instabug.cordova.plugin;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -61,7 +61,7 @@ public class IBGPlugin extends CordovaPlugin {
         super.initialize(cordova, webView);
 
         // Initialize intent so that extras can be attached subsequently
-        activationIntent = new Intent(cordova.getActivity(), com.wodify.cordova.plugin.instabug.IBGPluginActivity.class);
+        activationIntent = new Intent(cordova.getActivity(), com.instabug.cordova.plugin.IBGPluginActivity.class);
 
         options = new JSONObject();
     }

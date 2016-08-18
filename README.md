@@ -136,5 +136,5 @@ After you've initialized Instabug, you can call a variety of other methods on th
 
 This software is released under the <a href="http://opensource.org/licenses/Apache-2.0">Apache 2.0 License</a>.
 
-© 2016 Wodify. All rights reserved.
+© 2016 Instabug. All rights reserved.
 
