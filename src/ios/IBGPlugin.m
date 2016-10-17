@@ -527,7 +527,7 @@
         return IBGInvocationModeNewFeedback;
     } else if ([mode isEqualToString:@"chat"]) {
         return IBGInvocationModeNewChat;
-    }  lse if ([mode isEqualToString:@"chatList"]) {
+    } else if ([mode isEqualToString:@"chatList"]) {
         return IBGInvocationModeChatsList;
     } else if ([mode isEqualToString:@"na"]) {
         return IBGInvocationModeNA;
