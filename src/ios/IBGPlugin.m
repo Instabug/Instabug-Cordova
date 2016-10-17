@@ -522,9 +522,13 @@
 - (IBGInvocationMode) parseInvocationMode:(NSString*)mode
 {
     if ([mode isEqualToString:@"bug"]) {
-        return IBGInvocationModeBugReporter;
+        return IBGInvocationModeNewBug;
     } else if ([mode isEqualToString:@"feedback"]) {
-        return IBGInvocationModeFeedbackSender;
+        return IBGInvocationModeNewFeedback;
+    } else if ([mode isEqualToString:@"chat"]) {
+        return IBGInvocationModeNewChat;
+    }  lse if ([mode isEqualToString:@"chatList"]) {
+        return IBGInvocationModeChatsList;
     } else if ([mode isEqualToString:@"na"]) {
         return IBGInvocationModeNA;
     } else return 0;
@@ -541,10 +545,16 @@
 {
     if ([locale isEqualToString:@"arabic"]) {
         return IBGLocaleArabic;
+    } else if ([locale isEqualToString:@"chineseTaiwan"]) {
+        return IBGLocaleChineseTaiwan;
     } else if ([locale isEqualToString:@"chineseSimplified"]) {
         return IBGLocaleChineseSimplified;
     } else if ([locale isEqualToString:@"chineseTraditional"]) {
         return IBGLocaleChineseTraditional;
+    } else if ([locale isEqualToString:@"czesh"]) {
+        return IBGLocaleEnglish;
+    } else if ([locale isEqualToString:@"danish"]) {
+        return IBGLocaleDanish;
     } else if ([locale isEqualToString:@"english"]) {
         return IBGLocaleEnglish;
     } else if ([locale isEqualToString:@"french"]) {
@@ -559,10 +569,14 @@
         return IBGLocaleKorean;
     } else if ([locale isEqualToString:@"polish"]) {
         return IBGLocalePolish;
+    } else if ([locale isEqualToString:@"portuguese"]) {
+        return IBGLocalePortugese;
     } else if ([locale isEqualToString:@"portugueseBrazil"]) {
         return IBGLocalePortugueseBrazil;
     } else if ([locale isEqualToString:@"russian"]) {
         return IBGLocaleRussian;
+    } else if ([locale isEqualToString:@"solvak"]) {
+        return IBGLocaleSlovak;
     } else if ([locale isEqualToString:@"spanish"]) {
         return IBGLocaleSpanish;
     } else if ([locale isEqualToString:@"swedish"]) {
