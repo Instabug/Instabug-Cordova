@@ -9,10 +9,12 @@ import org.apache.cordova.*;
 
 import com.instabug.library.Instabug;
 import com.instabug.library.Instabug.Builder;
-import com.instabug.library.IBGInvocationEvent;
-import com.instabug.library.IBGInvocationMode;
-import com.instabug.library.IBGColorTheme;
-import com.instabug.library.IBGFloatingButtonEdge;
+import com.instabug.library.InstabugColorTheme;
+import com.instabug.library.InstabugTrackingDelegate;
+import com.instabug.library.internal.module.InstabugLocale;
+import com.instabug.library.invocation.InstabugInvocationEvent;
+import com.instabug.library.invocation.InstabugInvocationMode;
+import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
 import com.instabug.library.Feature;
 
 public class IBGPluginActivity extends CordovaActivity
@@ -33,7 +35,7 @@ public class IBGPluginActivity extends CordovaActivity
         // Retrieve initialization options
         Bundle options = getIntent().getExtras();
 
-        IBGInvocationEvent event = IBGPlugin.parseInvocationEvent(options.getString("invocationEvent"));
+        InstabugInvocationEvent event = IBGPlugin.parseInvocationEvent(options.getString("invocationEvent"));
 
         if (event != null) {
             // Initialize builder with invocation event if possible
@@ -90,10 +92,10 @@ public class IBGPluginActivity extends CordovaActivity
      * Convenience method for parsing and setting the
      * desired default invocation mode.
      * @param mode
-     *        String shortcode for IBGInvocationMode
+     *        String shortcode for InstabugInvocationMode
      */
     private void setDefaultInvocationMode(String mode) {
-        IBGInvocationMode iMode = IBGPlugin.parseInvocationMode(mode);
+        InstabugInvocationMode iMode = IBGPlugin.parseInvocationMode(mode);
 
         if (iMode != null) {
             builder.setDefaultInvocationMode(iMode);
@@ -104,11 +106,11 @@ public class IBGPluginActivity extends CordovaActivity
      * Convenience method for parsing and setting the
      * shaking threshold.
      * @param threshold
-     *        String representation of float threshold
+     *        String representation of int threshold
      */
     private void setShakingThreshold(String threshold) {
         if (threshold != null && threshold.length() > 0) {
-            builder.setShakingThreshold(Float.parseFloat(threshold));
+            builder.setShakingThreshold(Integer.parseInt(threshold));
         }
     }
 
@@ -120,9 +122,9 @@ public class IBGPluginActivity extends CordovaActivity
      */
     private void setFloatingButtonEdge(String edge) {
         if ("left".equals(edge)) {
-            builder.setFloatingButtonEdge(IBGFloatingButtonEdge.Left);
+            builder.setFloatingButtonEdge(InstabugFloatingButtonEdge.LEFT);
         } else if ("right".equals(edge)) {
-            builder.setFloatingButtonEdge(IBGFloatingButtonEdge.Right);
+            builder.setFloatingButtonEdge(InstabugFloatingButtonEdge.RIGHT);
         }
     }
 
@@ -148,7 +150,7 @@ public class IBGPluginActivity extends CordovaActivity
      */
     private void setDebugEnabled(String enabled) {
         if (enabled != null && enabled.length() > 0) {
-            builder.setDebugEnabled(Boolean.parseBoolean(enabled));
+            Instabug.setDebugEnabled(Boolean.parseBoolean(enabled));
         }
     }
 
@@ -272,7 +274,7 @@ public class IBGPluginActivity extends CordovaActivity
      */
     private void setIntroDialogEnabled(String enabled) {
         if (enabled != null && enabled.length() > 0) {
-            builder.setShouldShowIntroDialog(Boolean.parseBoolean(enabled));
+            builder.setIntroMessageEnabled(Boolean.parseBoolean(enabled));
         }
     }
 
@@ -301,9 +303,9 @@ public class IBGPluginActivity extends CordovaActivity
      */
     private void setColorTheme(String theme) {
         if ("dark".equals(theme)) {
-            builder.setColorTheme(IBGColorTheme.IBGColorThemeDark);
+            builder.setColorTheme(InstabugColorTheme.InstabugColorThemeDark);
         } else if ("light".equals(theme)) {
-            builder.setColorTheme(IBGColorTheme.IBGColorThemeLight);
+            builder.setColorTheme(InstabugColorTheme.InstabugColorThemeLight);
         }
     }
 
@@ -321,7 +323,6 @@ public class IBGPluginActivity extends CordovaActivity
         setShakingThreshold(opts.getString("shakingThresholdAndroid"));
         setFloatingButtonEdge(opts.getString("floatingButtonEdge"));
         setFloatingButtonOffset(opts.getString("floatingButtonOffset"));
-        setDebugEnabled(opts.getString("enableDebug"));
         setConsoleLogsEnabled(opts.getString("enableConsoleLogs"));
         setInstabugLogsEnabled(opts.getString("enableInstabugLogs"));
         setTrackingUserStepsEnabled(opts.getString("enableTrackingUserSteps"));

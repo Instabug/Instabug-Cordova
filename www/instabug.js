@@ -6,16 +6,17 @@ var getInvocationEvents = function () {
 		button: 'button',
 		screenshot: 'screenshot',
 		swipe: 'swipe',
-		pan: 'pan',
 		none: 'none'
 	};
 };
 
 var getInvocationModes = function () {
 	return {
+		chat: 'chat',
+		chats: 'chats',
 		bug: 'bug',
 		feedback: 'feedback',
-		na: 'na'
+		options: 'options'
 	};
 };
 
@@ -35,7 +36,8 @@ var getLocales = function () {
 		russian: 'russian',
 		spanish: 'spanish',
 		swedish: 'swedish',
-		turkish: 'turkish'
+		turkish: 'turkish',
+		czech:'czech'
 	};
 };
 
@@ -66,8 +68,8 @@ Instabug.showIntro = function(success, error) {
 	exec(success, error, 'IBGPlugin', 'showIntroDialog', []);
 };
 
-Instabug.setPrimaryColor = function (hexColor, success, error) {
-	exec(success, error, 'IBGPlugin', 'setPrimaryColor', [ hexColor ]);
+Instabug.setPrimaryColor = function (colorInteger, success, error) {
+	exec(success, error, 'IBGPlugin', 'setPrimaryColor', [ colorInteger ]);
 };
 
 Instabug.setUserEmail = function (email, success, error) {

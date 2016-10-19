@@ -3,9 +3,12 @@ package com.instabug.cordova.plugin;
 import android.content.Intent;
 import android.net.Uri;
 
-import com.instabug.library.IBGInvocationEvent;
-import com.instabug.library.IBGInvocationMode;
 import com.instabug.library.Instabug;
+import com.instabug.library.InstabugColorTheme;
+import com.instabug.library.InstabugTrackingDelegate;
+import com.instabug.library.internal.module.InstabugLocale;
+import com.instabug.library.invocation.InstabugInvocationEvent;
+import com.instabug.library.invocation.InstabugInvocationMode;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
@@ -205,7 +208,7 @@ public class IBGPlugin extends CordovaPlugin {
      *        Specific mode of SDK
      */
     private void invoke(final CallbackContext callbackContext, String mode) {
-        IBGInvocationMode iMode = parseInvocationMode(mode);
+        InstabugInvocationEvent iMode = parseInvocationMode(mode);
 
         try {
             //Instabug instabug = Instabug.getInstance();
@@ -246,32 +249,16 @@ public class IBGPlugin extends CordovaPlugin {
      * @param color
      *        The value of the primary color
      */
-    private void setPrimaryColor(final CallbackContext callbackContext, String color) {
-        if (color != null && color.length() > 0) {
-            boolean valid = false;
-            String hColor = null;
+    private void setPrimaryColor(final CallbackContext callbackContext, Int colorInt) {
+        if (color != null) {
+         try {
+            Instabug.setPrimaryColor(hexColor);
 
-            if (color.length() == 6) {
-                valid = true;
-                hColor = color;
-            } else if (color.length() == 7 && color.indexOf("#") == 0) {
-                valid = true;
-                // '#' char must be removed before parsing
-                hColor = color.substring(1);
-            }
-
-            if (valid) {
-                int hexColor = Integer.parseInt(hColor, 16)+0xFF000000;
-
-                try {
-                    Instabug.setPrimaryColor(hexColor);
-                } catch (IllegalStateException e) {
-                    callbackContext.error(errorMsg);
-                }
-            } else callbackContext.error(color + "is not a valid hex color.");
-
+         } catch (IllegalStateException e) {
+            callbackContext.error(errorMsg);
+         }
             
-        } else callbackContext.error("A hex color must be provided.");
+        } else callbackContext.error("A colorInt must be provided.");
     }
 
     /**
@@ -495,14 +482,16 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
-     * If Instabug SDK debug logs will be printed to LogCat.
-     * 
+     * Enable/Disable debug logs from Instabug SDK
+     *
+     * @param isDebugEnabled whether debug logs should be printed or not into LogCat
+     *
      * @param callbackContext 
      *        Used when calling back into JavaScript
      */
-    private void getIsDebugEnabled(final CallbackContext callbackContext) {
+    private void setDebugEnabled(final CallbackContext callbackContext,boolean isDebugEnabled) {
         try {
-            boolean enabled = Instabug.isDebugEnabled();
+            Instabug.setDebugEnabled(isDebugEnabled);
             callbackContext.success(enabled ? 1 : 0);
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
@@ -533,36 +522,42 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
-     * Convenience method for converting string to IBGInvocationEvent.
+     * Convenience method for converting string to InstabugInvocationEvent.
      * 
      * @param event
      *        String shortcode for event
      */
-    public static IBGInvocationEvent parseInvocationEvent(String event) {
+    public static InstabugInvocationEvent parseInvocationEvent(String event) {
         if ("shake".equals(event)) {
-            return IBGInvocationEvent.IBGInvocationEventShake;
+            return InstabugInvocationEvent.SHAKE;
         } else if ("button".equals(event)) {
-            return IBGInvocationEvent.IBGInvocationEventFloatingButton;
+            return InstabugInvocationEvent.FLOATING_BUTTON;
         } else if ("swipe".equals(event)) {
-            return IBGInvocationEvent.IBGInvocationEventTwoFingersSwipeLeft;
-        } else if ("none".equals(event)) {
-            return IBGInvocationEvent.IBGInvocationEventNone;
+            return InstabugInvocationEvent.TWO_FINGER_SWIPE_LEFTt;
+        } else if ("screenshot".equals(event)) {
+            return InstabugInvocationEvent.SCREENSHOT_GESTURE;
+        }else if ("none".equals(event)) {
+            return InstabugInvocationEvent.NONE;
         } else return null;
     }
 
     /**
-     * Convenience method for converting string to IBGInvocationMode.
+     * Convenience method for converting string to InstabugInvocationMode.
      * 
      * @param mode
      *        String shortcode for mode
      */
-    public static IBGInvocationMode parseInvocationMode(String mode) {
-        if ("bug".equals(mode)) {
-            return IBGInvocationMode.IBGInvocationModeBugReporter;
+    public static InstabugInvocationMode parseInvocationMode(String mode) {
+        if ("chat".equals(mode)) {
+            return InstabugInvocationMode.NEW_CHAT;
+        } else if ("chats".equals(mode)) {
+            return InstabugInvocationMode.CHATS_LIST;
+        } else if ("bug".equals(mode)) {
+            return InstabugInvocationMode.NEW_BUG;
         } else if ("feedback".equals(mode)) {
-            return IBGInvocationMode.IBGInvocationModeFeedbackSender;
-        } else if ("na".equals(mode)) {
-            return IBGInvocationMode.IBGInvocationModeNA;
+            return InstabugInvocationMode.NEW_FEEDBACK;
+        } else if ("options".equals(mode)) {
+            return InstabugInvocationMode.PROMPT_OPTION;
         } else return null;
     }
 
