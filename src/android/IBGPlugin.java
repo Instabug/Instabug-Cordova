@@ -4,9 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 
 import com.instabug.library.Instabug;
-import com.instabug.library.InstabugColorTheme;
-import com.instabug.library.InstabugTrackingDelegate;
-import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.invocation.InstabugInvocationMode;
 
@@ -19,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.lang.Integer;
 
 /**
  * This plugin initializes Instabug.  
@@ -36,7 +34,6 @@ public class IBGPlugin extends CordovaPlugin {
     private final String[] optionKeys = { 
         "emailRequired",
         "commentRequired",
-        "defaultInvocationMode",
         "shakingThresholdAndroid",
         "floatingButtonEdge",
         "floatingButtonOffset",
@@ -76,7 +73,7 @@ public class IBGPlugin extends CordovaPlugin {
      *      The action to execute.
      * @param args
      *      The exec() arguments in JSON form.
-     * @param command
+     * @param callbackContext
      *      The callback context used when calling back into JavaScript.
      * @return
      *      Whether the action was valid.
@@ -94,7 +91,7 @@ public class IBGPlugin extends CordovaPlugin {
             showIntroDialog(callbackContext);
 
         } else if ("setPrimaryColor".equals(action)) {
-            setPrimaryColor(callbackContext, args.optString(0));
+            setPrimaryColor(callbackContext, args.optInt(0));
 
         } else if ("setUserEmail".equals(action)) {
             setUserEmail(callbackContext, args.optString(0));
@@ -128,11 +125,7 @@ public class IBGPlugin extends CordovaPlugin {
             
         } else if ("isInvoked".equals(action)) {
             getIsInvoked(callbackContext);
-            
-        } else if ("isDebugEnabled".equals(action)) {
-            getIsDebugEnabled(callbackContext);
-              
-        } else {
+        }else {
             // Method not found.
             return false;
         }
@@ -208,7 +201,7 @@ public class IBGPlugin extends CordovaPlugin {
      *        Specific mode of SDK
      */
     private void invoke(final CallbackContext callbackContext, String mode) {
-        InstabugInvocationEvent iMode = parseInvocationMode(mode);
+        InstabugInvocationMode iMode = parseInvocationMode(mode);
 
         try {
             //Instabug instabug = Instabug.getInstance();
@@ -246,13 +239,13 @@ public class IBGPlugin extends CordovaPlugin {
      * 
      * @param callbackContext 
      *        Used when calling back into JavaScript
-     * @param color
+     * @param colorInt
      *        The value of the primary color
      */
-    private void setPrimaryColor(final CallbackContext callbackContext, Int colorInt) {
-        if (color != null) {
+    private void setPrimaryColor(final CallbackContext callbackContext,Integer colorInt) {
+        if (colorInt != null) {
          try {
-            Instabug.setPrimaryColor(hexColor);
+            Instabug.setPrimaryColor(colorInt);
 
          } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
@@ -324,7 +317,7 @@ public class IBGPlugin extends CordovaPlugin {
      * 
      * @param callbackContext 
      *        Used when calling back into JavaScript
-     * @param fileUri
+     * @param args
      *        URI of desired file to be uploaded
      */
     private void addFile(final CallbackContext callbackContext, JSONArray args) {
@@ -409,7 +402,7 @@ public class IBGPlugin extends CordovaPlugin {
      *        Event to be used to invoke SDK.
      */
     private void changeInvocationEvent(final CallbackContext callbackContext, String event) {
-        IBGInvocationEvent iEvent = parseInvocationEvent(event);
+        InstabugInvocationEvent iEvent = parseInvocationEvent(event);
 
         if (iEvent != null) {
             try {
@@ -492,7 +485,7 @@ public class IBGPlugin extends CordovaPlugin {
     private void setDebugEnabled(final CallbackContext callbackContext,boolean isDebugEnabled) {
         try {
             Instabug.setDebugEnabled(isDebugEnabled);
-            callbackContext.success(enabled ? 1 : 0);
+            callbackContext.success();
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
         }

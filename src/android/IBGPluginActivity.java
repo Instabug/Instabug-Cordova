@@ -1,21 +1,15 @@
 package com.instabug.cordova.plugin;
 
-import java.lang.Integer;
-import java.lang.Float;
-import java.lang.Boolean;
-
 import android.os.Bundle;
-import org.apache.cordova.*;
 
+import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
-import com.instabug.library.Instabug.Builder;
 import com.instabug.library.InstabugColorTheme;
-import com.instabug.library.InstabugTrackingDelegate;
-import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.invocation.InstabugInvocationMode;
 import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
-import com.instabug.library.Feature;
+
+import org.apache.cordova.CordovaActivity;
 
 public class IBGPluginActivity extends CordovaActivity
 {
@@ -85,20 +79,6 @@ public class IBGPluginActivity extends CordovaActivity
     private void setCommentFieldRequired(String required) {
         if (required != null && required.length() > 0) {
             builder.setCommentFieldRequired(Boolean.parseBoolean(required));
-        }
-    }
-
-    /**
-     * Convenience method for parsing and setting the
-     * desired default invocation mode.
-     * @param mode
-     *        String shortcode for InstabugInvocationMode
-     */
-    private void setDefaultInvocationMode(String mode) {
-        InstabugInvocationMode iMode = IBGPlugin.parseInvocationMode(mode);
-
-        if (iMode != null) {
-            builder.setDefaultInvocationMode(iMode);
         }
     }
 
@@ -299,13 +279,13 @@ public class IBGPluginActivity extends CordovaActivity
      * invocation.
      *
      * @param theme
-     *        String representation of IBGColorTheme
+     *        String representation of InstabugColorTheme
      */
     private void setColorTheme(String theme) {
         if ("dark".equals(theme)) {
-            builder.setColorTheme(InstabugColorTheme.InstabugColorThemeDark);
+            builder.setTheme(InstabugColorTheme.InstabugColorThemeDark);
         } else if ("light".equals(theme)) {
-            builder.setColorTheme(InstabugColorTheme.InstabugColorThemeLight);
+            builder.setTheme(InstabugColorTheme.InstabugColorThemeLight);
         }
     }
 
@@ -319,7 +299,6 @@ public class IBGPluginActivity extends CordovaActivity
     private void setBuilderOptions(Bundle opts) {
         setEmailFieldRequired(opts.getString("emailRequired"));
         setCommentFieldRequired(opts.getString("commentRequired"));
-        setDefaultInvocationMode(opts.getString("defaultInvocationMode"));
         setShakingThreshold(opts.getString("shakingThresholdAndroid"));
         setFloatingButtonEdge(opts.getString("floatingButtonEdge"));
         setFloatingButtonOffset(opts.getString("floatingButtonOffset"));
