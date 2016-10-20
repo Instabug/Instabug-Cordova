@@ -5,7 +5,7 @@ The purpose of this plugin is to simplify the process of integrating the Instabu
 
 ### Supported Platforms
 - __iOS__ (SDK >= ?)
-- __Android__ (SDK >= ?)
+- __Android__ (SDK >= 10)
 
 ### Installation
 Currently, this plugin can only be installed via the Command-Line Interface.
@@ -39,7 +39,6 @@ The invocation event can be specified as one of the following values:
 | 'button' | IBGInvocationEventFloatingButton | Shows a floating button on top of all views, when pressed it takes a screenshot. |  |
 | 'screenshot' | IBGInvocationEventScreenshot | Taking a screenshot using the Home+Lock buttons while in any screen to show the feedback form, substituted with IBGInvocationEventShake on iOS 6.1.3 and earlier. | √ |
 | 'swipe' | IBGInvocationEventTwoFingersSwipeLeft | Swiping two fingers left while in any screen to show the feedback form. | √ |
-| 'pan' | IBGInvocationEventRightEdgePan | Swiping one finger left from the right edge of the screen to show the feedback form, substituted with IBGInvocationEventTwoFingersSwipeLeft on iOS 6.1.3 and earlier. | √ |
 | 'none' | IBGInvocationEventNone | No event will be registered to show the feedback form, you'll need to code your own and call the method invoke. |  |
 Like the token, the value itself can be provided, or you can give an object with values according to platforms using the same syntax as above.
 
@@ -50,7 +49,7 @@ The final parameter to the activate method (besides success and error callback f
 | emailRequired | Sets whether email field is required or not when submitting bug/feedback | true, false | true | √ | √ |
 | commentRequired | Sets whether comment field is required or not when submitting bug/feedback | true, false | false | √ | √ |
 | defaultInvocationMode | Sets which invocation mode should the SDK use by default when the invocation event occurs | 'bug','feedback', 'na' | 'na' | √ | √ |
-| shakingThresholdAndroid | Sets the threshold value of the shake gesture on the device | String representation of float | '1.0' | √ |  |
+| shakingThresholdAndroid | Sets the threshold value of the shake gesture on the device | String representation of int | '11' | √ |  |
 | shakingThresholdIPhone | Sets the threshold value of the shake gesture on the device | String representation of double | '2.5' |  | √ |
 | shakingThresholdIPad | Sets the threshold value of the shake gesture on the device | String representation of double | '0.6' |  | √ |
 | floatingButtonEdge | Sets the default edge at which the floating button will be shown | 'right', 'left' | 'right' | √ | √ |
@@ -81,7 +80,6 @@ cordova.plugins.instabug.activate(
     {
         commentRequired: true,
         colorTheme: 'dark',
-        shakingThresholdAndroid: '0.1',
         shakingThresholdIPhone: '1.5',
         shakingThresholdIPad: '0.6',
         enableIntroDialog: false
