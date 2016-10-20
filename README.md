@@ -100,7 +100,7 @@ After you've initialized Instabug, you can call a variety of other methods on th
 |-----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|------|
 | invoke | Show the Instabug dialog so user can choose to report a bug, or submit feedback | optional: 'bug', 'feedback', or 'na' | √ | √ |
 | showIntro* | Display the discovery dialog explaining the shake gesture or the two finger swipe gesture | none | √ | √ |
-| setPrimaryColor | Set the primary color that the SDK will use to tint certain UI elements in the SDK | String representation of a hex color, can be prefaced with '#' - e.g., '#xxxxxx' or 'xxxxxx'. | √ | √ |
+| setPrimaryColor | Set the primary color that the SDK will use to tint certain UI elements in the SDK | integer representation of a color . | √ | √ |
 | setUserEmail* | If your app already acquires the user's email address and you provide it to this method, Instabug will pre-fill the user email in reports | email address | √ | √ |
 | setUserName* | Sets the user name that is used in the dashboard's contact | name | √ | √ |
 | setUserData* | Adds specific user data that you need to be added to the reports | any string | √ | √ |
