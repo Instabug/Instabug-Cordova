@@ -526,7 +526,7 @@ public class IBGPlugin extends CordovaPlugin {
         } else if ("button".equals(event)) {
             return InstabugInvocationEvent.FLOATING_BUTTON;
         } else if ("swipe".equals(event)) {
-            return InstabugInvocationEvent.TWO_FINGER_SWIPE_LEFTt;
+            return InstabugInvocationEvent.TWO_FINGER_SWIPE_LEFT;
         } else if ("screenshot".equals(event)) {
             return InstabugInvocationEvent.SCREENSHOT_GESTURE;
         }else if ("none".equals(event)) {
