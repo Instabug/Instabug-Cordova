@@ -35,11 +35,11 @@ The invocation event can be specified as one of the following values:
 
 | value | native equivalent | description | iOS only? |
 |:------------:|:-------------------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:---------:|
-| 'shake' | IBGInvocationEventShake | Shaking the device while in any screen to show the feedback form. |  |
-| 'button' | IBGInvocationEventFloatingButton | Shows a floating button on top of all views, when pressed it takes a screenshot. |  |
-| 'screenshot' | IBGInvocationEventScreenshot | Taking a screenshot using the Home+Lock buttons while in any screen to show the feedback form, substituted with IBGInvocationEventShake on iOS 6.1.3 and earlier. | √ |
-| 'swipe' | IBGInvocationEventTwoFingersSwipeLeft | Swiping two fingers left while in any screen to show the feedback form. | √ |
-| 'none' | IBGInvocationEventNone | No event will be registered to show the feedback form, you'll need to code your own and call the method invoke. |  |
+| 'shake' | InstabugInvocationEvent.SHAKE | Shaking the device while in any screen to show the feedback form. |  |
+| 'button' | InstabugInvocationEvent.FLOATING_BUTTON | Shows a floating button on top of all views, when pressed it takes a screenshot. |  |
+| 'screenshot' | InstabugInvocationEvent.SCREENSHOT_GESTURE | Taking a screenshot using the Home+Lock buttons while in any screen to show the feedback form, substituted with IBGInvocationEventShake on iOS 6.1.3 and earlier. | √ |
+| 'swipe' | InstabugInvocationEvent.TWO_FINGER_SWIPE_LEFT | Swiping two fingers left while in any screen to show the feedback form. | √ |
+| 'none' | InstabugInvocationEvent.NONE | No event will be registered to show the feedback form, you'll need to code your own and call the method invoke. |  |
 Like the token, the value itself can be provided, or you can give an object with values according to platforms using the same syntax as above.
 
 The final parameter to the activate method (besides success and error callback functions) is an optional object containing properties to set a variety of configurations. None of these configurations are required. See the table below for their specifications.
@@ -107,7 +107,7 @@ After you've initialized Instabug, you can call a variety of other methods on th
 | addFile* | Uploads file along upcoming reports | Path to desired file on device - can't use path of file relative to your application files. Can be specified as a string or an object with properties by platform. | √ | √ |
 | addLog* | Appends a log message to Instabug internal log. These logs are then sent along the next uploaded report. All log messages are timestamped. Logs aren't cleared per single application run. If you wish to reset the logs, use clearLog(). Note: logs passed to this method are NOT printed to Logcat. | any string | √ | √ |
 | clearLog | Clears Instabug internal log | none | √ |  |
-| changeInvocationEvent | Changes the event used to invoke Instabug SDK | 'shake', 'button', 'screenshot', 'swipe', 'pan', or 'none' (see first table on page) | √ | √ |
+| changeInvocationEvent | Changes the event used to invoke Instabug SDK | 'shake', 'button', 'screenshot', 'swipe', or 'none' (see first table on page) | √ | √ |
 | disable | Disables all Instabug functionality | none | √ |  |
 | enable | Enables all Instabug functionality | none | √ |  |
 | isEnabled | Returns true if Instabug is enabled, false if it's disabled | none | √ |  |
