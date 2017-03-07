@@ -87,8 +87,7 @@
             		</feature>
         	</config-file>
 
-		<resource-file src="src/ios/Instabug.bundle" />
-        	<framework src="src/ios/Instabug.framework" custom="true" />
+        <framework src="src/ios/Instabug.framework" custom="true" />
 
 		<header-file src="src/ios/IBGPlugin.h" />
         	<source-file src="src/ios/IBGPlugin.m" />
