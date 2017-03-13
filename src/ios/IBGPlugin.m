@@ -541,6 +541,37 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
+- (void) appendTags:(CDVInvokedUrlCommand*)command {
+    CDVPluginResult* result;
+    
+    NSArray *tags = [command argumentAtIndex:0];
+    
+    if (tags.count > 0) {
+        [Instabug appendTags:tags];
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"A non-empty tags array must be provided."];
+    }
+    
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+
+}
+
+- (void) resetTags:(CDVInvokedUrlCommand*)command {
+    [Instabug resetTags];
+    CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+- (void) getTags:(CDVInvokedUrlCommand*)command {
+    CDVPluginResult *result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                                 messageAsArray:[Instabug getTags]];
+    
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
 /**
  * Convenience method for setting whether the email
  * field is validated or not.

@@ -181,4 +181,16 @@ Instabug.removeUserAttributeForKey = function (key, success, error) {
 	exec(success, error, 'IBGPlugin', 'removeUserAttributeForKey', [ key ]);
 };
 
+Instabug.appendTags = function (tags, success, error) {
+	exec(success, error, 'IBGPlugin', 'appendTags', [ tags ]);
+};
+
+Instabug.resetTags = function (success, error) {
+	exec(success, error, 'IBGPlugin', 'resetTags', []);
+};
+
+Instabug.getTags = function (tags, returnedTages, error) {
+	exec(returnedTages, error, 'IBGPlugin', 'getTags', []);
+};
+
 module.exports = Instabug;

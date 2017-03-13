@@ -35,4 +35,9 @@
 - (void) userAttributeForKey:(CDVInvokedUrlCommand*)command;
 - (void) removeUserAttributeForKey:(CDVInvokedUrlCommand*)command;
 
+- (void) appendTags:(CDVInvokedUrlCommand*)command;
+- (void) resetTags:(CDVInvokedUrlCommand*)command;
+- (void) getTags:(CDVInvokedUrlCommand*)command;
+
+
 @end
