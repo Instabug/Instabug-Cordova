@@ -311,7 +311,7 @@
     
     IBGLocale iLocale = [self parseLocale:[command argumentAtIndex:0]];
     
-    if (iLocale) {
+    if ((long)iLocale >= 0) {
         [Instabug setLocale:iLocale];
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     } else {
@@ -555,6 +555,8 @@
         return IBGLocaleEnglish;
     } else if ([locale isEqualToString:@"danish"]) {
         return IBGLocaleDanish;
+    } else if ([locale isEqualToString:@"dutch"]) {
+        return IBGLocaleDutch;
     } else if ([locale isEqualToString:@"english"]) {
         return IBGLocaleEnglish;
     } else if ([locale isEqualToString:@"french"]) {
@@ -567,6 +569,8 @@
         return IBGLocaleJapanese;
     } else if ([locale isEqualToString:@"korean"]) {
         return IBGLocaleKorean;
+    } else if ([locale isEqualToString:@"norwegian"]) {
+        return IBGLocaleNorwegian;
     } else if ([locale isEqualToString:@"polish"]) {
         return IBGLocalePolish;
     } else if ([locale isEqualToString:@"portuguese"]) {
@@ -583,7 +587,7 @@
         return IBGLocaleSwedish;
     } else if ([locale isEqualToString:@"turkish"]) {
         return IBGLocaleTurkish;
-    } else return 0;
+    } else return -1;
 }
 
 /**

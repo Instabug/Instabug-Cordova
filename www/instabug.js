@@ -25,19 +25,24 @@ var getLocales = function () {
 		arabic: 'arabic',
 		chineseSimplified: 'chineseSimplified',
 		chineseTraditional: 'chineseTraditional',
+		czech:'czech',
+		danish:'danish',
+		dutch:'dutch',
 		english: 'english',
 		french: 'french',
 		german: 'german',
 		italian: 'italian',
 		japanese: 'japanese',
 		korean: 'korean',
+		norwegian: 'norwegian',
 		polish: 'polish',
+		portuguese: 'portuguese',
 		portugueseBrazil: 'portugueseBrazil',
 		russian: 'russian',
+		slovak: 'slovak',
 		spanish: 'spanish',
 		swedish: 'swedish',
 		turkish: 'turkish',
-		czech:'czech'
 	};
 };
 
