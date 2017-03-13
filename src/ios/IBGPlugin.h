@@ -29,5 +29,7 @@
 - (void) changeInvocationEvent:(CDVInvokedUrlCommand*)command;
 
 - (void) setLocale:(CDVInvokedUrlCommand*)command;
+- (void) setReportCategoriesWithTitlesAndIcons:(CDVInvokedUrlCommand*)comman;
+
 
 @end

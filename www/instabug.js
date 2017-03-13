@@ -165,4 +165,8 @@ Instabug.setLocale = function (locale, success, error) {
 	}
 };
 
+Instabug.setReportCategoriesWithTitlesAndIcons = function (titles, iconNames, success, error) {
+	exec(success, error, 'IBGPlugin', 'setReportCategoriesWithTitlesAndIcons', [ titles, iconNames ]);
+};
+
 module.exports = Instabug;

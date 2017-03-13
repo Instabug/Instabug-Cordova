@@ -442,6 +442,33 @@
 }
 
 /**
+ @brief Sets an array of report categories to be shown for users to select from before reporting a bug or sending 
+ feedback.
+ 
+ @discussion Use this method to give users a list of choices of categories their bug report or feedback might be related
+ to. Selected category will be shown as a tag on your dashboard.
+
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+
+- (void) setReportCategoriesWithTitlesAndIcons:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* result;
+    
+    NSArray *titles = [command argumentAtIndex:0];
+    NSArray *names = [command argumentAtIndex:1];
+    
+    if (titles.count > 0) {
+        [Instabug setReportCategoriesWithTitles:titles iconNames:names];
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"A non-empty titles array must be provided."];
+    }
+    
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
  * Convenience method for setting whether the email
  * field is validated or not.
  *
