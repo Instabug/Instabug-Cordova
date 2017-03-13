@@ -193,4 +193,12 @@ Instabug.getTags = function (tags, returnedTages, error) {
 	exec(returnedTages, error, 'IBGPlugin', 'getTags', []);
 };
 
+Instabug.identifyUserWithEmailAndName = function (email, name, success, error) {
+	exec(success, error, 'IBGPlugin', 'identifyUserWithEmailAndName', [ email, name ]);
+};
+
+Instabug.logout = function (success, error) {
+	exec(success, error, 'IBGPlugin', 'logout', []);
+};
+
 module.exports = Instabug;

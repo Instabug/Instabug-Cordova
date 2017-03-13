@@ -572,6 +572,30 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
+- (void) identifyUserWithEmailAndName:(CDVInvokedUrlCommand*)command {
+    CDVPluginResult* result;
+    NSString *email = [command argumentAtIndex:0];
+    NSString *name = [command argumentAtIndex:1];
+
+    if (email.length > 0) {
+        [Instabug identifyUserWithEmail:email name:name];
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"A non-empty email must be provided."];
+    }
+
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+- (void) logout:(CDVInvokedUrlCommand*)command {
+    [Instabug logOut];
+    CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+
 /**
  * Convenience method for setting whether the email
  * field is validated or not.

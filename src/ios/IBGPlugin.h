@@ -39,5 +39,7 @@
 - (void) resetTags:(CDVInvokedUrlCommand*)command;
 - (void) getTags:(CDVInvokedUrlCommand*)command;
 
+- (void) identifyUserWithEmailAndName:(CDVInvokedUrlCommand*)command;
+- (void) logout:(CDVInvokedUrlCommand*)command;
 
 @end
