@@ -711,11 +711,13 @@
     }
 }
 
-- (void)setIBGLogPrintsToConsole:(BOOL)enabled {
-    if (enabled.length > 0) {
-        [Instabug setIBGLogPrintsToConsole:[enabled boolValue]];
-    }
-}
+// untill we update
+
+// - (void)setIBGLogPrintsToConsole:(NSString *)enabled {
+//     if (enabled.length > 0) {
+//         [Instabug setIBGLogPrintsToConsole:[enabled boolValue]];
+//     }
+// }
 
 /**
  * Wrapper method for applying all provided options.
@@ -740,7 +742,7 @@
                                 feedback:[[options objectForKey:@"feedbackEnabled"] stringValue]
                                     chat:[[options objectForKey:@"chatEnabled"] stringValue]];
     [self setViewHierarchyEnabled:[[options objectForKey:@"viewHierarchyEnabled"] stringValue]];
-    [self setIBGLogPrintsToConsole:[[options objectForKey:@"isIBGPrintsToConsolEnabled"] stringValue]];
+    // [self setIBGLogPrintsToConsole:[[options objectForKey:@"isIBGPrintsToConsolEnabled"] stringValue]];
 
 }
 
