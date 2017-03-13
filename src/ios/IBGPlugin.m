@@ -595,6 +595,36 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
+- (void) logUserEventWithName:(CDVInvokedUrlCommand*)command {
+    CDVPluginResult* result;
+    NSString *name = [command argumentAtIndex:0];
+
+    if (name.length > 0) {
+        [Instabug logUserEventWithName:name];
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"A non-empty event name must be provided."];
+    }
+
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+- (void) logUserEventWithNameAndParams:(CDVInvokedUrlCommand*)command {
+    CDVPluginResult* result;
+    NSString *name = [command argumentAtIndex:0];
+    NSString *params = [command argumentAtIndex:1];
+
+    if (name.length > 0) {
+        [Instabug logUserEventWithName:name params:params];
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"A non-empty event name must be provided."];
+    }
+
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
 
 /**
  * Convenience method for setting whether the email

@@ -201,4 +201,12 @@ Instabug.logout = function (success, error) {
 	exec(success, error, 'IBGPlugin', 'logout', []);
 };
 
+Instabug.logUserEventWithName = function (name, success, error) {
+	exec(success, error, 'IBGPlugin', 'logUserEventWithName', [ name ]);
+};
+
+Instabug.logUserEventWithNameAndParams = function (name, params, success, error) {
+	exec(success, error, 'IBGPlugin', 'logUserEventWithNameAndParams', [ name, params ]);
+};
+
 module.exports = Instabug;

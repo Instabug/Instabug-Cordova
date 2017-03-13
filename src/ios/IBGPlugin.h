@@ -42,4 +42,7 @@
 - (void) identifyUserWithEmailAndName:(CDVInvokedUrlCommand*)command;
 - (void) logout:(CDVInvokedUrlCommand*)command;
 
+- (void) logUserEventWithName:(CDVInvokedUrlCommand*)command;
+- (void) logUserEventWithNameAndParams:(CDVInvokedUrlCommand*)command;
+
 @end
