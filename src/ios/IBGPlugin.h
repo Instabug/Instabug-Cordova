@@ -17,6 +17,7 @@
 - (void) setUserData:(CDVInvokedUrlCommand*)command;
 
 - (void) addFile:(CDVInvokedUrlCommand*)command;
+- (void) clearFileAttachments:(CDVInvokedUrlCommand*)command;
 
 - (void) addLog:(CDVInvokedUrlCommand*)command;
 

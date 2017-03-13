@@ -93,6 +93,10 @@ Instabug.addFile = function (filePath, success, error) {
 	exec(success, error, 'IBGPlugin', 'addFile', [ filePath ]);
 }
 
+Instabug.clearFileAttachments = function (success, error) {
+	exec(success, error, 'IBGPlugin', 'clearFileAttachments');
+}
+
 Instabug.addLog = function (content, success, error) {
 	exec(success, error, 'IBGPlugin', 'addLog', [ content ]);
 };

@@ -255,6 +255,13 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
+- (void)clearFileAttachments:(CDVInvokedUrlCommand*)command {
+    [Instabug clearFileAttachments];
+    CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
 /**
  * Adds custom logs that will be sent with each report.
  *
