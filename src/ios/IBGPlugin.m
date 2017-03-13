@@ -587,6 +587,25 @@
 }
 
 /**
+ @brief Enables/disables prompt options when SDK is invoked.
+ 
+ @discussion When only a single option is enabled, it become the default invocation mode.
+ If all options are disabled, bug reporting becomes the default invocation mode.
+ 
+ By default, all three options are enabled.
+ 
+ @param bugReportEnabled A string to indicate whether bug reports are enabled or disabled.
+ @param feedbackEnabled A string to indicate whether feedback is enabled or disabled.
+ @param chatEnabled A string to indicate whether chat is enabled or disabled.
+ */
+- (void)setPromptOptionsEnabledWithBug:(NSString *)bugReportEnabled feedback:(NSString *)feedbackEnabled chat:(NSString *)chatEnabled;
+{
+    if (bugReportEnabled.length > 0 && feedbackEnabled.length > 0 && chatEnabled.length > 0) {
+        [Instabug setPromptOptionsEnabledWithBug:[bugReportEnabled boolValue] feedback:[feedbackEnabled boolValue] chat:[chatEnabled boolValue]];
+    }
+}
+
+/**
  * Wrapper method for applying all provided options.
  *
  * @param {NSDictionary*} options
@@ -605,6 +624,9 @@
     [self setPushNotificationsEnabled:[[options objectForKey:@"enablePushNotifications"] stringValue]];
     [self setIntroDialogEnabled:[[options objectForKey:@"enableIntroDialog"] stringValue]];
     [self setColorTheme:[options objectForKey:@"colorTheme"]];
+    [self setPromptOptionsEnabledWithBug:[[options objectForKey:@"bugReportEnabled"] stringValue] 
+                                feedback:[[options objectForKey:@"feedbackEnabled"] stringValue]
+                                    chat:[[options objectForKey:@"chatEnabled"] stringValue]];
 }
 
 /**
