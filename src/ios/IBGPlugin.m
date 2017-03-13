@@ -236,8 +236,10 @@
             // If the file doesn't exist at the path specified,
             // we won't be able to notify the containing app when
             // Instabug API call fails, so we check ourselves.
-            [Instabug setFileAttachment:filePath];
-            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+            [Instabug addFileAttachmentWithURL:[NSURL URLWithString:filePath]];
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[NSString stringWithFormat:
+                                                        @"file added",
+                                                        filePath]];
         } else {
             result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
                                        messageAsString:[NSString stringWithFormat:
@@ -246,7 +248,7 @@
         }
     } else {
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                   messageAsString:@"A local file URI must be provided."];
+                                   messageAsString:@"A local file URL must be provided."];
     }
     
     
