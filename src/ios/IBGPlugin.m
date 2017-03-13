@@ -705,6 +705,12 @@
     }
 }
 
+- (void)setViewHierarchyEnabled:(NSString *)viewHierarchyEnabled {
+    if (viewHierarchyEnabled.length > 0) {
+        [Instabug setViewHierarchyEnabled:[viewHierarchyEnabled boolValue]];
+    }
+}
+
 /**
  * Wrapper method for applying all provided options.
  *
@@ -727,6 +733,8 @@
     [self setPromptOptionsEnabledWithBug:[[options objectForKey:@"bugReportEnabled"] stringValue] 
                                 feedback:[[options objectForKey:@"feedbackEnabled"] stringValue]
                                     chat:[[options objectForKey:@"chatEnabled"] stringValue]];
+    [self setViewHierarchyEnabled:[[options objectForKey:@"viewHierarchyEnabled"] stringValue]];
+
 }
 
 /**
