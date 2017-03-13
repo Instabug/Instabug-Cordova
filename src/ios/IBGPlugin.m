@@ -766,6 +766,38 @@
     }
 }
 
+- (void)setWillSkipScreenshotAnnotation:(NSString *)willSkipScreenShot {
+    if (willSkipScreenShot.length > 0) {
+        [Instabug setWillSkipScreenshotAnnotation:[willSkipScreenShot boolValue]];
+    }
+}
+
+- (void)setPostSendingDialogEnabled:(NSString *)isPostSendingDialogEnabled {
+    if (isPostSendingDialogEnabled.length > 0) {
+        [Instabug setPostSendingDialogEnabled:[isPostSendingDialogEnabled boolValue]];
+    }
+}
+
+- (void)setChatNotificationEnabled:(NSString *)chatNotificationEnabled {
+    if (chatNotificationEnabled.length > 0) {
+        [Instabug setChatNotificationEnabled:[chatNotificationEnabled boolValue]];
+    }
+}
+
+- (void)setAttachmentTypesEnabledScreenShot:(NSString *)screenShot 
+                            extraScreenShot:(NSString *)extraScreenShot
+                               galleryImage:(NSString *)galleryImage
+                                  voiceNote:(NSString *)voiceNote
+                            screenRecording:(NSString *)screenRecording {
+    if (screenShot.length > 0 && extraScreenShot.length > 0 && galleryImage.length > 0 && voiceNote.length > 0 && screenRecording.length > 0) {
+        [Instabug setAttachmentTypesEnabledScreenShot:[screenShot boolValue]
+                            extraScreenShot:[extraScreenShot boolValue]
+                               galleryImage:[galleryImage boolValue]
+                                  voiceNote:[voiceNote boolValue]
+                            screenRecording:[screenRecording boolValue]];
+    }
+}
+
 // untill we update
 
 // - (void)setIBGLogPrintsToConsole:(NSString *)enabled {
@@ -797,6 +829,14 @@
                                 feedback:[[options objectForKey:@"feedbackEnabled"] stringValue]
                                     chat:[[options objectForKey:@"chatEnabled"] stringValue]];
     [self setViewHierarchyEnabled:[[options objectForKey:@"viewHierarchyEnabled"] stringValue]];
+    [self setWillSkipScreenshotAnnotation:[[options objectForKey:@"willSkipScreenShot"] stringValue]];
+    [self setPostSendingDialogEnabled:[[options objectForKey:@"isPostSendingDialogEnabled"] stringValue]];
+    [self setAttachmentTypesEnabledScreenShot:[[options objectForKey:@"screenShot"] stringValue]
+                              extraScreenShot:[[options objectForKey:@"extraScreenShot"] stringValue]
+                                 galleryImage:[[options objectForKey:@"galleryImage"] stringValue]
+                                    voiceNote:[[options objectForKey:@"voiceNote"] stringValue]
+                              screenRecording:[[options objectForKey:@"screenRecording"] stringValue]];
+    [self setChatNotificationEnabled:[[options objectForKey:@"chatNotificationEnabled"] stringValue]];
     // [self setIBGLogPrintsToConsole:[[options objectForKey:@"isIBGPrintsToConsolEnabled"] stringValue]];
 
 }
