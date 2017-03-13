@@ -274,7 +274,7 @@
     NSString* log = [command argumentAtIndex:0];
     
     if ([log length] > 0) {
-        IBGLog(log);
+        IBGLog(@"%@", log);
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     } else {
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
@@ -296,7 +296,7 @@
     NSString* log = [command argumentAtIndex:0];
     
     if ([log length] > 0) {
-        IBGLogVerbose(log);
+        IBGLogVerbose(@"%@", log);
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     } else {
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
@@ -318,7 +318,7 @@
     NSString* log = [command argumentAtIndex:0];
     
     if ([log length] > 0) {
-        IBGLogDebug(log);
+        IBGLogDebug(@"%@", log);
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     } else {
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
@@ -340,7 +340,7 @@
     NSString* log = [command argumentAtIndex:0];
     
     if ([log length] > 0) {
-        IBGLogInfo(log);
+        IBGLogInfo(@"%@", log);
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     } else {
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
@@ -362,7 +362,7 @@
     NSString* log = [command argumentAtIndex:0];
     
     if ([log length] > 0) {
-        IBGLogWarn(log);
+        IBGLogWarn(@"%@", log);
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     } else {
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
@@ -384,7 +384,7 @@
     NSString* log = [command argumentAtIndex:0];
     
     if ([log length] > 0) {
-        IBGLogError(log);
+        IBGLogError(@"%@", log);
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     } else {
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
