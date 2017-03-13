@@ -469,6 +469,79 @@
     
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
+
+/**
+ @brief Set custom user attributes that are going to be sent with each feedback, bug or crash.
+ 
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) setUserAttributes:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* result;
+    
+    NSString *value = [command argumentAtIndex:0];
+    NSString *key = [command argumentAtIndex:1];
+    
+    if (value.length > 0 && key.length > 0) {
+        [Instabug setUserAttribute:value withKey:key];
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"A non-empty value and key must be provided."];
+    }
+    
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+/**
+ @brief Set custom user attributes that are going to be sent with each feedback, bug or crash.
+ 
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) userAttributeForKey:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* result;
+    NSString *key = [command argumentAtIndex:0];
+    
+    if (key.length > 0) {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                   messageAsString:[Instabug userAttributeForKey:key]];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"A non-empty key must be provided."];
+    }
+    
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+/**
+ @brief Removes a given key and its associated value from user attributes.
+ 
+ Does nothing if aKey does not exist.
+ 
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) removeUserAttributeForKey:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* result;
+    NSString *key = [command argumentAtIndex:0];
+    
+    if (key.length > 0) {
+        [Instabug removeUserAttributeForKey:key];
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"A non-empty key must be provided."];
+    }
+    
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+/**
  * Convenience method for setting whether the email
  * field is validated or not.
  *

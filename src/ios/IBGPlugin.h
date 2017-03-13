@@ -31,5 +31,8 @@
 - (void) setLocale:(CDVInvokedUrlCommand*)command;
 - (void) setReportCategoriesWithTitlesAndIcons:(CDVInvokedUrlCommand*)comman;
 
+- (void) setUserAttributes:(CDVInvokedUrlCommand*)command;
+- (void) userAttributeForKey:(CDVInvokedUrlCommand*)command;
+- (void) removeUserAttributeForKey:(CDVInvokedUrlCommand*)command;
 
 @end

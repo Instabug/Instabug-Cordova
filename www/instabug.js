@@ -169,4 +169,16 @@ Instabug.setReportCategoriesWithTitlesAndIcons = function (titles, iconNames, su
 	exec(success, error, 'IBGPlugin', 'setReportCategoriesWithTitlesAndIcons', [ titles, iconNames ]);
 };
 
+Instabug.setUserAttributes = function (value, key, success, error) {
+	exec(success, error, 'IBGPlugin', 'setUserAttributes', [ value, key ]);
+};
+
+Instabug.userAttributeForKey = function (key, returnedValue, error) {
+	exec(returnedValue, error, 'IBGPlugin', 'userAttributeForKey', [ key ]);
+};
+
+Instabug.removeUserAttributeForKey = function (key, success, error) {
+	exec(success, error, 'IBGPlugin', 'removeUserAttributeForKey', [ key ]);
+};
+
 module.exports = Instabug;
