@@ -101,6 +101,26 @@ Instabug.addLog = function (content, success, error) {
 	exec(success, error, 'IBGPlugin', 'addLog', [ content ]);
 };
 
+Instabug.logVerbose = function (content, success, error) {
+	exec(success, error, 'IBGPlugin', 'logVerbose', [ content ]);
+};
+
+Instabug.logDebug = function (content, success, error) {
+	exec(success, error, 'IBGPlugin', 'logDebug', [ content ]);
+};
+
+Instabug.logInfo = function (content, success, error) {
+	exec(success, error, 'IBGPlugin', 'logInfo', [ content ]);
+};
+
+Instabug.logWarn = function (content, success, error) {
+	exec(success, error, 'IBGPlugin', 'logWarn', [ content ]);
+};
+
+Instabug.logError = function (content, success, error) {
+	exec(success, error, 'IBGPlugin', 'logError', [ content ]);
+};
+
 Instabug.clearLog = function (success, error) {
 	exec(success, error, 'IBGPlugin', 'clearLog', []);
 };

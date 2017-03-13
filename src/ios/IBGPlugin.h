@@ -20,6 +20,11 @@
 - (void) clearFileAttachments:(CDVInvokedUrlCommand*)command;
 
 - (void) addLog:(CDVInvokedUrlCommand*)command;
+- (void) logVerbose:(CDVInvokedUrlCommand*)command;
+- (void) logDebug:(CDVInvokedUrlCommand*)command;
+- (void) logInfo:(CDVInvokedUrlCommand*)command;
+- (void) logWarn:(CDVInvokedUrlCommand*)command;
+- (void) logError:(CDVInvokedUrlCommand*)command;
 
 - (void) changeInvocationEvent:(CDVInvokedUrlCommand*)command;
 

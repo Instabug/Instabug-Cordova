@@ -285,6 +285,116 @@
 }
 
 /**
+ * Adds custom logs with the verbose log level. Logs will be sent with each report.
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) logVerbose:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* result;
+    NSString* log = [command argumentAtIndex:0];
+    
+    if ([log length] > 0) {
+        IBGLogVerbose(log);
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"A verbose log must be provided."];
+    }
+    
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+/**
+ * Adds custom logs with the debug log level. Logs will be sent with each report.
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) logDebug:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* result;
+    NSString* log = [command argumentAtIndex:0];
+    
+    if ([log length] > 0) {
+        IBGLogDebug(log);
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"A debug log must be provided."];
+    }
+    
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+/**
+ * Adds custom logs with the info log level. Logs will be sent with each report.
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) logInfo:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* result;
+    NSString* log = [command argumentAtIndex:0];
+    
+    if ([log length] > 0) {
+        IBGLogInfo(log);
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"An info log must be provided."];
+    }
+    
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+/**
+ * Adds custom logs with the warn log level. Logs will be sent with each report.
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) logWarn:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* result;
+    NSString* log = [command argumentAtIndex:0];
+    
+    if ([log length] > 0) {
+        IBGLogWarn(log);
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"A warn log must be provided."];
+    }
+    
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+/**
+ * Adds custom logs with the error log level. Logs will be sent with each report.
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) logError:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* result;
+    NSString* log = [command argumentAtIndex:0];
+    
+    if ([log length] > 0) {
+        IBGLogError(log);
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"An error log must be provided."];
+    }
+    
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+/**
  * Sets the event that invokes the feedback form.
  *
  * @param {CDVInvokedUrlCommand*} command
