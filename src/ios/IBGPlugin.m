@@ -6,13 +6,7 @@
  */
 @implementation IBGPlugin
 
-/**
- * Intializes Instabug and sets provided options.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) activate:(CDVInvokedUrlCommand*)command
+- (void)activate:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* result;
     
@@ -60,14 +54,7 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
-/**
- * Shows the Instabug dialog so user can choose to report a bug, or
- * submit feedback. A specific mode of the SDK can be shown if specified.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) invoke:(CDVInvokedUrlCommand*)command
+- (void)invoke:(CDVInvokedUrlCommand*)command
 {
     IBGInvocationMode iMode = [self parseInvocationMode:[command argumentAtIndex:0]];
     
@@ -80,27 +67,13 @@
     [self sendSuccessResult:command];
 }
 
-/**
- * Presents a quick tip UI educating the user on how to invoke SDK
- * with the currently set invocation event
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) showIntroDialog:(CDVInvokedUrlCommand*)command
+- (void)showIntroDialog:(CDVInvokedUrlCommand*)command
 {
     [Instabug showIntroMessage];
     [self sendSuccessResult:command];
 }
 
-/**
- * Sets the primary color of the SDK user interface, mostly
- * indicating interactivity or call to action.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) setPrimaryColor:(CDVInvokedUrlCommand*)command
+- (void)setPrimaryColor:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* result;
     
@@ -135,14 +108,7 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
-/**
- * Sets the default value of the email field and hides the
- * email field from the reporting UI.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) setUserEmail:(CDVInvokedUrlCommand*)command
+- (void)setUserEmail:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* result;
     
@@ -159,13 +125,7 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
-/**
- * Sets the user name that is used in the dashboard’s contacts.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) setUserName:(CDVInvokedUrlCommand*)command
+- (void)setUserName:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* result;
     
@@ -182,14 +142,7 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
-/**
- * Sets the user data that’s attached with each bug report sent.
- * Maximum size of the string is 1000 characters.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) setUserData:(CDVInvokedUrlCommand*)command
+- (void)setUserData:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* result;
     
@@ -206,16 +159,7 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
-/**
- * Attaches a new copy of this file with each bug report sent
- * with a maximum size of 1 MB. Calling this method several
- * times overrides the file to be attached. The file has to
- * be stored locally at the location provided.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) addFile:(CDVInvokedUrlCommand*)command
+- (void)addFile:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* result;
     id file = [command argumentAtIndex:0];
@@ -262,13 +206,7 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
-/**
- * Adds custom logs that will be sent with each report.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) addLog:(CDVInvokedUrlCommand*)command
+- (void)addLog:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* result;
     NSString* log = [command argumentAtIndex:0];
@@ -284,13 +222,7 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
-/**
- * Adds custom logs with the verbose log level. Logs will be sent with each report.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) logVerbose:(CDVInvokedUrlCommand*)command
+- (void)logVerbose:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* result;
     NSString* log = [command argumentAtIndex:0];
@@ -306,13 +238,7 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
-/**
- * Adds custom logs with the debug log level. Logs will be sent with each report.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) logDebug:(CDVInvokedUrlCommand*)command
+- (void)logDebug:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* result;
     NSString* log = [command argumentAtIndex:0];
@@ -328,13 +254,7 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
-/**
- * Adds custom logs with the info log level. Logs will be sent with each report.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) logInfo:(CDVInvokedUrlCommand*)command
+- (void)logInfo:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* result;
     NSString* log = [command argumentAtIndex:0];
@@ -350,13 +270,7 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
-/**
- * Adds custom logs with the warn log level. Logs will be sent with each report.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) logWarn:(CDVInvokedUrlCommand*)command
+- (void)logWarn:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* result;
     NSString* log = [command argumentAtIndex:0];
@@ -372,13 +286,7 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
-/**
- * Adds custom logs with the error log level. Logs will be sent with each report.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) logError:(CDVInvokedUrlCommand*)command
+- (void)logError:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* result;
     NSString* log = [command argumentAtIndex:0];
@@ -394,13 +302,7 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
-/**
- * Sets the event that invokes the feedback form.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) changeInvocationEvent:(CDVInvokedUrlCommand*)command
+- (void)changeInvocationEvent:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* result;
     
@@ -417,14 +319,7 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
-/**
- * Sets the locale used to display the strings in the
- * correct language.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) setLocale:(CDVInvokedUrlCommand*)command
+- (void)setLocale:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* result;
     
@@ -441,18 +336,7 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
-/**
- @brief Sets an array of report categories to be shown for users to select from before reporting a bug or sending 
- feedback.
- 
- @discussion Use this method to give users a list of choices of categories their bug report or feedback might be related
- to. Selected category will be shown as a tag on your dashboard.
-
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-
-- (void) setReportCategoriesWithTitlesAndIcons:(CDVInvokedUrlCommand*)command
+- (void)setReportCategoriesWithTitlesAndIcons:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* result;
     
@@ -470,13 +354,7 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
-/**
- @brief Set custom user attributes that are going to be sent with each feedback, bug or crash.
- 
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) setUserAttributes:(CDVInvokedUrlCommand*)command
+- (void)setUserAttributes:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* result;
     
@@ -494,13 +372,7 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
-/**
- @brief Set custom user attributes that are going to be sent with each feedback, bug or crash.
- 
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) userAttributeForKey:(CDVInvokedUrlCommand*)command
+- (void)userAttributeForKey:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* result;
     NSString *key = [command argumentAtIndex:0];
@@ -515,16 +387,8 @@
     
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
-
-/**
- @brief Removes a given key and its associated value from user attributes.
  
- Does nothing if aKey does not exist.
- 
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) removeUserAttributeForKey:(CDVInvokedUrlCommand*)command
+- (void)removeUserAttributeForKey:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* result;
     NSString *key = [command argumentAtIndex:0];
@@ -541,7 +405,7 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
-- (void) appendTags:(CDVInvokedUrlCommand*)command {
+- (void)appendTags:(CDVInvokedUrlCommand*)command {
     CDVPluginResult* result;
     
     NSArray *tags = [command argumentAtIndex:0];
@@ -558,7 +422,7 @@
 
 }
 
-- (void) resetTags:(CDVInvokedUrlCommand*)command {
+- (void)resetTags:(CDVInvokedUrlCommand*)command {
     [Instabug resetTags];
     CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     
@@ -572,7 +436,7 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
-- (void) identifyUserWithEmailAndName:(CDVInvokedUrlCommand*)command {
+- (void)identifyUserWithEmailAndName:(CDVInvokedUrlCommand*)command {
     CDVPluginResult* result;
     NSString *email = [command argumentAtIndex:0];
     NSString *name = [command argumentAtIndex:1];
@@ -588,14 +452,14 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
-- (void) logout:(CDVInvokedUrlCommand*)command {
+- (void)logout:(CDVInvokedUrlCommand*)command {
     [Instabug logOut];
     CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
-- (void) logUserEventWithName:(CDVInvokedUrlCommand*)command {
+- (void)logUserEventWithName:(CDVInvokedUrlCommand*)command {
     CDVPluginResult* result;
     NSString *name = [command argumentAtIndex:0];
 
@@ -610,7 +474,7 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
-- (void) logUserEventWithNameAndParams:(CDVInvokedUrlCommand*)command {
+- (void)logUserEventWithNameAndParams:(CDVInvokedUrlCommand*)command {
     CDVPluginResult* result;
     NSString *name = [command argumentAtIndex:0];
     NSString *params = [command argumentAtIndex:1];
@@ -626,42 +490,21 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
-/**
- * Convenience method for setting whether the email
- * field is validated or not.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) setEmailFieldRequired:(NSString*)required
+- (void)setEmailFieldRequired:(NSString*)required
 {
     if ([required length] > 0) {
         [Instabug setEmailFieldRequired:[required boolValue]];
     }
 }
 
-/**
- * Convenience method for setting whether the comment
- * field is validated or not.
- *
- * @param {NSString*} required
- *        NSString representation of boolean required
- */
-- (void) setCommentFieldRequired:(NSString*)required
+- (void)setCommentFieldRequired:(NSString*)required
 {
     if ([required length] > 0) {
         [Instabug setCommentFieldRequired:[required boolValue]];
     }
 }
 
-/**
- * Convenience method for setting the default SDK
- * mode upon invocation.
- *
- * @param {NSString*} mode
- *        NSString shortcode of IBGInvocationmode
- */
-- (void) setDefaultInvocationMode:(NSString*)mode {
+- (void)setDefaultInvocationMode:(NSString*)mode {
     IBGInvocationMode iMode = [self parseInvocationMode:mode];
     
     if (iMode) {
@@ -669,16 +512,7 @@
     }
 }
 
-/**
- * Convenience method for setting the threshold value
- * of the shake gesture for iPhone/iPod touch and iPad.
- *
- * @param {NSString*} iPhoneThreshold
- *        NSString representation of double iPhone threshold
- * @param {NSString*}
- *        NSString representation of double iPad threshold
- */
-- (void) setShakingThresholdForIPhone:(NSString*)iPhoneThreshold forIPad:(NSString*)iPadThreshold
+- (void)setShakingThresholdForIPhone:(NSString*)iPhoneThreshold forIPad:(NSString*)iPadThreshold
 {
     double iPhone = [iPhoneThreshold doubleValue];
     double iPad = [iPadThreshold doubleValue];
@@ -688,17 +522,7 @@
     }
 }
 
-/**
- * Convenience method for setting the default edge on
- * which the floating button will be shown and its
- * offset from the top.
- *
- * @param {NSString*} edge
- *        NSString representation of edge
- * @param {NSString*} offset
- *        NSString representation of double offset
- */
-- (void) setFloatingButtonEdge:(NSString*)edge withOffset:(NSString*)offset
+- (void)setFloatingButtonEdge:(NSString*)edge withOffset:(NSString*)offset
 {
     double offsetFromTop = [offset doubleValue];
     
@@ -713,56 +537,27 @@
     }
 }
 
-/**
- * Convenience method for setting whether to track
- * the user’s steps while using the app or not.
- *
- * @param {NSString*} enabled
- *        NSString representation of boolean enabled
- */
-- (void) setTrackingUserStepsEnabled:(NSString*)enabled
+- (void)setTrackingUserStepsEnabled:(NSString*)enabled
 {
     if ([enabled length] > 0) {
         [Instabug setUserStepsEnabled:[enabled boolValue]];
     }
 }
-
-/**
- * Convenience method for setting whether to allow
- * the SDK to use push notifications or not.
- *
- * @param {NSString*} enabled
- *        NSString representation of boolean enabled
- */
-- (void) setPushNotificationsEnabled:(NSString*)enabled
+- (void)setPushNotificationsEnabled:(NSString*)enabled
 {
     if ([enabled length] > 0) {
         [Instabug setPushNotificationsEnabled:[enabled boolValue]];
     }
 }
 
-/**
- * Convenience method for setting whether to show the
- * intro message the first time the app is opened or not.
- *
- * @param {NSString*} enabled
- *        NSString representation of boolean enabled
- */
-- (void) setIntroDialogEnabled:(NSString*)enabled
+- (void)setIntroDialogEnabled:(NSString*)enabled
 {
     if ([enabled length] > 0) {
         [Instabug setIntroMessageEnabled:[enabled boolValue]];
     }
 }
 
-/**
- * Convenience method for setting the color theme of
- * the SDK invocation.
- *
- * @param {NSString*} theme
- *        NSString representation of color theme
- */
-- (void) setColorTheme:(NSString*)theme
+- (void)setColorTheme:(NSString*)theme
 {
     if ([theme isEqualToString:@"dark"]) {
         [Instabug setColorTheme:IBGColorThemeDark];
@@ -771,18 +566,6 @@
     }
 }
 
-/**
- @brief Enables/disables prompt options when SDK is invoked.
- 
- @discussion When only a single option is enabled, it become the default invocation mode.
- If all options are disabled, bug reporting becomes the default invocation mode.
- 
- By default, all three options are enabled.
- 
- @param bugReportEnabled A string to indicate whether bug reports are enabled or disabled.
- @param feedbackEnabled A string to indicate whether feedback is enabled or disabled.
- @param chatEnabled A string to indicate whether chat is enabled or disabled.
- */
 - (void)setPromptOptionsEnabledWithBug:(NSString *)bugReportEnabled feedback:(NSString *)feedbackEnabled chat:(NSString *)chatEnabled;
 {
     if (bugReportEnabled.length > 0 && feedbackEnabled.length > 0 && chatEnabled.length > 0) {
@@ -828,20 +611,6 @@
     }
 }
 
-// untill we update
-
-// - (void)setIBGLogPrintsToConsole:(NSString *)enabled {
-//     if (enabled.length > 0) {
-//         [Instabug setIBGLogPrintsToConsole:[enabled boolValue]];
-//     }
-// }
-
-/**
- * Wrapper method for applying all provided options.
- *
- * @param {NSDictionary*} options
- *        Provided options
- */
 - (void) applyOptions:(NSDictionary*)options
 {
     [self setEmailFieldRequired:[[options objectForKey:@"emailRequired"] stringValue]];
@@ -867,18 +636,9 @@
                                     voiceNote:[[options objectForKey:@"voiceNote"] stringValue]
                               screenRecording:[[options objectForKey:@"screenRecording"] stringValue]];
     [self setChatNotificationEnabled:[[options objectForKey:@"chatNotificationEnabled"] stringValue]];
-    // [self setIBGLogPrintsToConsole:[[options objectForKey:@"isIBGPrintsToConsolEnabled"] stringValue]];
-
 }
 
-/**
- * Convenience method for converting NSString to
- * IBGInvocationEvent.
- *
- * @param  {NSString*} event
- *         NSString shortcode for IBGInvocationEvent
- */
-- (IBGInvocationEvent) parseInvocationEvent:(NSString*)event
+- (IBGInvocationEvent)parseInvocationEvent:(NSString*)event
 {
     if ([event isEqualToString:@"shake"]) {
         return IBGInvocationEventShake;
@@ -895,14 +655,7 @@
     } else return 0;
 }
 
-/**
- * Convenience method for converting NSString to
- * IBGInvocationMode.
- *
- * @param  {NSString*}
- *         NSString shortcode for IBGInvocationMode
- */
-- (IBGInvocationMode) parseInvocationMode:(NSString*)mode
+- (IBGInvocationMode)parseInvocationMode:(NSString*)mode
 {
     if ([mode isEqualToString:@"bug"]) {
         return IBGInvocationModeNewBug;
@@ -917,14 +670,7 @@
     } else return 0;
 }
 
-/**
- * Convenience method for converting NSString to
- * IBGLocale.
- *
- * @param  {NSString*} locale
- *         NSString shortcode for IBGLocale
- */
-- (IBGLocale) parseLocale:(NSString*)locale
+- (IBGLocale)parseLocale:(NSString*)locale
 {
     if ([locale isEqualToString:@"arabic"]) {
         return IBGLocaleArabic;
@@ -973,12 +719,6 @@
     } else return -1;
 }
 
-/**
- * Util method for parsing hex string to UIColor.
- *
- * @param  {NSString *} hexString
- *         NSString representation of hex color
- */
 - (UIColor *)colorFromHexString:(NSString *)hexString {
     unsigned rgbValue = 0;
     NSScanner* scanner = [NSScanner scannerWithString:hexString];
@@ -988,14 +728,7 @@
                             blue:(rgbValue & 0xFF)/255.0 alpha:1.0];
 }
 
-/**
- * Convenience method for sending successful plugin
- * result in methods that cannot fail.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) sendSuccessResult:(CDVInvokedUrlCommand*)command
+- (void)sendSuccessResult:(CDVInvokedUrlCommand*)command
 {
     [self.commandDelegate
      sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK]
