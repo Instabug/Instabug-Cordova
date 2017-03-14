@@ -1,23 +1,23 @@
 var exec = require('cordova/exec');
 
 var getInvocationEvents = function () {
-	return {
-		shake: 'shake',
-		button: 'button',
-		screenshot: 'screenshot',
-		swipe: 'swipe',
-		none: 'none'
-	};
+    return {
+        shake: 'shake',
+        button: 'button',
+        screenshot: 'screenshot',
+        swipe: 'swipe',
+        none: 'none'
+    };
 };
 
 var getInvocationModes = function () {
-	return {
-		chat: 'chat',
-		chats: 'chats',
-		bug: 'bug',
-		feedback: 'feedback',
-		options: 'options'
-	};
+    return {
+        chat: 'chat',
+        chats: 'chats',
+        bug: 'bug',
+        feedback: 'feedback',
+        options: 'options'
+    };
 };
 
 var getLocales = function () {
@@ -49,13 +49,13 @@ var getLocales = function () {
 var Instabug = function () {};
 
 Instabug.activate = function (token, event, options, success, error) {
-	var validatedEvent = getInvocationEvents()[event];
+    var validatedEvent = getInvocationEvents()[event];
 
-	if (validatedEvent) {
-		exec(success, error, 'IBGPlugin', 'activate', [ token, validatedEvent, options ]);
-	} else {
-		console.log('Could not activate Instabug - invocation event "' + event + '" is not valid.');
-	}
+    if (validatedEvent) {
+        exec(success, error, 'IBGPlugin', 'activate', [token, validatedEvent, options]);
+    } else {
+        console.log('Could not activate Instabug - invocation event "' + event + '" is not valid.');
+    }
 };
 
 /**
@@ -64,14 +64,14 @@ Instabug.activate = function (token, event, options, success, error) {
 * @param {string} mode Specifies which mode the SDK is going to start with.
 */
 Instabug.invoke = function (mode, success, error) {
-	var validatedMode = getInvocationModes()[mode];
+    var validatedMode = getInvocationModes()[mode];
 
-	if (validatedMode) {
-		exec(success, error, 'IBGPlugin', 'invoke', [ validatedMode ]);
-	} else {
-		exec(success, error, 'IBGPlugin', 'invoke', []);
-		console.log('Could not apply mode to invocation - "' + mode + '" is not valid.');
-	}
+    if (validatedMode) {
+        exec(success, error, 'IBGPlugin', 'invoke', [validatedMode]);
+    } else {
+        exec(success, error, 'IBGPlugin', 'invoke', []);
+        console.log('Could not apply mode to invocation - "' + mode + '" is not valid.');
+    }
 };
 
 /**
@@ -88,7 +88,7 @@ Instabug.showIntro = function(success, error) {
 * @param {string} colorInteger A color to set the UI elements of the SDK to.
 */
 Instabug.setPrimaryColor = function (colorInteger, success, error) {
-	exec(success, error, 'IBGPlugin', 'setPrimaryColor', [ colorInteger ]);
+    exec(success, error, 'IBGPlugin', 'setPrimaryColor', [colorInteger]);
 };
 
 /**
@@ -132,7 +132,7 @@ Instabug.setUserData = function (userData, success, error) {
 * @param {string} filePath Path to a file that's going to be attached to each report.
 */
 Instabug.addFile = function (filePath, success, error) {
-	exec(success, error, 'IBGPlugin', 'addFile', [ filePath ]);
+    exec(success, error, 'IBGPlugin', 'addFile', [filePath]);
 }
 
 /**
@@ -151,7 +151,7 @@ Instabug.clearFileAttachments = function (success, error) {
 * @param {string} content Message to be logged.
 */
 Instabug.addLog = function (content, success, error) {
-	exec(success, error, 'IBGPlugin', 'addLog', [ content ]);
+    exec(success, error, 'IBGPlugin', 'addLog', [content]);
 };
 
 /**
@@ -200,37 +200,37 @@ Instabug.logError = function (content, success, error) {
 };
 
 Instabug.clearLog = function (success, error) {
-	exec(success, error, 'IBGPlugin', 'clearLog', []);
+    exec(success, error, 'IBGPlugin', 'clearLog', []);
 };
 
 Instabug.changeInvocationEvent = function (event, success, error) {
-	var validatedEvent = getInvocationEvents()[event];
+    var validatedEvent = getInvocationEvents()[event];
 
-	if (validatedEvent) {
-		exec(success, error, 'IBGPlugin', 'changeInvocationEvent', [ validatedEvent ]);
-	} else {
-		console.log('Could not change invocation event - "' + event + '" is not valid.');
-	}
+    if (validatedEvent) {
+        exec(success, error, 'IBGPlugin', 'changeInvocationEvent', [validatedEvent]);
+    } else {
+        console.log('Could not change invocation event - "' + event + '" is not valid.');
+    }
 };
 
 Instabug.disable = function (success, error) {
-	exec(success, error, 'IBGPlugin', 'disable', []);
+    exec(success, error, 'IBGPlugin', 'disable', []);
 };
 
 Instabug.enable = function (success, error) {
-	exec(success, error, 'IBGPlugin', 'enable', []);
+    exec(success, error, 'IBGPlugin', 'enable', []);
 };
 
 Instabug.isEnabled = function (success, error) {
-	exec(success, error, 'IBGPlugin', 'isEnabled', []);
+    exec(success, error, 'IBGPlugin', 'isEnabled', []);
 };
 
 Instabug.isInvoked = function (success, error) {
-	exec(success, error, 'IBGPlugin', 'isInvoked', []);
+    exec(success, error, 'IBGPlugin', 'isInvoked', []);
 };
 
 Instabug.isDebugEnabled = function (success, error) {
-	exec(success, error, 'IBGPlugin', 'isDebugEnabled', []);
+    exec(success, error, 'IBGPlugin', 'isDebugEnabled', []);
 };
 
 /**
@@ -242,13 +242,13 @@ Instabug.isDebugEnabled = function (success, error) {
 * @param {string} locale A locale to set the SDK to.
 */
 Instabug.setLocale = function (locale, success, error) {
-	var validatedLocale = getLocales()[locale];
+    var validatedLocale = getLocales()[locale];
 
-	if (validatedLocale) {
-		exec(success, error, 'IBGPlugin', 'setLocale', [ validatedLocale ]);
-	} else {
-		console.log('Could not set locale - "' + locale + '" is not valid.');
-	}
+    if (validatedLocale) {
+        exec(success, error, 'IBGPlugin', 'setLocale', [validatedLocale]);
+    } else {
+        console.log('Could not set locale - "' + locale + '" is not valid.');
+    }
 };
 
 /**

@@ -1,104 +1,105 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    id="com.instabug.cordova.plugin"
-    version="1.0.0">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        id="com.instabug.cordova.plugin"
+        version="1.0.0">
 
-	<name>instabug-cordova</name>
-	
-	<description>Cordova plugin for integrating Instabug in your application.</description>
-	
-	<repo>https://github.com/Instabug/instabug-cordova</repo>
-	
-	<keyword>instabug, crash reports, in-app feedback</keyword>
+    <name>instabug-cordova</name>
 
-	<license>Apache 2.0 License</license>
-	
-	<author>Elizabeth Rego , Hossam Hassan</author>
+    <description>Cordova plugin for integrating Instabug in your application.</description>
 
-	<!-- cordova -->
-	<engines>
-		<engine name="cordova" version=">=3.7.0"/>
-	</engines>
-	
-	<!-- dependencies -->
-    	<dependency id="me.tonny.cordova.plugins.multidex" url="https://github.com/jwall149/cordova-multidex" />
+    <repo>https://github.com/Instabug/instabug-cordova</repo>
 
-	<!-- js -->
-	<js-module src="www/instabug.js" name="Instabug">
-		<clobbers target="cordova.plugins.instabug" />
-	</js-module>
+    <keyword>instabug, crash reports, in-app feedback</keyword>
 
-    	<!-- android -->
-	<platform name="android">
-		<config-file target="res/xml/config.xml" parent="/*">
-	    <feature name="IBGPlugin" >
-	        <param name="android-package" value="com.instabug.cordova.plugin.IBGPlugin"/>
-	        <param name="onload" value="true" />
-	    </feature>
-	</config-file>
-	
-	<config-file target="AndroidManifest.xml" parent="/manifest/application">
-		
-	    <activity android:name="com.instabug.cordova.plugin.IBGPluginActivity" 
-	        android:launchMode="singleInstance"
-	        android:theme="@android:style/Theme.NoDisplay"
-	        android:configChanges="keyboardHidden|orientation|screenSize" />
-	    <activity android:name="com.instabug.library.InstabugFeedbackActivity" />
+    <license>Apache 2.0 License</license>
 
-        <service android:name="com.instabug.library.network.worker.uploader.InstabugSessionUploaderService" />
-        <service android:name="com.instabug.library.network.worker.uploader.InstabugBugsUploaderService" />
-        <service android:name="com.instabug.library.network.worker.uploader.InstabugCrashesUploaderService" />
-        <service android:name="com.instabug.library.network.worker.uploader.InstabugMessageUploaderService" />
-        <service android:name="com.instabug.library.network.worker.fetcher.InstabugFeaturesFetcherService" />
-        <service android:name="com.instabug.library.network.worker.register.InstabugGcmRegistrationIntentService"/>
-        <service android:name="com.instabug.library.internal.video.VideoProcessingService"/>
+    <author>Elizabeth Rego , Hossam Hassan</author>
 
-        <receiver android:name="com.instabug.library.network.InstabugNetworkReceiver">
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-        </receiver>
+    <!-- cordova -->
+    <engines>
+        <engine name="cordova" version=">=3.7.0"/>
+    </engines>
 
-	</config-file>
-	
-	<config-file target="AndroidManifest.xml" parent="/manifest">
-	    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-	    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-	    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-	    <uses-permission android:name="android.permission.INTERNET" />
-	    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-	</config-file>
-	
-	<framework src="build.gradle" custom="true" type="gradleReference" />
-	
-	<source-file src="src/android/IBGPluginActivity.java" target-dir="src/com/instabug/cordova-plugin" />
-		<source-file src="src/android/IBGPlugin.java" target-dir="src/com/instabug/cordova-plugin" />
-	</platform>
+    <!-- dependencies -->
+    <dependency id="me.tonny.cordova.plugins.multidex" url="https://github.com/jwall149/cordova-multidex"/>
 
-    	<!-- ios -->
-	<platform name="ios">
-		<config-file target="config.xml" parent="/*">
-            		<feature name="IBGPlugin">
-                		<param name="ios-package" value="IBGPlugin" />
-                		<param name="onload" value="true" />
-            		</feature>
-        	</config-file>
+    <!-- js -->
+    <js-module src="www/instabug.js" name="Instabug">
+        <clobbers target="cordova.plugins.instabug"/>
+    </js-module>
 
+    <!-- android -->
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="IBGPlugin">
+                <param name="android-package" value="com.instabug.cordova.plugin.IBGPlugin"/>
+                <param name="onload" value="true"/>
+            </feature>
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+
+            <activity android:name="com.instabug.cordova.plugin.IBGPluginActivity"
+                      android:launchMode="singleInstance"
+                      android:theme="@android:style/Theme.NoDisplay"
+                      android:configChanges="keyboardHidden|orientation|screenSize"/>
+            <activity android:name="com.instabug.library.InstabugFeedbackActivity"/>
+
+            <service android:name="com.instabug.library.network.worker.uploader.InstabugSessionUploaderService" />
+            <service android:name="com.instabug.library.bugreporting.network.InstabugBugsUploaderService" />
+            <service android:name="com.instabug.library.crashreporting.network.InstabugCrashesUploaderService" />
+            <service android:name="com.instabug.library.messaging.InstabugMessageUploaderService" />
+            <service android:name="com.instabug.library.network.worker.fetcher.InstabugFeaturesFetcherService" />
+            <service android:name="com.instabug.library.surveys.network.service.InstabugSurveysSubmitterService" />
+            <service android:name="com.instabug.library.internal.video.VideoProcessingService"/>
+
+            <receiver android:name="com.instabug.library.network.InstabugNetworkReceiver">
+                <intent-filter>
+                    <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                </intent-filter>
+            </receiver>
+
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest">
+            <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+            <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+            <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+            <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+            <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+            <uses-permission android:name="android.permission.INTERNET"/>
+        </config-file>
+
+        <framework src="build.gradle" custom="true" type="gradleReference"/>
+
+        <source-file src="src/android/IBGPluginActivity.java" target-dir="src/com/instabug/cordova-plugin"/>
+        <source-file src="src/android/IBGPlugin.java" target-dir="src/com/instabug/cordova-plugin"/>
+    </platform>
+
+    <!-- ios -->
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="IBGPlugin">
+                <param name="ios-package" value="IBGPlugin" />
+                <param name="onload" value="true" />
+            </feature>
+        </config-file>
+        
         <framework src="src/ios/Instabug.framework" custom="true" embed="true" />
         <hook type="after_plugin_install" src="scripts/addEmbedded.js" />
         <hook type="after_plugin_install" src="scripts/zStripScript.js" />
-		<header-file src="src/ios/IBGPlugin.h" />
-        	<source-file src="src/ios/IBGPlugin.m" />
-
-        	<framework src="AVFoundation.framework" />
-        	<framework src="CoreMotion.framework" />
-        	<framework src="CoreGraphics.framework" />
-        	<framework src="CoreTelephony.framework" />
-        	<framework src="SystemConfiguration.framework" />
-        	<framework src="UIKit.framework" />
-	</platform>
+        <header-file src="src/ios/IBGPlugin.h" />
+        <source-file src="src/ios/IBGPlugin.m" />
+        
+        <framework src="AVFoundation.framework" />
+        <framework src="CoreMotion.framework" />
+        <framework src="CoreGraphics.framework" />
+        <framework src="CoreTelephony.framework" />
+        <framework src="SystemConfiguration.framework" />
+        <framework src="UIKit.framework" />
+    </platform>
 
 </plugin>
