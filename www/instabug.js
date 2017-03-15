@@ -119,10 +119,6 @@ Instabug.isEnabled = function (success, error) {
     exec(success, error, 'IBGPlugin', 'isEnabled', []);
 };
 
-Instabug.isInvoked = function (success, error) {
-    exec(success, error, 'IBGPlugin', 'isInvoked', []);
-};
-
 Instabug.isDebugEnabled = function (success, error) {
     exec(success, error, 'IBGPlugin', 'isDebugEnabled', []);
 };
