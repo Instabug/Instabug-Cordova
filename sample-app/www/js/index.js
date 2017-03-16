@@ -28,6 +28,8 @@ var app = {
     // 'pause', 'resume', etc.
     onDeviceReady: function () {
         this.receivedEvent('deviceready');
+        // document.getElementById("feedback").addEventListener("click", startInstabug);
+        initInstabug();
     },
 
     // Update DOM on a Received Event
@@ -42,5 +44,26 @@ var app = {
         console.log('Received Event: ' + id);
     }
 };
+
+function initInstabug() {
+    cordova.plugins.instabug.activate(
+        {
+            android: 'ANDROID_TOKEN',
+            ios: 'IOS_TOKEN'
+        },
+        'button',
+        {
+            commentRequired: true,
+            colorTheme: 'light',
+            enableIntroDialog: false
+        },
+        function () {
+            console.log('Instabug initialized.');
+        },
+        function (error) {
+            console.log('Instabug could not be initialized - ' + error);
+        }
+    );
+}
 
 app.initialize();
