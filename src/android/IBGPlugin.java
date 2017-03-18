@@ -123,9 +123,7 @@ public class IBGPlugin extends CordovaPlugin {
         } else if ("isEnabled".equals(action)) {
             getIsEnabled(callbackContext);
             
-        } else if ("isInvoked".equals(action)) {
-            getIsInvoked(callbackContext);
-        }else {
+        } else {
             // Method not found.
             return false;
         }
@@ -454,21 +452,6 @@ public class IBGPlugin extends CordovaPlugin {
         try {
             boolean enabled = Instabug.isEnabled();
             callbackContext.success(enabled ? 1 : 0);
-        } catch (IllegalStateException e) {
-            callbackContext.error(errorMsg);
-        }
-    }
-
-    /**
-     * If Instabug is currently invoked (shown).
-     * 
-     * @param callbackContext 
-     *        Used when calling back into JavaScript
-     */
-    private void getIsInvoked(final CallbackContext callbackContext) {
-        try {
-            boolean invoked = Instabug.isSDKInvoked();
-            callbackContext.success(invoked ? 1 : 0);
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
         }
