@@ -5,7 +5,7 @@
 
  Copyright:  (c) 2013-2017 by Instabug, Inc., all rights reserved.
 
- Version:    7.0.5
+ Version:    7.2.6
  */
 
 #import <Foundation/Foundation.h>
@@ -20,6 +20,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface Instabug : NSObject
+
+typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *response);
 
 /// ------------------------
 /// @name SDK Initialization
@@ -255,6 +257,16 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)setPostInvocationHandler:(void (^)(IBGDismissType dismissType, IBGReportType reportType))postInvocationHandler;
 
 /**
+ @brief Sets a block of code to be executed when a prompt option is selected
+
+ @param didSelectPromptOptionHandler A block of code that gets executed when a prompt option is selected.
+ 
+ The block has the following parameters:
+ - prompOption: The option selected in prompt.
+*/
++ (void)setDidSelectPromptOptionHandler:(void (^)(IBGPromptOption promptOption))didSelectPromptOptionHandler;
+
+/**
  @brief Present a view that educates the user on how to invoke the SDK with the currently set invocation event.
  
  @discussion Does nothing if invocation event is set to anything other than IBGInvocationEventShake or IBGInvocationEventScreenshot.
@@ -272,15 +284,15 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)setWillTakeScreenshot:(BOOL)willTakeScreenshot DEPRECATED_MSG_ATTRIBUTE("Starting from v6.0, use setAttachmentTypesEnabledScreenShot:extraScreenShot:galleryImage:voiceNote:screenRecording: instead.");
 
 /**
- @brief Sets the user email and name for all sent reports. Also hides the email field from the reporting UI.
+ @brief Sets the user email and name for all sent reports.
  
  @param email Email address to be set as the user's email.
  @param name Name of the user to be set.
  */
-+ (void)identifyUserWithEmail:(NSString *)email name:(NSString *)name;
++ (void)identifyUserWithEmail:(NSString *)email name:(nullable NSString *)name;
 
 /**
- @brief Sets the default value of the user's email to nil and show email field and remove user name from all reports
+ @brief Resets the value of the user's email and name, previously set using `+ [Instabug identifyUserWithEmail:name:]`.
  
  @discussion This method also resets all chats currently on the device and removes any set user attributes.
  */
@@ -511,7 +523,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  @deprecated Starting from v6.0, use `appendTags:` instead.
  
- @discussion This method is identical to `+[Instabug addtags:]`, but is meant to be used from Swift.
+ @discussion This method is identical to `+ [Instabug addtags:]`, but is meant to be used from Swift.
  
  To use this method from Swift, you will need to add the following code to the class that's going to call it.
  
@@ -541,6 +553,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  @brief Gets all tags of reported feedback, bug or crash.
+ 
+ @return An array of tags.
  */
 + (NSArray *)getTags;
 
@@ -623,7 +637,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param titles Array of titles to be shown in the list.
  @param names Array of names of icons to be shown along with titles. Use the same names you would use
- with `+[UIImage imageNamed:]`.
+ with `+ [UIImage imageNamed:]`.
  */
 + (void)setReportCategoriesWithTitles:(NSArray<NSString *> *)titles iconNames:(nullable NSArray<NSString *> *)names;
 
@@ -637,8 +651,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  @brief Returns the user attribute associated with a given key.
- aKey
- 
+
  @param key The key for which to return the corresponding value..
  
  @return The value associated with aKey, or nil if no value is associated with aKey.
@@ -764,9 +777,9 @@ NS_ASSUME_NONNULL_BEGIN
  
  @discussion Can be used in a similar fashion to NSLog. Logs are added with the debug log level.
  For usage in Swift, see `Instabug.ibgLog()`.
- *
- *  @param format Format string.
- *  @param ... Optional varargs arguments.
+ 
+ @param format Format string.
+ @param ... Optional varargs arguments.
  */
 OBJC_EXTERN void IBGLog(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
 
@@ -774,9 +787,9 @@ OBJC_EXTERN void IBGLog(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
  @brief Adds custom logs with the verbose log level. Logs will be sent with each report.
  
  @discussion Can be used in a similar fashion to NSLog. For usage in Swift, see `Instabug.logVerbose()`.
- *
- *  @param format Format string.
- *  @param ... Optional varargs arguments.
+ 
+ @param format Format string.
+ @param ... Optional varargs arguments.
  */
 OBJC_EXTERN void IBGLogVerbose(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
 
@@ -784,9 +797,9 @@ OBJC_EXTERN void IBGLogVerbose(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
  @brief Adds custom logs with the debug log level. Logs will be sent with each report.
  
  @discussion Can be used in a similar fashion to NSLog. For usage in Swift, see `Instabug.logDebug()`.
- *
- *  @param format Format string.
- *  @param ... Optional varargs arguments.
+ 
+ @param format Format string.
+ @param ... Optional varargs arguments.
  */
 OBJC_EXTERN void IBGLogDebug(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
 
@@ -794,9 +807,9 @@ OBJC_EXTERN void IBGLogDebug(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
  @brief Adds custom logs with the info log level. Logs will be sent with each report.
  
  @discussion Can be used in a similar fashion to NSLog. For usage in Swift, see `Instabug.logInfo()`.
- *
- *  @param format Format string.
- *  @param ... Optional varargs arguments.
+ 
+ @param format Format string.
+ @param ... Optional varargs arguments.
  */
 OBJC_EXTERN void IBGLogInfo(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
 
@@ -804,9 +817,9 @@ OBJC_EXTERN void IBGLogInfo(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
  @brief Adds custom logs with the warn log level. Logs will be sent with each report.
  
  @discussion Can be used in a similar fashion to NSLog. For usage in Swift, see `Instabug.logWarn()`.
- *
- *  @param format Format string.
- *  @param ... Optional varargs arguments.
+ 
+ @param format Format string.
+ @param ... Optional varargs arguments.
  */
 OBJC_EXTERN void IBGLogWarn(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
 
@@ -814,11 +827,21 @@ OBJC_EXTERN void IBGLogWarn(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
  @brief Adds custom logs with the error log level. Logs will be sent with each report.
  
  @discussion Can be used in a similar fashion to NSLog. For usage in Swift, see `Instabug.logError()`.
- *
- *  @param format Format string.
- *  @param ... Optional varargs arguments.
+ 
+ @param format Format string.
+ @param ... Optional varargs arguments.
  */
 OBJC_EXTERN void IBGLogError(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
+
+/**
+ @brief Used to reroute all your NSLogs to Instabug to be able to automatically include them with reports.
+ 
+ @discussion For details on how to reroute your NSLogs to Instabug, see http://docs.instabug.com/docs/logging
+ 
+ @param format Format string.
+ @param args Arguments list.
+ */
+OBJC_EXTERN void IBGNSLog(NSString *format, va_list args);
 
 /**
  @brief Adds custom logs that will be sent with each report. Logs are added with the debug log level.
@@ -861,6 +884,15 @@ OBJC_EXTERN void IBGLogError(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
  @param log Message to be logged.
  */
 + (void)logError:(NSString *)log;
+
+/**
+ @brief Sets whether IBGLog should also print to Xcode's console log or not.
+ 
+ @discussion Defaults to YES.
+ 
+ @param enabled A boolean to set whether printing to Xcode's console is enabled or not.
+ */
++ (void)setIBGLogPrintsToConsole:(BOOL)enabled;
 
 #pragma mark - Network Logging
 
@@ -918,7 +950,7 @@ OBJC_EXTERN void IBGLogError(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
 
 /**
  @brief Set HTTP body of a POST request to be included in network logs.
- 
+ @deprecated Now body of a POST request is captured automatcailly you don't have to log it manually
  @discussion Due to a bug in Foundation, it's not possible to retrieve the body of POST requests automatically. Use
  this method to include the body of your POST requests in network logs.
  
@@ -927,7 +959,7 @@ OBJC_EXTERN void IBGLogError(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
  @param body Body data of a POST request.
  @param request The POST request that is being sent.
  */
-+ (void)logHTTPBody:(NSData *)body forRequest:(NSMutableURLRequest *)request;
++ (void)logHTTPBody:(NSData *)body forRequest:(NSMutableURLRequest *)request DEPRECATED_MSG_ATTRIBUTE("Request body is now captured automatically");
 
 /**
  @brief Use to obfuscate a URL that's going to be included in network logs.
@@ -940,7 +972,120 @@ OBJC_EXTERN void IBGLogError(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
 
  @param obfuscationHandler A block that obfuscates the passed URL and returns it.
  */
-+ (void)setNetworkLoggingURLObfuscationHandler:(nonnull NSURL * (^)(NSURL * _Nonnull url))obfuscationHandler;
++ (void)setNetworkLoggingURLObfuscationHandler:(nonnull NSURL * (^)(NSURL * _Nonnull url))obfuscationHandler DEPRECATED_MSG_ATTRIBUTE("Use setNetworkLogRequestObfuscationHandler: instead");
+
+/**
+ @brief Use to obfuscate a request that's going to be included in network logs.
+ 
+ @discussion Use this method if you want to make any modifications to requests before it is added to the network log.
+ This won't be applied to already filtered requests
+ 
+ Note that thsese changes doesn't affect the actual request.
+ 
+ The provided block will be called for every request. You should do whatever processing you need to do on the request inside
+ that block, then return a request to be included in network logs.
+ 
+ This method usage overrides modifications made by `setNetworkLoggingURLObfuscationHandler:`.
+ 
+ @param obfuscationHandler A block that takes a request and returns a new modified one to be logged..
+ */
++ (void)setNetworkLogRequestObfuscationHandler:(nonnull NSURLRequest * (^)(NSURLRequest * _Nonnull request))obfuscationHandler;
+
+/**
+ @brief Use to obfuscate a request's response that's going to be included in network logs.
+ 
+ @discussion Use this method if you want to make any modifications to responses and its' data before it is added to the
+ network log.
+ This won't be applied to already filtered responses.
+ 
+ Note that thsese changes doesn't affect the actual response data.
+ 
+ The provided block will be called for every response. You should do whatever processing you need to do on the response
+ and data inside that block, then return a response to be included in network logs.
+ 
+ @param obfuscationHandler A block that takes the original response and it's data and a return block with the
+ new data and new response.
+ */
++ (void)setNetworkLogResponseObfuscationHandler:(void (^)(NSData * _Nullable responseData, NSURLResponse * _Nonnull response, NetworkObfuscationCompletionBlock returnBlock))obfuscationHandler;
+
+/**
+ @brief Use to get callbacks about progress of sending body content of a particular request when networking logging is
+ enabled.
+ 
+ @discussion The provided block will get periodical callbacks about the progress of sending the body content of a request.
+  
+ @param URL URL which will be attached with requestProgressHandler.
+ @param requestProgressHandler A block that will be called for the requestURL when SDK intercept that request.
+
+ */
++ (void)setProgressHandlerForRequestURL:(nonnull NSURL *)URL
+                        progressHandler:(nonnull void (^)(NSURLSessionTask *task, int64_t bytesSent, int64_t totalBytesSent, int64_t totalBytesExpectedToSend))requestProgressHandler;
+
+/**
+ @brief Used to ask whether your app is prepared to handle a particular authentication challenge. Can be called on any thread.
+ 
+ @discussion Set this block if your app implements SSL pinning and you have network logging enabled.
+ 
+ @param protectionSpaceHandler A block that takes the protection space for the authentication challenge and should return
+ true or false.
+ */
++ (void)setCanAuthenticateAgainstProtectionSpaceHandler:(BOOL(^)(NSURLProtectionSpace *protectionSpace))protectionSpaceHandler;
+
+/**
+ @brief Used to process an authentication challenge and return an NSURLCredential object.
+ 
+ @discussion Set this block if your app implements SSL pinning and you have network logging enabled.
+ 
+ @param reciveChallengeHandler A block that takes the authentication challenge and returns NSURLCredential.
+ */
++ (void)setDidReceiveAuthenticationChallengeHandler:(NSURLCredential* (^)(NSURLAuthenticationChallenge *challenge))reciveChallengeHandler;
+
+#pragma mark - Surveys
+
+/**
+ @brief Sets whether surveys are enabled or not.
+ 
+ @discussion If you disable surveys on the SDK but still have active surveys on your Instabug dashboard, those surveys are still going to be sent to the device, but are not going to be shown automatically.
+ 
+ To manually display any available surveys, call `+ [Instabug showSurveyIfAvailable]`.
+ 
+ Defaults to YES.
+ 
+ @param surveysEnabled A boolean to indicate whether the surveys are enabled or not.
+ */
++ (void)setSurveysEnabled:(BOOL)surveysEnabled;
+
+/**
+ @brief Shows one of the surveys that were not shown before, that also have conditions that match the current device/user.
+ 
+ @discussion Does nothing if there are no available surveys or if a survey has already been shown in the current session.
+ */
++ (void)showSurveyIfAvailable;
+
+/**
+ @brief Returns true if there are any surveys that match the current device/user.
+ */
++ (BOOL)hasAvailableSurveys;
+
+/**
+ @brief Sets a block of code to be executed just before the survey's UI is presented.
+ 
+ @discussion This block is executed on the UI thread. Could be used for performing any UI changes before the survey's UI
+ is shown.
+ 
+ @param willShowSurveyHandler A block of code that gets executed before presenting the survey's UI.
+ */
++ (void)setWillShowSurveyHandler:(void (^)())willShowSurveyHandler;
+
+/**
+ @brief Sets a block of code to be executed right after the survey's UI is dismissed.
+ 
+ @discussion This block is executed on the UI thread. Could be used for performing any UI changes after the survey's UI
+ is dismissed.
+ 
+ @param didShowSurveyHandler A block of code that gets executed after the survey's UI is dismissed.
+ */
++ (void)setDidDismissSurveyHandler:(void (^)())didShowSurveyHandler;
 
 #pragma mark - SDK Debugging
 
