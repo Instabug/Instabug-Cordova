@@ -138,7 +138,6 @@ After you've initialized Instabug, you can call a variety of other methods on th
 | disable | Disables all Instabug functionality | none | √ |  |
 | enable | Enables all Instabug functionality | none | √ |  |
 | isEnabled | Returns true if Instabug is enabled, false if it's disabled | none | √ |  |
-| isInvoked | Returns if Instabug is currently invoked (shown) or not | none | √ |  |
 | isDebugEnabled | Returns if Instabug SDK debug logs will be added to LogCat logs or not | none | √ |  |
 | setLocale | Set the locale used to display the strings in the correct language | 'arabic', 'chineseSimplified', 'chineseTraditional',  'english', 'french', 'german', 'italian', 'japanese', 'korean', 'polish', 'portugueseBrazil', 'russian', 'spanish', 'swedish', or 'turkish' |  | √ |
 *Pro feature
