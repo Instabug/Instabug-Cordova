@@ -17,11 +17,15 @@ Currently, this plugin can only be installed via the Command-Line Interface.
 ```
 cordova plugin add https://github.com/Instabug/instabug-cordova
 ```
+or
+```
+cordova plugin add instabug-cordova
+```
 ### After uninstalling Instabug plugin
 
 Open your ios `*.xcworkspace` then navigate to Build Phases in your project's target and remove the following two phases:
 * Embed Frameworks com.instabug.cordova.plugin
-* strip-frameworks-script
+* StripFrameworkScript
 
 ## Usage
 To initialize Instabug in your app, you only need to make one call to the plugin: __activate__. This method requires your app's token and your desired invocation event, and can take a wide range of optional parameters for configuration.
