@@ -6,13 +6,7 @@
  */
 @implementation IBGPlugin
 
-/**
- * Intializes Instabug and sets provided options.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) activate:(CDVInvokedUrlCommand*)command
+- (void)activate:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* result;
     
@@ -60,14 +54,7 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
-/**
- * Shows the Instabug dialog so user can choose to report a bug, or
- * submit feedback. A specific mode of the SDK can be shown if specified.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) invoke:(CDVInvokedUrlCommand*)command
+- (void)invoke:(CDVInvokedUrlCommand*)command
 {
     IBGInvocationMode iMode = [self parseInvocationMode:[command argumentAtIndex:0]];
     
@@ -80,27 +67,13 @@
     [self sendSuccessResult:command];
 }
 
-/**
- * Presents a quick tip UI educating the user on how to invoke SDK
- * with the currently set invocation event
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) showIntroDialog:(CDVInvokedUrlCommand*)command
+- (void)showIntroDialog:(CDVInvokedUrlCommand*)command
 {
     [Instabug showIntroMessage];
     [self sendSuccessResult:command];
 }
 
-/**
- * Sets the primary color of the SDK user interface, mostly
- * indicating interactivity or call to action.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) setPrimaryColor:(CDVInvokedUrlCommand*)command
+- (void)setPrimaryColor:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* result;
     
@@ -135,14 +108,7 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
-/**
- * Sets the default value of the email field and hides the
- * email field from the reporting UI.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) setUserEmail:(CDVInvokedUrlCommand*)command
+- (void)setUserEmail:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* result;
     
@@ -159,13 +125,7 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
-/**
- * Sets the user name that is used in the dashboard’s contacts.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) setUserName:(CDVInvokedUrlCommand*)command
+- (void)setUserName:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* result;
     
@@ -182,14 +142,7 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
-/**
- * Sets the user data that’s attached with each bug report sent.
- * Maximum size of the string is 1000 characters.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) setUserData:(CDVInvokedUrlCommand*)command
+- (void)setUserData:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* result;
     
@@ -206,16 +159,7 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
-/**
- * Attaches a new copy of this file with each bug report sent
- * with a maximum size of 1 MB. Calling this method several
- * times overrides the file to be attached. The file has to
- * be stored locally at the location provided.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) addFile:(CDVInvokedUrlCommand*)command
+- (void)addFile:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* result;
     id file = [command argumentAtIndex:0];
@@ -236,8 +180,10 @@
             // If the file doesn't exist at the path specified,
             // we won't be able to notify the containing app when
             // Instabug API call fails, so we check ourselves.
-            [Instabug setFileAttachment:filePath];
-            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+            [Instabug addFileAttachmentWithURL:[NSURL URLWithString:filePath]];
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[NSString stringWithFormat:
+                                                        @"file added",
+                                                        filePath]];
         } else {
             result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
                                        messageAsString:[NSString stringWithFormat:
@@ -246,26 +192,27 @@
         }
     } else {
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                   messageAsString:@"A local file URI must be provided."];
+                                   messageAsString:@"A local file URL must be provided."];
     }
     
     
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
-/**
- * Adds custom logs that will be sent with each report.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) addLog:(CDVInvokedUrlCommand*)command
+- (void)clearFileAttachments:(CDVInvokedUrlCommand*)command {
+    [Instabug clearFileAttachments];
+    CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+- (void)addLog:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* result;
     NSString* log = [command argumentAtIndex:0];
     
     if ([log length] > 0) {
-        IBGLog(log);
+        IBGLog(@"%@", log);
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     } else {
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
@@ -275,13 +222,87 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
-/**
- * Sets the event that invokes the feedback form.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) changeInvocationEvent:(CDVInvokedUrlCommand*)command
+- (void)logVerbose:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* result;
+    NSString* log = [command argumentAtIndex:0];
+    
+    if ([log length] > 0) {
+        IBGLogVerbose(@"%@", log);
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"A verbose log must be provided."];
+    }
+    
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+- (void)logDebug:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* result;
+    NSString* log = [command argumentAtIndex:0];
+    
+    if ([log length] > 0) {
+        IBGLogDebug(@"%@", log);
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"A debug log must be provided."];
+    }
+    
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+- (void)logInfo:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* result;
+    NSString* log = [command argumentAtIndex:0];
+    
+    if ([log length] > 0) {
+        IBGLogInfo(@"%@", log);
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"An info log must be provided."];
+    }
+    
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+- (void)logWarn:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* result;
+    NSString* log = [command argumentAtIndex:0];
+    
+    if ([log length] > 0) {
+        IBGLogWarn(@"%@", log);
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"A warn log must be provided."];
+    }
+    
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+- (void)logError:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* result;
+    NSString* log = [command argumentAtIndex:0];
+    
+    if ([log length] > 0) {
+        IBGLogError(@"%@", log);
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"An error log must be provided."];
+    }
+    
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+- (void)changeInvocationEvent:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* result;
     
@@ -298,20 +319,13 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
-/**
- * Sets the locale used to display the strings in the
- * correct language.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) setLocale:(CDVInvokedUrlCommand*)command
+- (void)setLocale:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* result;
     
     IBGLocale iLocale = [self parseLocale:[command argumentAtIndex:0]];
     
-    if (iLocale) {
+    if ((long)iLocale >= 0) {
         [Instabug setLocale:iLocale];
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     } else {
@@ -322,42 +336,174 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
-/**
- * Convenience method for setting whether the email
- * field is validated or not.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) setEmailFieldRequired:(NSString*)required
+- (void)setReportCategoriesWithTitles:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* result;
+    
+    NSArray *titles = [command argumentAtIndex:0];
+    
+    if (titles.count > 0) {
+        [Instabug setReportCategoriesWithTitles:titles iconNames:nil];
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"A non-empty titles array must be provided."];
+    }
+    
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+- (void)setUserAttributes:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* result;
+    
+    NSString *value = [command argumentAtIndex:0];
+    NSString *key = [command argumentAtIndex:1];
+    
+    if (value.length > 0 && key.length > 0) {
+        [Instabug setUserAttribute:value withKey:key];
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"A non-empty value and key must be provided."];
+    }
+    
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+- (void)userAttributeForKey:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* result;
+    NSString *key = [command argumentAtIndex:0];
+    
+    if (key.length > 0) {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                   messageAsString:[Instabug userAttributeForKey:key]];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"A non-empty key must be provided."];
+    }
+    
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+ 
+- (void)removeUserAttributeForKey:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* result;
+    NSString *key = [command argumentAtIndex:0];
+    
+    if (key.length > 0) {
+        [Instabug removeUserAttributeForKey:key];
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"A non-empty key must be provided."];
+    }
+    
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+- (void)appendTags:(CDVInvokedUrlCommand*)command {
+    CDVPluginResult* result;
+    
+    NSArray *tags = [command argumentAtIndex:0];
+    
+    if (tags.count > 0) {
+        [Instabug appendTags:tags];
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"A non-empty tags array must be provided."];
+    }
+    
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+
+}
+
+- (void)resetTags:(CDVInvokedUrlCommand*)command {
+    [Instabug resetTags];
+    CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+- (void) getTags:(CDVInvokedUrlCommand*)command {
+    CDVPluginResult *result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                                 messageAsArray:[Instabug getTags]];
+    
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+- (void)identifyUserWithEmailAndName:(CDVInvokedUrlCommand*)command {
+    CDVPluginResult* result;
+    NSString *email = [command argumentAtIndex:0];
+    NSString *name = [command argumentAtIndex:1];
+
+    if (email.length > 0) {
+        [Instabug identifyUserWithEmail:email name:name];
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"A non-empty email must be provided."];
+    }
+
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+- (void)logout:(CDVInvokedUrlCommand*)command {
+    [Instabug logOut];
+    CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+- (void)logUserEventWithName:(CDVInvokedUrlCommand*)command {
+    CDVPluginResult* result;
+    NSString *name = [command argumentAtIndex:0];
+
+    if (name.length > 0) {
+        [Instabug logUserEventWithName:name];
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"A non-empty event name must be provided."];
+    }
+
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+- (void)logUserEventWithNameAndParams:(CDVInvokedUrlCommand*)command {
+    CDVPluginResult* result;
+    NSString *name = [command argumentAtIndex:0];
+    NSString *params = [command argumentAtIndex:1];
+
+    if (name.length > 0) {
+        [Instabug logUserEventWithName:name params:params];
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"A non-empty event name must be provided."];
+    }
+
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+- (void)setEmailFieldRequired:(NSString*)required
 {
     if ([required length] > 0) {
         [Instabug setEmailFieldRequired:[required boolValue]];
     }
 }
 
-/**
- * Convenience method for setting whether the comment
- * field is validated or not.
- *
- * @param {NSString*} required
- *        NSString representation of boolean required
- */
-- (void) setCommentFieldRequired:(NSString*)required
+- (void)setCommentFieldRequired:(NSString*)required
 {
     if ([required length] > 0) {
         [Instabug setCommentFieldRequired:[required boolValue]];
     }
 }
 
-/**
- * Convenience method for setting the default SDK
- * mode upon invocation.
- *
- * @param {NSString*} mode
- *        NSString shortcode of IBGInvocationmode
- */
-- (void) setDefaultInvocationMode:(NSString*)mode {
+- (void)setDefaultInvocationMode:(NSString*)mode {
     IBGInvocationMode iMode = [self parseInvocationMode:mode];
     
     if (iMode) {
@@ -365,16 +511,7 @@
     }
 }
 
-/**
- * Convenience method for setting the threshold value
- * of the shake gesture for iPhone/iPod touch and iPad.
- *
- * @param {NSString*} iPhoneThreshold
- *        NSString representation of double iPhone threshold
- * @param {NSString*}
- *        NSString representation of double iPad threshold
- */
-- (void) setShakingThresholdForIPhone:(NSString*)iPhoneThreshold forIPad:(NSString*)iPadThreshold
+- (void)setShakingThresholdForIPhone:(NSString*)iPhoneThreshold forIPad:(NSString*)iPadThreshold
 {
     double iPhone = [iPhoneThreshold doubleValue];
     double iPad = [iPadThreshold doubleValue];
@@ -384,17 +521,7 @@
     }
 }
 
-/**
- * Convenience method for setting the default edge on
- * which the floating button will be shown and its
- * offset from the top.
- *
- * @param {NSString*} edge
- *        NSString representation of edge
- * @param {NSString*} offset
- *        NSString representation of double offset
- */
-- (void) setFloatingButtonEdge:(NSString*)edge withOffset:(NSString*)offset
+- (void)setFloatingButtonEdge:(NSString*)edge withOffset:(NSString*)offset
 {
     double offsetFromTop = [offset doubleValue];
     
@@ -409,56 +536,27 @@
     }
 }
 
-/**
- * Convenience method for setting whether to track
- * the user’s steps while using the app or not.
- *
- * @param {NSString*} enabled
- *        NSString representation of boolean enabled
- */
-- (void) setTrackingUserStepsEnabled:(NSString*)enabled
+- (void)setTrackingUserStepsEnabled:(NSString*)enabled
 {
     if ([enabled length] > 0) {
         [Instabug setUserStepsEnabled:[enabled boolValue]];
     }
 }
-
-/**
- * Convenience method for setting whether to allow
- * the SDK to use push notifications or not.
- *
- * @param {NSString*} enabled
- *        NSString representation of boolean enabled
- */
-- (void) setPushNotificationsEnabled:(NSString*)enabled
+- (void)setPushNotificationsEnabled:(NSString*)enabled
 {
     if ([enabled length] > 0) {
         [Instabug setPushNotificationsEnabled:[enabled boolValue]];
     }
 }
 
-/**
- * Convenience method for setting whether to show the
- * intro message the first time the app is opened or not.
- *
- * @param {NSString*} enabled
- *        NSString representation of boolean enabled
- */
-- (void) setIntroDialogEnabled:(NSString*)enabled
+- (void)setIntroDialogEnabled:(NSString*)enabled
 {
     if ([enabled length] > 0) {
         [Instabug setIntroMessageEnabled:[enabled boolValue]];
     }
 }
 
-/**
- * Convenience method for setting the color theme of
- * the SDK invocation.
- *
- * @param {NSString*} theme
- *        NSString representation of color theme
- */
-- (void) setColorTheme:(NSString*)theme
+- (void)setColorTheme:(NSString*)theme
 {
     if ([theme isEqualToString:@"dark"]) {
         [Instabug setColorTheme:IBGColorThemeDark];
@@ -467,12 +565,51 @@
     }
 }
 
-/**
- * Wrapper method for applying all provided options.
- *
- * @param {NSDictionary*} options
- *        Provided options
- */
+- (void)setPromptOptionsEnabledWithBug:(NSString *)bugReportEnabled feedback:(NSString *)feedbackEnabled chat:(NSString *)chatEnabled;
+{
+    if (bugReportEnabled.length > 0 && feedbackEnabled.length > 0 && chatEnabled.length > 0) {
+        [Instabug setPromptOptionsEnabledWithBug:[bugReportEnabled boolValue] feedback:[feedbackEnabled boolValue] chat:[chatEnabled boolValue]];
+    }
+}
+
+- (void)setViewHierarchyEnabled:(NSString *)viewHierarchyEnabled {
+    if (viewHierarchyEnabled.length > 0) {
+        [Instabug setViewHierarchyEnabled:[viewHierarchyEnabled boolValue]];
+    }
+}
+
+- (void)setWillSkipScreenshotAnnotation:(NSString *)willSkipScreenShot {
+    if (willSkipScreenShot.length > 0) {
+        [Instabug setWillSkipScreenshotAnnotation:[willSkipScreenShot boolValue]];
+    }
+}
+
+- (void)setPostSendingDialogEnabled:(NSString *)isPostSendingDialogEnabled {
+    if (isPostSendingDialogEnabled.length > 0) {
+        [Instabug setPostSendingDialogEnabled:[isPostSendingDialogEnabled boolValue]];
+    }
+}
+
+- (void)setChatNotificationEnabled:(NSString *)chatNotificationEnabled {
+    if (chatNotificationEnabled.length > 0) {
+        [Instabug setChatNotificationEnabled:[chatNotificationEnabled boolValue]];
+    }
+}
+
+- (void)setAttachmentTypesEnabledScreenShot:(NSString *)screenShot 
+                            extraScreenShot:(NSString *)extraScreenShot
+                               galleryImage:(NSString *)galleryImage
+                                  voiceNote:(NSString *)voiceNote
+                            screenRecording:(NSString *)screenRecording {
+    if (screenShot.length > 0 && extraScreenShot.length > 0 && galleryImage.length > 0 && voiceNote.length > 0 && screenRecording.length > 0) {
+        [Instabug setAttachmentTypesEnabledScreenShot:[screenShot boolValue]
+                            extraScreenShot:[extraScreenShot boolValue]
+                               galleryImage:[galleryImage boolValue]
+                                  voiceNote:[voiceNote boolValue]
+                            screenRecording:[screenRecording boolValue]];
+    }
+}
+
 - (void) applyOptions:(NSDictionary*)options
 {
     [self setEmailFieldRequired:[[options objectForKey:@"emailRequired"] stringValue]];
@@ -486,16 +623,21 @@
     [self setPushNotificationsEnabled:[[options objectForKey:@"enablePushNotifications"] stringValue]];
     [self setIntroDialogEnabled:[[options objectForKey:@"enableIntroDialog"] stringValue]];
     [self setColorTheme:[options objectForKey:@"colorTheme"]];
+    [self setPromptOptionsEnabledWithBug:[[options objectForKey:@"bugReportEnabled"] stringValue] 
+                                feedback:[[options objectForKey:@"feedbackEnabled"] stringValue]
+                                    chat:[[options objectForKey:@"chatEnabled"] stringValue]];
+    [self setViewHierarchyEnabled:[[options objectForKey:@"viewHierarchyEnabled"] stringValue]];
+    [self setWillSkipScreenshotAnnotation:[[options objectForKey:@"willSkipScreenShot"] stringValue]];
+    [self setPostSendingDialogEnabled:[[options objectForKey:@"isPostSendingDialogEnabled"] stringValue]];
+    [self setAttachmentTypesEnabledScreenShot:[[options objectForKey:@"screenShot"] stringValue]
+                              extraScreenShot:[[options objectForKey:@"extraScreenShot"] stringValue]
+                                 galleryImage:[[options objectForKey:@"galleryImage"] stringValue]
+                                    voiceNote:[[options objectForKey:@"voiceNote"] stringValue]
+                              screenRecording:[[options objectForKey:@"screenRecording"] stringValue]];
+    [self setChatNotificationEnabled:[[options objectForKey:@"chatNotificationEnabled"] stringValue]];
 }
 
-/**
- * Convenience method for converting NSString to
- * IBGInvocationEvent.
- *
- * @param  {NSString*} event
- *         NSString shortcode for IBGInvocationEvent
- */
-- (IBGInvocationEvent) parseInvocationEvent:(NSString*)event
+- (IBGInvocationEvent)parseInvocationEvent:(NSString*)event
 {
     if ([event isEqualToString:@"shake"]) {
         return IBGInvocationEventShake;
@@ -512,14 +654,7 @@
     } else return 0;
 }
 
-/**
- * Convenience method for converting NSString to
- * IBGInvocationMode.
- *
- * @param  {NSString*}
- *         NSString shortcode for IBGInvocationMode
- */
-- (IBGInvocationMode) parseInvocationMode:(NSString*)mode
+- (IBGInvocationMode)parseInvocationMode:(NSString*)mode
 {
     if ([mode isEqualToString:@"bug"]) {
         return IBGInvocationModeNewBug;
@@ -534,14 +669,7 @@
     } else return 0;
 }
 
-/**
- * Convenience method for converting NSString to
- * IBGLocale.
- *
- * @param  {NSString*} locale
- *         NSString shortcode for IBGLocale
- */
-- (IBGLocale) parseLocale:(NSString*)locale
+- (IBGLocale)parseLocale:(NSString*)locale
 {
     if ([locale isEqualToString:@"arabic"]) {
         return IBGLocaleArabic;
@@ -555,6 +683,8 @@
         return IBGLocaleEnglish;
     } else if ([locale isEqualToString:@"danish"]) {
         return IBGLocaleDanish;
+    } else if ([locale isEqualToString:@"dutch"]) {
+        return IBGLocaleDutch;
     } else if ([locale isEqualToString:@"english"]) {
         return IBGLocaleEnglish;
     } else if ([locale isEqualToString:@"french"]) {
@@ -567,6 +697,8 @@
         return IBGLocaleJapanese;
     } else if ([locale isEqualToString:@"korean"]) {
         return IBGLocaleKorean;
+    } else if ([locale isEqualToString:@"norwegian"]) {
+        return IBGLocaleNorwegian;
     } else if ([locale isEqualToString:@"polish"]) {
         return IBGLocalePolish;
     } else if ([locale isEqualToString:@"portuguese"]) {
@@ -583,15 +715,9 @@
         return IBGLocaleSwedish;
     } else if ([locale isEqualToString:@"turkish"]) {
         return IBGLocaleTurkish;
-    } else return 0;
+    } else return -1;
 }
 
-/**
- * Util method for parsing hex string to UIColor.
- *
- * @param  {NSString *} hexString
- *         NSString representation of hex color
- */
 - (UIColor *)colorFromHexString:(NSString *)hexString {
     unsigned rgbValue = 0;
     NSScanner* scanner = [NSScanner scannerWithString:hexString];
@@ -601,14 +727,7 @@
                             blue:(rgbValue & 0xFF)/255.0 alpha:1.0];
 }
 
-/**
- * Convenience method for sending successful plugin
- * result in methods that cannot fail.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) sendSuccessResult:(CDVInvokedUrlCommand*)command
+- (void)sendSuccessResult:(CDVInvokedUrlCommand*)command
 {
     [self.commandDelegate
      sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK]
