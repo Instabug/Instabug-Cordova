@@ -4,7 +4,7 @@ Cordova Instabug Plugin
 The purpose of this plugin is to simplify the process of integrating the Instabug SDK in a hybrid application, as well as to provide an interface to interfacing with the SDK through JavaScript.
 
 ### Supported Platforms
-- __iOS__ (SDK >= ?)
+- __iOS__ (SDK >= 8.0)
 - __Android__ (SDK >= 10)
 
 
