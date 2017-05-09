@@ -58,7 +58,7 @@ module.exports = function(context) {
     }
 
     var options = {shellPath: '/bin/sh', shellScript: 'bash "${PROJECT_DIR}/${PRODUCT_NAME}/Plugins/com.instabug.cordova.plugin/Instabug.framework/Instabug.bundle/strip-frameworks.sh"', runOnlyForDeploymentPostprocessing: 0};
-    var buildPhase = myProj.addBuildPhase([], 'PBXShellScriptBuildPhase', 'ShellScript', myProj.getFirstTarget().uuid, options).buildPhase;
+    var buildPhase = myProj.addBuildPhase([], 'PBXShellScriptBuildPhase', 'StripFrameworkScript', myProj.getFirstTarget().uuid, options).buildPhase;
 
     fs.writeFileSync(projectPath, myProj.writeSync());
     console.log('Added Arch Trim run script build phase');
