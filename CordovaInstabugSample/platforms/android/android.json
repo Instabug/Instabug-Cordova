@@ -1,0 +1,114 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {
+            "res/xml/config.xml": {
+                "parents": {
+                    "/*": [
+                        {
+                            "xml": "<feature name=\"Whitelist\"><param name=\"android-package\" value=\"org.apache.cordova.whitelist.WhitelistPlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"IBPlugin\"><param name=\"android-package\" value=\"com.wodify.cordova.plugin.instabug.IBPlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
+                        }
+                    ]
+                }
+            },
+            "AndroidManifest.xml": {
+                "parents": {
+                    "/manifest/application": [
+                        {
+                            "xml": "<activity android:configChanges=\"keyboardHidden|orientation|screenSize\" android:launchMode=\"singleInstance\" android:name=\"com.wodify.cordova.plugin.instabug.IBPluginActivity\" android:theme=\"@android:style/Theme.NoDisplay\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<activity android:name=\"com.instabug.library.InstabugFeedbackActivity\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<service android:name=\"com.instabug.library.InstabugSessionUploaderService\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<service android:name=\"com.instabug.library.InstabugIssueUploaderService\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<service android:name=\"com.instabug.library.InstabugMessageUploaderService\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<service android:name=\"com.instabug.library.InstabugFeaturesFetcherService\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<service android:name=\"com.instabug.library.gcm.InstabugGcmRegistrationIntentService\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<receiver android:name=\"com.instabug.library.InstabugNetworkReceiver\"><intent-filter><action android:name=\"android.net.conn.CONNECTIVITY_CHANGE\" /></intent-filter></receiver>",
+                            "count": 1
+                        }
+                    ],
+                    "/manifest": [
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.READ_EXTERNAL_STORAGE\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.INTERNET\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.RECORD_AUDIO\" />",
+                            "count": 1
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "installed_plugins": {
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.instabug.cordovainstabugsample"
+        },
+        "me.tonny.cordova.plugins.multidex": {
+            "PACKAGE_NAME": "com.instabug.cordovainstabugsample"
+        },
+        "com.wodify.cordova.plugin.instabug": {
+            "PACKAGE_NAME": "com.instabug.cordovainstabugsample"
+        }
+    },
+    "dependent_plugins": {},
+    "modules": [
+        {
+            "file": "plugins/com.wodify.cordova.plugin.instabug/www/instabug.js",
+            "id": "com.wodify.cordova.plugin.instabug.Instabug",
+            "clobbers": [
+                "cordova.plugins.instabug"
+            ]
+        }
+    ],
+    "plugin_metadata": {
+        "cordova-plugin-whitelist": "1.2.2",
+        "me.tonny.cordova.plugins.multidex": "0.1.0",
+        "com.wodify.cordova.plugin.instabug": "0.0.1"
+    }
+}
