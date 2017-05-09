@@ -7,11 +7,22 @@ The purpose of this plugin is to simplify the process of integrating the Instabu
 - __iOS__ (SDK >= ?)
 - __Android__ (SDK >= 10)
 
+
+### iOS preinstallation 
+
+Open the terminal then navigate to your project's directory then type `npm i xcode`
+
 ### Installation
 Currently, this plugin can only be installed via the Command-Line Interface.
 ```
 cordova plugin add https://github.com/Instabug/instabug-cordova
 ```
+### After uninstalling Instabug plugin
+
+Open your ios `*.xcworkspace` then navigate to Build Phases in your project's target and remove the following two phases:
+* Embed Frameworks com.instabug.cordova.plugin
+* strip-frameworks-script
+
 ## Usage
 To initialize Instabug in your app, you only need to make one call to the plugin: __activate__. This method requires your app's token and your desired invocation event, and can take a wide range of optional parameters for configuration.
 
@@ -25,8 +36,8 @@ or
 
 ```javascript
 var tokens = {
-  android: 'YOUR_ANDROID_TOKEN_HERE',
-  ios: 'YOUR_IOS_TOKEN_HERE'
+android: 'YOUR_ANDROID_TOKEN_HERE',
+ios: 'YOUR_IOS_TOKEN_HERE'
 };
 ```
 
@@ -64,7 +75,19 @@ The final parameter to the activate method (besides success and error callback f
 | enablePushNotifications | Enable/disable push notifications feature | true, false | true | √ | √ |
 | enableIntroDialog | Enable/disable intro dialog shown the first time app is opened | true, false | true | √ | √ |
 | enableUserData | Enable/disable user data to be added to reports | true, false | true | √ |  |
-| colorTheme | Set which color theme to use for the SDK's UI | 'light', 'dark' | 'light' | √ | √ |
+| colorTheme | Set which color theme to use for the SDK's UI | 'light', 'dark' | 'light' | √ |  |
+| bugReportEnabled | A boolean to indicate whether bug reports are enabled or disabled. | true, false | true | √ |  |
+| feedbackEnabled | A boolean to indicate whether feedback is enabled or disabled. | true, false | true | √ |  |
+| chatEnabled |  A boolean to indicate whether chat is enabled or disabled. | true, false | true | √ |  |
+| viewHierarchyEnabled | A boolean to set whether view hierarchy are enabled or disabled. | true, false | true | √ |  |
+| willSkipScreenShot | A boolean to set whether screenshot view is shown or not. Passing YES will show | true, false | true | √ |  |
+| isPostSendingDialogEnabled | A boolean to indicate whether the dialog is enabled or not.| true, false | true | √ |  |
+| screenShot | A boolean to enable or disable screenshot attachments. | true, false | true | √ |  |
+| extraScreenShot | A boolean to enable or disable extra screenshot attachments. | true, false | true | √ |  |
+| galleryImage | A boolean to enable or disable gallery image attachments. In iOS 10+, NSPhotoLibraryUsageDescription should be set in info.plist to enable gallery image attachments. | true, false | true | √ |  |
+| voiceNote | A boolean to enable or disable voice note attachments. In iOS 10+, NSMicrophoneUsageDescription should be set in info.plist to enable voiceNote attachments. | true, false | true | √ |  |
+| screenRecording | A boolean to enable or disable screen recording attachments. | true, false | true | √ |  |
+| chatNotificationEnabled | A boolean to set whether notifications are enabled or disabled. | true, false | true | √ |  |
 *Pro feature
 
 ## Sample
@@ -72,24 +95,24 @@ The sample demonstrates how to initiate Instabug.
 
 ```javascript
 cordova.plugins.instabug.activate(
-    {
-        android: 'MY_ANDROID_TOKEN',
-        ios: 'MY_IOS_TOKEN'
-    },
-    'shake',
-    {
-        commentRequired: true,
-        colorTheme: 'dark',
-        shakingThresholdIPhone: '1.5',
-        shakingThresholdIPad: '0.6',
-        enableIntroDialog: false
-    },
-    function () {
-        console.log('Instabug initialized.');
-    },
-    function (error) {
-        console.log('Instabug could not be initialized - ' + error);
-    }
+{
+android: 'MY_ANDROID_TOKEN',
+ios: 'MY_IOS_TOKEN'
+},
+'shake',
+{
+commentRequired: true,
+colorTheme: 'dark',
+shakingThresholdIPhone: '1.5',
+shakingThresholdIPad: '0.6',
+enableIntroDialog: false
+},
+function () {
+console.log('Instabug initialized.');
+},
+function (error) {
+console.log('Instabug could not be initialized - ' + error);
+}
 );
 ```
 
@@ -106,13 +129,30 @@ After you've initialized Instabug, you can call a variety of other methods on th
 | setUserData* | Adds specific user data that you need to be added to the reports | any string | √ | √ |
 | addFile* | Uploads file along upcoming reports | Path to desired file on device - can't use path of file relative to your application files. Can be specified as a string or an object with properties by platform. | √ | √ |
 | addLog* | Appends a log message to Instabug internal log. These logs are then sent along the next uploaded report. All log messages are timestamped. Logs aren't cleared per single application run. If you wish to reset the logs, use clearLog(). Note: logs passed to this method are NOT printed to Logcat. | any string | √ | √ |
+| logVerbose | Adds custom logs with the verbose log level. Logs will be sent with each report. | none |  | √ |
+| logDebug | Adds custom logs with the debug log level. Logs will be sent with each report. | none |  | √ |
+| logInfo | Adds custom logs with the info log level. Logs will be sent with each report. | none |  | √ |
+| logWarn | Adds custom logs with the warn log level. Logs will be sent with each report. | none |  | √ |
+| logError | Adds custom logs with the error log level. Logs will be sent with each report. | none |  | √ |
+| setUserAttributes | Set custom user attributes that are going to be sent with each feedback, bug or crash. | none |  | √ |
+| userAttributeForKey | Returns the user attribute associated with a given key. | none |  | √ |
+| removeUserAttributeForKey | Removes a given key and its associated value from user attributes. | none |  | √ |
+| appendTags | Appends a set of tags to previously added tags of reported feedback, bug or crash. | none |  | √ |
+| resetTags | Manually removes all tags of reported feedback, bug or crash. | none |  | √ |
+| getTags | Gets all tags of reported feedback, bug or crash. | none |  | √ |
+| identifyUserWithEmailAndName | Sets the user email and name for all sent reports. Also hides the email field from the reporting UI. | none |  | √ |
+| logout | Sets the default value of the user's email to nil and show email field and remove user name from all reports | none |  | √ |
+| logUserEventWithName | Logs a user event that happens through the lifecycle of the application. | none |  | √ |
+| logUserEventWithNameAndParams | Logs a user event that happens through the lifecycle of the application. | none |  | √ |
+| setReportCategoriesWithTitles | Sets an array of report categories to be shown for users to select from before reporting a bug or sending feedback. | none |  | √ |
 | clearLog | Clears Instabug internal log | none | √ |  |
 | changeInvocationEvent | Changes the event used to invoke Instabug SDK | 'shake', 'button', 'screenshot', 'swipe', or 'none' (see first table on page) | √ | √ |
 | disable | Disables all Instabug functionality | none | √ |  |
 | enable | Enables all Instabug functionality | none | √ |  |
 | isEnabled | Returns true if Instabug is enabled, false if it's disabled | none | √ |  |
+| isInvoked | Returns if Instabug is currently invoked (shown) or not | none | √ |  |
 | isDebugEnabled | Returns if Instabug SDK debug logs will be added to LogCat logs or not | none | √ |  |
-| setLocale | Set the locale used to display the strings in the correct language | 'arabic', 'chineseSimplified', 'chineseTraditional',  'english', 'french', 'german', 'italian', 'japanese', 'korean', 'polish', 'portugueseBrazil', 'russian', 'spanish', 'swedish', or 'turkish' |  | √ |
+| setLocale | Set the locale used to display the strings in the correct language | 'arabic', 'chineseSimplified', 'chineseTraditional', 'czech', 'danish', 'dutch', 'english', 'french', 'german', 'italian', 'japanese', 'korean', 'norwegian', 'polish', 'portugueseBrazil', 'russian', 'slovak', 'spanish', 'swedish', or 'turkish' |  | √ |
 *Pro feature
 
 ## Tips & tricks
