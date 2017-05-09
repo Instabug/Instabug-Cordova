@@ -261,8 +261,8 @@ Instabug.setLocale = function (locale, success, error) {
 * @param {array} titles Array of titles to be shown in the list.
 * @param {array} names Array of names of icons to be shown along with titles.
 */
-Instabug.setReportCategoriesWithTitlesAndIcons = function (titles, iconNames, success, error) {
-	exec(success, error, 'IBGPlugin', 'setReportCategoriesWithTitlesAndIcons', [ titles, iconNames ]);
+Instabug.setReportCategoriesWithTitles = function (titles, success, error) {
+	exec(success, error, 'IBGPlugin', 'setReportCategoriesWithTitles', [ titles ]);
 };
 
 /**

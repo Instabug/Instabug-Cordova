@@ -336,15 +336,14 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
-- (void)setReportCategoriesWithTitlesAndIcons:(CDVInvokedUrlCommand*)command
+- (void)setReportCategoriesWithTitles:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* result;
     
     NSArray *titles = [command argumentAtIndex:0];
-    NSArray *names = [command argumentAtIndex:1];
     
     if (titles.count > 0) {
-        [Instabug setReportCategoriesWithTitles:titles iconNames:names];
+        [Instabug setReportCategoriesWithTitles:titles iconNames:nil];
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     } else {
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
