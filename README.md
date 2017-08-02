@@ -3,9 +3,6 @@ Cordova Instabug Plugin
 
 The purpose of this plugin is to simplify the process of integrating the Instabug SDK in a hybrid application, as well as to provide an interface to interfacing with the SDK through JavaScript.
 
-### Supported Platforms
-- __iOS__ (SDK >= ?)
-- __Android__ (SDK >= 10)
 
 ### Installation
 Currently, this plugin can only be installed via the Command-Line Interface.
@@ -38,20 +35,6 @@ cordova.plugins.instabug.activate(
 );
 ```
  You can change the invocation event with any of the following: ```'button'```, ```'screenshot'```, ```'swipe'```, or ```'swipe'```.
-
-## Tips & tricks
-1. You should initialize Instabug as soon as you can in your app. For Ionic users, the best place is in the run method of your module.
-2. For Android, if you use other plugins that open dialogs (like InAppBrowser) that you will want included in your screenshots, you'll need to modify the plugin code itself to call Instabug.setDialog(Dialog dialog) when it is opened. See Instabug official documentation for more info on usage (or, you can always check out my <a href="https://github.com/elizabethrego/cordova-plugin-inappbrowser-instabug">InAppBrowser fork</a>, which includes this functionality as well as other useful things like hiding an open browser).
-3. The Instabug SDK also offers a reportException method that is not accessible through JavaScript but may be useful for adding these exceptions to your reports if you modify plugins to call it.
-
-## Contributing (please do!)
-
-1. Fork this repo.
-2. Create your own branch. (`git checkout -b my-feature`)
-3. Commit your changes. (`git commit -am 'Add my awesome feature'`)
-4. Push to your branch. (`git push origin my-feature`)
-5. Create new pull request.
-
 
 ## License
 
