@@ -79,7 +79,6 @@
         <source-file src="src/android/IBGPlugin.java" target-dir="src/com/instabug/cordova/plugin"/>
         <source-file src="src/android/MyApplication.java" target-dir="src/com/instabug/cordova/plugin"/>
 
-        <hook type="after_prepare" src="add_application_name.js" />
     </platform>
 
     <!-- ios -->
