@@ -155,20 +155,7 @@ public class IBGPlugin extends CordovaPlugin {
                 if (invocationEvent != null && invocationEvent.length() > 0) {
                     activationIntent.putExtra("invocationEvent", invocationEvent);
                 }
-                // } else {
-                //     // Desired invocation event may be different across platforms
-                //     // and can be specified as such
-                //     JSONObject invEventsForPlatforms = args.optJSONObject(1);
-
-                //     if (invEventsForPlatforms != null) {
-                //         String invEvent = invEventsForPlatforms.optString("android");
-
-                //         if (invEvent != null && invEvent.length() > 0) {
-                //             activationIntent.putExtra("invocationEvent", invEvent);
-                //         }
-                //     }
-                // }
-
+                
                 this.options = args.optJSONObject(2);
 
                 if (options != null) {

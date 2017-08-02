@@ -15,8 +15,6 @@ public class MyApplication extends Application
     @Override
     public void onCreate()
     {
-        Log.d(TAG, "onCreate()");
-        // DO SOME STUFF
         new Instabug.Builder(
                 this,
                 "ANDROID_APP_TOKEN",

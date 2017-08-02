@@ -122,7 +122,7 @@ Instabug.isEnabled = function (success, error) {
 Instabug.setDebugEnabled = function (isDebugEnabled, success, error) {
     exec(success, error, 'IBGPlugin', 'setDebugEnabled', [isDebugEnabled]);
     if(success) {
-        console.log("setting debug enabled to "+isDebugEnabled);
+        console.log("setting debug enabled to " + isDebugEnabled);
     } else if(error) {
         console.log("setting debug enabled not successful");
     }
