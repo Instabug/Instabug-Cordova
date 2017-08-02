@@ -44,11 +44,11 @@ var getLocales = function () {
 var Instabug = function () {
 };
 
-Instabug.activate = function (token, event, options, success, error) {
+Instabug.activate = function ( options,event, success, error) {
     var validatedEvent = getInvocationEvents()[event];
 
     if (validatedEvent) {
-        exec(success, error, 'IBGPlugin', 'activate', [token, validatedEvent, options]);
+        exec(success, error, 'IBGPlugin', 'activate', [validatedEvent, options]);
     } else {
         console.log('Could not activate Instabug - invocation event "' + event + '" is not valid.');
     }
@@ -119,8 +119,13 @@ Instabug.isEnabled = function (success, error) {
     exec(success, error, 'IBGPlugin', 'isEnabled', []);
 };
 
-Instabug.isDebugEnabled = function (success, error) {
-    exec(success, error, 'IBGPlugin', 'isDebugEnabled', []);
+Instabug.setDebugEnabled = function (isDebugEnabled, success, error) {
+    exec(success, error, 'IBGPlugin', 'setDebugEnabled', [isDebugEnabled]);
+    if(success) {
+        console.log("setting debug enabled to "+isDebugEnabled);
+    } else if(error) {
+        console.log("setting debug enabled not successful");
+    }
 };
 
 Instabug.setLocale = function (locale, success, error) {
