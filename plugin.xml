@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+ <?xml version="1.0" encoding="UTF-8"?>
 
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -49,10 +49,10 @@
 
             <service android:name="com.instabug.library.network.worker.uploader.InstabugSessionUploaderService" />
             <service android:name="com.instabug.library.bugreporting.network.InstabugBugsUploaderService" />
-            <service android:name="com.instabug.library.crashreporting.network.InstabugCrashesUploaderService" />
+            <service android:name="com.instabug.crash.network.InstabugCrashesUploaderService" />
             <service android:name="com.instabug.library.messaging.InstabugMessageUploaderService" />
             <service android:name="com.instabug.library.network.worker.fetcher.InstabugFeaturesFetcherService" />
-            <service android:name="com.instabug.library.surveys.network.service.InstabugSurveysSubmitterService" />
+            <service android:name="com.instabug.survey.network.service.InstabugSurveysSubmitterService" />
             <service android:name="com.instabug.library.internal.video.VideoProcessingService"/>
 
             <receiver android:name="com.instabug.library.network.InstabugNetworkReceiver">
@@ -75,8 +75,10 @@
 
         <framework src="build.gradle" custom="true" type="gradleReference"/>
 
-        <source-file src="src/android/IBGPluginActivity.java" target-dir="src/com/instabug/cordova-plugin"/>
-        <source-file src="src/android/IBGPlugin.java" target-dir="src/com/instabug/cordova-plugin"/>
+        <source-file src="src/android/IBGPluginActivity.java" target-dir="src/com/instabug/cordova/plugin"/>
+        <source-file src="src/android/IBGPlugin.java" target-dir="src/com/instabug/cordova/plugin"/>
+        <source-file src="src/android/MyApplication.java" target-dir="src/com/instabug/cordova/plugin"/>
+
     </platform>
 
     <!-- ios -->
