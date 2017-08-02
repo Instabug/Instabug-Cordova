@@ -28,7 +28,7 @@ public class IBGPluginActivity extends CordovaActivity
 
         // Retrieve initialization options
         Bundle options = getIntent().getExtras();
-        
+
         InstabugInvocationEvent event = IBGPlugin.parseInvocationEvent(options.getString("invocationEvent"));
 
         if (event != null) {
