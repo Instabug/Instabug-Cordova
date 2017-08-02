@@ -155,7 +155,7 @@ public class IBGPlugin extends CordovaPlugin {
                 if (invocationEvent != null && invocationEvent.length() > 0) {
                     activationIntent.putExtra("invocationEvent", invocationEvent);
                 }
-                
+
                 this.options = args.optJSONObject(2);
 
                 if (options != null) {
@@ -232,7 +232,7 @@ public class IBGPlugin extends CordovaPlugin {
      * @param colorInt
      *        The value of the primary color
      */
-    private void setPrimaryColor(final CallbackContext callbackContext,String colorString) {
+    private void setPrimaryColor(final CallbackContext callbackContext, String colorString) {
         
         if (colorString != null) {
          try {

@@ -44,7 +44,7 @@ var getLocales = function () {
 var Instabug = function () {
 };
 
-Instabug.activate = function ( options,event, success, error) {
+Instabug.activate = function (options, event, success, error) {
     var validatedEvent = getInvocationEvents()[event];
 
     if (validatedEvent) {
