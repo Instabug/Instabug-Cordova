@@ -22,7 +22,6 @@ You can initialize the SDK by using this method in your JS class
 ```
 cordova.plugins.instabug.activate(
     {
-        android: 'MY_ANDROID_TOKEN',
         ios: 'MY_IOS_TOKEN'
     },
     'shake',
