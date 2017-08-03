@@ -7,8 +7,13 @@ The purpose of this plugin is to simplify the process of integrating the Instabu
 ### Installation
 Currently, this plugin can only be installed via the Command-Line Interface.
 ```
-cordova plugin add https://github.com/Instabug/instabug-cordova
+cordova plugin add https://github.com/Instabug/instabug-cordova 
 ```
+or 
+```
+npm install instabug-cordova
+```
+
 ## Usage
 To initialize Instabug in your app, you need to do the following: 
 
