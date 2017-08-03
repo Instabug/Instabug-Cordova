@@ -44,11 +44,11 @@ var getLocales = function () {
 var Instabug = function () {
 };
 
-Instabug.activate = function (options, event, success, error) {
+Instabug.activate = function (token, event, options, success, error) {
     var validatedEvent = getInvocationEvents()[event];
 
     if (validatedEvent) {
-        exec(success, error, 'IBGPlugin', 'activate', [validatedEvent, options]);
+        exec(success, error, 'IBGPlugin', 'activate', [options]);
     } else {
         console.log('Could not activate Instabug - invocation event "' + event + '" is not valid.');
     }

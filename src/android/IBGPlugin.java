@@ -142,41 +142,14 @@ public class IBGPlugin extends CordovaPlugin {
      *        Used when calling back into JavaScript
      */
     private void activate(final CallbackContext callbackContext, JSONArray args) {
-        JSONObject tokensForPlatforms = args.optJSONObject(1);
-
-        if (tokensForPlatforms != null) {
-            String token = tokensForPlatforms.optString("android");
-
-            if (token != null && token.length() > 0) {
-                activationIntent.putExtra("token", token);
-
-                String invocationEvent = args.optString(0);
-
-                if (invocationEvent != null && invocationEvent.length() > 0) {
-                    activationIntent.putExtra("invocationEvent", invocationEvent);
-                }
-
-                this.options = args.optJSONObject(2);
-
-                if (options != null) {
-                    // Attach extras
-                    applyOptions();
-                }
-
-                // Start activity to initialize Instabug
-                cordova.getActivity().startActivity(activationIntent);
-
-                callbackContext.success();
-
-            } else {
-                // Without a token, Instabug cannot be initialized.
-                callbackContext.error("An application token must be provided.");
-            }
-        } else {
-            // Without a token, Instabug cannot be initialized.
-            callbackContext.error("An application token must be provided.");
+        this.options = args.optJSONObject(0);
+        if (options != null) {
+            // Attach extras
+            applyOptions();
         }
+        cordova.getActivity().startActivity(activationIntent);
 
+        callbackContext.success();
 
         
     }
