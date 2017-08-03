@@ -29,28 +29,8 @@ public class IBGPluginActivity extends CordovaActivity
         // Retrieve initialization options
         Bundle options = getIntent().getExtras();
 
-        InstabugInvocationEvent event = IBGPlugin.parseInvocationEvent(options.getString("invocationEvent"));
-
-        if (event != null) {
-            // Initialize builder with invocation event if possible
-            builder = new Instabug.Builder(
-                this.getApplication(),
-                options.getString("token"),
-                event
-            );
-        } else {
-            builder = new Instabug.Builder(
-                this.getApplication(),
-                options.getString("token")
-            );
-        }
-
-        // Apply initialization options through builder
+        // Apply initialization options
         setBuilderOptions(options);
-
-        //builder.setShouldShowIntroDialog(false);
-        // Initialize Instabug through builder
-        builder.build();
 
         // Finish activity (required for no-display theme)
         IBGPluginActivity.this.finish();
@@ -65,7 +45,7 @@ public class IBGPluginActivity extends CordovaActivity
      */
     private void setEmailFieldRequired(String required) {
         if (required != null && required.length() > 0) {
-            builder.setEmailFieldRequired(Boolean.parseBoolean(required));
+            Instabug.setEmailFieldRequired(Boolean.parseBoolean(required));
         }
     }
 
@@ -78,7 +58,7 @@ public class IBGPluginActivity extends CordovaActivity
      */
     private void setCommentFieldRequired(String required) {
         if (required != null && required.length() > 0) {
-            builder.setCommentFieldRequired(Boolean.parseBoolean(required));
+            Instabug.setCommentFieldRequired(Boolean.parseBoolean(required));
         }
     }
 
@@ -90,7 +70,7 @@ public class IBGPluginActivity extends CordovaActivity
      */
     private void setShakingThreshold(String threshold) {
         if (threshold != null && threshold.length() > 0) {
-            builder.setShakingThreshold(Integer.parseInt(threshold));
+            Instabug.setShakingThreshold(Integer.parseInt(threshold));
         }
     }
 
@@ -101,11 +81,7 @@ public class IBGPluginActivity extends CordovaActivity
      *        String representation of edge
      */
     private void setFloatingButtonEdge(String edge) {
-        if ("left".equals(edge)) {
-            builder.setFloatingButtonEdge(InstabugFloatingButtonEdge.LEFT);
-        } else if ("right".equals(edge)) {
-            builder.setFloatingButtonEdge(InstabugFloatingButtonEdge.RIGHT);
-        }
+        
     }
 
     /**
@@ -115,9 +91,7 @@ public class IBGPluginActivity extends CordovaActivity
      *        String representation of int offset
      */
     private void setFloatingButtonOffset(String offset) {
-        if (offset != null && offset.length() > 0) {
-            builder.setFloatingButtonOffsetFromTop(Integer.parseInt(offset));
-        }
+        
     }
 
     /**
@@ -143,11 +117,7 @@ public class IBGPluginActivity extends CordovaActivity
      *        String representation of boolean enabled
      */
     private void setConsoleLogsEnabled(String enabled) {
-        if ("true".equals(enabled)) {
-            builder.setConsoleLogState(Feature.State.ENABLED);
-        } else if ("false".equals(enabled)) {
-            builder.setConsoleLogState(Feature.State.DISABLED);
-        }
+        
     }
 
     /**
@@ -159,11 +129,7 @@ public class IBGPluginActivity extends CordovaActivity
      *        String representation of boolean enabled
      */
     private void setInstabugLogsEnabled(String enabled) {
-        if ("true".equals(enabled)) {
-            builder.setInstabugLogState(Feature.State.ENABLED);
-        } else if ("false".equals(enabled)) {
-            builder.setInstabugLogState(Feature.State.DISABLED);
-        }
+        
     }
 
     /**
@@ -175,11 +141,7 @@ public class IBGPluginActivity extends CordovaActivity
      *        String representation of boolean enabled
      */
     private void setTrackingUserStepsEnabled(String enabled) {
-        if ("true".equals(enabled)) {
-            builder.setTrackingUserStepsState(Feature.State.ENABLED);
-        } else if ("false".equals(enabled)) {
-            builder.setTrackingUserStepsState(Feature.State.DISABLED);
-        }
+       
     }
 
     /**
@@ -191,11 +153,7 @@ public class IBGPluginActivity extends CordovaActivity
      *        String representation of boolean enabled
      */
     private void setCrashReportingEnabled(String enabled) {
-        if ("true".equals(enabled)) {
-            builder.setCrashReportingState(Feature.State.ENABLED);
-        } else if ("false".equals(enabled)) {
-            builder.setCrashReportingState(Feature.State.DISABLED);
-        }
+        
     }
 
     /**
@@ -207,11 +165,7 @@ public class IBGPluginActivity extends CordovaActivity
      *        String representation of boolean enabled
      */
     private void setInAppMessagingEnabled(String enabled) {
-        if ("true".equals(enabled)) {
-            builder.setInAppMessagingState(Feature.State.ENABLED);
-        } else if ("false".equals(enabled)) {
-            builder.setInAppMessagingState(Feature.State.DISABLED);
-        }
+        
     }
 
     /**
@@ -224,7 +178,7 @@ public class IBGPluginActivity extends CordovaActivity
      */
     private void setConversationSoundsEnabled(String enabled) {
         if (enabled != null && enabled.length() > 0) {
-            builder.setShouldPlayConversationSounds(Boolean.parseBoolean(enabled));
+            Instabug.setShouldPlayConversationSounds(Boolean.parseBoolean(enabled));
         }
     }
 
@@ -237,11 +191,7 @@ public class IBGPluginActivity extends CordovaActivity
      *        String representation of boolean enabled
      */
     private void setPushNotificationsEnabled(String enabled) {
-        if ("true".equals(enabled)) {
-            builder.setPushNotificationState(Feature.State.ENABLED);
-        } else if ("false".equals(enabled)) {
-            builder.setPushNotificationState(Feature.State.DISABLED);
-        }
+        
     }
 
      /**
@@ -254,7 +204,7 @@ public class IBGPluginActivity extends CordovaActivity
      */
     private void setIntroDialogEnabled(String enabled) {
         if (enabled != null && enabled.length() > 0) {
-            builder.setIntroMessageEnabled(Boolean.parseBoolean(enabled));
+            Instabug.setIntroMessageEnabled(Boolean.parseBoolean(enabled));
         }
     }
 
@@ -266,11 +216,7 @@ public class IBGPluginActivity extends CordovaActivity
      *        String representation of boolean enabled
      */
     private void setUserDataEnabled(String enabled) {
-        if ("true".equals(enabled)) {
-            builder.setUserDataState(Feature.State.ENABLED);
-        } else if ("false".equals(enabled)) {
-            builder.setUserDataState(Feature.State.DISABLED);
-        }
+        
     }
 
     /**
@@ -283,9 +229,9 @@ public class IBGPluginActivity extends CordovaActivity
      */
     private void setColorTheme(String theme) {
         if ("dark".equals(theme)) {
-            builder.setTheme(InstabugColorTheme.InstabugColorThemeDark);
+            Instabug.setTheme(InstabugColorTheme.InstabugColorThemeDark);
         } else if ("light".equals(theme)) {
-            builder.setTheme(InstabugColorTheme.InstabugColorThemeLight);
+            Instabug.setTheme(InstabugColorTheme.InstabugColorThemeLight);
         }
     }
 
