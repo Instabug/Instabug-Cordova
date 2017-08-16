@@ -142,7 +142,7 @@ public class IBGPlugin extends CordovaPlugin {
      *        Used when calling back into JavaScript
      */
     private void activate(final CallbackContext callbackContext, JSONArray args) {
-        this.options = args.optJSONObject(0);
+        this.options = args.optJSONObject(2);
         if (options != null) {
             // Attach extras
             applyOptions();
