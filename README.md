@@ -38,7 +38,7 @@ cordova.plugins.instabug.activate(
     }
 );
 ```
- You can change the invocation event with any of the following: ```'button'```, ```'screenshot'```, ```'swipe'```, or ```'swipe'```.
+ You can change the invocation event with any of the following: ```'button'```, ```'screenshot'```, ```'swipe'```, or ```'shake'```.
 
 ## License
 
