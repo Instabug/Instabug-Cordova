@@ -183,7 +183,7 @@
 }
 
 /**
- *Set custom user attributes that are going to be sent with each feedback, bug or crash.
+ * Set custom user attributes that are going to be sent with each feedback, bug or crash.
  *
  * @param {CDVInvokedUrlCommand*} command
  *        The command sent from JavaScript
@@ -201,6 +201,30 @@
     } else {
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
                                    messageAsString:@"A key and value must be provided."];
+    }
+    
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+/**
+ * Removes a given key and its associated value from user attributes.
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+
+- (void) removeUserAttribute:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* result;
+    
+    NSString* key = [command argumentAtIndex:0];
+    
+    if ([key length] > 0) {
+        [Instabug removeUserAttributeForKey:key];
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"A key must be provided."];
     }
     
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];

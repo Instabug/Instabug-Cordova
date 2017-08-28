@@ -130,7 +130,10 @@ public class IBGPlugin extends CordovaPlugin {
         } else if ("setDebugEnabled".equals(action)) {
             setDebugEnabled(callbackContext, args.optBoolean(0));
             
-        } else {
+        } else if ("removeUserAttribute".equals(action)) {
+            removeUserAttribute(callbackContext, args.optString(0));
+            
+        }  else {
             // Method not found.
             return false;
         }
@@ -447,6 +450,8 @@ public class IBGPlugin extends CordovaPlugin {
     /**
      * Sets user attribute to overwrite it's value or create a new one if it doesn't exist.
      *
+     * @param callbackContext 
+     *        Used when calling back into JavaScript
      * @param key   the attribute
      * @param value the value
      * @throws IllegalStateException if Instabug object wasn't built using {@link Builder#build()} before this method was called
@@ -456,6 +461,25 @@ public class IBGPlugin extends CordovaPlugin {
      private void setUserAttribute(final CallbackContext callbackContext, String key, String value) {
         try {
             Instabug.setUserAttribute(key,value);
+            callbackContext.success();
+        } catch (IllegalStateException e) {
+            callbackContext.error(errorMsg);
+        }
+    }
+
+    /**
+     * Removes user attribute if exists.
+     *
+     * @param callbackContext 
+     *        Used when calling back into JavaScript
+     * @param key the attribute key as string
+     * @throws IllegalStateException if Instabug object wasn't built using {@link Builder#build()} before this method was called
+     * 
+     */
+
+    private void removeUserAttribute(final CallbackContext callbackContext, String key) {
+        try {
+            Instabug.removeUserAttribute(key);
             callbackContext.success();
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
