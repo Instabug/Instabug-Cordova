@@ -124,6 +124,9 @@ public class IBGPlugin extends CordovaPlugin {
         } else if ("isEnabled".equals(action)) {
             getIsEnabled(callbackContext);
             
+        } else if ("setUserAttribute".equals(action)) {
+            setUserAttribute(callbackContext, args.optString(0), args.optString(1));
+            
         } else if ("setDebugEnabled".equals(action)) {
             setDebugEnabled(callbackContext, args.optBoolean(0));
             
@@ -435,6 +438,24 @@ public class IBGPlugin extends CordovaPlugin {
     private void setDebugEnabled(final CallbackContext callbackContext, boolean isDebugEnabled) {
         try {
             Instabug.setDebugEnabled(isDebugEnabled);
+            callbackContext.success();
+        } catch (IllegalStateException e) {
+            callbackContext.error(errorMsg);
+        }
+    }
+
+    /**
+     * Sets user attribute to overwrite it's value or create a new one if it doesn't exist.
+     *
+     * @param key   the attribute
+     * @param value the value
+     * @throws IllegalStateException if Instabug object wasn't built using {@link Builder#build()} before this method was called
+     * 
+     */
+
+     private void setUserAttribute(final CallbackContext callbackContext, String key, String value) {
+        try {
+            Instabug.setUserAttribute(key,value);
             callbackContext.success();
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
