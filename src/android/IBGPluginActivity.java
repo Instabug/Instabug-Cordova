@@ -30,7 +30,9 @@ public class IBGPluginActivity extends CordovaActivity
         Bundle options = getIntent().getExtras();
 
         // Apply initialization options
-        setBuilderOptions(options);
+        if(options != null) {
+            setBuilderOptions(options);
+        }
 
         // Finish activity (required for no-display theme)
         IBGPluginActivity.this.finish();
