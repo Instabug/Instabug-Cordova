@@ -85,23 +85,15 @@
     <platform name="ios">
         <config-file target="config.xml" parent="/*">
             <feature name="IBGPlugin">
-                <param name="ios-package" value="IBGPlugin"/>
-                <param name="onload" value="true"/>
+                <param name="ios-package" value="IBGPlugin" />
+                <param name="onload" value="true" />
             </feature>
         </config-file>
-
-        <resource-file src="src/ios/Instabug.bundle"/>
-        <framework src="src/ios/Instabug.framework" custom="true"/>
-
-        <header-file src="src/ios/IBGPlugin.h"/>
-        <source-file src="src/ios/IBGPlugin.m"/>
-
-        <framework src="AVFoundation.framework"/>
-        <framework src="CoreMotion.framework"/>
-        <framework src="CoreGraphics.framework"/>
-        <framework src="CoreTelephony.framework"/>
-        <framework src="SystemConfiguration.framework"/>
-        <framework src="UIKit.framework"/>
+        
+        <framework src="src/ios/Instabug.framework" custom="true" embed="true" />
+        <hook type="after_plugin_install" src="scripts/zStripScript.js" />
+        <header-file src="src/ios/IBGPlugin.h" />
+        <source-file src="src/ios/IBGPlugin.m" />
     </platform>
 
 </plugin>
