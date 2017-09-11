@@ -131,6 +131,10 @@ Instabug.identifyUserWithEmail = function (email, name, success, error) {
     exec(success, error, 'IBGPlugin', 'identifyUserWithEmail', [email, name]);
 };
 
+Instabug.logOut = function (email, name, success, error) {
+    exec(success, error, 'IBGPlugin', 'logOut', []);
+};
+
 Instabug.setDebugEnabled = function (isDebugEnabled, success, error) {
     exec(success, error, 'IBGPlugin', 'setDebugEnabled', [isDebugEnabled]);
     if(success) {

@@ -136,6 +136,9 @@ public class IBGPlugin extends CordovaPlugin {
         }  else if ("identifyUserWithEmail".equals(action)) {
             identifyUserWithEmail(callbackContext, args.optString(0), args.optString(1));
             
+        }  else if ("logOut".equals(action)) {
+            logOut(callbackContext);
+            
         }  else {
             // Method not found.
             return false;
@@ -290,6 +293,22 @@ public class IBGPlugin extends CordovaPlugin {
                 callbackContext.error(errorMsg);
             }
         } else callbackContext.error("A name and email must be provided.");
+    }
+
+
+    /**
+     * Logout User
+     * 
+     * @param callbackContext 
+     *        Used when calling back into JavaScript
+     */
+    private void logOut(final CallbackContext callbackContext) {
+        try {
+            Instabug.logoutUser();
+            callbackContext.success();
+        } catch (IllegalStateException e) {
+            callbackContext.error(errorMsg);
+        }
     }
 
     /**
