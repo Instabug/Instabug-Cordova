@@ -133,6 +133,9 @@ public class IBGPlugin extends CordovaPlugin {
         } else if ("removeUserAttribute".equals(action)) {
             removeUserAttribute(callbackContext, args.optString(0));
             
+        }  else if ("identifyUserWithEmail".equals(action)) {
+            identifyUserWithEmail(callbackContext, args.optString(0), args.optString(1));
+            
         }  else {
             // Method not found.
             return false;
@@ -234,6 +237,7 @@ public class IBGPlugin extends CordovaPlugin {
      * @param email
      *        User's default email
      */
+    @Deprecated
     private void setUserEmail(final CallbackContext callbackContext, String email) {
         if (email != null && email.length() > 0) {
             try {
@@ -253,6 +257,7 @@ public class IBGPlugin extends CordovaPlugin {
      * @param name
      *        User's name
      */
+    @Deprecated
     private void setUserName(final CallbackContext callbackContext, String name) {
         if (name != null && name.length() > 0) {
             try {
@@ -262,6 +267,29 @@ public class IBGPlugin extends CordovaPlugin {
                 callbackContext.error(errorMsg);
             }
         } else callbackContext.error("A name must be provided.");
+    }
+
+    /**
+     * Set the user identity.
+     * Instabug will pre-fill the user email in reports.
+     *
+     * @param callbackContext 
+     *        Used when calling back into JavaScript
+     * @param email    
+     *        User's default email
+     * @param name     
+     *        Username
+     *
+     */
+    private void identifyUserWithEmail(final CallbackContext callbackContext, String email, String name) {
+        if (name != null && name.length() > 0 && email != null && email.length() > 0) {
+            try {
+                Instabug.identifyUser(name, email);
+                callbackContext.success();
+            } catch (IllegalStateException e) {
+                callbackContext.error(errorMsg);
+            }
+        } else callbackContext.error("A name and email must be provided.");
     }
 
     /**
