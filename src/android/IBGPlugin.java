@@ -144,7 +144,10 @@ public class IBGPlugin extends CordovaPlugin {
         }  else if ("getAllUserAttributes".equals(action)) {
             getAllUserAttributes(callbackContext);
             
-        }else {
+        } else if ("getUserAttribute".equals(action)) {
+            getUserAttribute(callbackContext, args.optString(0));
+            
+        } else {
             // Method not found.
             return false;
         }
@@ -506,11 +509,9 @@ public class IBGPlugin extends CordovaPlugin {
      *        Used when calling back into JavaScript
      * @param key   the attribute
      * @param value the value
-     * @throws IllegalStateException if Instabug object wasn't built using {@link Builder#build()} before this method was called
      * 
      */
-
-     private void setUserAttribute(final CallbackContext callbackContext, String key, String value) {
+    private void setUserAttribute(final CallbackContext callbackContext, String key, String value) {
         try {
             Instabug.setUserAttribute(key,value);
             callbackContext.success();
@@ -525,10 +526,8 @@ public class IBGPlugin extends CordovaPlugin {
      * @param callbackContext 
      *        Used when calling back into JavaScript
      * @param key the attribute key as string
-     * @throws IllegalStateException if Instabug object wasn't built using {@link Builder#build()} before this method was called
      * 
      */
-
     private void removeUserAttribute(final CallbackContext callbackContext, String key) {
         try {
             Instabug.removeUserAttribute(key);
@@ -538,11 +537,36 @@ public class IBGPlugin extends CordovaPlugin {
         }
     }
 
+
+    /**
+     * Gets all saved user attributes.
+     *
+     * @param callbackContext 
+     *        Used when calling back into JavaScript
+     */
     private void getAllUserAttributes(final CallbackContext callbackContext) {
         try {
             HashMap userAttributes = Instabug.getAllUserAttributes();
             JSONObject jsonUserAttributes = new JSONObject(userAttributes);
             callbackContext.success(jsonUserAttributes);
+        } catch (IllegalStateException e) {
+            callbackContext.error(errorMsg);
+        }
+    }
+
+    /**
+     * Gets specific user attribute.
+     *
+     * @param callbackContext 
+     *        Used when calling back into JavaScript
+     * @param key 
+     *        the attribute key as string
+     *
+     */
+    private void getUserAttribute(final CallbackContext callbackContext, String key) {
+        try {
+            String userAttribute = Instabug.getUserAttribute(key);
+            callbackContext.success(userAttribute);
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
         }

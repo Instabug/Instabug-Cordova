@@ -131,6 +131,10 @@ Instabug.getAllUserAttributes = function (success, error) {
     exec(success, error, 'IBGPlugin', 'getAllUserAttributes', []);
 };
 
+Instabug.getUserAttribute = function (key, success, error) {
+    exec(success, error, 'IBGPlugin', 'getUserAttribute', [key]);
+};
+
 Instabug.identifyUserWithEmail = function (email, name, success, error) {
     exec(success, error, 'IBGPlugin', 'identifyUserWithEmail', [email, name]);
 };
