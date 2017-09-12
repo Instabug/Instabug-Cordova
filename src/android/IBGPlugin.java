@@ -3,6 +3,7 @@ package com.instabug.cordova.plugin;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.util.Log;
 
 import com.instabug.library.Instabug;
 import com.instabug.library.invocation.InstabugInvocationEvent;
@@ -18,6 +19,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.lang.Integer;
+import java.util.HashMap;
 
 /**
  * This plugin initializes Instabug.  
@@ -139,7 +141,10 @@ public class IBGPlugin extends CordovaPlugin {
         }  else if ("logOut".equals(action)) {
             logOut(callbackContext);
             
-        }  else {
+        }  else if ("getAllUserAttributes".equals(action)) {
+            getAllUserAttributes(callbackContext);
+            
+        }else {
             // Method not found.
             return false;
         }
@@ -528,6 +533,16 @@ public class IBGPlugin extends CordovaPlugin {
         try {
             Instabug.removeUserAttribute(key);
             callbackContext.success();
+        } catch (IllegalStateException e) {
+            callbackContext.error(errorMsg);
+        }
+    }
+
+    private void getAllUserAttributes(final CallbackContext callbackContext) {
+        try {
+            HashMap userAttributes = Instabug.getAllUserAttributes();
+            JSONObject jsonUserAttributes = new JSONObject(userAttributes);
+            callbackContext.success(jsonUserAttributes);
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
         }
