@@ -127,6 +127,22 @@ Instabug.removeUserAttribute = function (key, success, error) {
     exec(success, error, 'IBGPlugin', 'removeUserAttribute', [key]);
 };
 
+Instabug.getAllUserAttributes = function (success, error) {
+    exec(success, error, 'IBGPlugin', 'getAllUserAttributes', []);
+};
+
+Instabug.getUserAttribute = function (key, success, error) {
+    exec(success, error, 'IBGPlugin', 'getUserAttribute', [key]);
+};
+
+Instabug.identifyUserWithEmail = function (email, name, success, error) {
+    exec(success, error, 'IBGPlugin', 'identifyUserWithEmail', [email, name]);
+};
+
+Instabug.logOut = function (success, error) {
+    exec(success, error, 'IBGPlugin', 'logOut', []);
+};
+
 Instabug.setDebugEnabled = function (isDebugEnabled, success, error) {
     exec(success, error, 'IBGPlugin', 'setDebugEnabled', [isDebugEnabled]);
     if(success) {
