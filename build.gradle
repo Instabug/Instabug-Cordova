@@ -20,7 +20,7 @@ android {
     }
 }
 
-dependencies { 
-	compile 'com.instabug.library:instabug:4.2.10'
+dependencies {
+	compile 'com.instabug.library:instabug:4.2.11'
 	compile 'com.android.support:multidex:1.0.0'
 }
