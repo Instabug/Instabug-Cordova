@@ -1,7 +1,7 @@
 Cordova Instabug Plugin
 =================================
 
-The purpose of this plugin is to simplify the process of integrating the Instabug SDK in a hybrid application, as well as to provide an interface to interfacing with the SDK through JavaScript.
+The purpose of this plugin is to simplify the process of integrating the Instabug SDK in a hybrid application, as well as to provide an interface to interact with the SDK through JavaScript.
 
 
 ### Installation
@@ -18,9 +18,9 @@ To initialize Instabug in your app, you need to do the following:
 
 2. You need to add your app token in the __MyApplication__ class, by replacing ```YOUR_ANDROID_TOKEN```. (You can find this class under this path  ```YourProjectName/plugins/com.instabug.cordova.plugin/src/android/MyApplication.java```)
 
-3. You can change the invocation event by changing this line ```InstabugInvocationEvent.FLOATING_BUTTON``` in the __MyApplication__ class to any of the following:
+3. You can change the invocation event by changing this line ```InstabugInvocationEvent.SHAKE``` in the __MyApplication__ class to any of the following:
 
-```InstabugInvocationEvent.SHAKE```, ```InstabugInvocationEvent.SCREENSHOT_GESTURE```, ```InstabugInvocationEvent.TWO_FINGER_SWIPE_LEFT```, or ```InstabugInvocationEvent.NONE```.
+```InstabugInvocationEvent.FLOATING_BUTTON```, ```InstabugInvocationEvent.SCREENSHOT_GESTURE```, ```InstabugInvocationEvent.TWO_FINGER_SWIPE_LEFT```, or ```InstabugInvocationEvent.NONE```.
 
 ### iOS
 You can initialize the SDK by using this method in your JS class
