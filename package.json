@@ -1,6 +1,6 @@
 {
   "name": "instabug-cordova",
-  "version": "1.3.9",
+  "version": "1.3.10",
   "description": "The purpose of this plugin is to simplify the process of integrating the Instabug SDK in a hybrid application, as well as to provide an interface to interfacing with the SDK through JavaScript.",
   "main": "index.js",
   "repository": {
