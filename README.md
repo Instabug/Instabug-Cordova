@@ -14,7 +14,7 @@ cordova plugin add https://github.com/Instabug/instabug-cordova
 To initialize Instabug in your app, you need to do the following:
 
 ### Android
-1. Change the name of the application class in your manifest file to ```android:name="com.instabug.cordova.plugin.MyApplication"```.
+1. Change the name of the application class in your AndroidManifest.xml file to ```android:name="com.instabug.cordova.plugin.MyApplication"```.
 
 2. You need to add your app token in the __MyApplication__ class, by replacing ```YOUR_ANDROID_TOKEN```. (You can find this class under this path  ```YourProjectName/plugins/com.instabug.cordova.plugin/src/android/MyApplication.java```)
 
