@@ -1,8 +1,11 @@
-Cordova Instabug Plugin
+Instabug Cordova Plugin
 =================================
 
 The purpose of this plugin is to simplify the process of integrating the Instabug SDK in a hybrid application, as well as to provide an interface to interact with the SDK through JavaScript.
 
+Instabug is a bug reporting and in-app feedback tool that provides your testers and users with easy “shake to send” feedback from within the app, to [report bugs and issues easily](https://instabug.com/bug-reporting). You’ll get attached screenshots, screen recordings, annotations, network logs to help you take insightful decisions. You’ll also receive all the device details, environment snapshots and bug reproduction steps so that you can fix bugs and iterate faster.
+
+For more info, visit [Instabug.com](https://instabug.com).
 
 ### Installation
 Currently, this plugin can only be installed via the Command-Line Interface.
