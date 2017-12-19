@@ -89,8 +89,9 @@
                 <param name="onload" value="true" />
             </feature>
         </config-file>
-        
+
         <framework src="src/ios/Instabug.framework" custom="true" embed="true" />
+        <framework src="src/ios/InstabugCore.framework" custom="true" embed="true" />
         <hook type="after_plugin_install" src="scripts/zStripScript.js" />
         <header-file src="src/ios/IBGPlugin.h" />
         <source-file src="src/ios/IBGPlugin.m" />

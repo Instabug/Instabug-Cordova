@@ -57,7 +57,7 @@ module.exports = function(context) {
         projectName = projectName.substr(0, projectName.length - 1);
     }
 
-    var options = {shellPath: '/bin/sh', shellScript: 'bash "${PROJECT_DIR}/${PRODUCT_NAME}/Plugins/com.instabug.cordova.plugin/Instabug.framework/Instabug.bundle/strip-frameworks.sh"', runOnlyForDeploymentPostprocessing: 0};
+    var options = {shellPath: '/bin/sh', shellScript: 'bash "${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/InstabugCore.framework/strip-frameworks.sh"', runOnlyForDeploymentPostprocessing: 0};
     var buildPhase = myProj.addBuildPhase([], 'PBXShellScriptBuildPhase', 'StripFrameworkScript', myProj.getFirstTarget().uuid, options).buildPhase;
 
     fs.writeFileSync(projectPath, myProj.writeSync());
