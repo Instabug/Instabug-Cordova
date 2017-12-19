@@ -15,16 +15,16 @@
 - (void) activate:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* result;
-    
+
     NSDictionary* tokensForPlatforms = [command argumentAtIndex:0];
-    
+
     if (tokensForPlatforms) {
         NSString* token = [tokensForPlatforms objectForKey:@"ios"];
-        
+
         if ([token length] > 0) {
             id invEvent = [command argumentAtIndex:1];
             IBGInvocationEvent invocationEvent = 0;
-            
+
             if ([invEvent isKindOfClass:[NSString class]]) {
                 invocationEvent = [self parseInvocationEvent:invEvent];
             } else if ([invEvent isKindOfClass:[NSDictionary class]]) {
@@ -32,7 +32,7 @@
                 // and can be specified as such
                 invocationEvent = [self parseInvocationEvent: [invEvent objectForKey:@"ios"]];
             }
-            
+
             if (!invocationEvent) {
                 // Instabug iOS SDK requires invocation event for initialization
                 result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
@@ -40,10 +40,10 @@
             } else {
                 // Initialize Instabug
                 [Instabug startWithToken:token invocationEvent:invocationEvent];
-                
+
                 // Apply provided options
                 [self applyOptions:[command argumentAtIndex:2]];
-                
+
                 result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
             }
         } else {
@@ -56,7 +56,7 @@
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
                                    messageAsString:@"An application token must be provided."];
     }
-    
+
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
@@ -70,13 +70,13 @@
 - (void) invoke:(CDVInvokedUrlCommand*)command
 {
     IBGInvocationMode iMode = [self parseInvocationMode:[command argumentAtIndex:0]];
-    
+
     if (iMode) {
         [Instabug invokeWithInvocationMode:iMode];
     } else {
         [Instabug invoke];
     }
-    
+
     [self sendSuccessResult:command];
 }
 
@@ -103,12 +103,12 @@
 - (void) setPrimaryColor:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* result;
-    
+
     NSMutableString* color = [command argumentAtIndex:0];
-    
+
     if ([color length] > 0) {
         BOOL valid = NO;
-        
+
         if ([color length] == 6) {
             valid = YES;
         } else if ([color length] == 7 && [color rangeOfString:@"#"].location == 0) {
@@ -116,7 +116,7 @@
             // '#' char must be removed before parsing
             color = [NSMutableString stringWithString:[color substringFromIndex:1]];
         }
-        
+
         if (valid) {
             UIColor* uiColor = [self colorFromHexString:color];
             [Instabug setPrimaryColor:uiColor];
@@ -131,7 +131,7 @@
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
                                    messageAsString:@"A hex color must be provided."];
     }
-    
+
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
@@ -145,9 +145,9 @@
 - (void) setUserEmail:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* result;
-    
+
     NSString* email = [command argumentAtIndex:0];
-    
+
     if ([email length] > 0) {
         [Instabug setUserEmail:email];
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
@@ -155,7 +155,7 @@
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
                                    messageAsString:@"An email must be provided."];
     }
-    
+
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
@@ -168,9 +168,9 @@
 - (void) setUserName:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* result;
-    
+
     NSString* name = [command argumentAtIndex:0];
-    
+
     if ([name length] > 0) {
         [Instabug setUserName:name];
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
@@ -178,7 +178,7 @@
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
                                    messageAsString:@"A name must be provided."];
     }
-    
+
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
@@ -192,9 +192,9 @@
 - (void) setUserData:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* result;
-    
+
     NSString* data = [command argumentAtIndex:0];
-    
+
     if ([data length] > 0) {
         [Instabug setUserData:data];
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
@@ -202,7 +202,31 @@
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
                                    messageAsString:@"User data must be provided."];
     }
-    
+
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+/**
+ * Sets the default position at which the Instabug screen recording button will be shown.
+ * Different orientations are already handled.
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) setVideoRecordingFloatingButtonPosition:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* result;
+
+    IBGPosition position = [self parseIBGPosition:[command argumentAtIndex:0]];
+
+    if (position) {
+        [Instabug setVideoRecordingFloatingButtonPosition:position];
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"A position must be provided."];
+    }
+
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
@@ -220,7 +244,7 @@
     CDVPluginResult* result;
     id file = [command argumentAtIndex:0];
     NSString* filePath;
-    
+
     if ([file isKindOfClass:[NSString class]]) {
         filePath = file;
     } else if ([file isKindOfClass:[NSDictionary class]]) {
@@ -228,10 +252,10 @@
         // and can be specified as such
         filePath = [file objectForKey:@"ios"];
     }
-    
+
     if ([filePath length] > 0) {
         NSFileManager* fileManager = [NSFileManager defaultManager];
-        
+
         if ([fileManager fileExistsAtPath:filePath]) {
             // If the file doesn't exist at the path specified,
             // we won't be able to notify the containing app when
@@ -248,8 +272,8 @@
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
                                    messageAsString:@"A local file URI must be provided."];
     }
-    
-    
+
+
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
@@ -263,7 +287,7 @@
 {
     CDVPluginResult* result;
     NSString* log = [command argumentAtIndex:0];
-    
+
     if ([log length] > 0) {
         IBGLog(log);
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
@@ -271,7 +295,7 @@
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
                                    messageAsString:@"A log must be provided."];
     }
-    
+
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
@@ -284,9 +308,9 @@
 - (void) changeInvocationEvent:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* result;
-    
+
     IBGInvocationEvent iEvent = [self parseInvocationEvent:[command argumentAtIndex:0]];
-    
+
     if (iEvent) {
         [Instabug setInvocationEvent:iEvent];
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
@@ -294,7 +318,7 @@
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
                                    messageAsString:@"A valid event type must be provided."];
     }
-    
+
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
@@ -308,9 +332,9 @@
 - (void) setLocale:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* result;
-    
+
     IBGLocale iLocale = [self parseLocale:[command argumentAtIndex:0]];
-    
+
     if (iLocale) {
         [Instabug setLocale:iLocale];
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
@@ -318,7 +342,7 @@
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
                                    messageAsString:@"A valid locale must be provided."];
     }
-    
+
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
@@ -359,7 +383,7 @@
  */
 - (void) setDefaultInvocationMode:(NSString*)mode {
     IBGInvocationMode iMode = [self parseInvocationMode:mode];
-    
+
     if (iMode) {
         [Instabug setDefaultInvocationMode:iMode];
     }
@@ -378,7 +402,7 @@
 {
     double iPhone = [iPhoneThreshold doubleValue];
     double iPad = [iPadThreshold doubleValue];
-    
+
     if (iPhone && iPad) {
         [Instabug setShakingThresholdForiPhone:iPhone foriPad:iPad];
     }
@@ -397,7 +421,7 @@
 - (void) setFloatingButtonEdge:(NSString*)edge withOffset:(NSString*)offset
 {
     double offsetFromTop = [offset doubleValue];
-    
+
     if (offsetFromTop) {
         if ([edge isEqualToString:@"left"]) {
             // SDK is unclear, can't implement
@@ -531,6 +555,26 @@
         return IBGInvocationModeChatsList;
     } else if ([mode isEqualToString:@"na"]) {
         return IBGInvocationModeNA;
+    } else return 0;
+}
+
+/**
+ * Convenience method for converting NSString to
+ * IBGPosition.
+ *
+ * @param  {NSString*} position
+ *         NSString shortcode for IBGPosition
+ */
+- (IBGInvocationMode) parseIBGPosition:(NSString*)position
+{
+    if ([position isEqualToString:@"topRight"]) {
+        return IBGPositionTopRight;
+    } else if ([position isEqualToString:@"bottomLeft"]) {
+        return IBGPositionBottomLeft;
+    } else if ([position isEqualToString:@"topLeft"]) {
+        return IBGPositionTopLeft;
+    } else if ([position isEqualToString:@"bottomRight"]) {
+        return IBGPositionBottomRight;
     } else return 0;
 }
 
