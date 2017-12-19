@@ -50,10 +50,11 @@
             <service android:name="com.instabug.library.network.worker.uploader.InstabugSessionUploaderService" />
             <service android:name="com.instabug.library.bugreporting.network.InstabugBugsUploaderService" />
             <service android:name="com.instabug.crash.network.InstabugCrashesUploaderService" />
-            <service android:name="com.instabug.library.messaging.InstabugMessageUploaderService" />
             <service android:name="com.instabug.library.network.worker.fetcher.InstabugFeaturesFetcherService" />
             <service android:name="com.instabug.survey.network.service.InstabugSurveysSubmitterService" />
             <service android:name="com.instabug.library.internal.video.VideoProcessingService"/>
+            <service android:name="com.instabug.library.analytics.network.InstabugAnalyticsUploaderService"/>
+            <service android:name="com.instabug.chat.network.InstabugMessageUploaderService"/>
 
             <receiver android:name="com.instabug.library.network.InstabugNetworkReceiver">
                 <intent-filter>
@@ -89,8 +90,9 @@
                 <param name="onload" value="true" />
             </feature>
         </config-file>
-        
+
         <framework src="src/ios/Instabug.framework" custom="true" embed="true" />
+        <framework src="src/ios/InstabugCore.framework" custom="true" embed="true" />
         <hook type="after_plugin_install" src="scripts/zStripScript.js" />
         <header-file src="src/ios/IBGPlugin.h" />
         <source-file src="src/ios/IBGPlugin.m" />

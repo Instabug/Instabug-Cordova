@@ -139,6 +139,10 @@ Instabug.identifyUserWithEmail = function (email, name, success, error) {
     exec(success, error, 'IBGPlugin', 'identifyUserWithEmail', [email, name]);
 };
 
+Instabug.setVideoRecordingFloatingButtonPosition = function (position, success, error) {
+    exec(success, error, 'IBGPlugin', 'setVideoRecordingFloatingButtonPosition', [position]);
+};
+
 Instabug.logOut = function (success, error) {
     exec(success, error, 'IBGPlugin', 'logOut', []);
 };
