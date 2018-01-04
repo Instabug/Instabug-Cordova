@@ -151,6 +151,9 @@ public class IBGPlugin extends CordovaPlugin {
         } else if ("showSurveyWithToken".equals(action)) {
             showSurveyWithToken(callbackContext, args.optString(0));
 
+        } else if ("hasRespondedToSurveyWithToken".equals(action)) {
+            hasRespondedToSurveyWithToken(callbackContext, args.optString(0));
+
         } else if ("setVideoRecordingFloatingButtonPosition".equals(action)) {
             setVideoRecordingFloatingButtonPosition(callbackContext, args.optString(0));
 
@@ -592,6 +595,23 @@ public class IBGPlugin extends CordovaPlugin {
         try {
             String userAttribute = Instabug.getUserAttribute(key);
             callbackContext.success(userAttribute);
+        } catch (IllegalStateException e) {
+            callbackContext.error(errorMsg);
+        }
+    }
+
+    /**
+     * Returns true if the survey with a specific token was answered before.
+     * Will return false if the token does not exist or if the survey was not answered before.
+     * @param surveyToken - A String with a survey token.
+     * @param callbackContext callback with argument as the desired value of the whether
+     * the survey has been responded to or not.
+     *
+     */
+    private void hasRespondedToSurveyWithToken(final CallbackContext callbackContext, String surveyToken) {
+        try {
+            boolean hasResponded = Instabug.hasRespondToSurvey(surveyToken);
+            callbackContext.success(hasResponded+"");
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
         }
