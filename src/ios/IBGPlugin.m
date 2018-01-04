@@ -183,6 +183,54 @@
 }
 
 /**
+ * Shows survey with a specific token.
+ * Does nothing if there are no available surveys with that specific token.
+ * Answered and cancelled surveys won't show up again.
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) showSurveyWithToken:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* result;
+
+    NSString* surveyToken = [command argumentAtIndex:0];
+
+    if ([surveyToken length] > 0) {
+        [Instabug showSurveyWithToken:surveyToken];
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"A survey token must be provided."];
+    }
+
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+/**
+ * Returns true if the survey with a specific token was answered before.
+ * Will return false if the token does not exist or if the survey was not answered before.
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) hasRespondedToSurveyWithToken:(CDVInvokedUrlCommand*)command
+ {
+     CDVPluginResult* result;
+     NSString *surveyToken = [command argumentAtIndex:0];
+
+     if (surveyToken.length > 0) {
+         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                    messageAsBool:[Instabug hasRespondedToSurveyWithToken:surveyToken]];
+     } else {
+         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                    messageAsString:@"A non-empty survey token must be provided."];
+     }
+
+     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+ }
+
+/**
  * Sets the user data that’s attached with each bug report sent.
  * Maximum size of the string is 1000 characters.
  *
