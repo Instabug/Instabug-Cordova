@@ -14,6 +14,8 @@ import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
+import org.apache.cordova.PluginResult.Status;
+import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -611,7 +613,7 @@ public class IBGPlugin extends CordovaPlugin {
     private void hasRespondedToSurveyWithToken(final CallbackContext callbackContext, String surveyToken) {
         try {
             boolean hasResponded = Instabug.hasRespondToSurvey(surveyToken);
-            callbackContext.success(hasResponded+"");
+            callbackContext.sendPluginResult(new PluginResult(Status.OK, hasResponded));
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
         }
