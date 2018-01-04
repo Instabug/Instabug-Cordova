@@ -14,6 +14,8 @@ import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
+import org.apache.cordova.PluginResult.Status;
+import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -147,6 +149,12 @@ public class IBGPlugin extends CordovaPlugin {
 
         } else if ("getUserAttribute".equals(action)) {
             getUserAttribute(callbackContext, args.optString(0));
+
+        } else if ("showSurveyWithToken".equals(action)) {
+            showSurveyWithToken(callbackContext, args.optString(0));
+
+        } else if ("hasRespondedToSurveyWithToken".equals(action)) {
+            hasRespondedToSurveyWithToken(callbackContext, args.optString(0));
 
         } else if ("setVideoRecordingFloatingButtonPosition".equals(action)) {
             setVideoRecordingFloatingButtonPosition(callbackContext, args.optString(0));
@@ -340,6 +348,24 @@ public class IBGPlugin extends CordovaPlugin {
                 callbackContext.error(errorMsg);
             }
         } else callbackContext.error("User data must be provided.");
+    }
+
+     /**
+      * Shows survey with a specific token.
+      * Does nothing if there are no available surveys with that specific token.
+      * Answered and cancelled surveys won't show up again.
+      * @param surveyToken - A String with a survey token.
+      *
+      */
+    private void showSurveyWithToken(final CallbackContext callbackContext, String surveyToken) {
+        if (surveyToken != null && surveyToken.length() > 0) {
+            try {
+                Instabug.showSurvey(surveyToken);
+                callbackContext.success();
+            } catch (IllegalStateException e) {
+                callbackContext.error(errorMsg);
+            }
+        } else callbackContext.error("Survey token must be provided.");
     }
 
     /**
@@ -571,6 +597,23 @@ public class IBGPlugin extends CordovaPlugin {
         try {
             String userAttribute = Instabug.getUserAttribute(key);
             callbackContext.success(userAttribute);
+        } catch (IllegalStateException e) {
+            callbackContext.error(errorMsg);
+        }
+    }
+
+    /**
+     * Returns true if the survey with a specific token was answered before.
+     * Will return false if the token does not exist or if the survey was not answered before.
+     * @param surveyToken - A String with a survey token.
+     * @param callbackContext callback with argument as the desired value of the whether
+     * the survey has been responded to or not.
+     *
+     */
+    private void hasRespondedToSurveyWithToken(final CallbackContext callbackContext, String surveyToken) {
+        try {
+            boolean hasResponded = Instabug.hasRespondToSurvey(surveyToken);
+            callbackContext.sendPluginResult(new PluginResult(Status.OK, hasResponded));
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
         }
