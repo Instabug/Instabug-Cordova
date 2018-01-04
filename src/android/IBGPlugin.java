@@ -148,6 +148,9 @@ public class IBGPlugin extends CordovaPlugin {
         } else if ("getUserAttribute".equals(action)) {
             getUserAttribute(callbackContext, args.optString(0));
 
+        } else if ("showSurveyWithToken".equals(action)) {
+            showSurveyWithToken(callbackContext, args.optString(0));
+
         } else if ("setVideoRecordingFloatingButtonPosition".equals(action)) {
             setVideoRecordingFloatingButtonPosition(callbackContext, args.optString(0));
 
@@ -340,6 +343,24 @@ public class IBGPlugin extends CordovaPlugin {
                 callbackContext.error(errorMsg);
             }
         } else callbackContext.error("User data must be provided.");
+    }
+
+     /**
+      * Shows survey with a specific token.
+      * Does nothing if there are no available surveys with that specific token.
+      * Answered and cancelled surveys won't show up again.
+      * @param surveyToken - A String with a survey token.
+      *
+      */
+    private void showSurveyWithToken(final CallbackContext callbackContext, String surveyToken) {
+        if (surveyToken != null && surveyToken.length() > 0) {
+            try {
+                Instabug.showSurvey(surveyToken);
+                callbackContext.success();
+            } catch (IllegalStateException e) {
+                callbackContext.error(errorMsg);
+            }
+        } else callbackContext.error("Survey token must be provided.");
     }
 
     /**

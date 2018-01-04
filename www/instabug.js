@@ -81,6 +81,10 @@ Instabug.setUserName = function (name, success, error) {
     exec(success, error, 'IBGPlugin', 'setUserName', [name]);
 };
 
+Instabug.showSurveyWithToken = function (surveyToken, success, error) {
+    exec(success, error, 'IBGPlugin', 'showSurveyWithToken', [surveyToken]);
+};
+
 Instabug.setUserData = function (data, success, error) {
     exec(success, error, 'IBGPlugin', 'setUserData', [data]);
 };
