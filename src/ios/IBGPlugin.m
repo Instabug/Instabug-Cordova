@@ -461,6 +461,29 @@
 }
 
 /**
+ * Enable/Disable view hierarchy from Instabug SDK
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+ - (void) setViewHierarchyEnabled:(CDVInvokedUrlCommand*)command
+ {
+     CDVPluginResult* result;
+
+     BOOL isEnabled = [command argumentAtIndex:0];
+
+     if (isEnabled) {
+         [Instabug setViewHierarchyEnabled:isEnabled];
+         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+     } else {
+         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                    messageAsString:@"A boolean value must be provided."];
+     }
+
+     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+ }
+
+/**
  * Convenience method for setting the threshold value
  * of the shake gesture for iPhone/iPod touch and iPad.
  *
