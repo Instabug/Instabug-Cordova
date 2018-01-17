@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.util.Log;
 
+import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.invocation.InstabugInvocationMode;
@@ -159,7 +160,10 @@ public class IBGPlugin extends CordovaPlugin {
         } else if ("setVideoRecordingFloatingButtonPosition".equals(action)) {
             setVideoRecordingFloatingButtonPosition(callbackContext, args.optString(0));
 
-        } else {
+        } else if ("setViewHierarchyEnabled".equals(action)) {
+            setViewHierarchyEnabled(callbackContext, args.optBoolean(0));
+
+        }  else {
             // Method not found.
             return false;
         }
@@ -529,6 +533,27 @@ public class IBGPlugin extends CordovaPlugin {
             callbackContext.success();
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
+        }
+    }
+
+    /**
+     * Enable/Disable view hierarchy from Instabug SDK
+     *
+     * @param isEnabled whether view hierarchy should be enabled or not
+     *
+     * @param callbackContext
+     *        Used when calling back into JavaScript
+     */
+    private void setViewHierarchyEnabled(final CallbackContext callbackContext, boolean isEnabled) {
+        try {
+          if(isEnabled) {
+            Instabug.setViewHierarchyState(Feature.State.ENABLED);
+          } else {
+            Instabug.setViewHierarchyState(Feature.State.DISABLED);
+          }
+          callbackContext.success();
+        } catch (IllegalStateException e) {
+          callbackContext.error(errorMsg);
         }
     }
 
