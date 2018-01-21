@@ -20,6 +20,14 @@ var getInvocationModes = function () {
     };
 };
 
+var getReproStepsMode = function () {
+    return {
+        enabled: 'enabled',
+        disabled: 'disabled',
+        enabledWithNoScreenshot: 'enabledWithNoScreenshot'
+    };
+};
+
 var getLocales = function () {
     return {
         arabic: 'arabic',
@@ -73,6 +81,10 @@ Instabug.setPrimaryColor = function (colorInteger, success, error) {
     exec(success, error, 'IBGPlugin', 'setPrimaryColor', [colorInteger]);
 };
 
+Instabug.setViewHierarchyEnabled = function (enabled, success, error) {
+    exec(success, error, 'IBGPlugin', 'setViewHierarchyEnabled', [enabled]);
+};
+
 Instabug.setUserEmail = function (email, success, error) {
     exec(success, error, 'IBGPlugin', 'setUserEmail', [email]);
 };
@@ -83,6 +95,17 @@ Instabug.setUserName = function (name, success, error) {
 
 Instabug.showSurveyWithToken = function (surveyToken, success, error) {
     exec(success, error, 'IBGPlugin', 'showSurveyWithToken', [surveyToken]);
+};
+
+Instabug.setReproStepsMode = function (reproStepsMode, success, error) {
+
+  var validatedReproStepsMode = getReproStepsMode()[reproStepsMode];
+
+  if (validatedReproStepsMode) {
+      exec(success, error, 'IBGPlugin', 'setReproStepsMode', [validatedReproStepsMode]);
+  } else {
+      console.log('Could not set user steps mode - "' + validatedReproStepsMode + '" is not valid.');
+  }
 };
 
 Instabug.setUserData = function (data, success, error) {

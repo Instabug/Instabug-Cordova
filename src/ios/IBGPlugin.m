@@ -395,6 +395,29 @@
 }
 
 /**
+ * Sets whether user steps tracking is visual, non visula or disabled.
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) setReproStepsMode:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* result;
+
+    IBGUserStepsMode reproStepsMode = [self parseReproStepsMode:[command argumentAtIndex:0]];
+
+    if (reproStepsMode) {
+        [Instabug setReproStepsMode:reproStepsMode];
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"A valid user steps mode must be provided."];
+    }
+
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+/**
  * Convenience method for setting whether the email
  * field is validated or not.
  *
@@ -436,6 +459,29 @@
         [Instabug setDefaultInvocationMode:iMode];
     }
 }
+
+/**
+ * Enable/Disable view hierarchy from Instabug SDK
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+ - (void) setViewHierarchyEnabled:(CDVInvokedUrlCommand*)command
+ {
+     CDVPluginResult* result;
+
+     BOOL isEnabled = [command argumentAtIndex:0];
+
+     if (isEnabled) {
+         [Instabug setViewHierarchyEnabled:isEnabled];
+         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+     } else {
+         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                    messageAsString:@"A boolean value must be provided."];
+     }
+
+     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+ }
 
 /**
  * Convenience method for setting the threshold value
@@ -623,6 +669,25 @@
         return IBGPositionTopLeft;
     } else if ([position isEqualToString:@"bottomRight"]) {
         return IBGPositionBottomRight;
+    } else return 0;
+}
+
+
+/**
+ * Convenience method for converting NSString to
+ * IBGUserStepsMode.
+ *
+ * @param  {NSString*} mode
+ *         NSString shortcode for IBGUserStepsMode
+ */
+- (IBGUserStepsMode) parseReproStepsMode:(NSString*)mode
+{
+    if ([mode isEqualToString:@"enabled"]) {
+        return IBGUserStepsModeEnable;
+    } else if ([mode isEqualToString:@"disabled"]) {
+        return IBGUserStepsModeDisable;
+    } else if ([mode isEqualToString:@"enabledWithNoScreenshot"]) {
+        return IBGUserStepsModeEnabledWithNoScreenshots;
     } else return 0;
 }
 
