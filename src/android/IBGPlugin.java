@@ -163,7 +163,13 @@ public class IBGPlugin extends CordovaPlugin {
         } else if ("setViewHierarchyEnabled".equals(action)) {
             setViewHierarchyEnabled(callbackContext, args.optBoolean(0));
 
-        }  else {
+        } else if ("setAutoScreenRecordingEnabled".equals(action)) {
+            setAutoScreenRecordingEnabled(callbackContext, args.optBoolean(0));
+
+        } else if ("setAutoScreenRecordingMaxDuration".equals(action)) {
+            setAutoScreenRecordingMaxDuration(callbackContext, args.optInt(0));
+
+        } else {
             // Method not found.
             return false;
         }
@@ -551,6 +557,42 @@ public class IBGPlugin extends CordovaPlugin {
           } else {
             Instabug.setViewHierarchyState(Feature.State.DISABLED);
           }
+          callbackContext.success();
+        } catch (IllegalStateException e) {
+          callbackContext.error(errorMsg);
+        }
+    }
+
+    /**
+     * Sets whether the SDK is recording the screen or not.
+     *
+     * @param isEnabled A boolean to set auto screen recording to being enabled or disabled.
+     *
+     * @param callbackContext
+     *        Used when calling back into JavaScript
+     */
+    private void setAutoScreenRecordingEnabled(final CallbackContext callbackContext, boolean isEnabled) {
+        try {
+          Instabug.setAutoScreenRecordingEnabled(isEnabled);
+          callbackContext.success();
+        } catch (IllegalStateException e) {
+          callbackContext.error(errorMsg);
+        }
+    }
+
+    /**
+     * Sets maximum auto screen recording video duration.
+     *
+     * @param duration maximum duration of the screen recording video seconds
+     * The maximum duration is 30 seconds
+     *
+     * @param callbackContext
+     *        Used when calling back into JavaScript
+     */
+    private void setAutoScreenRecordingMaxDuration(final CallbackContext callbackContext, int duration) {
+        try {
+          int durationInMilli = duration * 1000;
+          Instabug.setAutoScreenRecordingMaxDuration(durationInMilli);
           callbackContext.success();
         } catch (IllegalStateException e) {
           callbackContext.error(errorMsg);
