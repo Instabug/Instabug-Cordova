@@ -85,6 +85,14 @@ Instabug.setViewHierarchyEnabled = function (enabled, success, error) {
     exec(success, error, 'IBGPlugin', 'setViewHierarchyEnabled', [enabled]);
 };
 
+Instabug.setAutoScreenRecordingEnabled = function (enabled, success, error) {
+    exec(success, error, 'IBGPlugin', 'setAutoScreenRecordingEnabled', [enabled]);
+};
+
+Instabug.setAutoScreenRecordingMaxDuration = function (duration, success, error) {
+    exec(success, error, 'IBGPlugin', 'setAutoScreenRecordingMaxDuration', [duration]);
+};
+
 Instabug.setUserEmail = function (email, success, error) {
     exec(success, error, 'IBGPlugin', 'setUserEmail', [email]);
 };

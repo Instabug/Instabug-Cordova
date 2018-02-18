@@ -483,6 +483,52 @@
      [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
  }
 
+ /**
+  * Sets whether the SDK is recording the screen or not.
+  *
+  * @param {CDVInvokedUrlCommand*} command
+  *        The command sent from JavaScript
+  */
+  - (void) setAutoScreenRecordingEnabled:(CDVInvokedUrlCommand*)command
+  {
+      CDVPluginResult* result;
+
+      BOOL isEnabled = [command argumentAtIndex:0];
+
+      if (isEnabled) {
+          [Instabug setAutoScreenRecordingEnabled:isEnabled];
+          result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+      } else {
+          result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                     messageAsString:@"A boolean value must be provided."];
+      }
+
+      [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+  }
+
+  /**
+   * Sets maximum auto screen recording video duration.
+   *
+   * @param {CDVInvokedUrlCommand*} command
+   *        The command sent from JavaScript
+   */
+   - (void) setAutoScreenRecordingMaxDuration:(CDVInvokedUrlCommand*)command
+   {
+       CDVPluginResult* result;
+
+       CGFloat duration = [[command argumentAtIndex:0] floatValue];
+
+       if (duration) {
+           [Instabug setAutoScreenRecordingDuration:duration];
+           result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+       } else {
+           result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                      messageAsString:@"A duration must be provided."];
+       }
+
+       [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+   }
+
 /**
  * Convenience method for setting the threshold value
  * of the shake gesture for iPhone/iPod touch and iPad.
