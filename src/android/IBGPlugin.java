@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
+import com.instabug.library.extendedbugreport.ExtendedBugReport;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.invocation.InstabugInvocationMode;
 import com.instabug.library.invocation.util.InstabugVideoRecordingButtonCorner;
@@ -169,7 +170,10 @@ public class IBGPlugin extends CordovaPlugin {
         } else if ("setAutoScreenRecordingMaxDuration".equals(action)) {
             setAutoScreenRecordingMaxDuration(callbackContext, args.optInt(0));
 
-        } else {
+        } else if ("setExtendedBugReportMode".equals(action)) {
+            setExtendedBugReportMode(callbackContext, args.optString(0));
+
+        }else {
             // Method not found.
             return false;
         }
@@ -244,7 +248,7 @@ public class IBGPlugin extends CordovaPlugin {
      *
      * @param callbackContext
      *        Used when calling back into JavaScript
-     * @param colorInt
+     * @param colorString
      *        The value of the primary color
      */
     private void setPrimaryColor(final CallbackContext callbackContext, String colorString) {
@@ -703,6 +707,30 @@ public class IBGPlugin extends CordovaPlugin {
           callbackContext.success();
         } catch (IllegalStateException e) {
           callbackContext.error(errorMsg);
+        }
+    }
+
+    /**
+     * Sets whether the extended bug report mode should be disabled, enabled with
+     * required fields or enabled with optional fields.
+     *
+     * @param callbackContext
+     *        Used when calling back into JavaScript
+     * @param mode
+     *        A string to disable the extended bug report mode, enable it with
+     *        required or with optional fields
+     */
+    private void setExtendedBugReportMode(final CallbackContext callbackContext, String mode) {
+        try {
+          if(mode.equals("enabledWithRequiredFields")) {
+            Instabug.setExtendedBugReportState(ExtendedBugReport.State.ENABLED_WITH_REQUIRED_FIELDS);
+          } else if(mode.equals("enabledWithOptionalFields")) {
+            Instabug.setExtendedBugReportState(ExtendedBugReport.State.ENABLED_WITH_OPTIONAL_FIELDS);
+          } else if(mode.equals("disabled")) {
+            Instabug.setExtendedBugReportState(ExtendedBugReport.State.DISABLED);
+          }
+        } catch (IllegalStateException e) {
+            callbackContext.error(errorMsg);
         }
     }
 

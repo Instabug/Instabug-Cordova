@@ -28,6 +28,14 @@ var getReproStepsMode = function () {
     };
 };
 
+var getExtendedBugReportMode = function () {
+    return {
+        enabledWithRequiredFields: 'enabledWithRequiredFields',
+        enabledWithOptionalFields: 'enabledWithOptionalFields',
+        disabled: 'disabled'
+    };
+};
+
 var getLocales = function () {
     return {
         arabic: 'arabic',
@@ -113,6 +121,17 @@ Instabug.setReproStepsMode = function (reproStepsMode, success, error) {
       exec(success, error, 'IBGPlugin', 'setReproStepsMode', [validatedReproStepsMode]);
   } else {
       console.log('Could not set user steps mode - "' + validatedReproStepsMode + '" is not valid.');
+  }
+};
+
+Instabug.setExtendedBugReportMode = function (extendedBugReportMode, success, error) {
+
+  var validatedExtendedBugReportMode = getExtendedBugReportMode()[extendedBugReportMode];
+
+  if (validatedExtendedBugReportMode) {
+      exec(success, error, 'IBGPlugin', 'setExtendedBugReportMode', [validatedExtendedBugReportMode]);
+  } else {
+      console.log('Could not set extended bug report mode - "' + validatedExtendedBugReportMode + '" is not valid.');
   }
 };
 
