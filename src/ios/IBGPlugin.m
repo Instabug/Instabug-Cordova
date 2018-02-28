@@ -417,6 +417,31 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
+
+/**
+ * Sets whether the extended bug report mode should be disabled, enabled with
+ * required fields or enabled with optional fields.
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) setExtendedBugReportMode:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* result;
+
+    IBGExtendedBugReportMode extendedBugReportMode = [self parseExtendedBugReportMode:[command argumentAtIndex:0]];
+
+    if (extendedBugReportMode != -1) {
+        [Instabug setExtendedBugReportMode:extendedBugReportMode];
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"A valid extended bug report mode must be provided."];
+    }
+
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
 /**
  * Convenience method for setting whether the email
  * field is validated or not.
@@ -735,6 +760,24 @@
     } else if ([mode isEqualToString:@"enabledWithNoScreenshot"]) {
         return IBGUserStepsModeEnabledWithNoScreenshots;
     } else return 0;
+}
+
+/**
+ * Convenience method for converting NSString to
+ * IBGExtendedBugReportMode.
+ *
+ * @param  {NSString*} mode
+ *         NSString shortcode for IBGExtendedBugReportMode
+ */
+- (IBGExtendedBugReportMode) parseExtendedBugReportMode:(NSString*)mode
+{
+    if ([mode isEqualToString:@"enabledWithRequiredFields"]) {
+        return IBGExtendedBugReportModeEnabledWithRequiredFields;
+    } else if ([mode isEqualToString:@"enabledWithOptionalFields"]) {
+        return IBGExtendedBugReportModeEnabledWithOptionalFields;
+    } else if ([mode isEqualToString:@"disabled"]) {
+        return IBGExtendedBugReportModeDisabled;
+    } else return -1;
 }
 
 /**
