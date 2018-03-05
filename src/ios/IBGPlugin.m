@@ -395,7 +395,7 @@
 }
 
 /**
- * Sets whether user steps tracking is visual, non visula or disabled.
+ * Sets whether user steps tracking is visual, non visual or disabled.
  *
  * @param {CDVInvokedUrlCommand*} command
  *        The command sent from JavaScript
@@ -757,7 +757,7 @@
         return IBGUserStepsModeEnable;
     } else if ([mode isEqualToString:@"disabled"]) {
         return IBGUserStepsModeDisable;
-    } else if ([mode isEqualToString:@"enabledWithNoScreenshot"]) {
+    } else if ([mode isEqualToString:@"enabledWithNoScreenshots"]) {
         return IBGUserStepsModeEnabledWithNoScreenshots;
     } else return 0;
 }

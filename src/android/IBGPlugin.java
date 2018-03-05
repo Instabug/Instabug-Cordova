@@ -11,6 +11,7 @@ import com.instabug.library.extendedbugreport.ExtendedBugReport;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.invocation.InstabugInvocationMode;
 import com.instabug.library.invocation.util.InstabugVideoRecordingButtonCorner;
+import com.instabug.library.visualusersteps.State;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
@@ -173,7 +174,10 @@ public class IBGPlugin extends CordovaPlugin {
         } else if ("setExtendedBugReportMode".equals(action)) {
             setExtendedBugReportMode(callbackContext, args.optString(0));
 
-        }else {
+        } else if ("setReproStepsMode".equals(action)) {
+            setReproStepsMode(callbackContext, args.optString(0));
+
+        } else {
             // Method not found.
             return false;
         }
@@ -728,6 +732,31 @@ public class IBGPlugin extends CordovaPlugin {
             Instabug.setExtendedBugReportState(ExtendedBugReport.State.ENABLED_WITH_OPTIONAL_FIELDS);
           } else if(mode.equals("disabled")) {
             Instabug.setExtendedBugReportState(ExtendedBugReport.State.DISABLED);
+          }
+        } catch (IllegalStateException e) {
+            callbackContext.error(errorMsg);
+        }
+    }
+
+    /**
+     * Sets whether user steps tracking is visual, non visual or disabled.
+     * User Steps tracking is enabled by default if it's available
+     * in your current plan.
+     *
+     * @param callbackContext
+     *        Used when calling back into JavaScript
+     * @param reproStepsMode
+     *        A string to set user steps tracking to be enabled,
+     *        non visual or disabled.
+     */
+    private void setReproStepsMode(final CallbackContext callbackContext, String reproStepsMode) {
+        try {
+          if(reproStepsMode.equals("enabledWithNoScreenshots")) {
+            Instabug.setReproStepsState(State.ENABLED_WITH_NO_SCREENSHOTS);
+          } else if(reproStepsMode.equals("enabled")) {
+            Instabug.setReproStepsState(State.ENABLED);
+          } else if(reproStepsMode.equals("disabled")) {
+            Instabug.setReproStepsState(State.DISABLED);
           }
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);

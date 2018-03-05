@@ -24,7 +24,7 @@ var getReproStepsMode = function () {
     return {
         enabled: 'enabled',
         disabled: 'disabled',
-        enabledWithNoScreenshot: 'enabledWithNoScreenshot'
+        enabledWithNoScreenshots: 'enabledWithNoScreenshots'
     };
 };
 
