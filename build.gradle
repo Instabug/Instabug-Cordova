@@ -1,23 +1,19 @@
-import java.util.regex.Pattern
-
-def doExtractStringFromManifest(name) {
-    def manifestFile = file(android.sourceSets.main.manifest.srcFile)
-    def pattern = Pattern.compile(name + "=\"(.*?)\"")
-    def matcher = pattern.matcher(manifestFile.getText())
-    matcher.find()
-    return matcher.group(1)
-}
-
 android {
-    sourceSets {
-        main {
-            manifest.srcFile 'AndroidManifest.xml'
-        }
-    }
+  compileSdkVersion 26
+  buildToolsVersion "26.0.2"
 
-    defaultConfig {
-        applicationId = doExtractStringFromManifest("package")
-    }
+  defaultConfig {
+      minSdkVersion 16
+      targetSdkVersion 26
+      versionCode 1
+      versionName "1.0"
+      ndk {
+          abiFilters "armeabi-v7a", "x86"
+      }
+  }
+  lintOptions {
+     warning 'InvalidPackage'
+  }
 }
 
 dependencies {
