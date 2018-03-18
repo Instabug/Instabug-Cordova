@@ -177,6 +177,9 @@ public class IBGPlugin extends CordovaPlugin {
         } else if ("setReproStepsMode".equals(action)) {
             setReproStepsMode(callbackContext, args.optString(0));
 
+        } else if ("setThresholdForReshowingSurveyAfterDismiss".equals(action)) {
+            setThresholdForReshowingSurveyAfterDismiss(callbackContext, args.optInt(0), args.optInt(1));
+
         } else {
             // Method not found.
             return false;
@@ -761,6 +764,28 @@ public class IBGPlugin extends CordovaPlugin {
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
         }
+    }
+
+
+    /**
+     * Set after how many sessions should the dismissed survey would show again.
+     *
+     * @param callbackContext
+     *        Used when calling back into JavaScript
+     * @param sessionsCount
+     *        number of sessions that the dismissed survey will be shown after.
+     * @param daysCount
+     *        number of days that the dismissed survey will show after.
+     */
+    private void setThresholdForReshowingSurveyAfterDismiss(final CallbackContext callbackContext, int sessionsCount, int daysCount) {
+        if (Math.signum(sessionsCount) != - 1 && Math.signum(daysCount) != - 1) {
+            try {
+                Instabug.setThresholdForReshowingSurveyAfterDismiss(sessionsCount, daysCount);
+                callbackContext.success();
+            } catch (IllegalStateException e) {
+                callbackContext.error(errorMsg);
+            }
+        } else callbackContext.error("Session count and days count must be provided.");
     }
 
     /**
