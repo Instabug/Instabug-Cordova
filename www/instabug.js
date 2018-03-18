@@ -224,4 +224,8 @@ Instabug.setLocale = function (locale, success, error) {
     }
 };
 
+Instabug.setThresholdForReshowingSurveyAfterDismiss = function (sessionsCount, daysCount, success, error) {
+    exec(success, error, 'IBGPlugin', 'setThresholdForReshowingSurveyAfterDismiss', [sessionsCount, daysCount]);
+};
+
 module.exports = Instabug;

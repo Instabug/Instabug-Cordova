@@ -657,6 +657,31 @@
 }
 
 /**
+ * Sets a threshold for numbers of sessions and another for number of days
+ * required before a survey, that has been dismissed once, would show again.
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+ - (void) setThresholdForReshowingSurveyAfterDismiss:(CDVInvokedUrlCommand*)command
+ {
+     CDVPluginResult* result;
+
+     NSInteger sessionsCount = [[command argumentAtIndex:0] integerValue];
+     NSInteger daysCount = [[command argumentAtIndex:1] integerValue];
+
+     if (sessionsCount && daysCount ) {
+         [Instabug setThresholdForReshowingSurveyAfterDismiss:sessionsCount daysCount:daysCount];
+         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+     } else {
+         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                    messageAsString:@"A sessions count and days count must be provided."];
+     }
+
+     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+ }
+
+/**
  * Wrapper method for applying all provided options.
  *
  * @param {NSDictionary*} options
