@@ -498,7 +498,7 @@
      BOOL isEnabled = [command argumentAtIndex:0];
 
      if (isEnabled) {
-         [Instabug setViewHierarchyEnabled:isEnabled];
+         [Instabug setViewHierarchyEnabled:[[command argumentAtIndex:0] boolValue]];
          result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
      } else {
          result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
@@ -521,7 +521,7 @@
       BOOL isEnabled = [command argumentAtIndex:0];
 
       if (isEnabled) {
-          [Instabug setAutoScreenRecordingEnabled:isEnabled];
+          [Instabug setAutoScreenRecordingEnabled:[[command argumentAtIndex:0] boolValue]];
           result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
       } else {
           result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
@@ -695,7 +695,7 @@
       BOOL autoShowingSurveysEnabled = [command argumentAtIndex:0];
 
       if (autoShowingSurveysEnabled) {
-          [Instabug setAutoShowingSurveysEnabled:autoShowingSurveysEnabled];
+          [Instabug setAutoShowingSurveysEnabled:[[command argumentAtIndex:0] boolValue]];
           result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
       } else {
           result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
