@@ -670,7 +670,7 @@
      NSInteger sessionsCount = [[command argumentAtIndex:0] integerValue];
      NSInteger daysCount = [[command argumentAtIndex:1] integerValue];
 
-     if (sessionsCount && daysCount ) {
+     if (sessionsCount && daysCount) {
          [Instabug setThresholdForReshowingSurveyAfterDismiss:sessionsCount daysCount:daysCount];
          result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
      } else {
@@ -680,6 +680,30 @@
 
      [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
  }
+
+ /**
+  * Sets a threshold for numbers of sessions and another for number of days
+  * required before a survey, that has been dismissed once, would show again.
+  *
+  * @param {CDVInvokedUrlCommand*} command
+  *        The command sent from JavaScript
+  */
+  - (void) setAutoShowingSurveysEnabled:(CDVInvokedUrlCommand*)command
+  {
+      CDVPluginResult* result;
+
+      BOOL autoShowingSurveysEnabled = [command argumentAtIndex:0];
+
+      if (autoShowingSurveysEnabled) {
+          [Instabug setAutoShowingSurveysEnabled:autoShowingSurveysEnabled];
+          result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+      } else {
+          result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                     messageAsString:@"A boolean value must be provided."];
+      }
+
+      [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+  }
 
 /**
  * Wrapper method for applying all provided options.

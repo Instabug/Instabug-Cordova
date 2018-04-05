@@ -228,4 +228,8 @@ Instabug.setThresholdForReshowingSurveyAfterDismiss = function (sessionsCount, d
     exec(success, error, 'IBGPlugin', 'setThresholdForReshowingSurveyAfterDismiss', [sessionsCount, daysCount]);
 };
 
+Instabug.setAutoShowingSurveysEnabled = function (autoShowingSurveysEnabled, success, error) {
+    exec(success, error, 'IBGPlugin', 'setAutoShowingSurveysEnabled', [autoShowingSurveysEnabled]);
+};
+
 module.exports = Instabug;
