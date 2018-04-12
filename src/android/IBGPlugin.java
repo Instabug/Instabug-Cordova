@@ -56,7 +56,8 @@ public class IBGPlugin extends CordovaPlugin {
         "enablePushNotifications",
         "enableIntroDialog",
         "enableUserData",
-        "colorTheme"
+        "colorTheme",
+        "enableSessionProfiler"
     };
 
     // Generic error message
