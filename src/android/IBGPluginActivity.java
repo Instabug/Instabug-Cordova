@@ -83,7 +83,7 @@ public class IBGPluginActivity extends CordovaActivity
      *        String representation of edge
      */
     private void setFloatingButtonEdge(String edge) {
-        
+
     }
 
     /**
@@ -93,7 +93,7 @@ public class IBGPluginActivity extends CordovaActivity
      *        String representation of int offset
      */
     private void setFloatingButtonOffset(String offset) {
-        
+
     }
 
     /**
@@ -119,7 +119,7 @@ public class IBGPluginActivity extends CordovaActivity
      *        String representation of boolean enabled
      */
     private void setConsoleLogsEnabled(String enabled) {
-        
+
     }
 
     /**
@@ -131,7 +131,7 @@ public class IBGPluginActivity extends CordovaActivity
      *        String representation of boolean enabled
      */
     private void setInstabugLogsEnabled(String enabled) {
-        
+
     }
 
     /**
@@ -143,7 +143,7 @@ public class IBGPluginActivity extends CordovaActivity
      *        String representation of boolean enabled
      */
     private void setTrackingUserStepsEnabled(String enabled) {
-       
+
     }
 
     /**
@@ -155,7 +155,7 @@ public class IBGPluginActivity extends CordovaActivity
      *        String representation of boolean enabled
      */
     private void setCrashReportingEnabled(String enabled) {
-        
+
     }
 
     /**
@@ -167,7 +167,7 @@ public class IBGPluginActivity extends CordovaActivity
      *        String representation of boolean enabled
      */
     private void setInAppMessagingEnabled(String enabled) {
-        
+
     }
 
     /**
@@ -193,7 +193,7 @@ public class IBGPluginActivity extends CordovaActivity
      *        String representation of boolean enabled
      */
     private void setPushNotificationsEnabled(String enabled) {
-        
+
     }
 
      /**
@@ -218,7 +218,25 @@ public class IBGPluginActivity extends CordovaActivity
      *        String representation of boolean enabled
      */
     private void setUserDataEnabled(String enabled) {
-        
+
+    }
+
+    /**
+     * Convenience method for parsing and setting
+     * whether session profiler should be enabled or not.
+     *
+     * @param enabled
+     *        String representation of boolean enabled
+     */
+    private void setSessionProfilerEnabled(String enabled) {
+      if (enabled != null && enabled.length() > 0) {
+        if(Boolean.parseBoolean(enabled)) {
+          Instabug.setSessionProfilerState(Feature.State.ENABLED);
+        } else {
+          Instabug.setSessionProfilerState(Feature.State.DISABLED);
+        }
+
+      }
     }
 
     /**
@@ -260,5 +278,6 @@ public class IBGPluginActivity extends CordovaActivity
         setIntroDialogEnabled(opts.getString("enableIntroDialog"));
         setUserDataEnabled(opts.getString("enableUserData"));
         setColorTheme(opts.getString("colorTheme"));
+        setSessionProfilerEnabled(opts.getString("enableSessionProfiler"));
     }
 }

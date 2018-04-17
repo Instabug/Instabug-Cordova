@@ -641,6 +641,20 @@
 }
 
 /**
+ * Convenience method for setting whether to enable the
+ * session profiler or not.
+ *
+ * @param {NSString*} enabled
+ *        NSString representation of boolean enabled
+ */
+- (void) setSessionProfilerEnabled:(NSString*)enabled
+{
+    if ([enabled length] > 0) {
+        [Instabug setSessionProfilerEnabled:[enabled boolValue]];
+    }
+}
+
+/**
  * Convenience method for setting the color theme of
  * the SDK invocation.
  *
@@ -723,6 +737,7 @@
     [self setTrackingUserStepsEnabled:[[options objectForKey:@"enableTrackingUserSteps"] stringValue]];
     [self setPushNotificationsEnabled:[[options objectForKey:@"enablePushNotifications"] stringValue]];
     [self setIntroDialogEnabled:[[options objectForKey:@"enableIntroDialog"] stringValue]];
+    [self setSessionProfilerEnabled:[[options objectForKey:@"enableSessionProfiler"] stringValue]];
     [self setColorTheme:[options objectForKey:@"colorTheme"]];
 }
 
