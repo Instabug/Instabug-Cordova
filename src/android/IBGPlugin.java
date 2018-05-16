@@ -184,6 +184,9 @@ public class IBGPlugin extends CordovaPlugin {
         } else if ("showFeatureRequests".equals(action)) {
             showFeatureRequests(callbackContext);
 
+        } else if ("setShouldShowSurveysWelcomeScreen".equals(action)) {
+            setShouldShowSurveysWelcomeScreen(callbackContext, args.optInt(0));
+
         } else {
             // Method not found.
             return false;
@@ -801,6 +804,24 @@ public class IBGPlugin extends CordovaPlugin {
     private void showFeatureRequests(final CallbackContext callbackContext) {
         try {
             Instabug.showFeatureRequests();
+            callbackContext.success();
+        } catch (IllegalStateException e) {
+            callbackContext.error(errorMsg);
+        }
+    }
+
+    /**
+     * Set Surveys welcome screen enabled, default value is false
+     *
+     *
+     * @param shouldShow whether should show welcome screen Surveys before surveys or not
+     *
+     * @param callbackContext
+     *        Used when calling back into JavaScript
+     */
+    private void setShouldShowSurveysWelcomeScreen(final CallbackContext callbackContext, boolean shouldShow) {
+        try {
+            Instabug.setShouldShowSurveysWelcomeScreen(shouldShow);
             callbackContext.success();
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
