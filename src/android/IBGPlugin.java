@@ -181,6 +181,9 @@ public class IBGPlugin extends CordovaPlugin {
         } else if ("setThresholdForReshowingSurveyAfterDismiss".equals(action)) {
             setThresholdForReshowingSurveyAfterDismiss(callbackContext, args.optInt(0), args.optInt(1));
 
+        } else if ("showFeatureRequests".equals(action)) {
+            showFeatureRequests(callbackContext);
+
         } else {
             // Method not found.
             return false;
@@ -787,6 +790,21 @@ public class IBGPlugin extends CordovaPlugin {
                 callbackContext.error(errorMsg);
             }
         } else callbackContext.error("Session count and days count must be provided.");
+    }
+
+    /**
+     * Shows the UI for feature requests list
+     *
+     * @param callbackContext
+     *        Used when calling back into JavaScript
+     */
+    private void showFeatureRequests(final CallbackContext callbackContext) {
+        try {
+            Instabug.showFeatureRequests();
+            callbackContext.success();
+        } catch (IllegalStateException e) {
+            callbackContext.error(errorMsg);
+        }
     }
 
     /**

@@ -232,4 +232,8 @@ Instabug.setAutoShowingSurveysEnabled = function (autoShowingSurveysEnabled, suc
     exec(success, error, 'IBGPlugin', 'setAutoShowingSurveysEnabled', [autoShowingSurveysEnabled]);
 };
 
+Instabug.showFeatureRequests = function (success, error) {
+    exec(success, error, 'IBGPlugin', 'showFeatureRequests', []);
+};
+
 module.exports = Instabug;

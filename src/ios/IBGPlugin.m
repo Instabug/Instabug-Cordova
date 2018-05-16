@@ -719,6 +719,18 @@
       [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
   }
 
+  /**
+   * Shows the UI for feature requests list
+   *
+   * @param {CDVInvokedUrlCommand*} command
+   *        The command sent from JavaScript
+   */
+   - (void) showFeatureRequests:(CDVInvokedUrlCommand*)command
+   {
+     [Instabug showFeatureRequests];
+     [self sendSuccessResult:command];
+   }
+
 /**
  * Wrapper method for applying all provided options.
  *
