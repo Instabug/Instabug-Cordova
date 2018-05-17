@@ -719,6 +719,42 @@
       [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
   }
 
+  /**
+   * Shows the UI for feature requests list
+   *
+   * @param {CDVInvokedUrlCommand*} command
+   *        The command sent from JavaScript
+   */
+   - (void) showFeatureRequests:(CDVInvokedUrlCommand*)command
+   {
+     [Instabug showFeatureRequests];
+     [self sendSuccessResult:command];
+   }
+
+   /**
+    * Sets a threshold for numbers of sessions and another for number of days
+    * required before a survey, that has been dismissed once, would show again.
+    *
+    * @param {CDVInvokedUrlCommand*} command
+    *        The command sent from JavaScript
+    */
+    - (void) setShouldShowSurveysWelcomeScreen:(CDVInvokedUrlCommand*)command
+    {
+        CDVPluginResult* result;
+
+        BOOL shouldShowWelcomeScreen = [command argumentAtIndex:0];
+
+        if (shouldShowWelcomeScreen) {
+            [Instabug setShouldShowSurveysWelcomeScreen:[[command argumentAtIndex:0] boolValue]];
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+        } else {
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                       messageAsString:@"A boolean value must be provided."];
+        }
+
+        [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+    }
+
 /**
  * Wrapper method for applying all provided options.
  *
