@@ -185,7 +185,7 @@ public class IBGPlugin extends CordovaPlugin {
             showFeatureRequests(callbackContext);
 
         } else if ("setShouldShowSurveysWelcomeScreen".equals(action)) {
-            setShouldShowSurveysWelcomeScreen(callbackContext, args.optInt(0));
+            setShouldShowSurveysWelcomeScreen(callbackContext, args.optBoolean(0));
 
         } else {
             // Method not found.
