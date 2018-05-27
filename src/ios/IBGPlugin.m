@@ -77,7 +77,7 @@
 
         if ([token length] > 0) {
             NSArray* invEvents = [command argumentAtIndex:1];
-            IBGInvocationEvent invocationEvents;
+            IBGInvocationEvent invocationEvents = 0;
 
             NSLog(@"this is the variable value: %@",invEvents);
             // for (NSNumber *boxedValue in invEvents) {
