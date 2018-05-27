@@ -61,6 +61,60 @@
 }
 
 /**
+ * Intializes Instabug and sets provided options.
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) startWithToken:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* result;
+
+    NSDictionary* tokensForPlatforms = [command argumentAtIndex:0];
+
+    if (tokensForPlatforms) {
+        NSString* token = [tokensForPlatforms objectForKey:@"ios"];
+
+        if ([token length] > 0) {
+            NSArray* invEvents = [command argumentAtIndex:1];
+            IBGInvocationEvent invocationEvents;
+
+            NSLog(@"this is the variable value: %@",invEvents);
+            // for (NSNumber *boxedValue in invEvents) {
+            //     invocationEvents |= [boxedValue intValue];
+            // }
+            for (NSString *invEvent in invEvents) {
+              IBGInvocationEvent invocationEvent = [self parseInvocationEvent:invEvent];
+              invocationEvents |= invocationEvent;
+            }
+            if (invocationEvents == nil) {
+                // Instabug iOS SDK requires invocation event for initialization
+                result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                           messageAsString:@"An invocation event must be provided."];
+            } else {
+                // Initialize Instabug
+                [Instabug startWithToken:token invocationEvents:invocationEvents];
+
+                // Apply provided options
+                [self applyOptions:[command argumentAtIndex:2]];
+
+                result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+            }
+        } else {
+            // Without a token, Instabug cannot be initialized.
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                       messageAsString:@"An application token must be provided."];
+        }
+    } else {
+        // Without a token, Instabug cannot be initialized.
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"An application token must be provided."];
+    }
+
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+/**
  * Shows the Instabug dialog so user can choose to report a bug, or
  * submit feedback. A specific mode of the SDK can be shown if specified.
  *

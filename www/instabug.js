@@ -70,6 +70,26 @@ Instabug.activate = function (token, event, options, success, error) {
     }
 };
 
+Instabug.startWithToken = function (token, events, options, success, error) {
+  var i;
+  var validatedEvents = [];
+  alert(events.length);
+  for (i = 0; i < events.length; i++) {
+    var validatedEvent = getInvocationEvents()[events[i]];
+    alert("VALIDATED EVENT: " + events[i]);
+    if(validatedEvent) {
+      alert("VALIDATED EVENT: "+validatedEvent);
+      validatedEvents.push(validatedEvent);
+    }
+  }
+  alert("VALIDATED EVENTS: " + validatedEvents);
+  if (validatedEvents !== undefined || validatedEvents.length != 0) {
+    exec(success, error, 'IBGPlugin', 'startWithToken', [token, validatedEvents, options]);
+  } else {
+      console.log('Could not activate Instabug - invocation event is not valid.');
+  }
+};
+
 Instabug.invoke = function (mode, success, error) {
     var validatedMode = getInvocationModes()[mode];
 
