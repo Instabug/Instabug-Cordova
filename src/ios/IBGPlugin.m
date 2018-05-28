@@ -1,5 +1,9 @@
 #import "IBGPlugin.h"
 #import <Instabug/Instabug.h>
+#import <Instabug/IBGBugReporting.h>
+#import <Instabug/IBGLog.h>
+#import <Instabug/IBGSurveys.h>
+#import <Instabug/IBGFeatureRequests.h>
 
 /**
  * This plugin initializes Instabug.
@@ -79,15 +83,11 @@
             NSArray* invEvents = [command argumentAtIndex:1];
             IBGInvocationEvent invocationEvents = 0;
 
-            NSLog(@"this is the variable value: %@",invEvents);
-            // for (NSNumber *boxedValue in invEvents) {
-            //     invocationEvents |= [boxedValue intValue];
-            // }
             for (NSString *invEvent in invEvents) {
               IBGInvocationEvent invocationEvent = [self parseInvocationEvent:invEvent];
               invocationEvents |= invocationEvent;
             }
-            if (invocationEvents == nil) {
+            if (invocationEvents == 0) {
                 // Instabug iOS SDK requires invocation event for initialization
                 result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
                                            messageAsString:@"An invocation event must be provided."];
@@ -128,7 +128,7 @@
     if (iMode) {
         [Instabug invokeWithInvocationMode:iMode];
     } else {
-        [Instabug invoke];
+        [IBGBugReporting invoke];
     }
 
     [self sendSuccessResult:command];
@@ -143,7 +143,7 @@
  */
 - (void) showIntroDialog:(CDVInvokedUrlCommand*)command
 {
-    [Instabug showIntroMessage];
+    [IBGBugReporting showIntroMessage];
     [self sendSuccessResult:command];
 }
 
@@ -173,7 +173,7 @@
 
         if (valid) {
             UIColor* uiColor = [self colorFromHexString:color];
-            [Instabug setPrimaryColor:uiColor];
+            Instabug.tintColor = uiColor;
             result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
         } else {
             result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
@@ -237,6 +237,50 @@
 }
 
 /**
+ * Logs a user event that happens through the lifecycle of the application.
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) logUserEventWithName:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* result;
+
+    NSString* userEvent = [command argumentAtIndex:0];
+
+    if ([userEvent length] > 0) {
+        [Instabug logUserEventWithName:userEvent];
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"A name must be provided."];
+    }
+
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+/**
+ * Logs a user event that happens through the lifecycle of the application.
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) setPreInvocationHandler:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* result;
+
+    IBGBugReporting.willInvokeHandler = [command argumentAtIndex:0];
+    if ([command argumentAtIndex:0]) {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"A callback must be provided."];
+    }
+
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+/**
  * Shows survey with a specific token.
  * Does nothing if there are no available surveys with that specific token.
  * Answered and cancelled surveys won't show up again.
@@ -251,7 +295,7 @@
     NSString* surveyToken = [command argumentAtIndex:0];
 
     if ([surveyToken length] > 0) {
-        [Instabug showSurveyWithToken:surveyToken];
+        [IBGSurveys showSurveyWithToken:surveyToken];
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     } else {
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
@@ -275,7 +319,7 @@
 
      if (surveyToken.length > 0) {
          result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
-                                    messageAsBool:[Instabug hasRespondedToSurveyWithToken:surveyToken]];
+                                    messageAsBool:[IBGSurveys hasRespondedToSurveyWithToken:surveyToken]];
      } else {
          result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
                                     messageAsString:@"A non-empty survey token must be provided."];
@@ -283,6 +327,29 @@
 
      [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
  }
+
+ /**
+  * Returns true if the survey with a specific token was answered before.
+  * Will return false if the token does not exist or if the survey was not answered before.
+  *
+  * @param {CDVInvokedUrlCommand*} command
+  *        The command sent from JavaScript
+  */
+ - (void) getAvailableSurveys:(CDVInvokedUrlCommand*)command
+  {
+      CDVPluginResult* result;
+      // NSArray<IBGSurvey *> *surveys = [IBGSurveys availableSurveys];
+      //
+      // if ([surveys count] > 0) {
+      result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                 messageAsArray:[IBGSurveys availableSurveys];
+      // } else {
+      //     result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+      //                                messageAsString:@"There is no available surveys"];
+      // }
+
+      [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+  }
 
 /**
  * Sets the user data that’s attached with each bug report sent.
@@ -322,7 +389,7 @@
     IBGPosition position = [self parseIBGPosition:[command argumentAtIndex:0]];
 
     if (position) {
-        [Instabug setVideoRecordingFloatingButtonPosition:position];
+        IBGBugReporting.videoRecordingFloatingButtonPosition = position;
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     } else {
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
@@ -391,7 +458,7 @@
     NSString* log = [command argumentAtIndex:0];
 
     if ([log length] > 0) {
-        IBGLog(log);
+        [IBGLog log:log];
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     } else {
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
@@ -414,7 +481,36 @@
     IBGInvocationEvent iEvent = [self parseInvocationEvent:[command argumentAtIndex:0]];
 
     if (iEvent) {
-        [Instabug setInvocationEvent:iEvent];
+        IBGBugReporting.invocationEvents = iEvent;
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"A valid event type must be provided."];
+    }
+
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+/**
+ * Sets the event that invokes the feedback form.
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) setInvocationEvent:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* result;
+
+    NSArray* invEvents = [command argumentAtIndex:0];
+    IBGInvocationEvent invocationEvents = 0;
+
+    for (NSString *invEvent in invEvents) {
+      IBGInvocationEvent invocationEvent = [self parseInvocationEvent:invEvent];
+      invocationEvents |= invocationEvent;
+    }
+
+    if (invocationEvents != 0) {
+        IBGBugReporting.invocationEvents = invocationEvents;
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     } else {
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
@@ -486,7 +582,7 @@
     IBGExtendedBugReportMode extendedBugReportMode = [self parseExtendedBugReportMode:[command argumentAtIndex:0]];
 
     if (extendedBugReportMode != -1) {
-        [Instabug setExtendedBugReportMode:extendedBugReportMode];
+        IBGBugReporting.extendedBugReportMode = extendedBugReportMode;
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     } else {
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
@@ -552,7 +648,7 @@
      BOOL isEnabled = [command argumentAtIndex:0];
 
      if (isEnabled) {
-         [Instabug setViewHierarchyEnabled:[[command argumentAtIndex:0] boolValue]];
+         Instabug.shouldCaptureViewHierarchy = [[command argumentAtIndex:0] boolValue];
          result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
      } else {
          result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
@@ -575,7 +671,7 @@
       BOOL isEnabled = [command argumentAtIndex:0];
 
       if (isEnabled) {
-          [Instabug setAutoScreenRecordingEnabled:[[command argumentAtIndex:0] boolValue]];
+          Instabug.autoScreenRecordingEnabled = [[command argumentAtIndex:0] boolValue];
           result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
       } else {
           result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
@@ -584,6 +680,53 @@
 
       [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
   }
+
+  /**
+   * Enables/disables showing in-app notifications when the user receives a new
+   * message.
+   *
+   * @param {CDVInvokedUrlCommand*} command
+   *        The command sent from JavaScript
+   */
+   - (void) setChatNotificationEnabled:(CDVInvokedUrlCommand*)command
+   {
+       CDVPluginResult* result;
+
+       BOOL isEnabled = [command argumentAtIndex:0];
+
+       if (isEnabled) {
+           Instabug.replyNotificationsEnabled = [[command argumentAtIndex:0] boolValue];
+           result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+       } else {
+           result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                      messageAsString:@"A boolean value must be provided."];
+       }
+
+       [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+   }
+
+   /**
+    * Sets whether IBGLog should also print to Xcode's console log or not.
+    *
+    * @param {CDVInvokedUrlCommand*} command
+    *        The command sent from JavaScript
+    */
+    - (void) setIBGLogPrintsToConsole:(CDVInvokedUrlCommand*)command
+    {
+        CDVPluginResult* result;
+
+        BOOL isEnabled = [command argumentAtIndex:0];
+
+        if (isEnabled) {
+            IBGLog.printsToConsole = [[command argumentAtIndex:0] boolValue];
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+        } else {
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                       messageAsString:@"A boolean value must be provided."];
+        }
+
+        [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+    }
 
   /**
    * Sets maximum auto screen recording video duration.
@@ -598,7 +741,7 @@
        CGFloat duration = [[command argumentAtIndex:0] floatValue];
 
        if (duration) {
-           [Instabug setAutoScreenRecordingDuration:duration];
+           Instabug.autoScreenRecordingDuration = duration;
            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
        } else {
            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
@@ -607,6 +750,22 @@
 
        [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
    }
+
+   /**
+    * Returns the number of unread messages the user currently has.
+    *
+    * @param {CDVInvokedUrlCommand*} command
+    *        The command sent from JavaScript
+    */
+    - (void) getUnreadMessagesCount:(CDVInvokedUrlCommand*)command
+    {
+        CDVPluginResult* result;
+
+        NSInteger messageCount = Instabug.unreadMessagesCount;
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt: messageCount];
+
+        [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+    }
 
 /**
  * Convenience method for setting the threshold value
@@ -623,7 +782,8 @@
     double iPad = [iPadThreshold doubleValue];
 
     if (iPhone && iPad) {
-        [Instabug setShakingThresholdForiPhone:iPhone foriPad:iPad];
+      IBGBugReporting.shakingThresholdForiPhone = iPhone;
+      IBGBugReporting.shakingThresholdForiPad = iPad;
     }
 }
 
@@ -690,7 +850,7 @@
 - (void) setIntroDialogEnabled:(NSString*)enabled
 {
     if ([enabled length] > 0) {
-        [Instabug setIntroMessageEnabled:[enabled boolValue]];
+        IBGBugReporting.introMessageEnabled = [enabled boolValue];
     }
 }
 
@@ -739,7 +899,7 @@
      NSInteger daysCount = [[command argumentAtIndex:1] integerValue];
 
      if (sessionsCount && daysCount) {
-         [Instabug setThresholdForReshowingSurveyAfterDismiss:sessionsCount daysCount:daysCount];
+         [IBGSurveys setThresholdForReshowingSurveyAfterDismiss:sessionsCount daysCount:daysCount];
          result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
      } else {
          result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
@@ -763,7 +923,7 @@
       BOOL autoShowingSurveysEnabled = [command argumentAtIndex:0];
 
       if (autoShowingSurveysEnabled) {
-          [Instabug setAutoShowingSurveysEnabled:[[command argumentAtIndex:0] boolValue]];
+          IBGSurveys.autoShowingEnabled = [[command argumentAtIndex:0] boolValue];
           result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
       } else {
           result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
@@ -774,6 +934,29 @@
   }
 
   /**
+   * Sets whether surveys are enabled or not.
+   *
+   * @param {CDVInvokedUrlCommand*} command
+   *        The command sent from JavaScript
+   */
+   - (void) setSurveysEnabled:(CDVInvokedUrlCommand*)command
+   {
+       CDVPluginResult* result;
+
+       BOOL isEnabled = [command argumentAtIndex:0];
+
+       if (isEnabled) {
+           IBGSurveys.enabled = [[command argumentAtIndex:0] boolValue];
+           result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+       } else {
+           result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                      messageAsString:@"A boolean value must be provided."];
+       }
+
+       [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+   }
+
+  /**
    * Shows the UI for feature requests list
    *
    * @param {CDVInvokedUrlCommand*} command
@@ -781,9 +964,46 @@
    */
    - (void) showFeatureRequests:(CDVInvokedUrlCommand*)command
    {
-     [Instabug showFeatureRequests];
+     [IBGFeatureRequests show];
      [self sendSuccessResult:command];
    }
+
+   /**
+    * Resets the value of the user's email and name, previously set.
+    *
+    * @param {CDVInvokedUrlCommand*} command
+    *        The command sent from JavaScript
+    */
+    - (void) logOut:(CDVInvokedUrlCommand*)command
+    {
+      [Instabug logOut];
+      [self sendSuccessResult:command];
+    }
+
+    /**
+     * Dismisses any Instabug views that are currently being shown.
+     *
+     * @param {CDVInvokedUrlCommand*} command
+     *        The command sent from JavaScript
+     */
+     - (void) dismiss:(CDVInvokedUrlCommand*)command
+     {
+       [IBGBugReporting dismiss];
+       [self sendSuccessResult:command];
+     }
+
+   /**
+    * Shows one of the surveys that were not shown before, that also have
+    * conditions that match the current device/user.
+    *
+    * @param {CDVInvokedUrlCommand*} command
+    *        The command sent from JavaScript
+    */
+    - (void) showSurveyIfAvailable:(CDVInvokedUrlCommand*)command
+    {
+      [IBGSurveys showSurveyIfAvailable];
+      [self sendSuccessResult:command];
+    }
 
    /**
     * Sets a threshold for numbers of sessions and another for number of days
@@ -799,7 +1019,7 @@
         BOOL shouldShowWelcomeScreen = [command argumentAtIndex:0];
 
         if (shouldShowWelcomeScreen) {
-            [Instabug setShouldShowSurveysWelcomeScreen:[[command argumentAtIndex:0] boolValue]];
+            IBGSurveys.shouldShowWelcomeScreen = [[command argumentAtIndex:0] boolValue];
             result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
         } else {
             result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR

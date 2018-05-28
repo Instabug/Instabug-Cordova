@@ -76,13 +76,10 @@ Instabug.startWithToken = function (token, events, options, success, error) {
   alert(events.length);
   for (i = 0; i < events.length; i++) {
     var validatedEvent = getInvocationEvents()[events[i]];
-    alert("VALIDATED EVENT: " + events[i]);
     if(validatedEvent) {
-      alert("VALIDATED EVENT: "+validatedEvent);
       validatedEvents.push(validatedEvent);
     }
   }
-  alert("VALIDATED EVENTS: " + validatedEvents);
   if (validatedEvents !== undefined || validatedEvents.length != 0) {
     exec(success, error, 'IBGPlugin', 'startWithToken', [token, validatedEvents, options]);
   } else {
@@ -133,6 +130,10 @@ Instabug.showSurveyWithToken = function (surveyToken, success, error) {
     exec(success, error, 'IBGPlugin', 'showSurveyWithToken', [surveyToken]);
 };
 
+Instabug.logUserEventWithName = function (userEvent, success, error) {
+    exec(success, error, 'IBGPlugin', 'logUserEventWithName', [userEvent]);
+};
+
 Instabug.setReproStepsMode = function (reproStepsMode, success, error) {
 
   var validatedReproStepsMode = getReproStepsMode()[reproStepsMode];
@@ -169,6 +170,26 @@ Instabug.addLog = function (content, success, error) {
 
 Instabug.clearLog = function (success, error) {
     exec(success, error, 'IBGPlugin', 'clearLog', []);
+};
+
+Instabug.getUnreadMessagesCount = function (success, error) {
+    exec(success, error, 'IBGPlugin', 'getUnreadMessagesCount', []);
+};
+
+Instabug.setChatNotificationEnabled = function (isEnabled, success, error) {
+    exec(success, error, 'IBGPlugin', 'setChatNotificationEnabled', [isEnabled]);
+};
+
+Instabug.setIBGLogPrintsToConsole = function (isEnabled, success, error) {
+    exec(success, error, 'IBGPlugin', 'setIBGLogPrintsToConsole', [isEnabled]);
+};
+
+Instabug.setSurveysEnabled = function (isEnabled, success, error) {
+    exec(success, error, 'IBGPlugin', 'setSurveysEnabled', [isEnabled]);
+};
+
+Instabug.showSurveyIfAvailable = function (success, error) {
+    exec(success, error, 'IBGPlugin', 'showSurveyIfAvailable', []);
 };
 
 Instabug.changeInvocationEvent = function (event, success, error) {
@@ -213,8 +234,16 @@ Instabug.hasRespondedToSurveyWithToken = function (surveyToken, success, error) 
     exec(success, error, 'IBGPlugin', 'hasRespondedToSurveyWithToken', [surveyToken]);
 };
 
+Instabug.getAvailableSurveys = function (success, error) {
+    exec(success, error, 'IBGPlugin', 'getAvailableSurveys', []);
+};
+
 Instabug.identifyUserWithEmail = function (email, name, success, error) {
     exec(success, error, 'IBGPlugin', 'identifyUserWithEmail', [email, name]);
+};
+
+Instabug.setPreInvocationHandler = function (handler, success, error) {
+    exec(success, error, 'IBGPlugin', 'setPreInvocationHandler', [handler]);
 };
 
 Instabug.setVideoRecordingFloatingButtonPosition = function (position, success, error) {
@@ -223,6 +252,10 @@ Instabug.setVideoRecordingFloatingButtonPosition = function (position, success, 
 
 Instabug.logOut = function (success, error) {
     exec(success, error, 'IBGPlugin', 'logOut', []);
+};
+
+Instabug.dismiss = function (success, error) {
+    exec(success, error, 'IBGPlugin', 'dismiss', []);
 };
 
 Instabug.setDebugEnabled = function (isDebugEnabled, success, error) {
