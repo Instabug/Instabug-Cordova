@@ -202,6 +202,23 @@ Instabug.changeInvocationEvent = function (event, success, error) {
     }
 };
 
+Instabug.setInvocationEvents = function (events, success, error) {
+  var i;
+  var validatedEvents = [];
+  alert(events.length);
+  for (i = 0; i < events.length; i++) {
+    var validatedEvent = getInvocationEvents()[events[i]];
+    if(validatedEvent) {
+      validatedEvents.push(validatedEvent);
+    }
+  }
+  if (validatedEvents !== undefined || validatedEvents.length != 0) {
+    exec(success, error, 'IBGPlugin', 'setInvocationEvents', [validatedEvents]);
+  } else {
+      console.log('Could not change invocation event - "' + event + '" is not valid.');
+  }
+};
+
 Instabug.disable = function (success, error) {
     exec(success, error, 'IBGPlugin', 'disable', []);
 };

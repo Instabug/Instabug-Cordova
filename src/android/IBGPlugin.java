@@ -124,6 +124,9 @@ public class IBGPlugin extends CordovaPlugin {
         } else if ("changeInvocationEvent".equals(action)) {
             changeInvocationEvent(callbackContext, args.optString(0));
 
+        } else if ("setInvocationEvents".equals(action)) {
+            setInvocationEvent(callbackContext, args.optString(0));
+            
         } else if ("disable".equals(action)) {
             disable(callbackContext);
 
