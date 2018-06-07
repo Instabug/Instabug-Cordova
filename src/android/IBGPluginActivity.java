@@ -8,6 +8,7 @@ import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.invocation.InstabugInvocationMode;
 import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
+import com.instabug.library.ui.onboarding.WelcomeMessage;
 
 import org.apache.cordova.CordovaActivity;
 
@@ -235,9 +236,28 @@ public class IBGPluginActivity extends CordovaActivity
         } else {
           Instabug.setSessionProfilerState(Feature.State.DISABLED);
         }
-
       }
     }
+
+    /**
+     * Convenience method for parsing and setting the welcome message mode
+     *
+     * @param welcomeMessageMode
+     *        String representation of welcomeMessageMode
+     */
+    private void setWelcomeMessageMode(String welcomeMessageMode) {
+        if (welcomeMessageMode != null && welcomeMessageMode.length() > 0) {
+            if (welcomeMessageMode.equals("welcomeMessageModeLive")) {
+                Instabug.setWelcomeMessageState(WelcomeMessage.State.LIVE);
+            } else if (welcomeMessageMode.equals("welcomeMessageModeBeta")) {
+                Instabug.setWelcomeMessageState(WelcomeMessage.State.BETA);
+            } else if (welcomeMessageMode.equals("welcomeMessageModeDisabled")) {
+                Instabug.setWelcomeMessageState(WelcomeMessage.State.DISABLED);
+            } else {
+                Instabug.setWelcomeMessageState(WelcomeMessage.State.LIVE);
+            }
+        }
+      }
 
     /**
      * Convenience method for parsing and setting
@@ -279,5 +299,6 @@ public class IBGPluginActivity extends CordovaActivity
         setUserDataEnabled(opts.getString("enableUserData"));
         setColorTheme(opts.getString("colorTheme"));
         setSessionProfilerEnabled(opts.getString("enableSessionProfiler"));
+        setWelcomeMessageMode(opts.getString("welcomeMessageMode"));
     }
 }

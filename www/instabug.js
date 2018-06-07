@@ -28,6 +28,14 @@ var getReproStepsMode = function () {
     };
 };
 
+var getWelcomeMessageMode = function () {
+    return {
+        welcomeMessageModeLive: 'welcomeMessageModeLive',
+        welcomeMessageModeBeta: 'welcomeMessageModeBeta',
+        welcomeMessageModeDisabled: 'welcomeMessageModeDisabled'
+    };
+};
+
 var getExtendedBugReportMode = function () {
     return {
         enabledWithRequiredFields: 'enabledWithRequiredFields',
@@ -123,6 +131,17 @@ Instabug.setReproStepsMode = function (reproStepsMode, success, error) {
       console.log('Could not set user steps mode - "' + validatedReproStepsMode + '" is not valid.');
   }
 };
+
+Instabug.showWelcomeMessage = function (welcomeMessageMode, success, error) {
+
+    var validatedWelcomeMessageMode = getWelcomeMessageMode()[welcomeMessageMode];
+  
+    if (validatedWelcomeMessageMode) {
+        exec(success, error, 'IBGPlugin', 'showWelcomeMessage', [validatedWelcomeMessageMode]);
+    } else {
+        console.log('Could not set welcome message mode - "' + validatedWelcomeMessageMode + '" is not valid.');
+    }
+  };
 
 Instabug.setExtendedBugReportMode = function (extendedBugReportMode, success, error) {
 
