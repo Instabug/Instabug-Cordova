@@ -21,6 +21,6 @@ android {
 }
 
 dependencies {
-	compile 'com.instabug.library:instabug:4.13.5'
+	compile 'com.instabug.library:instabug:5.0.0.6.15-SNAPSHOT'
 	compile 'com.android.support:multidex:1.0.0'
 }

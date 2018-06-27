@@ -125,7 +125,7 @@ public class IBGPlugin extends CordovaPlugin {
             changeInvocationEvent(callbackContext, args.optString(0));
 
         } else if ("setInvocationEvents".equals(action)) {
-            setInvocationEvent(callbackContext, args.optString(0));
+            setInvocationEvents(callbackContext, args.optJSONArray(0));
             
         } else if ("disable".equals(action)) {
             disable(callbackContext);
@@ -190,11 +190,13 @@ public class IBGPlugin extends CordovaPlugin {
         } else if ("setShouldShowSurveysWelcomeScreen".equals(action)) {
             setShouldShowSurveysWelcomeScreen(callbackContext, args.optBoolean(0));
 
+        } else if ("setInvocationOptions".equals(action)) {
+            setInvocationOptions(callbackContext, args.optJSONArray(0));
+
         } else {
             // Method not found.
             return false;
         }
-
         return true;
     }
 
@@ -213,8 +215,44 @@ public class IBGPlugin extends CordovaPlugin {
         cordova.getActivity().startActivity(activationIntent);
 
         callbackContext.success();
+    }
 
-
+    /**
+     * Sets the event used to invoke Instabug SDK
+     *
+     * @param args the invocation event value
+     * @see InstabugInvocationEvent
+     */
+    @ReactMethod
+    public void setInvocationOptions(JSONArray args) {
+        try {
+            Object[] objectArray = ArrayUtil.toArray(invocationOptionValues);
+            String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
+            for (String option : stringArray) {
+                switch (option) {
+                    case EMAIL_FIELD_HIDDEN:
+                        BugReporting.setInvocationOptions(InvocationOption.EMAIL_FIELD_HIDDEN);
+                        return;
+                    case EMAIL_FIELD_OPTIONAL:
+                        BugReporting.setInvocationOptions(InvocationOption.EMAIL_FIELD_OPTIONAL);
+                        break;
+                    case COMMENT_FIELD_REQUIRED:
+                        BugReporting.setInvocationOptions(InvocationOption.COMMENT_FIELD_REQUIRED);
+                        break;
+                    case DISABLE_POST_SENDING_DIALOG:
+                        BugReporting.setInvocationOptions(InvocationOption.DISABLE_POST_SENDING_DIALOG);
+                        break;
+                    default:
+                        BugReporting.setInvocationOptions(InvocationOption.EMAIL_FIELD_HIDDEN,
+                                InvocationOption.EMAIL_FIELD_OPTIONAL,
+                                InvocationOption.COMMENT_FIELD_REQUIRED,
+                                InvocationOption.DISABLE_POST_SENDING_DIALOG);
+                        break;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -234,9 +272,9 @@ public class IBGPlugin extends CordovaPlugin {
 
             if (iMode != null) {
                 // Invoke specific mode if possible
-                Instabug.invoke(iMode);
+                BugReporting.invoke(iMode);
             } else {
-                Instabug.invoke();
+                BugReporting.invoke();
             }
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
@@ -499,6 +537,59 @@ public class IBGPlugin extends CordovaPlugin {
                 callbackContext.error(errorMsg);
             }
         } else callbackContext.error("A valid event type must be provided.");
+    }
+
+    /**
+     * Change the event used to invoke Instabug SDK.
+     *
+     * @param callbackContext
+     *        Used when calling back into JavaScript
+     * @param events
+     *        Event to be used to invoke SDK.
+     */
+    private void setInvocationEvents(final CallbackContext callbackContext, JSONArray events) {
+        String[] stringArrayOfEvents = toStringArray(events);
+        if(stringArrayOfEvents.length != 0) {
+            try {
+                for (String event : stringArrayOfEvents) {
+                    InstabugInvocationEvent iEvent = parseInvocationEvent(event);
+                    switch (iEvent) {
+                        case SHAKE:
+                            BugReporting.setInvocationEvents(InstabugInvocationEvent.SHAKE);
+                            return;
+                        case FLOATING_BUTTON:
+                            BugReporting.setInvocationEvents(InstabugInvocationEvent.FLOATING_BUTTON);
+                            break;
+                        case TWO_FINGER_SWIPE_LEFT:
+                            BugReporting.setInvocationEvents(InstabugInvocationEvent.TWO_FINGER_SWIPE_LEFT);
+                            break;
+                        case SCREENSHOT_GESTURE:
+                            BugReporting.setInvocationEvents(InstabugInvocationEvent.SCREENSHOT_GESTURE);
+                            break;
+                        case NONE:
+                            BugReporting.setInvocationEvents(InstabugInvocationEvent.NONE);
+                            break;
+                        default:
+                            BugReporting.setInvocationEvents(InstabugInvocationEvent.SHAKE);
+                            break;
+                    }
+                }
+            } catch (IllegalStateException e) {
+                callbackContext.error(errorMsg);
+            }
+        } else callbackContext.error("A valid event type must be provided.");
+    }
+
+    private static String[] toStringArray(JSONArray array) {
+        if(array==null)
+            return null;
+
+        String[] arr=new String[array.length()];
+        for(int i=0; i<arr.length; i++) {
+            arr[i]=array.optString(i);
+        }
+
+        return arr;
     }
 
     /**

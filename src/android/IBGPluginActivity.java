@@ -33,7 +33,6 @@ public class IBGPluginActivity extends CordovaActivity
         if(options != null) {
             setBuilderOptions(options);
         }
-
         // Finish activity (required for no-display theme)
         IBGPluginActivity.this.finish();
     }
