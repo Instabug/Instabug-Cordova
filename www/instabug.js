@@ -156,6 +156,10 @@ Instabug.setExtendedBugReportMode = function (extendedBugReportMode, success, er
   }
 };
 
+Instabug.setPromptOptionsEnabled = function (promptOptions, success, error) {
+    exec(success, error, 'IBGPlugin', 'setPromptOptionsEnabled', [promptOptions]);
+};
+
 Instabug.setUserData = function (data, success, error) {
     exec(success, error, 'IBGPlugin', 'setUserData', [data]);
 };

@@ -659,6 +659,34 @@
  }
 
  /**
+ * Enables/disables prompt options when SDK is invoked.
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+ - (void) setPromptOptionsEnabled:(CDVInvokedUrlCommand*)command
+ {
+     CDVPluginResult* result;
+
+     NSArray* promptOptionsArray = [command argumentAtIndex:0];
+     IBGPromptOption promptOptions = 0;
+
+     for (NSString *promptOption in promptOptionsArray) {
+        IBGPromptOption promptOptionValue = [self parsePromptOptions:promptOption];
+        promptOptions |= promptOptionValue;
+     }
+     if (promptOptions == 0) {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                    messageAsString:@"An prompt option must be provided."];
+     } else {
+        IBGBugReporting.promptOptions = promptOptions;
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+     }
+
+     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+ }
+
+ /**
   * Sets whether the SDK is recording the screen or not.
   *
   * @param {CDVInvokedUrlCommand*} command
@@ -822,7 +850,7 @@
 - (void) setTrackingUserStepsEnabled:(NSString*)enabled
 {
     if ([enabled length] > 0) {
-        [Instabug setUserStepsEnabled:[enabled boolValue]];
+        Instabug.trackUserSteps = [enabled boolValue];
     }
 }
 
@@ -1072,6 +1100,26 @@
         return IBGInvocationEventRightEdgePan;
     } else if ([event isEqualToString:@"none"]) {
         return IBGInvocationEventNone;
+    } else return 0;
+}
+
+/**
+ * Convenience method for converting NSString to
+ * IBGPromptOption.
+ *
+ * @param  {NSString*} promptOption
+ *         NSString shortcode for IBGPromptOption
+ */
+- (IBGInvocationEvent) parsePromptOptions:(NSString*)event
+{
+    if ([event isEqualToString:@"chat"]) {
+        return IBGPromptOptionChat;
+    } else if ([event isEqualToString:@"feedback"]) {
+        return IBGPromptOptionFeedback;
+    } else if ([event isEqualToString:@"bug"]) {
+        return IBGPromptOptionBug;
+    } else if ([event isEqualToString:@"none"]) {
+        return IBGPromptOptionNone;
     } else return 0;
 }
 
