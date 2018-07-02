@@ -7,15 +7,41 @@
 //
 
 #import <Foundation/Foundation.h>
-
-@class IBGSurvey;
+#import "IBGSurvey.h"
 
 @interface IBGSurveys : NSObject
 
 @property (class, atomic, assign) BOOL enabled;
+/**
+ @brief Sets whether auto surveys showing are enabled or not.
+ 
+ @discussion If you disable surveys auto showing on the SDK but still have active surveys on your Instabug dashboard, those surveys are still going to be sent to the device, but are not going to be shown automatically.
+ 
+ To manually display any available surveys, call `+ [Instabug showSurveyIfAvailable]`.
+ 
+ Defaults to YES.
+ */
 @property (class, atomic, assign) BOOL autoShowingEnabled;
+
+/**
+ @brief Returns array of available surveys that match the current device/user.
+ */
 @property (class, atomic, readonly, strong) NSArray<IBGSurvey *> *availableSurveys;
+
+/**
+ @brief Sets a block of code to be executed just before the survey's UI is presented.
+ 
+ @discussion This block is executed on the UI thread. Could be used for performing any UI changes before the survey's UI
+ is shown.
+ */
 @property (class, atomic, strong) void(^willShowSurveyHandler)(void);
+
+/**
+ @brief Sets a block of code to be executed right after the survey's UI is dismissed.
+ 
+ @discussion This block is executed on the UI thread. Could be used for performing any UI changes after the survey's UI
+ is dismissed.
+ */
 @property (class, atomic, strong) void(^didDismissSurveyHandler)(void);
 
 /**
