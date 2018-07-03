@@ -10,6 +10,7 @@ import com.instabug.bug.PromptOption;
 import com.instabug.bug.invocation.InvocationOption;
 import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
+import com.instabug.library.OnSdkDismissCallback;
 import com.instabug.library.extendedbugreport.ExtendedBugReport;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.bug.invocation.InvocationMode;
@@ -154,6 +155,9 @@ public class IBGPlugin extends CordovaPlugin {
 
         } else if ("setPreInvocationHandler".equals(action)) {
             setPreInvocationHandler(callbackContext);
+
+        } else if ("setPostInvocationHandler".equals(action)) {
+            setPostInvocationHandler(callbackContext);
 
         } else if ("identifyUserWithEmail".equals(action)) {
             identifyUserWithEmail(callbackContext, args.optString(0), args.optString(1));
@@ -334,8 +338,7 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
-     * Display the discovery dialog explaining the shake gesture or the
-     * two finger swipe gesture, if you've enabled it.
+     * Sets a block of code to be executed just before the SDK's UI is presented.
      *
      * @param callbackContext
      *        Used when calling back into JavaScript
@@ -346,6 +349,34 @@ public class IBGPlugin extends CordovaPlugin {
                 @Override
                 public void onInvoke() {
                     PluginResult result = new PluginResult(PluginResult.Status.OK);
+                    result.setKeepCallback(true);
+                    callbackContext.sendPluginResult(result);
+                }
+            });
+        } catch (IllegalStateException e) {
+            callbackContext.error(errorMsg);
+        }
+    }
+
+    /**
+     * Sets a block of code to be executed right after the SDK's UI is dismissed.
+     *
+     * @param callbackContext
+     *        Used when calling back into JavaScript
+     */
+    private void setPostInvocationHandler(final CallbackContext callbackContext) {
+        try {
+            BugReporting.setOnDismissCallback(new OnSdkDismissCallback() {
+                @Override
+                public void call(DismissType dismissType, ReportType reportType) {
+                    JSONObject parameters = new JSONObject();
+                    try {
+                        parameters.put("dismissType", dismissType.toString());
+                        parameters.put("reportType", reportType.toString());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    PluginResult result = new PluginResult(PluginResult.Status.OK, parameters);
                     result.setKeepCallback(true);
                     callbackContext.sendPluginResult(result);
                 }

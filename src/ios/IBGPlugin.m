@@ -260,7 +260,7 @@
 }
 
 /**
- * Logs a user event that happens through the lifecycle of the application.
+ * Sets a block of code to be executed just before the SDK's UI is presented.
  *
  * @param {CDVInvokedUrlCommand*} command
  *        The command sent from JavaScript
@@ -268,6 +268,17 @@
 - (void) setPreInvocationHandler:(CDVInvokedUrlCommand*)command
 {
     IBGBugReporting.willInvokeHandler = [self sendSuccessResult:command];
+}
+
+/**
+ * Sets a block of code to be executed right after the SDK's UI is dismissed.
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) setPostInvocationHandler:(CDVInvokedUrlCommand*)command
+{
+    IBGBugReporting.didDismissHandler = [self sendSuccessResult:command];
 }
 
 /**
