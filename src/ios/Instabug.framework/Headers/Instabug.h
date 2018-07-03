@@ -5,12 +5,14 @@
 
  Copyright:  (c) 2013-2018 by Instabug, Inc., all rights reserved.
 
- Version:    7.13
+ Version:    7.14.5
  */
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import <InstabugCore/InstabugCore.h>
+#import <InstabugCore/IBGNetworkLogger.h>
+#import <InstabugCore/IBGReport.h>
 #import "IBGLog.h"
 #import "IBGBugReporting.h"
 #import "IBGCrashReporting.h"
@@ -39,6 +41,20 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
 @property (class, atomic, assign) BOOL autoScreenRecordingEnabled;
 
 /**
+ @brief Sets whether the session profiler is enabled or disabled.
+ 
+ @discussion The session profiler is enabled by default and it attaches to the bug and crash reports the following information during the last 60 seconds before the report is sent.
+ 1. CPU load.
+ 2. Dispatch queues latency.
+ 3. Memory usage.
+ 4. Storage usage.
+ 5. Connectivity.
+ 6. Battery percentage and state.
+ 7. Orientation.
+ */
+@property (class, atomic, assign) BOOL sessionProfilerEnabled;
+
+/**
  @brief Sets maximum auto screen recording video duration.
  
  @discussion sets maximum auto screen recording video duration with max value 30 seconds and min value greater than 1 sec.
@@ -61,6 +77,16 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  @brief Sets a block of code that gets executed when a new message is received.
  */
 @property (class, atomic, strong) void (^didRecieveReplyHandler)(void);
+
+/**
+ @brief Sets a block of code to be executed before sending each report.
+ 
+ @discussion This block is executed in the background before sending each report. Could be used for attaching logs
+ and extra data to reports.
+ 
+ @param willSendReportHandler A block of code that gets executed before sending each bug report.
+ */
+@property(class, atomic, strong) IBGReport*(^willSendReportHandler)(IBGReport *report);
 
 /**
  @brief Enables/disables showing in-app notifications when the user receives a new message.
@@ -97,9 +123,6 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  User Steps tracking is enabled by default if it's available in your current plan.
  */
 @property (class, atomic, assign) IBGUserStepsMode reproStepsMode;
-
-
-@property (class, atomic, assign) BOOL shouldShowWelcomeScreen;
 
 + (void)startWithToken:(NSString *)token invocationEvents:(IBGInvocationEvent)invocationEvents;
 
@@ -258,18 +281,6 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
 + (void)setSessionProfilerEnabled:(BOOL)sessionProfilerEnabled DEPRECATED_MSG_ATTRIBUTE("This API has been deprecated. See https://docs.instabug.com/v1.0/docs/ios-migration-guide for instructions on migrating to SDK v8.x APIs.");
 
 /**
- @brief Sets whether user steps tracking is visual, non visula or disabled.
- 
- @discussion Enabling user steps would give you an insight on the scenario a user has performed before encountering a
- bug or a crash. User steps are attached with each report being sent.
- 
- User Steps tracking is enabled by default if it's available in your current plan.
- 
- @param userStepsMode An enum to set user steps tracking to be enabled , non visual or disabled.
- */
-+ (void)setReproStepsMode:(IBGUserStepsMode)userStepsMode DEPRECATED_MSG_ATTRIBUTE("This API has been deprecated. See https://docs.instabug.com/v1.0/docs/ios-migration-guide for instructions on migrating to SDK v8.x APIs.");
-
-/**
  @brief Sets whether to track and report crashes or not.
  
  @discussion When enabled, Instabug will automatically report crashes, which can be viewed later on from your dashboard.
@@ -314,16 +325,6 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  @param preSendingHandler A block of code that gets executed before sending each bug report.
  */
 + (void)setPreSendingHandler:(void (^)(void))preSendingHandler DEPRECATED_MSG_ATTRIBUTE("This API has been deprecated. See https://docs.instabug.com/v1.0/docs/ios-migration-guide for instructions on migrating to SDK v8.x APIs.");
-
-/**
- @brief Sets a block of code to be executed before sending each report.
- 
- @discussion This block is executed in the background before sending each report. Could be used for attaching logs
- and extra data to reports.
- 
- @param willSendReportHandler A block of code that gets executed before sending each bug report.
- */
-+ (void)setWillSendReportHandler:(IBGReport* (^ _Nonnull)(IBGReport * _Nonnull report))willSendReportHandler DEPRECATED_MSG_ATTRIBUTE("This API has been deprecated. See https://docs.instabug.com/v1.0/docs/ios-migration-guide for instructions on migrating to SDK v8.x APIs.");
 
 /**
  @brief Sets a block of code to be executed just before the SDK's UI is presented.
@@ -402,6 +403,25 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  @discussion Does nothing if invocation event is set to anything other than IBGInvocationEventShake or IBGInvocationEventScreenshot.
  */
 + (void)showIntroMessage DEPRECATED_MSG_ATTRIBUTE("This API has been deprecated. See https://docs.instabug.com/v1.0/docs/ios-migration-guide for instructions on migrating to SDK v8.x APIs.");
+/**
+ @brief Shows the welcome message in a specific mode.
+
+ @discussion By default, the welcome message live mode is enabled. It appears automatically after 10 seconds from the user's first session. You can show it manually in a specific mode through this API.
+ The live mode consists of one step to inform the users how to report a bug or feedback. The beta mode consists of three steps to welcome your testers on board, inform them how to report a bug or feedback and to motivate them to always be on the latest app version. Please note, the into message appears only if the invocation event isn't set to none.
+ 
+ @param welcomeMessageMode An enum to set the welcome message mode to live, beta or disabled.
+ */
++ (void)showWelcomeMessageWithMode:(IBGWelcomeMessageMode)welcomeMessageMode DEPRECATED_MSG_ATTRIBUTE("This API has been deprecated. See https://docs.instabug.com/v1.0/docs/ios-migration-guide for instructions on migrating to SDK v8.x APIs.");
+
+/**
+ @brief Sets the welcome message mode to live, beta or disabled.
+
+ @discussion By default, the welcome message live mode is enabled. It appears automatically after 10 seconds from the user's first session. You can change it to the beta mode or disable it.
+ The live mode consists of one step to inform the users how to report a bug or feedback. The beta mode consists of three steps to welcome your testers on board, inform them how to report a bug or feedback and to motivate them to always be on the latest app version. Please note, the into message appears only if the invocation event isn't set to none.
+ 
+ @param welcomeMessageMode An enum to set the welcome message mode to live, beta or disabled.
+ */
++ (void)setWelcomeMessageMode:(IBGWelcomeMessageMode)welcomeMessageMode DEPRECATED_MSG_ATTRIBUTE("This API has been deprecated. See https://docs.instabug.com/v1.0/docs/ios-migration-guide for instructions on migrating to SDK v8.x APIs.");
 
 /**
  @brief Enables/disables the attachment of an initial screenshot when reporting a bug/improvement.

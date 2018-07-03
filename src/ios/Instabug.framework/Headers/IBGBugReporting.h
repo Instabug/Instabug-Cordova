@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <InstabugCore/InstabugCore.h>
 #import <InstabugCore/IBGTypes.h>
-#import <InstabugCore/IBGReport.h>
 
+NS_SWIFT_NAME(BugReporting)
 @interface IBGBugReporting : NSObject
 
 /**
@@ -36,16 +36,6 @@
  @see IBGReportType, IBGDismissType
  */
 @property(class, atomic, strong) void(^didDismissHandler)(IBGDismissType dismissType, IBGReportType reportType);
-
-/**
- @brief Sets a block of code to be executed before sending each report.
- 
- @discussion This block is executed in the background before sending each report. Could be used for attaching logs
- and extra data to reports.
- 
- @param willSendReportHandler A block of code that gets executed before sending each bug report.
- */
-@property(class, atomic, strong) IBGReport*(^willSendReportHandler)(IBGReport *report);
 
 /**
  @brief Sets a block of code to be executed when a prompt option is selected
@@ -124,6 +114,14 @@
 @property(class, atomic, assign) IBGBugReportingInvocationOption invocationOptions;
 
 /**
+ @brief Sets the welcome message mode to live, beta or disabled.
+ 
+ @discussion By default, the welcome message live mode is enabled. It appears automatically after 10 seconds from the user's first session. You can change it to the beta mode or disable it.
+ The live mode consists of one step to inform the users how to report a bug or feedback. The beta mode consists of three steps to welcome your testers on board, inform them how to report a bug or feedback and to motivate them to always be on the latest app version. Please note, the into message appears only if the invocation event isn't set to none.
+ */
+@property (class, atomic, assign) IBGWelcomeMessageMode welcomeMessageMode;
+
+/**
  @brief Invokes the SDK manually with the default invocation mode.
  
  @discussion Shows a view that asks the user whether they want to start a chat, report a problem or suggest an improvement.
@@ -146,11 +144,14 @@
 + (void)dismiss;
 
 /**
- @brief Present a view that educates the user on how to invoke the SDK with the currently set invocation event.
+ @brief Shows the welcome message in a specific mode.
  
- @discussion Does nothing if invocation event is set to anything other than IBGInvocationEventShake or IBGInvocationEventScreenshot.
+ @discussion By default, the welcome message live mode is enabled. It appears automatically after 10 seconds from the user's first session. You can show it manually in a specific mode through this API.
+ The live mode consists of one step to inform the users how to report a bug or feedback. The beta mode consists of three steps to welcome your testers on board, inform them how to report a bug or feedback and to motivate them to always be on the latest app version. Please note, the into message appears only if the invocation event isn't set to none.
+ 
+ @param welcomeMessageMode An enum to set the welcome message mode to live, beta or disabled.
  */
-+ (void)showIntroMessage;
++ (void)showWelcomeMessageWithMode:(IBGWelcomeMessageMode)welcomeMessageMode;
 
 
 @end

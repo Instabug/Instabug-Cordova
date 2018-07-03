@@ -263,8 +263,12 @@ Instabug.identifyUserWithEmail = function (email, name, success, error) {
     exec(success, error, 'IBGPlugin', 'identifyUserWithEmail', [email, name]);
 };
 
-Instabug.setPreInvocationHandler = function (handler, success, error) {
-    exec(success, error, 'IBGPlugin', 'setPreInvocationHandler', [handler]);
+Instabug.setPreInvocationHandler = function (success, error) {
+    exec(success, error, 'IBGPlugin', 'setPreInvocationHandler', []);
+};
+
+Instabug.setPostInvocationHandler = function (success, error) {
+    exec(success, error, 'IBGPlugin', 'setPostInvocationHandler', []);
 };
 
 Instabug.setVideoRecordingFloatingButtonPosition = function (position, success, error) {

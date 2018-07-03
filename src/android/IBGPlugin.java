@@ -5,11 +5,15 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.util.Log;
 
+import com.instabug.bug.BugReporting;
+import com.instabug.bug.PromptOption;
+import com.instabug.bug.invocation.InvocationOption;
 import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
 import com.instabug.library.extendedbugreport.ExtendedBugReport;
 import com.instabug.library.invocation.InstabugInvocationEvent;
-import com.instabug.library.invocation.InstabugInvocationMode;
+import com.instabug.bug.invocation.InvocationMode;
+import com.instabug.library.invocation.OnInvokeCallback;
 import com.instabug.library.invocation.util.InstabugVideoRecordingButtonCorner;
 import com.instabug.library.visualusersteps.State;
 
@@ -127,6 +131,9 @@ public class IBGPlugin extends CordovaPlugin {
         } else if ("setInvocationEvents".equals(action)) {
             setInvocationEvents(callbackContext, args.optJSONArray(0));
             
+        } else if ("setPromptOptionsEnabled".equals(action)) {
+            setPromptOptionsEnabled(callbackContext, args.optJSONArray(0));
+            
         } else if ("disable".equals(action)) {
             disable(callbackContext);
 
@@ -145,7 +152,10 @@ public class IBGPlugin extends CordovaPlugin {
         } else if ("removeUserAttribute".equals(action)) {
             removeUserAttribute(callbackContext, args.optString(0));
 
-        }  else if ("identifyUserWithEmail".equals(action)) {
+        } else if ("setPreInvocationHandler".equals(action)) {
+            setPreInvocationHandler(callbackContext);
+
+        } else if ("identifyUserWithEmail".equals(action)) {
             identifyUserWithEmail(callbackContext, args.optString(0), args.optString(1));
 
         }  else if ("logOut".equals(action)) {
@@ -220,39 +230,65 @@ public class IBGPlugin extends CordovaPlugin {
     /**
      * Sets the event used to invoke Instabug SDK
      *
-     * @param args the invocation event value
-     * @see InstabugInvocationEvent
+     * @param options the invocation options array
      */
-    @ReactMethod
-    public void setInvocationOptions(JSONArray args) {
-        try {
-            Object[] objectArray = ArrayUtil.toArray(invocationOptionValues);
-            String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
-            for (String option : stringArray) {
-                switch (option) {
-                    case EMAIL_FIELD_HIDDEN:
-                        BugReporting.setInvocationOptions(InvocationOption.EMAIL_FIELD_HIDDEN);
-                        return;
-                    case EMAIL_FIELD_OPTIONAL:
-                        BugReporting.setInvocationOptions(InvocationOption.EMAIL_FIELD_OPTIONAL);
-                        break;
-                    case COMMENT_FIELD_REQUIRED:
-                        BugReporting.setInvocationOptions(InvocationOption.COMMENT_FIELD_REQUIRED);
-                        break;
-                    case DISABLE_POST_SENDING_DIALOG:
-                        BugReporting.setInvocationOptions(InvocationOption.DISABLE_POST_SENDING_DIALOG);
-                        break;
-                    default:
-                        BugReporting.setInvocationOptions(InvocationOption.EMAIL_FIELD_HIDDEN,
-                                InvocationOption.EMAIL_FIELD_OPTIONAL,
-                                InvocationOption.COMMENT_FIELD_REQUIRED,
-                                InvocationOption.DISABLE_POST_SENDING_DIALOG);
-                        break;
+    public void setInvocationOptions(final CallbackContext callbackContext, JSONArray options) {
+        String[] stringArrayOfInvocationOptions = toStringArray(options);
+        if(stringArrayOfInvocationOptions.length != 0) {
+            try {
+                for (String promptOption : stringArrayOfInvocationOptions) {
+                    PromptOption promptOptionEnum = parsePromptOptions(promptOption);
+                    switch (promptOptionEnum) {
+                        case BUG:
+                            BugReporting.setPromptOptionsEnabled(PromptOption.BUG);
+                            break;
+                        case FEEDBACK:
+                            BugReporting.setPromptOptionsEnabled(PromptOption.FEEDBACK);
+                            break;
+                        case CHAT:
+                            BugReporting.setPromptOptionsEnabled(PromptOption.CHAT);
+                            break;
+                        default:
+                            BugReporting.setInvocationEvents(InstabugInvocationEvent.SHAKE);
+                            break;
+                    }
                 }
+            } catch (IllegalStateException e) {
+                callbackContext.error(errorMsg);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } else callbackContext.error("A valid prompt option type must be provided.");
+    }
+
+    /**
+     * Sets the prompt options used to invoke Instabug SDK
+     *
+     * @param options the invocation event value
+     */
+    public void setPromptOptionsEnabled(final CallbackContext callbackContext, JSONArray options) {
+        String[] stringArrayOfPromptOptions = toStringArray(options);
+        if(stringArrayOfPromptOptions.length != 0) {
+            try {
+                for (String promptOption : stringArrayOfPromptOptions) {
+                    PromptOption promptOptionEnum = parsePromptOptions(promptOption);
+                    switch (promptOptionEnum) {
+                        case BUG:
+                            BugReporting.setPromptOptionsEnabled(PromptOption.BUG);
+                            break;
+                        case FEEDBACK:
+                            BugReporting.setPromptOptionsEnabled(PromptOption.FEEDBACK);
+                            break;
+                        case CHAT:
+                            BugReporting.setPromptOptionsEnabled(PromptOption.CHAT);
+                            break;
+                        default:
+                            BugReporting.setInvocationEvents(InstabugInvocationEvent.SHAKE);
+                            break;
+                    }
+                }
+            } catch (IllegalStateException e) {
+                callbackContext.error(errorMsg);
+            }
+        } else callbackContext.error("A valid prompt option type must be provided.");
     }
 
     /**
@@ -265,7 +301,7 @@ public class IBGPlugin extends CordovaPlugin {
      *        Specific mode of SDK
      */
     private void invoke(final CallbackContext callbackContext, String mode) {
-        InstabugInvocationMode iMode = parseInvocationMode(mode);
+        InvocationMode iMode = parseInvocationMode(mode);
 
         try {
             //Instabug instabug = Instabug.getInstance();
@@ -292,6 +328,28 @@ public class IBGPlugin extends CordovaPlugin {
         try {
             Instabug.showIntroMessage();
             callbackContext.success();
+        } catch (IllegalStateException e) {
+            callbackContext.error(errorMsg);
+        }
+    }
+
+    /**
+     * Display the discovery dialog explaining the shake gesture or the
+     * two finger swipe gesture, if you've enabled it.
+     *
+     * @param callbackContext
+     *        Used when calling back into JavaScript
+     */
+    private void setPreInvocationHandler(final CallbackContext callbackContext) {
+        try {
+            BugReporting.setOnInvokeCallback(new OnInvokeCallback() {
+                @Override
+                public void onInvoke() {
+                    PluginResult result = new PluginResult(PluginResult.Status.OK);
+                    result.setKeepCallback(true);
+                    callbackContext.sendPluginResult(result);
+                }
+            });
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
         }
@@ -966,22 +1024,38 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
+     * Convenience method for converting string to PromptOption.
+     *
+     * @param promptOption
+     *        String shortcode for prompt option
+     */
+    public static PromptOption parsePromptOptions(String promptOption) {
+        if ("bug".equals(promptOption)) {
+            return PromptOption.BUG;
+        } else if ("feedback".equals(promptOption)) {
+            return PromptOption.FEEDBACK;
+        } else if ("chat".equals(promptOption)) {
+            return PromptOption.CHAT;
+        } else return null;
+    }
+
+    /**
      * Convenience method for converting string to InstabugInvocationMode.
      *
      * @param mode
      *        String shortcode for mode
      */
-    public static InstabugInvocationMode parseInvocationMode(String mode) {
+    public static InvocationMode parseInvocationMode(String mode) {
         if ("chat".equals(mode)) {
-            return InstabugInvocationMode.NEW_CHAT;
+            return InvocationMode.NEW_CHAT;
         } else if ("chats".equals(mode)) {
-            return InstabugInvocationMode.CHATS_LIST;
+            return InvocationMode.CHATS_LIST;
         } else if ("bug".equals(mode)) {
-            return InstabugInvocationMode.NEW_BUG;
+            return InvocationMode.NEW_BUG;
         } else if ("feedback".equals(mode)) {
-            return InstabugInvocationMode.NEW_FEEDBACK;
+            return InvocationMode.NEW_FEEDBACK;
         } else if ("options".equals(mode)) {
-            return InstabugInvocationMode.PROMPT_OPTION;
+            return InvocationMode.PROMPT_OPTION;
         } else return null;
     }
 

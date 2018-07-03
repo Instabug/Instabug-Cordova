@@ -267,17 +267,7 @@
  */
 - (void) setPreInvocationHandler:(CDVInvokedUrlCommand*)command
 {
-    CDVPluginResult* result;
-
-    IBGBugReporting.willInvokeHandler = [command argumentAtIndex:0];
-    if ([command argumentAtIndex:0]) {
-        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-    } else {
-        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                   messageAsString:@"A callback must be provided."];
-    }
-
-    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+    IBGBugReporting.willInvokeHandler = [self sendSuccessResult:command];
 }
 
 /**
@@ -557,7 +547,7 @@
     IBGUserStepsMode reproStepsMode = [self parseReproStepsMode:[command argumentAtIndex:0]];
 
     if (reproStepsMode) {
-        [Instabug setReproStepsMode:reproStepsMode];
+        Instabug.reproStepsMode = reproStepsMode;
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     } else {
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR

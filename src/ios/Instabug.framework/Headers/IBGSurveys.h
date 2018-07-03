@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "IBGSurvey.h"
 
+NS_SWIFT_NAME(Surveys)
 @interface IBGSurveys : NSObject
 
 @property (class, atomic, assign) BOOL enabled;
@@ -43,6 +44,15 @@
  is dismissed.
  */
 @property (class, atomic, strong) void(^didDismissSurveyHandler)(void);
+
+/**
+ @brief Setting an option for all the surveys to show a welcome screen before the user starts taking the survey.
+ 
+ @discussion By enabling this option, any survey that appears to the user will have a welcome screen with a title, subtitle
+ and a button that if clicked, will take the user to the survey. All the strings in the welcome screen have a default value
+ and localized. They can also be modified using the strings API. The default value of this option is false.
+ */
+@property (class, atomic, assign) BOOL shouldShowWelcomeScreen;
 
 /**
  @brief Shows one of the surveys that were not shown before, that also have conditions that match the current device/user.

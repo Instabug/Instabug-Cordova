@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <InstabugCore/InstabugCore.h>
 
+NS_SWIFT_NAME(FeatureRequests)
 @interface IBGFeatureRequests : NSObject
 /**
  @brief Sets whether users are required to enter an email address or not when doing a certain action `IBGAction`.
