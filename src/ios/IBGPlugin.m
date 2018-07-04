@@ -326,8 +326,7 @@
     IBGBugReporting.didSelectPromptOptionHandler = ^(IBGPromptOption promptOption) {
         CDVPluginResult* result;
         NSString *promptOptionString = [self parsePromptOptionToString:promptOption];
-        NSDictionary *dict = @{ @"promptOption" : promptOptionString };
-        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dict];
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:promptOptionString];
         [result setKeepCallbackAsBool:true];
         [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
     };
