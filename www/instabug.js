@@ -275,6 +275,10 @@ Instabug.setPreSendingHandler = function (success, error) {
     exec(success, error, 'IBGPlugin', 'setPreSendingHandler', []);
 };
 
+Instabug.setDidSelectPromptOptionHandler = function (success, error) {
+    exec(success, error, 'IBGPlugin', 'didSelectPromptOptionHandler', []);
+};
+
 Instabug.setVideoRecordingFloatingButtonPosition = function (position, success, error) {
     exec(success, error, 'IBGPlugin', 'setVideoRecordingFloatingButtonPosition', [position]);
 };

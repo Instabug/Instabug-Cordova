@@ -268,7 +268,10 @@
 - (void) setPreInvocationHandler:(CDVInvokedUrlCommand*)command
 {
     IBGBugReporting.willInvokeHandler = ^{
-        [self sendSuccessResult:command];
+        CDVPluginResult* result;
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+        [result setKeepCallbackAsBool:true];
+        [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
     };
 }
 
@@ -287,7 +290,45 @@
         NSDictionary *dict = @{ @"dismissType" : dismissTypeString, @"reportType" : reportTypeString};
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
                                      messageAsDictionary:dict];
-        
+        [result setKeepCallbackAsBool:true];
+        [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+    };
+}
+
+/**
+ * Sets a block of code to be executed right after the SDK's UI is dismissed.
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) setPreSendingHandler:(CDVInvokedUrlCommand*)command
+{
+//    Instabug.willSendReportHandler = ^(IBGReport* report){
+//        CDVPluginResult* result;
+//        NSString *dismissTypeString = [self parseDismissType:dismissType];
+//        NSString *reportTypeString = [self parseReportType:reportType];
+//        NSDictionary *dict = @{ @"dismissType" : dismissTypeString, @"reportType" : reportTypeString};
+//        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+//                               messageAsDictionary:dict];
+//        [result setKeepCallbackAsBool:true];
+//        [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+//    };
+}
+
+/**
+ * Sets a block of code to be executed when a prompt option is selected
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) didSelectPromptOptionHandler:(CDVInvokedUrlCommand*)command
+{
+    IBGBugReporting.didSelectPromptOptionHandler = ^(IBGPromptOption promptOption) {
+        CDVPluginResult* result;
+        NSString *promptOptionString = [self parsePromptOptionToString:promptOption];
+        NSDictionary *dict = @{ @"promptOption" : promptOptionString };
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dict];
+        [result setKeepCallbackAsBool:true];
         [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
     };
 }
@@ -350,16 +391,9 @@
  - (void) getAvailableSurveys:(CDVInvokedUrlCommand*)command
   {
       CDVPluginResult* result;
-      // NSArray<IBGSurvey *> *surveys = [IBGSurveys availableSurveys];
-      //
-      // if ([surveys count] > 0) {
       result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
                                  messageAsArray:[IBGSurveys availableSurveys]];
-      // } else {
-      //     result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-      //                                messageAsString:@"There is no available surveys"];
-      // }
-
+    
       [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
   }
 
@@ -697,6 +731,7 @@
 
      [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
  }
+
 
  /**
   * Sets whether the SDK is recording the screen or not.
@@ -1231,6 +1266,26 @@
           return @"add attachment";
       } else return @"";
   }
+
+/**
+ * Convenience method for converting NSString to
+ * IBGPromptOption.
+ *
+ * @param  {NSString*} promptOption
+ *         NSString shortcode for IBGPromptOption
+ */
+- (NSString*) parsePromptOptionToString:(IBGPromptOption)promptOption
+{
+    if (promptOption == IBGPromptOptionChat) {
+        return @"chat";
+    } else if (promptOption == IBGPromptOptionBug) {
+        return @"bug";
+    } else if (promptOption == IBGPromptOptionFeedback) {
+        return @"feedback";
+    } else if (promptOption == IBGPromptOptionNone) {
+        return @"none";
+    } else return @"";
+}
 
 /**
  * Convenience method for converting NSString to
