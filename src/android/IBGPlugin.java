@@ -247,23 +247,8 @@ public class IBGPlugin extends CordovaPlugin {
         String[] stringArrayOfInvocationOptions = toStringArray(options);
         if(stringArrayOfInvocationOptions.length != 0) {
             try {
-                for (String promptOption : stringArrayOfInvocationOptions) {
-                    PromptOption promptOptionEnum = parsePromptOptions(promptOption);
-                    switch (promptOptionEnum) {
-                        case BUG:
-                            BugReporting.setPromptOptionsEnabled(PromptOption.BUG);
-                            break;
-                        case FEEDBACK:
-                            BugReporting.setPromptOptionsEnabled(PromptOption.FEEDBACK);
-                            break;
-                        case CHAT:
-                            BugReporting.setPromptOptionsEnabled(PromptOption.CHAT);
-                            break;
-                        default:
-                            BugReporting.setInvocationEvents(InstabugInvocationEvent.SHAKE);
-                            break;
-                    }
-                }
+                ArrayList<Integer> invocationOptions = parseInvocationOptions(stringArrayOfInvocationOptions);
+                BugReporting.setInvocationOptions(convertIntegers(invocationOptions));
             } catch (IllegalStateException e) {
                 callbackContext.error(errorMsg);
             }
