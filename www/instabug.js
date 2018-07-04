@@ -20,6 +20,15 @@ var getInvocationModes = function () {
     };
 };
 
+var getInvocationOptions = function () {
+    return {
+        emailFieldHidden: 'emailFieldHidden',
+        emailFieldOptional: 'emailFieldOptional',
+        commentFieldRequired: 'commentFieldRequired',
+        disablePostSendingDialog: 'disablePostSendingDialog'
+    };
+};
+
 var getReproStepsMode = function () {
     return {
         enabled: 'enabled',
@@ -87,11 +96,22 @@ Instabug.startWithToken = function (token, events, options, success, error) {
   }
 };
 
-Instabug.invoke = function (mode, success, error) {
+Instabug.invoke = function (mode, invocationOptions, success, error) {
     var validatedMode = getInvocationModes()[mode];
-
+    var i;
+    var validatedOptions = [];
+    for (i = 0; i < invocationOptions.length; i++) {
+      var validatedOption = getInvocationOptions()[invocationOptions[i]];
+      if(validatedOption) {
+        validatedOptions.push(validatedOption);
+      }
+    }
     if (validatedMode) {
-        exec(success, error, 'IBGPlugin', 'invoke', [validatedMode]);
+        if(validatedOptions.length != 0) {
+            exec(success, error, 'IBGPlugin', 'invoke', [validatedMode, validatedOptions]);
+        } else {
+            exec(success, error, 'IBGPlugin', 'invoke', [validatedMode]);
+        }
     } else {
         exec(success, error, 'IBGPlugin', 'invoke', []);
         console.log('Could not apply mode to invocation - "' + mode + '" is not valid.');
@@ -224,6 +244,22 @@ Instabug.setInvocationEvents = function (events, success, error) {
       console.log('Could not change invocation event - "' + event + '" is not valid.');
   }
 };
+
+Instabug.setInvocationOptions = function (options, success, error) {
+    var i;
+    var validatedOptions = [];
+    for (i = 0; i < options.length; i++) {
+      var validatedOption = getInvocationOptions()[options[i]];
+      if(validatedOption) {
+        validatedOptions.push(validatedOption);
+      }
+    }
+    if (validatedOptions !== undefined || validatedOptions.length != 0) {
+      exec(success, error, 'IBGPlugin', 'setInvocationOptions', [validatedOptions]);
+    } else {
+        console.log('Could not change invocation option - "' + option + '" is not valid.');
+    }
+  };
 
 Instabug.disable = function (success, error) {
     exec(success, error, 'IBGPlugin', 'disable', []);

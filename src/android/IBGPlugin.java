@@ -36,6 +36,8 @@ import java.io.File;
 import java.lang.Integer;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * This plugin initializes Instabug.
@@ -105,7 +107,7 @@ public class IBGPlugin extends CordovaPlugin {
             activate(callbackContext, args);
 
         } else if ("invoke".equals(action)) {
-            invoke(callbackContext, args.optString(0));
+            invoke(callbackContext, args);
 
         } else if ("showIntroDialog".equals(action)) {
             showIntroDialog(callbackContext);
@@ -306,18 +308,24 @@ public class IBGPlugin extends CordovaPlugin {
      *
      * @param callbackContext
      *        Used when calling back into JavaScript
-     * @param mode
-     *        Specific mode of SDK
+     * @param args
+     *        args passed with argument
      */
-    private void invoke(final CallbackContext callbackContext, String mode) {
-        InvocationMode iMode = parseInvocationMode(mode);
+    private void invoke(final CallbackContext callbackContext, JSONArray args) {
+        String invocationMode = args.optString(0);
+        JSONArray invocationOptionsArray = args.optJSONArray(1);
+        InvocationMode iMode = parseInvocationMode(invocationMode);
 
         try {
-            //Instabug instabug = Instabug.getInstance();
-
             if (iMode != null) {
-                // Invoke specific mode if possible
-                BugReporting.invoke(iMode);
+                if(invocationOptionsArray != null) {
+                    String[] stringArrayOfPromptOptions = toStringArray(invocationOptionsArray);
+                    List<Integer> invocationOptions = parseInvocationOptions(stringArrayOfPromptOptions);
+                    BugReporting.invoke(iMode, convertIntegers(invocationOptions));
+                } else {
+                    // Invoke specific mode if possible
+                    BugReporting.invoke(iMode);
+                }
             } else {
                 BugReporting.invoke();
             }
@@ -596,7 +604,7 @@ public class IBGPlugin extends CordovaPlugin {
     private void showSurveyWithToken(final CallbackContext callbackContext, String surveyToken) {
         if (surveyToken != null && surveyToken.length() > 0) {
             try {
-                Instabug.showSurvey(surveyToken);
+                Surveys.showSurvey(surveyToken);
                 callbackContext.success();
             } catch (IllegalStateException e) {
                 callbackContext.error(errorMsg);
@@ -753,8 +761,47 @@ public class IBGPlugin extends CordovaPlugin {
         } else callbackContext.error("A valid event type must be provided.");
     }
 
+    /**
+     * Convenience method to parse string array of invocation options into an Arraylist of integers
+     *
+     * @param invocationOptionsStringArray
+     *        string array of invocation options
+     */
+    private ArrayList<Integer> parseInvocationOptions(String[] invocationOptionsStringArray) {
+        ArrayList<Integer> invocationOptions = new ArrayList<Integer>();
+        if(invocationOptionsStringArray.length != 0) {
+            for (String option : invocationOptionsStringArray) {
+                int iOption = parseInvocationOption(option);
+                if (iOption != -1) {
+                    switch (iOption) {
+                        case InvocationOption.EMAIL_FIELD_HIDDEN:
+                            invocationOptions.add(InvocationOption.EMAIL_FIELD_HIDDEN);
+                            break;
+                        case InvocationOption.EMAIL_FIELD_OPTIONAL:
+                            invocationOptions.add(InvocationOption.EMAIL_FIELD_OPTIONAL);
+                            break;
+                        case InvocationOption.COMMENT_FIELD_REQUIRED:
+                            invocationOptions.add(InvocationOption.COMMENT_FIELD_REQUIRED);
+                            break;
+                        case InvocationOption.DISABLE_POST_SENDING_DIALOG:
+                            invocationOptions.add(InvocationOption.DISABLE_POST_SENDING_DIALOG);
+                            break;
+                        default:
+                            invocationOptions.add(InvocationOption.DISABLE_POST_SENDING_DIALOG);
+                            break;
+                    }
+                }
+            }
+        }
+        return invocationOptions;
+    }
 
-
+    /**
+     * Convenience method to convert from JSON array to string array.
+     *
+     * @param array
+     *        JSONArray to be converted to string.
+     */
     private static String[] toStringArray(JSONArray array) {
         if(array==null)
             return null;
@@ -1157,6 +1204,24 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
+     * Convenience method for converting string to InvocationOption.
+     *
+     * @param invocationOption
+     *        String shortcode for prompt option
+     */
+    public static int parseInvocationOption(String invocationOption) {
+        if ("emailFieldHidden".equals(invocationOption)) {
+            return InvocationOption.EMAIL_FIELD_HIDDEN;
+        } else if ("emailFieldOptional".equals(invocationOption)) {
+            return InvocationOption.EMAIL_FIELD_OPTIONAL;
+        } else if ("commentFieldRequired".equals(invocationOption)) {
+            return InvocationOption.COMMENT_FIELD_REQUIRED;
+        } else if ("disablePostSendingDialog".equals(invocationOption)) {
+            return InvocationOption.DISABLE_POST_SENDING_DIALOG;
+        } else return -1;
+    }
+
+    /**
      * Convenience method for converting string to InstabugInvocationMode.
      *
      * @param mode
@@ -1192,6 +1257,24 @@ public class IBGPlugin extends CordovaPlugin {
         } else if ("bottomRight".equals(position)) {
             return InstabugVideoRecordingButtonCorner.BOTTOM_RIGHT;
         } else return null;
+    }
+
+
+    /**
+     * Convenience method to convert a list of integers into an int array
+     *
+     * @param integers
+     *        list of integers to be converted
+     */
+    public static int[] convertIntegers(List<Integer> integers)
+    {
+        int[] ret = new int[integers.size()];
+        Iterator<Integer> iterator = integers.iterator();
+        for (int i = 0; i < ret.length; i++)
+        {
+            ret[i] = iterator.next().intValue();
+        }
+        return ret;
     }
 
 }
