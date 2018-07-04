@@ -283,6 +283,10 @@ Instabug.setWillShowSurveyHandler = function (success, error) {
     exec(success, error, 'IBGPlugin', 'willShowSurveyHandler', []);
 };
 
+Instabug.setDidDismissSurveyHandler = function (success, error) {
+    exec(success, error, 'IBGPlugin', 'didDismissSurveyHandler', []);
+};
+
 Instabug.setVideoRecordingFloatingButtonPosition = function (position, success, error) {
     exec(success, error, 'IBGPlugin', 'setVideoRecordingFloatingButtonPosition', [position]);
 };

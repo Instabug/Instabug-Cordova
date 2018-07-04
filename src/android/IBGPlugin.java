@@ -18,6 +18,7 @@ import com.instabug.library.invocation.OnInvokeCallback;
 import com.instabug.library.invocation.util.InstabugVideoRecordingButtonCorner;
 import com.instabug.library.model.Report;
 import com.instabug.library.visualusersteps.State;
+import com.instabug.survey.OnDismissCallback;
 import com.instabug.survey.OnShowCallback;
 import com.instabug.survey.Surveys;
 
@@ -403,6 +404,27 @@ public class IBGPlugin extends CordovaPlugin {
             Surveys.setOnShowCallback(new OnShowCallback() {
                 @Override
                 public void onShow() {
+                    PluginResult result = new PluginResult(PluginResult.Status.OK);
+                    result.setKeepCallback(true);
+                    callbackContext.sendPluginResult(result);
+                }
+            });
+        } catch (IllegalStateException e) {
+            callbackContext.error(errorMsg);
+        }
+    }
+
+    /**
+     * Sets a block of code to be executed right after the survey's UI is dismissed.
+     *
+     * @param callbackContext
+     *        Used when calling back into JavaScript
+     */
+    private void didDismissSurveyHandler(final CallbackContext callbackContext) {
+        try {
+            Surveys.setOnDismissCallback(new OnDismissCallback() {
+                @Override
+                public void onDismiss() {
                     PluginResult result = new PluginResult(PluginResult.Status.OK);
                     result.setKeepCallback(true);
                     callbackContext.sendPluginResult(result);
