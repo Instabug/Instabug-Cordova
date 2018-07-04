@@ -34,6 +34,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.lang.Integer;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -370,7 +371,7 @@ public class IBGPlugin extends CordovaPlugin {
      */
     private void setPreSendingHandler(final CallbackContext callbackContext) {
         try {
-            BugReporting.onReportSubmitHandler(new Report.OnReportCreatedListener() {
+            Instabug.onReportSubmitHandler(new Report.OnReportCreatedListener() {
                 @Override
                 public void onReportCreated(Report report) {
                     JSONObject reportParam = new JSONObject();
@@ -715,36 +716,44 @@ public class IBGPlugin extends CordovaPlugin {
      */
     private void setInvocationEvents(final CallbackContext callbackContext, JSONArray events) {
         String[] stringArrayOfEvents = toStringArray(events);
+        ArrayList<InstabugInvocationEvent> invocationEvents = new ArrayList<InstabugInvocationEvent>();
         if(stringArrayOfEvents.length != 0) {
             try {
                 for (String event : stringArrayOfEvents) {
                     InstabugInvocationEvent iEvent = parseInvocationEvent(event);
-                    switch (iEvent) {
-                        case SHAKE:
-                            BugReporting.setInvocationEvents(InstabugInvocationEvent.SHAKE);
-                            return;
-                        case FLOATING_BUTTON:
-                            BugReporting.setInvocationEvents(InstabugInvocationEvent.FLOATING_BUTTON);
-                            break;
-                        case TWO_FINGER_SWIPE_LEFT:
-                            BugReporting.setInvocationEvents(InstabugInvocationEvent.TWO_FINGER_SWIPE_LEFT);
-                            break;
-                        case SCREENSHOT_GESTURE:
-                            BugReporting.setInvocationEvents(InstabugInvocationEvent.SCREENSHOT_GESTURE);
-                            break;
-                        case NONE:
-                            BugReporting.setInvocationEvents(InstabugInvocationEvent.NONE);
-                            break;
-                        default:
-                            BugReporting.setInvocationEvents(InstabugInvocationEvent.SHAKE);
-                            break;
+                    if(iEvent != null) {
+                        switch (iEvent) {
+                            case SHAKE:
+                                invocationEvents.add(InstabugInvocationEvent.SHAKE);
+                                break;
+                            case FLOATING_BUTTON:
+                                invocationEvents.add(InstabugInvocationEvent.FLOATING_BUTTON);
+                                break;
+                            case TWO_FINGER_SWIPE_LEFT:
+                                invocationEvents.add(InstabugInvocationEvent.TWO_FINGER_SWIPE_LEFT);
+                                break;
+                            case SCREENSHOT_GESTURE:
+                                invocationEvents.add(InstabugInvocationEvent.SCREENSHOT_GESTURE);
+                                break;
+                            case NONE:
+                                invocationEvents.add(InstabugInvocationEvent.NONE);
+                                break;
+                            default:
+                                invocationEvents.add(InstabugInvocationEvent.SHAKE);
+                                break;
+                        }
+                    } else {
+                        callbackContext.error("A valid event type must be provided.");
                     }
                 }
+                BugReporting.setInvocationEvents(invocationEvents.toArray(new InstabugInvocationEvent[0]));
             } catch (IllegalStateException e) {
                 callbackContext.error(errorMsg);
             }
         } else callbackContext.error("A valid event type must be provided.");
     }
+
+
 
     private static String[] toStringArray(JSONArray array) {
         if(array==null)

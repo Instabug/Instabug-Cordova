@@ -196,6 +196,9 @@ Instabug.showSurveyIfAvailable = function (success, error) {
     exec(success, error, 'IBGPlugin', 'showSurveyIfAvailable', []);
 };
 
+/**
+ * @deprecated Since version 8.0. 
+ */
 Instabug.changeInvocationEvent = function (event, success, error) {
     var validatedEvent = getInvocationEvents()[event];
 
@@ -209,7 +212,6 @@ Instabug.changeInvocationEvent = function (event, success, error) {
 Instabug.setInvocationEvents = function (events, success, error) {
   var i;
   var validatedEvents = [];
-  alert(events.length);
   for (i = 0; i < events.length; i++) {
     var validatedEvent = getInvocationEvents()[events[i]];
     if(validatedEvent) {
