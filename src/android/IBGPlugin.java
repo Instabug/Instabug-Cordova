@@ -16,6 +16,7 @@ import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.bug.invocation.InvocationMode;
 import com.instabug.library.invocation.OnInvokeCallback;
 import com.instabug.library.invocation.util.InstabugVideoRecordingButtonCorner;
+import com.instabug.library.model.Report;
 import com.instabug.library.visualusersteps.State;
 
 import org.apache.cordova.CallbackContext;
@@ -349,6 +350,37 @@ public class IBGPlugin extends CordovaPlugin {
                 @Override
                 public void onInvoke() {
                     PluginResult result = new PluginResult(PluginResult.Status.OK);
+                    result.setKeepCallback(true);
+                    callbackContext.sendPluginResult(result);
+                }
+            });
+        } catch (IllegalStateException e) {
+            callbackContext.error(errorMsg);
+        }
+    }
+
+    /**
+     * Sets a block of code to be executed just before the SDK's UI is presented.
+     *
+     * @param callbackContext
+     *        Used when calling back into JavaScript
+     */
+    private void setPreSendingHandler(final CallbackContext callbackContext) {
+        try {
+            BugReporting.onReportSubmitHandler(new Report.OnReportCreatedListener() {
+                @Override
+                public void onReportCreated(Report report) {
+                    JSONObject reportParam = new JSONObject();
+                    try {
+                        reportParam.put("tagsArray", report.getTags());
+                        reportParam.put("consoleLogs", report.getConsoleLog());
+                        reportParam.put("userData", report.getUserData());
+                        reportParam.put("userAttributes", report.getUserAttributes());
+                        reportParam.put("fileAttachments", report.getFileAttachments());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    PluginResult result = new PluginResult(PluginResult.Status.OK, reportParam);
                     result.setKeepCallback(true);
                     callbackContext.sendPluginResult(result);
                 }

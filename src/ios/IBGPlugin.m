@@ -143,7 +143,7 @@
  */
 - (void) showIntroDialog:(CDVInvokedUrlCommand*)command
 {
-    [IBGBugReporting showIntroMessage];
+    [Instabug showIntroMessage];
     [self sendSuccessResult:command];
 }
 
@@ -267,7 +267,9 @@
  */
 - (void) setPreInvocationHandler:(CDVInvokedUrlCommand*)command
 {
-    IBGBugReporting.willInvokeHandler = [self sendSuccessResult:command];
+    IBGBugReporting.willInvokeHandler = ^{
+        [self sendSuccessResult:command];
+    };
 }
 
 /**
@@ -278,7 +280,16 @@
  */
 - (void) setPostInvocationHandler:(CDVInvokedUrlCommand*)command
 {
-    IBGBugReporting.didDismissHandler = [self sendSuccessResult:command];
+    IBGBugReporting.didDismissHandler = ^(IBGDismissType dismissType, IBGReportType reportType){
+        CDVPluginResult* result;
+        NSString *dismissTypeString = [self parseDismissType:dismissType];
+        NSString *reportTypeString = [self parseReportType:reportType];
+        NSDictionary *dict = @{ @"dismissType" : dismissTypeString, @"reportType" : reportTypeString};
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                     messageAsDictionary:dict];
+        
+        [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+    };
 }
 
 /**
@@ -343,7 +354,7 @@
       //
       // if ([surveys count] > 0) {
       result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
-                                 messageAsArray:[IBGSurveys availableSurveys];
+                                 messageAsArray:[IBGSurveys availableSurveys]];
       // } else {
       //     result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
       //                                messageAsString:@"There is no available surveys"];
@@ -390,7 +401,7 @@
     IBGPosition position = [self parseIBGPosition:[command argumentAtIndex:0]];
 
     if (position) {
-        IBGBugReporting.videoRecordingFloatingButtonPosition = position;
+//        IBGBugReporting.videoRecordingFloatingButtonPosition = position;
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     } else {
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
@@ -879,7 +890,7 @@
 - (void) setIntroDialogEnabled:(NSString*)enabled
 {
     if ([enabled length] > 0) {
-        IBGBugReporting.introMessageEnabled = [enabled boolValue];
+        [Instabug setIntroMessageEnabled:[enabled boolValue]];
     }
 }
 
@@ -1201,6 +1212,40 @@
     } else if ([mode isEqualToString:@"disabled"]) {
         return IBGExtendedBugReportModeDisabled;
     } else return -1;
+}
+            
+  /**
+   * Convenience method for converting NSString to
+   * IBGDismissType.
+   *
+   * @param  {NSString*} dismissType
+   *         NSString shortcode for IBGDismissType
+   */
+- (NSString*) parseDismissType:(IBGDismissType)dismissType
+  {
+      if (dismissType == IBGDismissTypeSubmit) {
+          return @"submit";
+      } else if (dismissType == IBGDismissTypeCancel) {
+          return @"cancel";
+      } else if (dismissType == IBGDismissTypeAddAttachment) {
+          return @"add attachment";
+      } else return @"";
+  }
+
+/**
+ * Convenience method for converting NSString to
+ * IBGReportType.
+ *
+ * @param  {NSString*} reportType
+ *         NSString shortcode for IBGReportType
+ */
+- (NSString*) parseReportType:(IBGReportType)reportType
+{
+    if (reportType == IBGReportTypeBug) {
+        return @"bug";
+    } else if (reportType == IBGReportTypeFeedback) {
+        return @"feedback";
+    } else return @"";
 }
 
 /**
