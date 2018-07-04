@@ -334,6 +334,22 @@
 }
 
 /**
+ * Sets a block of code to be executed just before the survey's UI is presented.
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) willShowSurveyHandler:(CDVInvokedUrlCommand*)command
+{
+    IBGSurveys.willShowSurveyHandler = ^ {
+        CDVPluginResult* result;
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+        [result setKeepCallbackAsBool:true];
+        [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+    };
+}
+
+/**
  * Shows survey with a specific token.
  * Does nothing if there are no available surveys with that specific token.
  * Answered and cancelled surveys won't show up again.

@@ -279,6 +279,10 @@ Instabug.setDidSelectPromptOptionHandler = function (success, error) {
     exec(success, error, 'IBGPlugin', 'didSelectPromptOptionHandler', []);
 };
 
+Instabug.setWillShowSurveyHandler = function (success, error) {
+    exec(success, error, 'IBGPlugin', 'willShowSurveyHandler', []);
+};
+
 Instabug.setVideoRecordingFloatingButtonPosition = function (position, success, error) {
     exec(success, error, 'IBGPlugin', 'setVideoRecordingFloatingButtonPosition', [position]);
 };

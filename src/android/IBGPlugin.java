@@ -18,6 +18,8 @@ import com.instabug.library.invocation.OnInvokeCallback;
 import com.instabug.library.invocation.util.InstabugVideoRecordingButtonCorner;
 import com.instabug.library.model.Report;
 import com.instabug.library.visualusersteps.State;
+import com.instabug.survey.OnShowCallback;
+import com.instabug.survey.Surveys;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
@@ -381,6 +383,27 @@ public class IBGPlugin extends CordovaPlugin {
                         e.printStackTrace();
                     }
                     PluginResult result = new PluginResult(PluginResult.Status.OK, reportParam);
+                    result.setKeepCallback(true);
+                    callbackContext.sendPluginResult(result);
+                }
+            });
+        } catch (IllegalStateException e) {
+            callbackContext.error(errorMsg);
+        }
+    }
+
+    /**
+     * Sets a block of code to be executed just before the survey's UI is presented.
+     *
+     * @param callbackContext
+     *        Used when calling back into JavaScript
+     */
+    private void willShowSurveyHandler(final CallbackContext callbackContext) {
+        try {
+            Surveys.setOnShowCallback(new OnShowCallback() {
+                @Override
+                public void onShow() {
+                    PluginResult result = new PluginResult(PluginResult.Status.OK);
                     result.setKeepCallback(true);
                     callbackContext.sendPluginResult(result);
                 }
