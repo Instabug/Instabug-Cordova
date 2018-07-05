@@ -214,6 +214,12 @@ public class IBGPlugin extends CordovaPlugin {
         } else if ("setInvocationOptions".equals(action)) {
             setInvocationOptions(callbackContext, args.optJSONArray(0));
 
+        } else if ("setChatNotificationEnabled".equals(action)) {
+            setAutoScreenRecordingEnabled(callbackContext, args.optBoolean(0));
+
+        } else if ("showSurveyIfAvailable".equals(action)) {
+            showSurveyIfAvailable(callbackContext);
+
         } else {
             // Method not found.
             return false;
@@ -901,6 +907,22 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
+     * Shows one of the surveys that were not shown before, that also have conditions that
+     * match the current device/user.
+     *
+     * @param callbackContext
+     *        Used when calling back into JavaScript
+     */
+    private void showSurveyIfAvailable(final CallbackContext callbackContext) {
+        try {
+            Surveys.showSurveyIfAvailable();
+            callbackContext.success();
+        } catch (IllegalStateException e) {
+            callbackContext.error(errorMsg);
+        }
+    }
+
+    /**
      * Sets whether the SDK is recording the screen or not.
      *
      * @param isEnabled A boolean to set auto screen recording to being enabled or disabled.
@@ -1106,7 +1128,7 @@ public class IBGPlugin extends CordovaPlugin {
     private void setThresholdForReshowingSurveyAfterDismiss(final CallbackContext callbackContext, int sessionsCount, int daysCount) {
         if (Math.signum(sessionsCount) != - 1 && Math.signum(daysCount) != - 1) {
             try {
-                Instabug.setThresholdForReshowingSurveyAfterDismiss(sessionsCount, daysCount);
+                Surveys.setThresholdForReshowingSurveyAfterDismiss(sessionsCount, daysCount);
                 callbackContext.success();
             } catch (IllegalStateException e) {
                 callbackContext.error(errorMsg);
