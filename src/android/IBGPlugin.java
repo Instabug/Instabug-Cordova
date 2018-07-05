@@ -8,6 +8,8 @@ import android.util.Log;
 import com.instabug.bug.BugReporting;
 import com.instabug.bug.PromptOption;
 import com.instabug.bug.invocation.InvocationOption;
+import com.instabug.featuresrequest.FeatureRequests;
+import com.instabug.library.ActionType;
 import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
 import com.instabug.library.OnSdkDismissCallback;
@@ -231,6 +233,8 @@ public class IBGPlugin extends CordovaPlugin {
         } else if ("setShakingThreshold".equals(action)) {
             setShakingThreshold(callbackContext, args.optInt(0));
 
+        } else if ("setEmailFieldRequiredForFeatureRequests".equals(action)) {
+            setEmailFieldRequiredForFeatureRequests(callbackContext, args.optBoolean(0), args.optJSONArray(1));
         } else {
             // Method not found.
             return false;
@@ -287,6 +291,25 @@ public class IBGPlugin extends CordovaPlugin {
                 callbackContext.error(errorMsg);
             }
         } else callbackContext.error("A valid prompt option type must be provided.");
+    }
+
+    /**
+     * Sets whether users are required to enter an email address or not when doing a certain action `IBGAction`.
+     *
+     * @param isRequired A boolean to indicate whether email field is required or not.
+     *
+     * @param actionTypes Action types values
+     */
+    public void setEmailFieldRequiredForFeatureRequests(final CallbackContext callbackContext, boolean isRequired, JSONArray actionTypes) {
+        String[] stringArrayOfActionTypes = toStringArray(actionTypes);
+        if(stringArrayOfActionTypes.length != 0) {
+            try {
+                ArrayList<Integer> actionTypesArray = parseActionTypes(stringArrayOfActionTypes);
+                FeatureRequests.setEmailFieldRequired(isRequired, convertIntegers(actionTypesArray));
+            } catch (IllegalStateException e) {
+                callbackContext.error(errorMsg);
+            }
+        } else callbackContext.error("A valid action type must be provided.");
     }
 
     /**
@@ -802,6 +825,25 @@ public class IBGPlugin extends CordovaPlugin {
     /**
      * Convenience method to parse string array of invocation options into an Arraylist of integers
      *
+     * @param actionTypesStringArray
+     *        string array of invocation options
+     */
+    private ArrayList<Integer> parseActionTypes(String[] actionTypesStringArray) {
+        ArrayList<Integer> actionTypes = new ArrayList<Integer>();
+        if(actionTypesStringArray.length != 0) {
+            for (String actionType : actionTypesStringArray) {
+                int aType = parseActionType(actionType);
+                if (aType != -1) {
+                    actionTypes.add(aType);
+                }
+            }
+        }
+        return actionTypes;
+    }
+
+    /**
+     * Convenience method to parse string array of invocation options into an Arraylist of integers
+     *
      * @param promptOptionsStringArray
      *        string array of invocation options
      */
@@ -1291,6 +1333,20 @@ public class IBGPlugin extends CordovaPlugin {
             return InvocationOption.COMMENT_FIELD_REQUIRED;
         } else if ("disablePostSendingDialog".equals(invocationOption)) {
             return InvocationOption.DISABLE_POST_SENDING_DIALOG;
+        } else return -1;
+    }
+
+    /**
+     * Convenience method for converting string to InvocationOption.
+     *
+     * @param actionType
+     *        String shortcode for prompt option
+     */
+    public static int parseActionType(String actionType) {
+        if ("requestNewFeature".equals(actionType)) {
+            return ActionType.REQUEST_NEW_FEATURE;
+        } else if ("addCommentToFeature".equals(actionType)) {
+            return ActionType.ADD_COMMENT_TO_FEATURE;
         } else return -1;
     }
 

@@ -53,6 +53,13 @@ var getExtendedBugReportMode = function () {
     };
 };
 
+var getActionTypes = function () {
+    return {
+        requestNewFeature: 'requestNewFeature',
+        addCommentToFeature: 'addCommentToFeature'
+    };
+};
+
 var getLocales = function () {
     return {
         arabic: 'arabic',
@@ -164,6 +171,22 @@ Instabug.logUserEventWithName = function (userEvent, success, error) {
 
 Instabug.setShakingThreshold = function (shakingThreshold, success, error) {
     exec(success, error, 'IBGPlugin', 'setShakingThreshold', [shakingThreshold]);
+};
+
+Instabug.setEmailFieldRequiredForFeatureRequests = function (isRequired, actionTypes, success, error) {
+    var i;
+    var validatedActionTypes = [];
+    for (i = 0; i < actionTypes.length; i++) {
+      var validatedActionType = getActionTypes()[actionTypes[i]];
+      if(validatedActionType) {
+        validatedActionTypes.push(validatedActionType);
+      }
+    }
+    if (validatedActionTypes !== undefined || validatedActionTypes.length != 0) {
+      exec(success, error, 'IBGPlugin', 'setEmailFieldRequiredForFeatureRequests', [isRequired, validatedActionTypes]);
+    } else {
+        console.log('Could not set email field - "' + validatedActionTypes + '" is incorrect.');
+    }
 };
 
 Instabug.setReproStepsMode = function (reproStepsMode, success, error) {
