@@ -228,6 +228,9 @@ public class IBGPlugin extends CordovaPlugin {
         } else if ("setAutoShowingSurveysEnabled".equals(action)) {
             setAutoShowingSurveysEnabled(callbackContext, args.optBoolean(0));
 
+        } else if ("setShakingThreshold".equals(action)) {
+            setShakingThreshold(callbackContext, args.optInt(0));
+
         } else {
             // Method not found.
             return false;
@@ -493,6 +496,22 @@ public class IBGPlugin extends CordovaPlugin {
          }
 
         } else callbackContext.error("A colorInt must be provided.");
+    }
+
+    /**
+     * Sets the threshold value of the shake gesture on the device
+     *
+     * @param callbackContext
+     *        Used when calling back into JavaScript
+     * @param shakingThreshold
+     *        The value of the primary color
+     */
+    private void setShakingThreshold(final CallbackContext callbackContext, int shakingThreshold) {
+         try {
+             BugReporting.setShakingThreshold(shakingThreshold);
+         } catch (IllegalStateException e) {
+            callbackContext.error(errorMsg);
+         }
     }
 
     /**
