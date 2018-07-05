@@ -20,6 +20,7 @@ import com.instabug.library.model.Report;
 import com.instabug.library.visualusersteps.State;
 import com.instabug.survey.OnDismissCallback;
 import com.instabug.survey.OnShowCallback;
+import com.instabug.survey.Survey;
 import com.instabug.survey.Surveys;
 
 import org.apache.cordova.CallbackContext;
@@ -38,6 +39,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This plugin initializes Instabug.
@@ -219,6 +221,9 @@ public class IBGPlugin extends CordovaPlugin {
 
         } else if ("showSurveyIfAvailable".equals(action)) {
             showSurveyIfAvailable(callbackContext);
+
+        } else if ("getAvailableSurveys".equals(action)) {
+            getAvailableSurveys(callbackContext);
 
         } else {
             // Method not found.
@@ -458,6 +463,22 @@ public class IBGPlugin extends CordovaPlugin {
                     callbackContext.sendPluginResult(result);
                 }
             });
+        } catch (IllegalStateException e) {
+            callbackContext.error(errorMsg);
+        }
+    }
+
+    /**
+     * Sets a block of code to be executed right after the SDK's UI is dismissed.
+     *
+     * @param callbackContext
+     *        Used when calling back into JavaScript
+     */
+    private void getAvailableSurveys(final CallbackContext callbackContext) {
+        try {
+            JSONArray surveysArray = toJson(Surveys.getAvailableSurveys());
+            PluginResult result = new PluginResult(Status.OK, surveysArray);
+            callbackContext.sendPluginResult(result);
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
         }
@@ -1038,7 +1059,7 @@ public class IBGPlugin extends CordovaPlugin {
      */
     private void hasRespondedToSurveyWithToken(final CallbackContext callbackContext, String surveyToken) {
         try {
-            boolean hasResponded = Instabug.hasRespondToSurvey(surveyToken);
+            boolean hasResponded = Surveys.hasRespondToSurvey(surveyToken);
             callbackContext.sendPluginResult(new PluginResult(Status.OK, hasResponded));
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
@@ -1078,11 +1099,11 @@ public class IBGPlugin extends CordovaPlugin {
     private void setExtendedBugReportMode(final CallbackContext callbackContext, String mode) {
         try {
           if(mode.equals("enabledWithRequiredFields")) {
-            Instabug.setExtendedBugReportState(ExtendedBugReport.State.ENABLED_WITH_REQUIRED_FIELDS);
+              BugReporting.setExtendedBugReportState(ExtendedBugReport.State.ENABLED_WITH_REQUIRED_FIELDS);
           } else if(mode.equals("enabledWithOptionalFields")) {
-            Instabug.setExtendedBugReportState(ExtendedBugReport.State.ENABLED_WITH_OPTIONAL_FIELDS);
+              BugReporting.setExtendedBugReportState(ExtendedBugReport.State.ENABLED_WITH_OPTIONAL_FIELDS);
           } else if(mode.equals("disabled")) {
-            Instabug.setExtendedBugReportState(ExtendedBugReport.State.DISABLED);
+              BugReporting.setExtendedBugReportState(ExtendedBugReport.State.DISABLED);
           }
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
@@ -1302,4 +1323,23 @@ public class IBGPlugin extends CordovaPlugin {
         return ret;
     }
 
+    /**
+     * Convenience method to convert from a list of Surveys to a JSON array
+     *
+     * @param list
+     *        List of Surveys to be converted to JSON array
+     */
+    public static JSONArray toJson(List<Survey> list) {
+        JSONArray jsonArray = new JSONArray();
+        try{
+            for (Survey obj : list) {
+                JSONObject object = new JSONObject();
+                object.put("title", obj.getTitle());
+                jsonArray.put(object);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonArray;
+    }
 }
