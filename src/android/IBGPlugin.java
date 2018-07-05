@@ -272,29 +272,14 @@ public class IBGPlugin extends CordovaPlugin {
     /**
      * Sets the prompt options used to invoke Instabug SDK
      *
-     * @param options the invocation event value
+     * @param options the prompt options values
      */
     public void setPromptOptionsEnabled(final CallbackContext callbackContext, JSONArray options) {
         String[] stringArrayOfPromptOptions = toStringArray(options);
         if(stringArrayOfPromptOptions.length != 0) {
             try {
-                for (String promptOption : stringArrayOfPromptOptions) {
-                    PromptOption promptOptionEnum = parsePromptOptions(promptOption);
-                    switch (promptOptionEnum) {
-                        case BUG:
-                            BugReporting.setPromptOptionsEnabled(PromptOption.BUG);
-                            break;
-                        case FEEDBACK:
-                            BugReporting.setPromptOptionsEnabled(PromptOption.FEEDBACK);
-                            break;
-                        case CHAT:
-                            BugReporting.setPromptOptionsEnabled(PromptOption.CHAT);
-                            break;
-                        default:
-                            BugReporting.setInvocationEvents(InstabugInvocationEvent.SHAKE);
-                            break;
-                    }
-                }
+                ArrayList<PromptOption> promptOptions = parsePromptOptions(stringArrayOfPromptOptions);
+                BugReporting.setPromptOptionsEnabled(promptOptions.toArray(new PromptOption[0]));
             } catch (IllegalStateException e) {
                 callbackContext.error(errorMsg);
             }
@@ -788,27 +773,30 @@ public class IBGPlugin extends CordovaPlugin {
             for (String option : invocationOptionsStringArray) {
                 int iOption = parseInvocationOption(option);
                 if (iOption != -1) {
-                    switch (iOption) {
-                        case InvocationOption.EMAIL_FIELD_HIDDEN:
-                            invocationOptions.add(InvocationOption.EMAIL_FIELD_HIDDEN);
-                            break;
-                        case InvocationOption.EMAIL_FIELD_OPTIONAL:
-                            invocationOptions.add(InvocationOption.EMAIL_FIELD_OPTIONAL);
-                            break;
-                        case InvocationOption.COMMENT_FIELD_REQUIRED:
-                            invocationOptions.add(InvocationOption.COMMENT_FIELD_REQUIRED);
-                            break;
-                        case InvocationOption.DISABLE_POST_SENDING_DIALOG:
-                            invocationOptions.add(InvocationOption.DISABLE_POST_SENDING_DIALOG);
-                            break;
-                        default:
-                            invocationOptions.add(InvocationOption.DISABLE_POST_SENDING_DIALOG);
-                            break;
-                    }
+                    invocationOptions.add(iOption);
                 }
             }
         }
         return invocationOptions;
+    }
+
+    /**
+     * Convenience method to parse string array of invocation options into an Arraylist of integers
+     *
+     * @param promptOptionsStringArray
+     *        string array of invocation options
+     */
+    private ArrayList<PromptOption> parsePromptOptions(String[] promptOptionsStringArray) {
+        ArrayList<PromptOption> promptOptions = new ArrayList<PromptOption>();
+        if(promptOptionsStringArray.length != 0) {
+            for (String option : promptOptionsStringArray) {
+                PromptOption pOption = parsePromptOptions(option);
+                if (pOption != null) {
+                    promptOptions.add(pOption);
+                }
+            }
+        }
+        return promptOptions;
     }
 
     /**

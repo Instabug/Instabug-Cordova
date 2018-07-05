@@ -37,6 +37,14 @@ var getReproStepsMode = function () {
     };
 };
 
+var getPromptOptions = function () {
+    return {
+        bug: 'bug',
+        chat: 'chat',
+        feedback: 'feedback'
+    };
+};
+
 var getExtendedBugReportMode = function () {
     return {
         enabledWithRequiredFields: 'enabledWithRequiredFields',
@@ -177,7 +185,19 @@ Instabug.setExtendedBugReportMode = function (extendedBugReportMode, success, er
 };
 
 Instabug.setPromptOptionsEnabled = function (promptOptions, success, error) {
-    exec(success, error, 'IBGPlugin', 'setPromptOptionsEnabled', [promptOptions]);
+    var i;
+    var validatedPromptOptions = [];
+    for (i = 0; i < promptOptions.length; i++) {
+      var validatedPromptOption = getPromptOptions()[promptOptions[i]];
+      if(validatedPromptOption) {
+        validatedPromptOptions.push(validatedPromptOption);
+      }
+    }
+    if (validatedPromptOptions !== undefined || validatedPromptOptions.length != 0) {
+      exec(success, error, 'IBGPlugin', 'setPromptOptionsEnabled', [validatedPromptOptions]);
+    } else {
+        console.log('Could not change prompt option - "' + validatedPromptOption + '" is not valid.');
+    }
 };
 
 Instabug.setUserData = function (data, success, error) {
@@ -257,7 +277,7 @@ Instabug.setInvocationOptions = function (options, success, error) {
     if (validatedOptions !== undefined || validatedOptions.length != 0) {
       exec(success, error, 'IBGPlugin', 'setInvocationOptions', [validatedOptions]);
     } else {
-        console.log('Could not change invocation option - "' + option + '" is not valid.');
+        console.log('Could not change invocation option - "' + validatedOptions + '" is empty.');
     }
   };
 
