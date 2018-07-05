@@ -862,6 +862,24 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
+     * Enables/disables showing in-app notifications when the user receives a new
+     * message.
+     *
+     * @param isEnabled whether debug logs should be printed or not into LogCat
+     *
+     * @param callbackContext
+     *        Used when calling back into JavaScript
+     */
+    private void setChatNotificationEnabled(final CallbackContext callbackContext, boolean isEnabled) {
+        try {
+            Instabug.setReplyNotificationEnabled(isEnabled);
+            callbackContext.success();
+        } catch (IllegalStateException e) {
+            callbackContext.error(errorMsg);
+        }
+    }
+
+    /**
      * Enable/Disable view hierarchy from Instabug SDK
      *
      * @param isEnabled whether view hierarchy should be enabled or not
