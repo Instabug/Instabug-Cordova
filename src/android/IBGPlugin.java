@@ -225,6 +225,9 @@ public class IBGPlugin extends CordovaPlugin {
         } else if ("getAvailableSurveys".equals(action)) {
             getAvailableSurveys(callbackContext);
 
+        } else if ("setAutoShowingSurveysEnabled".equals(action)) {
+            setAutoShowingSurveysEnabled(callbackContext, args.optBoolean(0));
+
         } else {
             // Method not found.
             return false;
@@ -882,6 +885,23 @@ public class IBGPlugin extends CordovaPlugin {
     private void setDebugEnabled(final CallbackContext callbackContext, boolean isDebugEnabled) {
         try {
             Instabug.setDebugEnabled(isDebugEnabled);
+            callbackContext.success();
+        } catch (IllegalStateException e) {
+            callbackContext.error(errorMsg);
+        }
+    }
+
+    /**
+     * Sets whether auto surveys showing are enabled or not.
+     *
+     * @param isEnabled whether debug logs should be printed or not into LogCat
+     *
+     * @param callbackContext
+     *        Used when calling back into JavaScript
+     */
+    private void setAutoShowingSurveysEnabled(final CallbackContext callbackContext, boolean isEnabled) {
+        try {
+            Surveys.setAutoShowingEnabled(isEnabled);
             callbackContext.success();
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
