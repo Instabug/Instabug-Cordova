@@ -124,14 +124,54 @@
 - (void) invoke:(CDVInvokedUrlCommand*)command
 {
     IBGInvocationMode iMode = [self parseInvocationMode:[command argumentAtIndex:0]];
-
+    NSArray* invOptions = [command argumentAtIndex:1];
+    
     if (iMode) {
-        [Instabug invokeWithInvocationMode:iMode];
+        if(invOptions) {
+            IBGBugReportingInvocationOption invocationOptions = 0;
+            for (NSString *invOption in invOptions) {
+                IBGBugReportingInvocationOption invocationOption = [self parseInvocationOption:invOption];
+                invocationOptions |= invocationOption;
+            }
+            [IBGBugReporting invokeWithMode:iMode options:invocationOptions];
+        }
+        [IBGBugReporting invokeWithMode:iMode options:IBGBugReportingInvocationOptionNone];
     } else {
         [IBGBugReporting invoke];
     }
 
     [self sendSuccessResult:command];
+}
+
+/**
+ * Sets whether users are required to enter an email address or not when doing a certain action `IBGAction`.
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) setEmailFieldRequiredForFeatureRequests:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* result;
+    
+    BOOL isEnabled = [command argumentAtIndex:0];
+    NSArray* aTypes = [command argumentAtIndex:1];
+    
+    IBGAction actionTypes = 0;
+    
+    for (NSString *aType in aTypes) {
+        IBGAction actionType = [self parseActionType:aType];
+        actionTypes |= actionType;
+    }
+    
+    if (isEnabled && actionTypes != 0) {
+        [IBGFeatureRequests setEmailFieldRequired:[[command argumentAtIndex:0] boolValue] forAction:actionTypes];
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"A valid action type must be provided."];
+    }
+    
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
 /**
@@ -1212,6 +1252,22 @@
         return IBGInvocationEventRightEdgePan;
     } else if ([event isEqualToString:@"none"]) {
         return IBGInvocationEventNone;
+    } else return 0;
+}
+
+/**
+ * Convenience method for converting NSString to
+ * IBGAction.
+ *
+ * @param  {NSString*} actionType
+ *         NSString shortcode for IBGAction
+ */
+- (IBGAction) parseActionType:(NSString*)actionType
+{
+    if ([actionType isEqualToString:@"requestNewFeature"]) {
+        return IBGActionRequestNewFeature;
+    } else if ([actionType isEqualToString:@"addCommentToFeature"]) {
+        return IBGActionAddCommentToFeature;
     } else return 0;
 }
 
