@@ -1253,7 +1253,7 @@ public class IBGPlugin extends CordovaPlugin {
      */
     private void setShouldShowSurveysWelcomeScreen(final CallbackContext callbackContext, boolean shouldShow) {
         try {
-            Instabug.setShouldShowSurveysWelcomeScreen(shouldShow);
+            Surveys.setShouldShowWelcomeScreen(shouldShow);
             callbackContext.success();
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
