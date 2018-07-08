@@ -108,6 +108,9 @@ public class IBGPlugin extends CordovaPlugin {
         if ("activate".equals(action)) {
             activate(callbackContext, args);
 
+        } if ("startWithToken".equals(action)) {
+            activate(callbackContext, args);
+
         } else if ("invoke".equals(action)) {
             invoke(callbackContext, args);
 
@@ -161,6 +164,9 @@ public class IBGPlugin extends CordovaPlugin {
 
         } else if ("removeUserAttribute".equals(action)) {
             removeUserAttribute(callbackContext, args.optString(0));
+
+        } else if ("setAttachmentTypesEnabled".equals(action)) {
+            setAttachmentTypesEnabled(callbackContext, args);
 
         } else if ("setPreInvocationHandler".equals(action)) {
             setPreInvocationHandler(callbackContext);
@@ -587,6 +593,32 @@ public class IBGPlugin extends CordovaPlugin {
                 callbackContext.error(errorMsg);
             }
         } else callbackContext.error("A name must be provided.");
+    }
+
+    /**
+     * Sets whether attachments in bug reporting and in-app messaging are enabled.
+     *
+     * @param callbackContext
+     *        Used when calling back into JavaScript
+     * @param args
+     *        arguments passed from JS side
+     */
+    private void setAttachmentTypesEnabled(final CallbackContext callbackContext, JSONArray args) {
+
+        boolean screenshot = args.optBoolean(0);
+        boolean extraScreenshot = args.optBoolean(1);
+        boolean galleryImage = args.optBoolean(2);
+        boolean screenRecording = args.optBoolean(3);
+        if (!args.isNull(0) && !args.isNull(1) && !args.isNull(2) &&
+                !args.isNull(3)) {
+            try {
+                Instabug.setAttachmentTypesEnabled(screenshot, extraScreenshot, galleryImage,
+                        screenRecording);
+                callbackContext.success();
+            } catch (IllegalStateException e) {
+                callbackContext.error(errorMsg);
+            }
+        } else callbackContext.error("A boolean value must be provided.");
     }
 
     /**

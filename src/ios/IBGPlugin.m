@@ -467,8 +467,15 @@
  - (void) getAvailableSurveys:(CDVInvokedUrlCommand*)command
   {
       CDVPluginResult* result;
+      NSArray* surveys = [IBGSurveys availableSurveys];
+      NSMutableArray <NSDictionary *> *surveysArray = [[NSMutableArray alloc] init];
+      
+      for (IBGSurvey *survey in surveys) {
+          NSDictionary *surveyObject = @{ @"title" : survey.title};
+          [surveysArray addObject:surveyObject];
+      }
       result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
-                                 messageAsArray:[IBGSurveys availableSurveys]];
+                                 messageAsArray:surveysArray];
     
       [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
   }
@@ -494,6 +501,45 @@
                                    messageAsString:@"User data must be provided."];
     }
 
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+/**
+ * Sets whether attachments in bug reporting and in-app messaging are enabled.
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) setAttachmentTypesEnabled:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* result;
+    
+    id screenshot = [command argumentAtIndex:0];
+    id extraScreenshot = [command argumentAtIndex:1];
+    id galleryImage = [command argumentAtIndex:2];
+    id screenRecording = [command argumentAtIndex:3];
+    IBGAttachmentType attachmentTypes = 0;
+    if (screenshot && extraScreenshot && galleryImage && screenRecording) {
+        if([screenshot boolValue]) {
+            attachmentTypes = IBGAttachmentTypeScreenShot;
+        }
+        if([extraScreenshot boolValue]) {
+            attachmentTypes |= IBGAttachmentTypeExtraScreenShot;
+        }
+        if([galleryImage boolValue]) {
+            attachmentTypes |= IBGAttachmentTypeGalleryImage;
+        }
+        if([screenRecording boolValue]) {
+            attachmentTypes |= IBGAttachmentTypeScreenRecording;
+        }
+        
+        IBGBugReporting.enabledAttachmentTypes = attachmentTypes;
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"Attachment types must be provided."];
+    }
+    
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
