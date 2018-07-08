@@ -3,7 +3,6 @@ package com.instabug.cordova.plugin;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
-import android.util.Log;
 
 import com.instabug.bug.BugReporting;
 import com.instabug.bug.PromptOption;
@@ -17,7 +16,7 @@ import com.instabug.library.extendedbugreport.ExtendedBugReport;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.bug.invocation.InvocationMode;
 import com.instabug.library.invocation.OnInvokeCallback;
-import com.instabug.library.invocation.util.InstabugVideoRecordingButtonCorner;
+import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition;
 import com.instabug.library.model.Report;
 import com.instabug.library.visualusersteps.State;
 import com.instabug.survey.OnDismissCallback;
@@ -41,7 +40,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This plugin initializes Instabug.
@@ -167,8 +165,20 @@ public class IBGPlugin extends CordovaPlugin {
         } else if ("setPreInvocationHandler".equals(action)) {
             setPreInvocationHandler(callbackContext);
 
+        } else if ("setPreSendingHandler".equals(action)) {
+            setPreSendingHandler(callbackContext);
+
         } else if ("setPostInvocationHandler".equals(action)) {
             setPostInvocationHandler(callbackContext);
+
+        } else if ("didDismissSurveyHandler".equals(action)) {
+            didDismissSurveyHandler(callbackContext);
+
+        } else if ("willShowSurveyHandler".equals(action)) {
+            willShowSurveyHandler(callbackContext);
+
+        } else if ("didSelectPromptOptionHandler".equals(action)) {
+            return true;
 
         } else if ("identifyUserWithEmail".equals(action)) {
             identifyUserWithEmail(callbackContext, args.optString(0), args.optString(1));
@@ -1148,8 +1158,8 @@ public class IBGPlugin extends CordovaPlugin {
      */
     private void setVideoRecordingFloatingButtonPosition(final CallbackContext callbackContext, String corner) {
         try {
-          InstabugVideoRecordingButtonCorner buttonCorner = parseInstabugVideoRecordingButtonCorner(corner);
-          Instabug.setVideoRecordingFloatingButtonCorner(buttonCorner);
+          InstabugVideoRecordingButtonPosition buttonPosition = parseInstabugVideoRecordingButtonCorner(corner);
+          BugReporting.setVideoRecordingFloatingButtonPosition(buttonPosition);
           callbackContext.success();
         } catch (IllegalStateException e) {
           callbackContext.error(errorMsg);
@@ -1377,15 +1387,15 @@ public class IBGPlugin extends CordovaPlugin {
      * @param position
      *        String shortcode for position
      */
-    public static InstabugVideoRecordingButtonCorner parseInstabugVideoRecordingButtonCorner(String position) {
+    public static InstabugVideoRecordingButtonPosition parseInstabugVideoRecordingButtonCorner(String position) {
         if ("topLeft".equals(position)) {
-            return InstabugVideoRecordingButtonCorner.TOP_LEFT;
+            return InstabugVideoRecordingButtonPosition.TOP_LEFT;
         } else if ("topRight".equals(position)) {
-            return InstabugVideoRecordingButtonCorner.TOP_RIGHT;
+            return InstabugVideoRecordingButtonPosition.TOP_RIGHT;
         } else if ("bottomLeft".equals(position)) {
-            return InstabugVideoRecordingButtonCorner.BOTTOM_LEFT;
+            return InstabugVideoRecordingButtonPosition.BOTTOM_LEFT;
         } else if ("bottomRight".equals(position)) {
-            return InstabugVideoRecordingButtonCorner.BOTTOM_RIGHT;
+            return InstabugVideoRecordingButtonPosition.BOTTOM_RIGHT;
         } else return null;
     }
 
