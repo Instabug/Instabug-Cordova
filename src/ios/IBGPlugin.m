@@ -303,16 +303,21 @@
  */
 - (void) setPreSendingHandler:(CDVInvokedUrlCommand*)command
 {
-//    Instabug.willSendReportHandler = ^(IBGReport* report){
-//        CDVPluginResult* result;
-//        NSString *dismissTypeString = [self parseDismissType:dismissType];
-//        NSString *reportTypeString = [self parseReportType:reportType];
-//        NSDictionary *dict = @{ @"dismissType" : dismissTypeString, @"reportType" : reportTypeString};
-//        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
-//                               messageAsDictionary:dict];
-//        [result setKeepCallbackAsBool:true];
-//        [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
-//    };
+    Instabug.willSendReportHandler = ^(IBGReport* report){
+        CDVPluginResult* result;
+        NSArray *tagsArray = report.tags;
+        NSArray *instabugLogs= report.instabugLogs;
+        NSArray *consoleLogs= report.consoleLogs;
+        NSDictionary *userAttributes= report.userAttributes;
+        NSArray *fileAttachments= report.fileLocations;
+        
+        NSDictionary *dict = @{ @"tagsArray" : tagsArray, @"instabugLogs" : instabugLogs, @"consoleLogs" : consoleLogs,       @"userAttributes" : userAttributes, @"fileAttachments" : fileAttachments};
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                               messageAsDictionary:dict];
+        [result setKeepCallbackAsBool:true];
+        [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+        return report;
+    };
 }
 
 /**
