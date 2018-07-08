@@ -977,18 +977,17 @@
  * @param {NSString*} offset
  *        NSString representation of double offset
  */
-- (void) setFloatingButtonEdge:(NSString*)edge withOffset:(NSString*)offset
+- (void) setFloatingButtonEdge:(NSString*)edge withOffset:(NSNumber* )offset
 {
     double offsetFromTop = [offset doubleValue];
 
-    if (offsetFromTop) {
-        if ([edge isEqualToString:@"left"]) {
-            // SDK is unclear, can't implement
-            //[Instabug setFloatingButtonEdge:CGRectMaxXEdge(left) withTopOffset:offsetFromTop];
-        } else if ([edge isEqualToString:@"right"]) {
-            // SDK is unclear, can't implement
-            //[Instabug setFloatingButtonEdge:CGRectMaxXEdge(right) withTopOffset:offsetFromTop];
-        }
+    if (offset) {
+        IBGBugReporting.floatingButtonTopOffset = offsetFromTop;
+    }
+    if ([edge isEqualToString:@"left"]) {
+        IBGBugReporting.floatingButtonEdge = CGRectMinXEdge;
+    } else if ([edge isEqualToString:@"right"]) {
+        IBGBugReporting.floatingButtonEdge = CGRectMaxXEdge;
     }
 }
 
@@ -1298,7 +1297,7 @@
  * @param  {NSString*} promptOption
  *         NSString shortcode for IBGPromptOption
  */
-- (IBGInvocationEvent) parsePromptOptions:(NSString*)event
+- (IBGPromptOption) parsePromptOptions:(NSString*)event
 {
     if ([event isEqualToString:@"chat"]) {
         return IBGPromptOptionChat;
@@ -1340,7 +1339,7 @@
  * @param  {NSString*} position
  *         NSString shortcode for IBGPosition
  */
-- (IBGInvocationMode) parseIBGPosition:(NSString*)position
+- (IBGPosition) parseIBGPosition:(NSString*)position
 {
     if ([position isEqualToString:@"topRight"]) {
         return IBGPositionTopRight;
