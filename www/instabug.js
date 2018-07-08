@@ -88,6 +88,7 @@ Instabug.activate = function (token, event, options, success, error) {
     var validatedEvent = getInvocationEvents()[event];
 
     if (validatedEvent) {
+        console.warn("This method is now deprecated, and will be removed in an upcoming version.")
         exec(success, error, 'IBGPlugin', 'activate', [token, event, options]);
     } else {
         console.log('Could not activate Instabug - invocation event "' + event + '" is not valid.');
@@ -97,7 +98,6 @@ Instabug.activate = function (token, event, options, success, error) {
 Instabug.startWithToken = function (token, events, options, success, error) {
   var i;
   var validatedEvents = [];
-  alert(events.length);
   for (i = 0; i < events.length; i++) {
     var validatedEvent = getInvocationEvents()[events[i]];
     if(validatedEvent) {
@@ -155,6 +155,13 @@ Instabug.setAutoScreenRecordingMaxDuration = function (duration, success, error)
 
 Instabug.setUserEmail = function (email, success, error) {
     exec(success, error, 'IBGPlugin', 'setUserEmail', [email]);
+};
+
+Instabug.setAttachmentTypesEnabled = function (screenshot, extraScreenshot, 
+                                                galleryImage, screenRecording, 
+                                                success, error) {
+    exec(success, error, 'IBGPlugin', 'setAttachmentTypesEnabled', [screenshot,
+        extraScreenshot, galleryImage, screenRecording]);
 };
 
 Instabug.setUserName = function (name, success, error) {
