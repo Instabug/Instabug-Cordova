@@ -18,6 +18,9 @@ import com.instabug.bug.invocation.InvocationMode;
 import com.instabug.library.invocation.OnInvokeCallback;
 import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition;
 import com.instabug.library.model.Report;
+import com.instabug.library.invocation.InstabugInvocationMode;
+import com.instabug.library.invocation.util.InstabugVideoRecordingButtonCorner;
+import com.instabug.library.ui.onboarding.WelcomeMessage;
 import com.instabug.library.visualusersteps.State;
 import com.instabug.survey.OnDismissCallback;
 import com.instabug.survey.OnShowCallback;
@@ -54,25 +57,13 @@ public class IBGPlugin extends CordovaPlugin {
     private JSONObject options;
 
     // All possible option keys
-    private final String[] optionKeys = {
-        "emailRequired",
-        "commentRequired",
-        "shakingThresholdAndroid",
-        "floatingButtonEdge",
-        "floatingButtonOffset",
-        "enableDebug",
-        "enableConsoleLogs",
-        "enableInstabugLogs",
-        "enableTrackingUserSteps",
-        "enableCrashReporting",
-        "enableInAppMessaging",
-        "enableConversationSounds",
-        "enablePushNotifications",
-        "enableIntroDialog",
-        "enableUserData",
-        "colorTheme",
-        "enableSessionProfiler"
-    };
+    private final String[] optionKeys = { "emailRequired", "commentRequired", 
+            "shakingThresholdAndroid", "floatingButtonEdge", "colorTheme",
+            "floatingButtonOffset", "enableDebug", "enableConsoleLogs", 
+            "enableInstabugLogs", "enableTrackingUserSteps", "enableUserData",
+            "enableCrashReporting", "enableInAppMessaging", "enableIntroDialog", 
+            "enableConversationSounds", "enablePushNotifications", 
+            "enableSessionProfiler", "welcomeMessageMode" };
 
     // Generic error message
     private final String errorMsg = "Instabug object must first be activated.";
@@ -93,17 +84,15 @@ public class IBGPlugin extends CordovaPlugin {
     /**
      * Executes the request sent from JavaScript.
      *
-     * @param action
-     *      The action to execute.
-     * @param args
-     *      The exec() arguments in JSON form.
-     * @param callbackContext
-     *      The callback context used when calling back into JavaScript.
-     * @return
-     *      Whether the action was valid.
+     * @param action          The action to execute.
+     * @param args            The exec() arguments in JSON form.
+     * @param callbackContext The callback context used when calling back into
+     *                        JavaScript.
+     * @return Whether the action was valid.
      */
     @Override
-    public boolean execute(final String action, JSONArray args, final CallbackContext callbackContext) throws JSONException {
+    public boolean execute(final String action, JSONArray args, final CallbackContext callbackContext)
+            throws JSONException {
 
         if ("activate".equals(action)) {
             activate(callbackContext, args);
@@ -189,10 +178,10 @@ public class IBGPlugin extends CordovaPlugin {
         } else if ("identifyUserWithEmail".equals(action)) {
             identifyUserWithEmail(callbackContext, args.optString(0), args.optString(1));
 
-        }  else if ("logOut".equals(action)) {
+        } else if ("logOut".equals(action)) {
             logOut(callbackContext);
 
-        }  else if ("getAllUserAttributes".equals(action)) {
+        } else if ("getAllUserAttributes".equals(action)) {
             getAllUserAttributes(callbackContext);
 
         } else if ("getUserAttribute".equals(action)) {
@@ -251,6 +240,9 @@ public class IBGPlugin extends CordovaPlugin {
 
         } else if ("setEmailFieldRequiredForFeatureRequests".equals(action)) {
             setEmailFieldRequiredForFeatureRequests(callbackContext, args.optBoolean(0), args.optJSONArray(1));
+        } else if ("showWelcomeMessage".equals(action)) {
+            showWelcomeMessage(callbackContext, args.optString(0));
+
         } else {
             // Method not found.
             return false;
@@ -261,8 +253,7 @@ public class IBGPlugin extends CordovaPlugin {
     /**
      * Creates intent to initialize Instabug.
      *
-     * @param callbackContext
-     *        Used when calling back into JavaScript
+     * @param callbackContext Used when calling back into JavaScript
      */
     private void activate(final CallbackContext callbackContext, JSONArray args) {
         this.options = args.optJSONObject(2);
@@ -330,8 +321,8 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
-     * Shows the Instabug dialog so user can choose to report a bug, or
-     * submit feedback. A specific mode of the SDK can be shown if specified.
+     * Shows the Instabug dialog so user can choose to report a bug, or submit
+     * feedback. A specific mode of the SDK can be shown if specified.
      *
      * @param callbackContext
      *        Used when calling back into JavaScript
@@ -362,11 +353,10 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
-     * Display the discovery dialog explaining the shake gesture or the
-     * two finger swipe gesture, if you've enabled it.
+     * Display the discovery dialog explaining the shake gesture or the two finger
+     * swipe gesture, if you've enabled it.
      *
-     * @param callbackContext
-     *        Used when calling back into JavaScript
+     * @param callbackContext Used when calling back into JavaScript
      */
     private void showIntroDialog(final CallbackContext callbackContext) {
         try {
@@ -518,24 +508,25 @@ public class IBGPlugin extends CordovaPlugin {
     /**
      * Set the primary color that the SDK will use to tint certain UI
      * elements in the SDK.
+     * Set the primary color that the SDK will use to tint certain UI elements in
+     * the SDK.
      *
-     * @param callbackContext
-     *        Used when calling back into JavaScript
-     * @param colorString
-     *        The value of the primary color
+     * @param callbackContext Used when calling back into JavaScript
+     * @param colorString     The value of the primary color
      */
     private void setPrimaryColor(final CallbackContext callbackContext, String colorString) {
 
         if (colorString != null) {
-         try {
-             int colorInt = Color.parseColor(colorString);
-            Instabug.setPrimaryColor(colorInt);
+            try {
+                int colorInt = Color.parseColor(colorString);
+                Instabug.setPrimaryColor(colorInt);
 
-         } catch (IllegalStateException e) {
-            callbackContext.error(errorMsg);
-         }
+            } catch (IllegalStateException e) {
+                callbackContext.error(errorMsg);
+            }
 
-        } else callbackContext.error("A colorInt must be provided.");
+        } else
+            callbackContext.error("A colorInt must be provided.");
     }
 
     /**
@@ -557,11 +548,11 @@ public class IBGPlugin extends CordovaPlugin {
     /**
      * If your app already acquires the user's email address and you provide
      * it to this method, Instabug will pre-fill the user email in reports.
+     * If your app already acquires the user's email address and you provide it to
+     * this method, Instabug will pre-fill the user email in reports.
      *
-     * @param callbackContext
-     *        Used when calling back into JavaScript
-     * @param email
-     *        User's default email
+     * @param callbackContext Used when calling back into JavaScript
+     * @param email           User's default email
      */
     @Deprecated
     private void setUserEmail(final CallbackContext callbackContext, String email) {
@@ -572,16 +563,15 @@ public class IBGPlugin extends CordovaPlugin {
             } catch (IllegalStateException e) {
                 callbackContext.error(errorMsg);
             }
-        } else callbackContext.error("An email must be provided.");
+        } else
+            callbackContext.error("An email must be provided.");
     }
 
     /**
      * Sets the user name that is used in the dashboard's contacts.
      *
-     * @param callbackContext
-     *        Used when calling back into JavaScript
-     * @param name
-     *        User's name
+     * @param callbackContext Used when calling back into JavaScript
+     * @param name            User's name
      */
     @Deprecated
     private void setUserName(final CallbackContext callbackContext, String name) {
@@ -592,7 +582,8 @@ public class IBGPlugin extends CordovaPlugin {
             } catch (IllegalStateException e) {
                 callbackContext.error(errorMsg);
             }
-        } else callbackContext.error("A name must be provided.");
+        } else
+            callbackContext.error("A name must be provided.");
     }
 
     /**
@@ -624,13 +615,11 @@ public class IBGPlugin extends CordovaPlugin {
     /**
      * Set the user identity.
      * Instabug will pre-fill the user email in reports.
+     * Set the user identity. Instabug will pre-fill the user email in reports.
      *
-     * @param callbackContext
-     *        Used when calling back into JavaScript
-     * @param email
-     *        User's default email
-     * @param name
-     *        Username
+     * @param callbackContext Used when calling back into JavaScript
+     * @param email           User's default email
+     * @param name            Username
      *
      */
     private void identifyUserWithEmail(final CallbackContext callbackContext, String email, String name) {
@@ -641,15 +630,14 @@ public class IBGPlugin extends CordovaPlugin {
             } catch (IllegalStateException e) {
                 callbackContext.error(errorMsg);
             }
-        } else callbackContext.error("A name and email must be provided.");
+        } else
+            callbackContext.error("A name and email must be provided.");
     }
-
 
     /**
      * Logout User
      *
-     * @param callbackContext
-     *        Used when calling back into JavaScript
+     * @param callbackContext Used when calling back into JavaScript
      */
     private void logOut(final CallbackContext callbackContext) {
         try {
@@ -663,10 +651,8 @@ public class IBGPlugin extends CordovaPlugin {
     /**
      * Adds specific user data that you need to reports.
      *
-     * @param callbackContext
-     *        Used when calling back into JavaScript
-     * @param data
-     *        String representing user data.
+     * @param callbackContext Used when calling back into JavaScript
+     * @param data            String representing user data.
      */
     private void setUserData(final CallbackContext callbackContext, String data) {
         if (data != null && data.length() > 0) {
@@ -676,16 +662,18 @@ public class IBGPlugin extends CordovaPlugin {
             } catch (IllegalStateException e) {
                 callbackContext.error(errorMsg);
             }
-        } else callbackContext.error("User data must be provided.");
+        } else
+            callbackContext.error("User data must be provided.");
     }
 
-     /**
-      * Shows survey with a specific token.
-      * Does nothing if there are no available surveys with that specific token.
-      * Answered and cancelled surveys won't show up again.
-      * @param surveyToken - A String with a survey token.
-      *
-      */
+    /**
+     * Shows survey with a specific token. Does nothing if there are no available
+     * surveys with that specific token. Answered and cancelled surveys won't show
+     * up again.
+     * 
+     * @param surveyToken - A String with a survey token.
+     *
+     */
     private void showSurveyWithToken(final CallbackContext callbackContext, String surveyToken) {
         if (surveyToken != null && surveyToken.length() > 0) {
             try {
@@ -694,16 +682,15 @@ public class IBGPlugin extends CordovaPlugin {
             } catch (IllegalStateException e) {
                 callbackContext.error(errorMsg);
             }
-        } else callbackContext.error("Survey token must be provided.");
+        } else
+            callbackContext.error("Survey token must be provided.");
     }
 
     /**
      * Uploads the specified file along with upcoming reports.
      *
-     * @param callbackContext
-     *        Used when calling back into JavaScript
-     * @param args
-     *        URI of desired file to be uploaded
+     * @param callbackContext Used when calling back into JavaScript
+     * @param args            URI of desired file to be uploaded
      */
     private void addFile(final CallbackContext callbackContext, JSONArray args) {
         String fileUri = null;
@@ -731,26 +718,26 @@ public class IBGPlugin extends CordovaPlugin {
                 // we won't be able to notify the containing app when
                 // Instabug API call fails, so we check ourselves.
                 try {
-                    Instabug.setFileAttachment(uri,file.getName());
+                    Instabug.setFileAttachment(uri, file.getName());
                     callbackContext.success();
                 } catch (IllegalStateException e) {
                     callbackContext.error(errorMsg);
                 }
-            } else callbackContext.error("File " + fileUri + " does not exist.");
+            } else
+                callbackContext.error("File " + fileUri + " does not exist.");
 
-        } else callbackContext.error("A local file URI must be provided.");
+        } else
+            callbackContext.error("A local file URI must be provided.");
     }
 
     /**
-     * Appends a log message to the Instabug internal log that is then sent
-     * along the next uploaded report. All log messages are timestamped.
-     * Logs aren't cleared per single application run. If you wish to reset
-     * the logs, use clearLog().
+     * Appends a log message to the Instabug internal log that is then sent along
+     * the next uploaded report. All log messages are timestamped. Logs aren't
+     * cleared per single application run. If you wish to reset the logs, use
+     * clearLog().
      *
-     * @param callbackContext
-     *        Used when calling back into JavaScript
-     * @param log
-     *        Log message
+     * @param callbackContext Used when calling back into JavaScript
+     * @param log             Log message
      */
     private void addLog(final CallbackContext callbackContext, String log) {
         if (log != null && log.length() > 0) {
@@ -760,14 +747,14 @@ public class IBGPlugin extends CordovaPlugin {
             } catch (IllegalStateException e) {
                 callbackContext.error(errorMsg);
             }
-        } else callbackContext.error("A log must be provided.");
+        } else
+            callbackContext.error("A log must be provided.");
     }
 
     /**
      * Clears Instabug internal log.
      *
-     * @param callbackContext
-     *        Used when calling back into JavaScript
+     * @param callbackContext Used when calling back into JavaScript
      */
     private void clearLog(final CallbackContext callbackContext) {
         try {
@@ -781,10 +768,8 @@ public class IBGPlugin extends CordovaPlugin {
     /**
      * Change the event used to invoke Instabug SDK.
      *
-     * @param callbackContext
-     *        Used when calling back into JavaScript
-     * @param event
-     *        Event to be used to invoke SDK.
+     * @param callbackContext Used when calling back into JavaScript
+     * @param event           Event to be used to invoke SDK.
      */
     private void changeInvocationEvent(final CallbackContext callbackContext, String event) {
         InstabugInvocationEvent iEvent = parseInvocationEvent(event);
@@ -796,7 +781,8 @@ public class IBGPlugin extends CordovaPlugin {
             } catch (IllegalStateException e) {
                 callbackContext.error(errorMsg);
             }
-        } else callbackContext.error("A valid event type must be provided.");
+        } else
+            callbackContext.error("A valid event type must be provided.");
     }
 
     /**
@@ -924,8 +910,7 @@ public class IBGPlugin extends CordovaPlugin {
     /**
      * Disables all Instabug functionality.
      *
-     * @param callbackContext
-     *        Used when calling back into JavaScript
+     * @param callbackContext Used when calling back into JavaScript
      */
     private void disable(final CallbackContext callbackContext) {
         try {
@@ -939,8 +924,7 @@ public class IBGPlugin extends CordovaPlugin {
     /**
      * Enables all Instabug functionality.
      *
-     * @param callbackContext
-     *        Used when calling back into JavaScript
+     * @param callbackContext Used when calling back into JavaScript
      */
     private void enable(final CallbackContext callbackContext) {
         try {
@@ -954,8 +938,7 @@ public class IBGPlugin extends CordovaPlugin {
     /**
      * If Instabug is enabled.
      *
-     * @param callbackContext
-     *        Used when calling back into JavaScript
+     * @param callbackContext Used when calling back into JavaScript
      */
     private void getIsEnabled(final CallbackContext callbackContext) {
         try {
@@ -969,10 +952,10 @@ public class IBGPlugin extends CordovaPlugin {
     /**
      * Enable/Disable debug logs from Instabug SDK
      *
-     * @param isDebugEnabled whether debug logs should be printed or not into LogCat
+     * @param isDebugEnabled  whether debug logs should be printed or not into
+     *                        LogCat
      *
-     * @param callbackContext
-     *        Used when calling back into JavaScript
+     * @param callbackContext Used when calling back into JavaScript
      */
     private void setDebugEnabled(final CallbackContext callbackContext, boolean isDebugEnabled) {
         try {
@@ -1021,21 +1004,20 @@ public class IBGPlugin extends CordovaPlugin {
     /**
      * Enable/Disable view hierarchy from Instabug SDK
      *
-     * @param isEnabled whether view hierarchy should be enabled or not
+     * @param isEnabled       whether view hierarchy should be enabled or not
      *
-     * @param callbackContext
-     *        Used when calling back into JavaScript
+     * @param callbackContext Used when calling back into JavaScript
      */
     private void setViewHierarchyEnabled(final CallbackContext callbackContext, boolean isEnabled) {
         try {
-          if(isEnabled) {
-            Instabug.setViewHierarchyState(Feature.State.ENABLED);
-          } else {
-            Instabug.setViewHierarchyState(Feature.State.DISABLED);
-          }
-          callbackContext.success();
+            if (isEnabled) {
+                Instabug.setViewHierarchyState(Feature.State.ENABLED);
+            } else {
+                Instabug.setViewHierarchyState(Feature.State.DISABLED);
+            }
+            callbackContext.success();
         } catch (IllegalStateException e) {
-          callbackContext.error(errorMsg);
+            callbackContext.error(errorMsg);
         }
     }
 
@@ -1058,51 +1040,50 @@ public class IBGPlugin extends CordovaPlugin {
     /**
      * Sets whether the SDK is recording the screen or not.
      *
-     * @param isEnabled A boolean to set auto screen recording to being enabled or disabled.
+     * @param isEnabled       A boolean to set auto screen recording to being
+     *                        enabled or disabled.
      *
-     * @param callbackContext
-     *        Used when calling back into JavaScript
+     * @param callbackContext Used when calling back into JavaScript
      */
     private void setAutoScreenRecordingEnabled(final CallbackContext callbackContext, boolean isEnabled) {
         try {
-          Instabug.setAutoScreenRecordingEnabled(isEnabled);
-          callbackContext.success();
+            Instabug.setAutoScreenRecordingEnabled(isEnabled);
+            callbackContext.success();
         } catch (IllegalStateException e) {
-          callbackContext.error(errorMsg);
+            callbackContext.error(errorMsg);
         }
     }
 
     /**
      * Sets maximum auto screen recording video duration.
      *
-     * @param duration maximum duration of the screen recording video seconds
-     * The maximum duration is 30 seconds
+     * @param duration        maximum duration of the screen recording video seconds
+     *                        The maximum duration is 30 seconds
      *
-     * @param callbackContext
-     *        Used when calling back into JavaScript
+     * @param callbackContext Used when calling back into JavaScript
      */
     private void setAutoScreenRecordingMaxDuration(final CallbackContext callbackContext, int duration) {
         try {
-          int durationInMilli = duration * 1000;
-          Instabug.setAutoScreenRecordingMaxDuration(durationInMilli);
-          callbackContext.success();
+            int durationInMilli = duration * 1000;
+            Instabug.setAutoScreenRecordingMaxDuration(durationInMilli);
+            callbackContext.success();
         } catch (IllegalStateException e) {
-          callbackContext.error(errorMsg);
+            callbackContext.error(errorMsg);
         }
     }
 
     /**
-     * Sets user attribute to overwrite it's value or create a new one if it doesn't exist.
+     * Sets user attribute to overwrite it's value or create a new one if it doesn't
+     * exist.
      *
-     * @param callbackContext
-     *        Used when calling back into JavaScript
-     * @param key   the attribute
-     * @param value the value
+     * @param callbackContext Used when calling back into JavaScript
+     * @param key             the attribute
+     * @param value           the value
      *
      */
     private void setUserAttribute(final CallbackContext callbackContext, String key, String value) {
         try {
-            Instabug.setUserAttribute(key,value);
+            Instabug.setUserAttribute(key, value);
             callbackContext.success();
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
@@ -1112,9 +1093,8 @@ public class IBGPlugin extends CordovaPlugin {
     /**
      * Removes user attribute if exists.
      *
-     * @param callbackContext
-     *        Used when calling back into JavaScript
-     * @param key the attribute key as string
+     * @param callbackContext Used when calling back into JavaScript
+     * @param key             the attribute key as string
      *
      */
     private void removeUserAttribute(final CallbackContext callbackContext, String key) {
@@ -1126,12 +1106,10 @@ public class IBGPlugin extends CordovaPlugin {
         }
     }
 
-
     /**
      * Gets all saved user attributes.
      *
-     * @param callbackContext
-     *        Used when calling back into JavaScript
+     * @param callbackContext Used when calling back into JavaScript
      */
     private void getAllUserAttributes(final CallbackContext callbackContext) {
         try {
@@ -1146,10 +1124,8 @@ public class IBGPlugin extends CordovaPlugin {
     /**
      * Gets specific user attribute.
      *
-     * @param callbackContext
-     *        Used when calling back into JavaScript
-     * @param key
-     *        the attribute key as string
+     * @param callbackContext Used when calling back into JavaScript
+     * @param key             the attribute key as string
      *
      */
     private void getUserAttribute(final CallbackContext callbackContext, String key) {
@@ -1162,11 +1138,13 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
-     * Returns true if the survey with a specific token was answered before.
-     * Will return false if the token does not exist or if the survey was not answered before.
-     * @param surveyToken - A String with a survey token.
-     * @param callbackContext callback with argument as the desired value of the whether
-     * the survey has been responded to or not.
+     * Returns true if the survey with a specific token was answered before. Will
+     * return false if the token does not exist or if the survey was not answered
+     * before.
+     * 
+     * @param surveyToken     - A String with a survey token.
+     * @param callbackContext callback with argument as the desired value of the
+     *                        whether the survey has been responded to or not.
      *
      */
     private void hasRespondedToSurveyWithToken(final CallbackContext callbackContext, String surveyToken) {
@@ -1179,13 +1157,11 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
-     * Sets the default position at which the Instabug screen recording button will be shown.
-     * Different orientations are already handled.
+     * Sets the default position at which the Instabug screen recording button will
+     * be shown. Different orientations are already handled.
      *
-     * @param callbackContext
-     *        Used when calling back into JavaScript
-     * @param corner
-     *        the attribute position as string
+     * @param callbackContext Used when calling back into JavaScript
+     * @param corner          the attribute position as string
      *
      */
     private void setVideoRecordingFloatingButtonPosition(final CallbackContext callbackContext, String corner) {
@@ -1194,7 +1170,7 @@ public class IBGPlugin extends CordovaPlugin {
           BugReporting.setVideoRecordingFloatingButtonPosition(buttonPosition);
           callbackContext.success();
         } catch (IllegalStateException e) {
-          callbackContext.error(errorMsg);
+            callbackContext.error(errorMsg);
         }
     }
 
@@ -1202,11 +1178,9 @@ public class IBGPlugin extends CordovaPlugin {
      * Sets whether the extended bug report mode should be disabled, enabled with
      * required fields or enabled with optional fields.
      *
-     * @param callbackContext
-     *        Used when calling back into JavaScript
-     * @param mode
-     *        A string to disable the extended bug report mode, enable it with
-     *        required or with optional fields
+     * @param callbackContext Used when calling back into JavaScript
+     * @param mode            A string to disable the extended bug report mode,
+     *                        enable it with required or with optional fields
      */
     private void setExtendedBugReportMode(final CallbackContext callbackContext, String mode) {
         try {
@@ -1223,57 +1197,74 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
-     * Sets whether user steps tracking is visual, non visual or disabled.
-     * User Steps tracking is enabled by default if it's available
-     * in your current plan.
+     * Sets whether user steps tracking is visual, non visual or disabled. User
+     * Steps tracking is enabled by default if it's available in your current plan.
      *
-     * @param callbackContext
-     *        Used when calling back into JavaScript
-     * @param reproStepsMode
-     *        A string to set user steps tracking to be enabled,
-     *        non visual or disabled.
+     * @param callbackContext Used when calling back into JavaScript
+     * @param reproStepsMode  A string to set user steps tracking to be enabled, non
+     *                        visual or disabled.
      */
     private void setReproStepsMode(final CallbackContext callbackContext, String reproStepsMode) {
         try {
-          if(reproStepsMode.equals("enabledWithNoScreenshots")) {
-            Instabug.setReproStepsState(State.ENABLED_WITH_NO_SCREENSHOTS);
-          } else if(reproStepsMode.equals("enabled")) {
-            Instabug.setReproStepsState(State.ENABLED);
-          } else if(reproStepsMode.equals("disabled")) {
-            Instabug.setReproStepsState(State.DISABLED);
-          }
+            if (reproStepsMode.equals("enabledWithNoScreenshots")) {
+                Instabug.setReproStepsState(State.ENABLED_WITH_NO_SCREENSHOTS);
+            } else if (reproStepsMode.equals("enabled")) {
+                Instabug.setReproStepsState(State.ENABLED);
+            } else if (reproStepsMode.equals("disabled")) {
+                Instabug.setReproStepsState(State.DISABLED);
+            }
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
         }
     }
 
+    /**
+     * Shows the welcome message in a specific mode.
+     *
+     * @param callbackContext    Used when calling back into JavaScript
+     * @param welcomeMessageMode A string to set user steps tracking to be enabled,
+     *                           non visual or disabled.
+     */
+    private void showWelcomeMessage(final CallbackContext callbackContext, String welcomeMessageMode) {
+        try {
+            if (welcomeMessageMode.equals("welcomeMessageModeLive")) {
+                Instabug.showWelcomeMessage(WelcomeMessage.State.LIVE);
+            } else if (welcomeMessageMode.equals("welcomeMessageModeBeta")) {
+                Instabug.showWelcomeMessage(WelcomeMessage.State.BETA);
+            } else {
+                Instabug.showWelcomeMessage(WelcomeMessage.State.LIVE);
+            }
+        } catch (IllegalStateException e) {
+            callbackContext.error(errorMsg);
+        }
+    }
 
     /**
      * Set after how many sessions should the dismissed survey would show again.
      *
-     * @param callbackContext
-     *        Used when calling back into JavaScript
-     * @param sessionsCount
-     *        number of sessions that the dismissed survey will be shown after.
-     * @param daysCount
-     *        number of days that the dismissed survey will show after.
+     * @param callbackContext Used when calling back into JavaScript
+     * @param sessionsCount   number of sessions that the dismissed survey will be
+     *                        shown after.
+     * @param daysCount       number of days that the dismissed survey will show
+     *                        after.
      */
-    private void setThresholdForReshowingSurveyAfterDismiss(final CallbackContext callbackContext, int sessionsCount, int daysCount) {
-        if (Math.signum(sessionsCount) != - 1 && Math.signum(daysCount) != - 1) {
+    private void setThresholdForReshowingSurveyAfterDismiss(final CallbackContext callbackContext, int sessionsCount,
+            int daysCount) {
+        if (Math.signum(sessionsCount) != -1 && Math.signum(daysCount) != -1) {
             try {
                 Surveys.setThresholdForReshowingSurveyAfterDismiss(sessionsCount, daysCount);
                 callbackContext.success();
             } catch (IllegalStateException e) {
                 callbackContext.error(errorMsg);
             }
-        } else callbackContext.error("Session count and days count must be provided.");
+        } else
+            callbackContext.error("Session count and days count must be provided.");
     }
 
     /**
      * Shows the UI for feature requests list
      *
-     * @param callbackContext
-     *        Used when calling back into JavaScript
+     * @param callbackContext Used when calling back into JavaScript
      */
     private void showFeatureRequests(final CallbackContext callbackContext) {
         try {
@@ -1288,10 +1279,10 @@ public class IBGPlugin extends CordovaPlugin {
      * Set Surveys welcome screen enabled, default value is false
      *
      *
-     * @param shouldShow whether should show welcome screen Surveys before surveys or not
+     * @param shouldShow      whether should show welcome screen Surveys before
+     *                        surveys or not
      *
-     * @param callbackContext
-     *        Used when calling back into JavaScript
+     * @param callbackContext Used when calling back into JavaScript
      */
     private void setShouldShowSurveysWelcomeScreen(final CallbackContext callbackContext, boolean shouldShow) {
         try {
@@ -1314,8 +1305,7 @@ public class IBGPlugin extends CordovaPlugin {
     /**
      * Convenience method for setting intent extras where valid.
      *
-     * @param key
-     *        Name of option to be included
+     * @param key Name of option to be included
      */
     private void applyOption(String key) {
         String val = options.optString(key);
@@ -1328,8 +1318,7 @@ public class IBGPlugin extends CordovaPlugin {
     /**
      * Convenience method for converting string to InstabugInvocationEvent.
      *
-     * @param event
-     *        String shortcode for event
+     * @param event String shortcode for event
      */
     public static InstabugInvocationEvent parseInvocationEvent(String event) {
         if ("shake".equals(event)) {
@@ -1340,9 +1329,10 @@ public class IBGPlugin extends CordovaPlugin {
             return InstabugInvocationEvent.TWO_FINGER_SWIPE_LEFT;
         } else if ("screenshot".equals(event)) {
             return InstabugInvocationEvent.SCREENSHOT_GESTURE;
-        }else if ("none".equals(event)) {
+        } else if ("none".equals(event)) {
             return InstabugInvocationEvent.NONE;
-        } else return null;
+        } else
+            return null;
     }
 
     /**
@@ -1396,8 +1386,7 @@ public class IBGPlugin extends CordovaPlugin {
     /**
      * Convenience method for converting string to InstabugInvocationMode.
      *
-     * @param mode
-     *        String shortcode for mode
+     * @param mode String shortcode for mode
      */
     public static InvocationMode parseInvocationMode(String mode) {
         if ("chat".equals(mode)) {
@@ -1414,10 +1403,10 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
-     * Convenience method for converting string to InstabugVideoRecordingButtonCorner.
+     * Convenience method for converting string to
+     * InstabugVideoRecordingButtonCorner.
      *
-     * @param position
-     *        String shortcode for position
+     * @param position String shortcode for position
      */
     public static InstabugVideoRecordingButtonPosition parseInstabugVideoRecordingButtonCorner(String position) {
         if ("topLeft".equals(position)) {

@@ -764,6 +764,28 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
+/**
+ * Shows the welcome message in a specific mode.
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) showWelcomeMessage:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* result;
+
+    IBGWelcomeMessageMode welcomeMessageMode = [self parseWelcomeMessageMode:[command argumentAtIndex:0]];
+
+    if (welcomeMessageMode) {
+        [Instabug showWelcomeMessageWithMode:welcomeMessageMode];
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"A valid welcome message mode must be provided."];
+    }
+
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
 
 /**
  * Sets whether the extended bug report mode should be disabled, enabled with
@@ -1094,6 +1116,20 @@
 }
 
 /**
+ * Convenience method for parsing and setting the welcome message mode
+ *
+ * @param {NSString*} enabled
+ *        NSString representation of welcomeMessageMode
+ */
+- (void) setWelcomeMessageMode:(NSString*)welcomeMessageMode
+{
+    if ([welcomeMessageMode length] > 0) {
+        IBGWelcomeMessageMode welcomeMessageModeEnum = [self parseWelcomeMessageMode:welcomeMessageMode];
+        [Instabug setWelcomeMessageMode:welcomeMessageModeEnum];
+    }
+}
+
+/**
  * Convenience method for setting the color theme of
  * the SDK invocation.
  *
@@ -1274,6 +1310,7 @@
     [self setIntroDialogEnabled:[[options objectForKey:@"enableIntroDialog"] stringValue]];
     [self setSessionProfilerEnabled:[[options objectForKey:@"enableSessionProfiler"] stringValue]];
     [self setColorTheme:[options objectForKey:@"colorTheme"]];
+    [self setWelcomeMessageMode:[options objectForKey:@"welcomeMessageMode"]];
 }
 
 /**
@@ -1414,6 +1451,24 @@
         return IBGUserStepsModeDisable;
     } else if ([mode isEqualToString:@"enabledWithNoScreenshots"]) {
         return IBGUserStepsModeEnabledWithNoScreenshots;
+    } else return 0;
+}
+
+/**
+ * Convenience method for converting NSString to
+ * IBGWelcomeMessageMode.
+ *
+ * @param  {NSString*} mode
+ *         NSString shortcode for IBGWelcomeMessageMode
+ */
+- (IBGWelcomeMessageMode) parseWelcomeMessageMode:(NSString*)mode
+{
+    if ([mode isEqualToString:@"welcomeMessageModeLive"]) {
+        return IBGWelcomeMessageModeLive;
+    } else if ([mode isEqualToString:@"welcomeMessageModeBeta"]) {
+        return IBGWelcomeMessageModeBeta;
+    } else if ([mode isEqualToString:@"welcomeMessageModeDisabled"]) {
+        return IBGWelcomeMessageModeDisabled;
     } else return 0;
 }
 
