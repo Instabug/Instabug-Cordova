@@ -248,9 +248,9 @@ public class IBGPluginActivity extends CordovaActivity
      */
     private void setColorTheme(String theme) {
         if ("dark".equals(theme)) {
-            Instabug.setTheme(InstabugColorTheme.InstabugColorThemeDark);
+            Instabug.setColorTheme(InstabugColorTheme.InstabugColorThemeDark);
         } else if ("light".equals(theme)) {
-            Instabug.setTheme(InstabugColorTheme.InstabugColorThemeLight);
+            Instabug.setColorTheme(InstabugColorTheme.InstabugColorThemeLight);
         }
     }
 
