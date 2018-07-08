@@ -306,6 +306,7 @@ public class IBGPlugin extends CordovaPlugin {
             try {
                 ArrayList<Integer> actionTypesArray = parseActionTypes(stringArrayOfActionTypes);
                 FeatureRequests.setEmailFieldRequired(isRequired, convertIntegers(actionTypesArray));
+
             } catch (IllegalStateException e) {
                 callbackContext.error(errorMsg);
             }
@@ -1234,7 +1235,7 @@ public class IBGPlugin extends CordovaPlugin {
      */
     private void showFeatureRequests(final CallbackContext callbackContext) {
         try {
-            Instabug.showFeatureRequests();
+            FeatureRequests.show();
             callbackContext.success();
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
