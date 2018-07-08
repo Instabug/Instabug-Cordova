@@ -270,7 +270,7 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
-     * Sets the event used to invoke Instabug SDK
+     * Sets the invocation options used when invoke Instabug SDK
      *
      * @param options the invocation options array
      */

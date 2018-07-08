@@ -574,7 +574,7 @@
  * @param {CDVInvokedUrlCommand*} command
  *        The command sent from JavaScript
  */
-- (void) setInvocationEvent:(CDVInvokedUrlCommand*)command
+- (void) setInvocationEvents:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* result;
 
@@ -594,6 +594,35 @@
                                    messageAsString:@"A valid event type must be provided."];
     }
 
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+/**
+ * Sets the invocation options used when invoke Instabug SDK
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) setInvocationOptions:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* result;
+    
+    NSArray* invOptions = [command argumentAtIndex:0];
+    IBGBugReportingInvocationOption invocationOptions = 0;
+    
+    for (NSString *invOption in invOptions) {
+        IBGBugReportingInvocationOption invocationOption = [self parseInvocationOption:invOption];
+        invocationOptions |= invocationOption;
+    }
+    
+    if (invocationOptions != 0) {
+        IBGBugReporting.invocationOptions = invocationOptions;
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"A valid invocation option must be provided."];
+    }
+    
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
@@ -1178,6 +1207,26 @@
         return IBGInvocationEventRightEdgePan;
     } else if ([event isEqualToString:@"none"]) {
         return IBGInvocationEventNone;
+    } else return 0;
+}
+
+/**
+ * Convenience method for converting NSString to
+ * IBGBugReportingInvocationOption.
+ *
+ * @param  {NSString*} option
+ *         NSString shortcode for IBGBugReportingInvocationOption
+ */
+- (IBGBugReportingInvocationOption) parseInvocationOption:(NSString*)option
+{
+    if ([option isEqualToString:@"emailFieldHidden"]) {
+        return IBGBugReportingInvocationOptionEmailFieldHidden;
+    } else if ([option isEqualToString:@"emailFieldOptional"]) {
+        return IBGBugReportingInvocationOptionEmailFieldOptional;
+    } else if ([option isEqualToString:@"commentFieldRequired"]) {
+        return IBGBugReportingInvocationOptionCommentFieldRequired;
+    } else if ([option isEqualToString:@"disablePostSendingDialog"]) {
+        return IBGBugReportingInvocationOptionDisablePostSendingDialog;
     } else return 0;
 }
 
