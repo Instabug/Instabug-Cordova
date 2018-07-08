@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
+import com.instabug.bug.BugReporting;
 import com.instabug.library.Instabug;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
@@ -18,9 +19,11 @@ public class MyApplication extends MultiDexApplication
     {
         new Instabug.Builder(
                 this,
-                "ANDROID_APP_TOKEN",
-                InstabugInvocationEvent.SHAKE
-        ).setFloatingButtonEdge(InstabugFloatingButtonEdge.LEFT).setFloatingButtonOffsetFromTop(250).build();
+                "6e9964eddd1a350d6dabf176c6328dac",
+                InstabugInvocationEvent.FLOATING_BUTTON
+        ).build();
+        BugReporting.setFloatingButtonEdge(InstabugFloatingButtonEdge.LEFT);
+        BugReporting.setFloatingButtonOffset(250);
         Instabug.setPrimaryColor(Color.parseColor("#1D82DC"));
         super.onCreate();
     }
