@@ -305,6 +305,9 @@ Instabug.changeInvocationEvent = function (event, success, error) {
     }
 };
 
+/**
+ * @deprecated since version 8.0.0.
+ */
 Instabug.setInvocationEvents = function (events, success, error) {
   var i;
   var validatedEvents = [];
@@ -379,6 +382,9 @@ Instabug.setPreSendingHandler = function (success, error) {
     exec(success, error, 'IBGPlugin', 'setPreSendingHandler', []);
 };
 
+/**
+ * @deprecated since version 8.0.0. 
+ */
 Instabug.setDidSelectPromptOptionHandler = function (success, error) {
     exec(success, error, 'IBGPlugin', 'didSelectPromptOptionHandler', []);
 };

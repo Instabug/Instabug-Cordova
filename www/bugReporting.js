@@ -6,9 +6,24 @@
 var exec = require('cordova/exec');
 
 /**
+ * The event used to invoke the feedback form
+ * @readonly
+ * @enum {string} InvocationEvent
+ */
+var getInvocationEvents = function () {
+    return {
+        shake: 'shake',
+        button: 'button',
+        screenshot: 'screenshot',
+        swipe: 'swipe',
+        none: 'none'
+    };
+};
+
+/**
  * The options used upon invoking the SDK
  * @readonly
- * @enum {string} InvocationOptions
+ * @enum {string} InvocationOption
  */
 var getInvocationOptions = function() {
   return {
@@ -22,7 +37,7 @@ var getInvocationOptions = function() {
 /**
  * The mode used upon invocating the SDK
  * @readonly
- * @enum {string} InvocationModes
+ * @enum {string} InvocationMode
  */
 var getInvocationModes = function() {
   return {
@@ -40,13 +55,14 @@ var getInvocationModes = function() {
  */
 var BugReporting = function() {};
 
+BugReporting.invocationEvents = getInvocationEvents();
 BugReporting.invocationOptions = getInvocationOptions();
 BugReporting.invocationModes = getInvocationModes();
 
 /**
  * Sets the invocation options.
  * Default is set by `Instabug.startWithToken`.
- * @param {enum} invocationOptions Array of InvocationOptions
+ * @param {enum} invocationOptions Array of InvocationOption
  * @param {function(void):void} success callback on function success
  * @param {function(void):void} error callback on function error
  */
@@ -73,7 +89,7 @@ BugReporting.setInvocationOptions = function(options, success, error) {
  * Shows a view that asks the user whether they want to start a chat, report
  * a problem or suggest an improvement.
  * @param {enum} mode InvocationMode
- * @param {enum} invocationOptions Array of InvocationOptions
+ * @param {enum} invocationOptions Array of InvocationOption
  * @param {function(void):void} success callback on function success
  * @param {function(void):void} error callback on function error
  */
@@ -120,5 +136,36 @@ BugReporting.setOnInvokeHandler = function (success, error) {
 BugReporting.setOnDismissHandler = function (success, error) {
     exec(success, error, 'IBGPlugin', 'setPostInvocationHandler', []);
 };
+
+/**
+ * Sets a block of code to be executed when a prompt option is selected.
+ * @param {function(string):void} success 
+ * @param {function(void):void} error 
+ */
+BugReporting.setDidSelectPromptOptionHandler = function (success, error) {
+    exec(success, error, 'IBGPlugin', 'didSelectPromptOptionHandler', []);
+};
+
+/**
+ * 
+ * @param {enum} events Array of InvocationEvent
+ * @param {function(void):void} success 
+ * @param {function(string):void} error 
+ */
+BugReporting.setInvocationEvents = function (events, success, error) {
+    var i;
+    var validatedEvents = [];
+    for (i = 0; i < events.length; i++) {
+      var validatedEvent = getInvocationEvents()[events[i]];
+      if(validatedEvent) {
+        validatedEvents.push(validatedEvent);
+      }
+    }
+    if (validatedEvents !== undefined || validatedEvents.length != 0) {
+      exec(success, error, 'IBGPlugin', 'setInvocationEvents', [validatedEvents]);
+    } else {
+        console.log('Could not change invocation event - "' + event + '" is not valid.');
+    }
+  };
 
 module.exports = BugReporting;
