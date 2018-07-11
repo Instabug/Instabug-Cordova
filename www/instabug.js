@@ -194,6 +194,9 @@ Instabug.setShakingThreshold = function (shakingThreshold, success, error) {
     exec(success, error, 'IBGPlugin', 'setShakingThreshold', [shakingThreshold]);
 };
 
+/**
+ * @deprecated since version 8.0.0.
+ */
 Instabug.setEmailFieldRequiredForFeatureRequests = function (isRequired, actionTypes, success, error) {
     var i;
     var validatedActionTypes = [];
@@ -445,6 +448,9 @@ Instabug.setAutoShowingSurveysEnabled = function (autoShowingSurveysEnabled, suc
     exec(success, error, 'IBGPlugin', 'setAutoShowingSurveysEnabled', [autoShowingSurveysEnabled]);
 };
 
+/**
+ * @deprecated since version 8.0.0.
+ */
 Instabug.showFeatureRequests = function (success, error) {
     exec(success, error, 'IBGPlugin', 'showFeatureRequests', []);
 };
