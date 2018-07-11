@@ -119,6 +119,9 @@ Instabug.startWithToken = function (token, events, options, success, error) {
   }
 };
 
+/**
+ * @deprecated since version 8.0.0.
+ */
 Instabug.invoke = function (mode, invocationOptions, success, error) {
     var validatedMode = getInvocationModes()[mode];
     var i;
