@@ -296,10 +296,16 @@ Instabug.setIBGLogPrintsToConsole = function (isEnabled, success, error) {
     exec(success, error, 'IBGPlugin', 'setIBGLogPrintsToConsole', [isEnabled]);
 };
 
+/**
+ * @deprecated since version 8.0.0.
+ */
 Instabug.setSurveysEnabled = function (isEnabled, success, error) {
     exec(success, error, 'IBGPlugin', 'setSurveysEnabled', [isEnabled]);
 };
 
+/**
+ * @deprecated since version 8.0.0
+ */
 Instabug.showSurveyIfAvailable = function (success, error) {
     exec(success, error, 'IBGPlugin', 'showSurveyIfAvailable', []);
 };
@@ -444,6 +450,9 @@ Instabug.setThresholdForReshowingSurveyAfterDismiss = function (sessionsCount, d
     exec(success, error, 'IBGPlugin', 'setThresholdForReshowingSurveyAfterDismiss', [sessionsCount, daysCount]);
 };
 
+/**
+ * @deprecated since version 8.0.0.
+ */
 Instabug.setAutoShowingSurveysEnabled = function (autoShowingSurveysEnabled, success, error) {
     exec(success, error, 'IBGPlugin', 'setAutoShowingSurveysEnabled', [autoShowingSurveysEnabled]);
 };
