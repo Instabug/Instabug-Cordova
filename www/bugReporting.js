@@ -99,5 +99,26 @@ BugReporting.invoke = function(mode, invocationOptions, success, error) {
   }
 };
 
+/**
+ * Sets a block of code to be executed just before the SDK's UI is presented.
+ * This block is executed on the UI thread. Could be used for performing any
+ * UI changes before the SDK's UI is shown.
+ * @param {function(void):void} success 
+ * @param {function(void):void} error 
+ */
+BugReporting.setOnInvokeHandler = function (success, error) {
+    exec(success, error, 'IBGPlugin', 'setPreInvocationHandler', []);
+};
 
-  module.exports = BugReporting;
+/**
+ * Sets a block of code to be executed right after the SDK's UI is dismissed.
+ * This block is executed on the UI thread. Could be used for performing any
+ * UI changes after the SDK's UI is dismissed.
+ * @param {function(Object):void} success 
+ * @param {function(void):void} error 
+ */
+BugReporting.setOnDismissHandler = function (success, error) {
+    exec(success, error, 'IBGPlugin', 'setPostInvocationHandler', []);
+};
+
+module.exports = BugReporting;

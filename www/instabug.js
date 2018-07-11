@@ -361,10 +361,16 @@ Instabug.identifyUserWithEmail = function (email, name, success, error) {
     exec(success, error, 'IBGPlugin', 'identifyUserWithEmail', [email, name]);
 };
 
+/**
+ * @deprecated since version 8.0.0.
+ */
 Instabug.setPreInvocationHandler = function (success, error) {
     exec(success, error, 'IBGPlugin', 'setPreInvocationHandler', []);
 };
 
+/**
+ * @deprecated since version 8.0.0.
+ */
 Instabug.setPostInvocationHandler = function (success, error) {
     exec(success, error, 'IBGPlugin', 'setPostInvocationHandler', []);
 };
