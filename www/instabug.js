@@ -168,6 +168,9 @@ Instabug.setUserEmail = function (email, success, error) {
     exec(success, error, 'IBGPlugin', 'setUserEmail', [email]);
 };
 
+/**
+ * @deprecated since version 8.0.0.
+ */
 Instabug.setAttachmentTypesEnabled = function (screenshot, extraScreenshot, 
                                                 galleryImage, screenRecording, 
                                                 success, error) {
@@ -229,6 +232,9 @@ Instabug.showWelcomeMessage = function (welcomeMessageMode, success, error) {
     }
   };
 
+/**
+ * @deprecated since version 8.0.0.
+ */
 Instabug.setExtendedBugReportMode = function (extendedBugReportMode, success, error) {
 
   var validatedExtendedBugReportMode = getExtendedBugReportMode()[extendedBugReportMode];
@@ -240,6 +246,9 @@ Instabug.setExtendedBugReportMode = function (extendedBugReportMode, success, er
   }
 };
 
+/**
+ * @deprecated since version 8.0.0.
+ */
 Instabug.setPromptOptionsEnabled = function (promptOptions, success, error) {
     var i;
     var validatedPromptOptions = [];
