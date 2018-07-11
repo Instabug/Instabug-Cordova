@@ -28,6 +28,9 @@
     <js-module src="www/instabug.js" name="Instabug">
         <clobbers target="cordova.plugins.instabug"/>
     </js-module>
+   <js-module src="www/bugReporting.js" name="BugReporting">
+        <clobbers target="cordova.plugins.bugReporting"/>
+    </js-module>
 
     <!-- android -->
     <platform name="android">

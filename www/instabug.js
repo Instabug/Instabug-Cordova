@@ -318,22 +318,6 @@ Instabug.setInvocationEvents = function (events, success, error) {
   }
 };
 
-Instabug.setInvocationOptions = function (options, success, error) {
-    var i;
-    var validatedOptions = [];
-    for (i = 0; i < options.length; i++) {
-      var validatedOption = getInvocationOptions()[options[i]];
-      if(validatedOption) {
-        validatedOptions.push(validatedOption);
-      }
-    }
-    if (validatedOptions !== undefined || validatedOptions.length != 0) {
-      exec(success, error, 'IBGPlugin', 'setInvocationOptions', [validatedOptions]);
-    } else {
-        console.log('Could not change invocation option - "' + validatedOptions + '" is empty.');
-    }
-  };
-
 Instabug.disable = function (success, error) {
     exec(success, error, 'IBGPlugin', 'disable', []);
 };
