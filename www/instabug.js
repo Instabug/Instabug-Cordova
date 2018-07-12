@@ -438,6 +438,9 @@ Instabug.logOut = function (success, error) {
     exec(success, error, 'IBGPlugin', 'logOut', []);
 };
 
+/**
+ * @deprecated since version 8.0.0.
+ */
 Instabug.dismiss = function (success, error) {
     exec(success, error, 'IBGPlugin', 'dismiss', []);
 };

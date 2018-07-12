@@ -269,4 +269,13 @@ BugReporting.setExtendedBugReportMode = function(extendedBugReportMode, success,
   }
 };
 
+/**
+ * 
+ * @param {function():void} success 
+ * @param {function():void} error 
+ */
+BugReporting.dismiss = function (success, error) {
+  exec(success, error, 'IBGPlugin', 'dismiss', []);
+};
+
 module.exports = BugReporting;
