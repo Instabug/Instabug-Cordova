@@ -182,6 +182,9 @@ Instabug.setUserName = function (name, success, error) {
     exec(success, error, 'IBGPlugin', 'setUserName', [name]);
 };
 
+/**
+ * @deprecated since version 8.0.0. 
+ */
 Instabug.showSurveyWithToken = function (surveyToken, success, error) {
     exec(success, error, 'IBGPlugin', 'showSurveyWithToken', [surveyToken]);
 };
@@ -370,10 +373,16 @@ Instabug.getUserAttribute = function (key, success, error) {
     exec(success, error, 'IBGPlugin', 'getUserAttribute', [key]);
 };
 
+/**
+ * @deprecated since version 8.0.0.
+ */
 Instabug.hasRespondedToSurveyWithToken = function (surveyToken, success, error) {
     exec(success, error, 'IBGPlugin', 'hasRespondedToSurveyWithToken', [surveyToken]);
 };
 
+/**
+ * @deprecated since version 8.0.0.
+ */
 Instabug.getAvailableSurveys = function (success, error) {
     exec(success, error, 'IBGPlugin', 'getAvailableSurveys', []);
 };
@@ -407,10 +416,16 @@ Instabug.setDidSelectPromptOptionHandler = function (success, error) {
     exec(success, error, 'IBGPlugin', 'didSelectPromptOptionHandler', []);
 };
 
+/**
+ * @deprecated since version 8.0.0.
+ */
 Instabug.setWillShowSurveyHandler = function (success, error) {
     exec(success, error, 'IBGPlugin', 'willShowSurveyHandler', []);
 };
 
+/**
+ * @deprecated since version 8.0.0.
+ */
 Instabug.setDidDismissSurveyHandler = function (success, error) {
     exec(success, error, 'IBGPlugin', 'didDismissSurveyHandler', []);
 };
@@ -446,6 +461,9 @@ Instabug.setLocale = function (locale, success, error) {
     }
 };
 
+/**
+ * @deprecated since version 8.0.0.
+ */
 Instabug.setThresholdForReshowingSurveyAfterDismiss = function (sessionsCount, daysCount, success, error) {
     exec(success, error, 'IBGPlugin', 'setThresholdForReshowingSurveyAfterDismiss', [sessionsCount, daysCount]);
 };
@@ -464,6 +482,9 @@ Instabug.showFeatureRequests = function (success, error) {
     exec(success, error, 'IBGPlugin', 'showFeatureRequests', []);
 };
 
+/**
+ * @deprecated since version 8.0.0.
+ */
 Instabug.setShouldShowSurveysWelcomeScreen = function (shouldShowWelcomeScreen, success, error) {
     exec(success, error, 'IBGPlugin', 'setShouldShowSurveysWelcomeScreen', [shouldShowWelcomeScreen]);
 };
