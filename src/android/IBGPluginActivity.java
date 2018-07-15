@@ -34,7 +34,6 @@ public class IBGPluginActivity extends CordovaActivity
         if(options != null) {
             setBuilderOptions(options);
         }
-
         // Finish activity (required for no-display theme)
         IBGPluginActivity.this.finish();
     }
@@ -269,9 +268,9 @@ public class IBGPluginActivity extends CordovaActivity
      */
     private void setColorTheme(String theme) {
         if ("dark".equals(theme)) {
-            Instabug.setTheme(InstabugColorTheme.InstabugColorThemeDark);
+            Instabug.setColorTheme(InstabugColorTheme.InstabugColorThemeDark);
         } else if ("light".equals(theme)) {
-            Instabug.setTheme(InstabugColorTheme.InstabugColorThemeLight);
+            Instabug.setColorTheme(InstabugColorTheme.InstabugColorThemeLight);
         }
     }
 
