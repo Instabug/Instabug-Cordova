@@ -20,6 +20,15 @@ var getInvocationModes = function () {
     };
 };
 
+var getInvocationOptions = function () {
+    return {
+        emailFieldHidden: 'emailFieldHidden',
+        emailFieldOptional: 'emailFieldOptional',
+        commentFieldRequired: 'commentFieldRequired',
+        disablePostSendingDialog: 'disablePostSendingDialog'
+    };
+};
+
 var getReproStepsMode = function () {
     return {
         enabled: 'enabled',
@@ -28,12 +37,20 @@ var getReproStepsMode = function () {
     };
 };
 
+var getPromptOptions = function () {
+    return {
+        bug: 'bug',
+        chat: 'chat',
+        feedback: 'feedback'
+    }
+};
 var getWelcomeMessageMode = function () {
     return {
         welcomeMessageModeLive: 'welcomeMessageModeLive',
         welcomeMessageModeBeta: 'welcomeMessageModeBeta',
         welcomeMessageModeDisabled: 'welcomeMessageModeDisabled'
-    };
+    }
+    
 };
 
 var getExtendedBugReportMode = function () {
@@ -41,6 +58,13 @@ var getExtendedBugReportMode = function () {
         enabledWithRequiredFields: 'enabledWithRequiredFields',
         enabledWithOptionalFields: 'enabledWithOptionalFields',
         disabled: 'disabled'
+    };
+};
+
+var getActionTypes = function () {
+    return {
+        requestNewFeature: 'requestNewFeature',
+        addCommentToFeature: 'addCommentToFeature'
     };
 };
 
@@ -72,17 +96,48 @@ Instabug.activate = function (token, event, options, success, error) {
     var validatedEvent = getInvocationEvents()[event];
 
     if (validatedEvent) {
+        console.warn("This method is now deprecated, and will be removed in an upcoming version.")
         exec(success, error, 'IBGPlugin', 'activate', [token, event, options]);
     } else {
         console.log('Could not activate Instabug - invocation event "' + event + '" is not valid.');
     }
 };
 
-Instabug.invoke = function (mode, success, error) {
-    var validatedMode = getInvocationModes()[mode];
+Instabug.startWithToken = function (token, events, options, success, error) {
+  var i;
+  var validatedEvents = [];
+  for (i = 0; i < events.length; i++) {
+    var validatedEvent = getInvocationEvents()[events[i]];
+    if(validatedEvent) {
+      validatedEvents.push(validatedEvent);
+    }
+  }
+  if (validatedEvents !== undefined || validatedEvents.length != 0) {
+    exec(success, error, 'IBGPlugin', 'startWithToken', [token, validatedEvents, options]);
+  } else {
+      console.log('Could not activate Instabug - invocation event is not valid.');
+  }
+};
 
+/**
+ * @deprecated since version 8.0.0.
+ */
+Instabug.invoke = function (mode, invocationOptions, success, error) {
+    var validatedMode = getInvocationModes()[mode];
+    var i;
+    var validatedOptions = [];
+    for (i = 0; i < invocationOptions.length; i++) {
+      var validatedOption = getInvocationOptions()[invocationOptions[i]];
+      if(validatedOption) {
+        validatedOptions.push(validatedOption);
+      }
+    }
     if (validatedMode) {
-        exec(success, error, 'IBGPlugin', 'invoke', [validatedMode]);
+        if(validatedOptions.length != 0) {
+            exec(success, error, 'IBGPlugin', 'invoke', [validatedMode, validatedOptions]);
+        } else {
+            exec(success, error, 'IBGPlugin', 'invoke', [validatedMode]);
+        }
     } else {
         exec(success, error, 'IBGPlugin', 'invoke', []);
         console.log('Could not apply mode to invocation - "' + mode + '" is not valid.');
@@ -113,12 +168,52 @@ Instabug.setUserEmail = function (email, success, error) {
     exec(success, error, 'IBGPlugin', 'setUserEmail', [email]);
 };
 
+/**
+ * @deprecated since version 8.0.0.
+ */
+Instabug.setAttachmentTypesEnabled = function (screenshot, extraScreenshot, 
+                                                galleryImage, screenRecording, 
+                                                success, error) {
+    exec(success, error, 'IBGPlugin', 'setAttachmentTypesEnabled', [screenshot,
+        extraScreenshot, galleryImage, screenRecording]);
+};
+
 Instabug.setUserName = function (name, success, error) {
     exec(success, error, 'IBGPlugin', 'setUserName', [name]);
 };
 
+/**
+ * @deprecated since version 8.0.0. 
+ */
 Instabug.showSurveyWithToken = function (surveyToken, success, error) {
     exec(success, error, 'IBGPlugin', 'showSurveyWithToken', [surveyToken]);
+};
+
+Instabug.logUserEventWithName = function (userEvent, success, error) {
+    exec(success, error, 'IBGPlugin', 'logUserEventWithName', [userEvent]);
+};
+
+Instabug.setShakingThreshold = function (shakingThreshold, success, error) {
+    exec(success, error, 'IBGPlugin', 'setShakingThreshold', [shakingThreshold]);
+};
+
+/**
+ * @deprecated since version 8.0.0.
+ */
+Instabug.setEmailFieldRequiredForFeatureRequests = function (isRequired, actionTypes, success, error) {
+    var i;
+    var validatedActionTypes = [];
+    for (i = 0; i < actionTypes.length; i++) {
+      var validatedActionType = getActionTypes()[actionTypes[i]];
+      if(validatedActionType) {
+        validatedActionTypes.push(validatedActionType);
+      }
+    }
+    if (validatedActionTypes !== undefined || validatedActionTypes.length != 0) {
+      exec(success, error, 'IBGPlugin', 'setEmailFieldRequiredForFeatureRequests', [isRequired, validatedActionTypes]);
+    } else {
+        console.log('Could not set email field - "' + validatedActionTypes + '" is incorrect.');
+    }
 };
 
 Instabug.setReproStepsMode = function (reproStepsMode, success, error) {
@@ -143,6 +238,9 @@ Instabug.showWelcomeMessage = function (welcomeMessageMode, success, error) {
     }
   };
 
+/**
+ * @deprecated since version 8.0.0.
+ */
 Instabug.setExtendedBugReportMode = function (extendedBugReportMode, success, error) {
 
   var validatedExtendedBugReportMode = getExtendedBugReportMode()[extendedBugReportMode];
@@ -152,6 +250,25 @@ Instabug.setExtendedBugReportMode = function (extendedBugReportMode, success, er
   } else {
       console.log('Could not set extended bug report mode - "' + validatedExtendedBugReportMode + '" is not valid.');
   }
+};
+
+/**
+ * @deprecated since version 8.0.0.
+ */
+Instabug.setPromptOptionsEnabled = function (promptOptions, success, error) {
+    var i;
+    var validatedPromptOptions = [];
+    for (i = 0; i < promptOptions.length; i++) {
+      var validatedPromptOption = getPromptOptions()[promptOptions[i]];
+      if(validatedPromptOption) {
+        validatedPromptOptions.push(validatedPromptOption);
+      }
+    }
+    if (validatedPromptOptions !== undefined || validatedPromptOptions.length != 0) {
+      exec(success, error, 'IBGPlugin', 'setPromptOptionsEnabled', [validatedPromptOptions]);
+    } else {
+        console.log('Could not change prompt option - "' + validatedPromptOption + '" is not valid.');
+    }
 };
 
 Instabug.setUserData = function (data, success, error) {
@@ -170,6 +287,35 @@ Instabug.clearLog = function (success, error) {
     exec(success, error, 'IBGPlugin', 'clearLog', []);
 };
 
+Instabug.getUnreadMessagesCount = function (success, error) {
+    exec(success, error, 'IBGPlugin', 'getUnreadMessagesCount', []);
+};
+
+Instabug.setChatNotificationEnabled = function (isEnabled, success, error) {
+    exec(success, error, 'IBGPlugin', 'setChatNotificationEnabled', [isEnabled]);
+};
+
+Instabug.setIBGLogPrintsToConsole = function (isEnabled, success, error) {
+    exec(success, error, 'IBGPlugin', 'setIBGLogPrintsToConsole', [isEnabled]);
+};
+
+/**
+ * @deprecated since version 8.0.0.
+ */
+Instabug.setSurveysEnabled = function (isEnabled, success, error) {
+    exec(success, error, 'IBGPlugin', 'setSurveysEnabled', [isEnabled]);
+};
+
+/**
+ * @deprecated since version 8.0.0
+ */
+Instabug.showSurveyIfAvailable = function (success, error) {
+    exec(success, error, 'IBGPlugin', 'showSurveyIfAvailable', []);
+};
+
+/**
+ * @deprecated Since version 8.0. 
+ */
 Instabug.changeInvocationEvent = function (event, success, error) {
     var validatedEvent = getInvocationEvents()[event];
 
@@ -178,6 +324,25 @@ Instabug.changeInvocationEvent = function (event, success, error) {
     } else {
         console.log('Could not change invocation event - "' + event + '" is not valid.');
     }
+};
+
+/**
+ * @deprecated since version 8.0.0.
+ */
+Instabug.setInvocationEvents = function (events, success, error) {
+  var i;
+  var validatedEvents = [];
+  for (i = 0; i < events.length; i++) {
+    var validatedEvent = getInvocationEvents()[events[i]];
+    if(validatedEvent) {
+      validatedEvents.push(validatedEvent);
+    }
+  }
+  if (validatedEvents !== undefined || validatedEvents.length != 0) {
+    exec(success, error, 'IBGPlugin', 'setInvocationEvents', [validatedEvents]);
+  } else {
+      console.log('Could not change invocation event - "' + event + '" is not valid.');
+  }
 };
 
 Instabug.disable = function (success, error) {
@@ -208,12 +373,61 @@ Instabug.getUserAttribute = function (key, success, error) {
     exec(success, error, 'IBGPlugin', 'getUserAttribute', [key]);
 };
 
+/**
+ * @deprecated since version 8.0.0.
+ */
 Instabug.hasRespondedToSurveyWithToken = function (surveyToken, success, error) {
     exec(success, error, 'IBGPlugin', 'hasRespondedToSurveyWithToken', [surveyToken]);
 };
 
+/**
+ * @deprecated since version 8.0.0.
+ */
+Instabug.getAvailableSurveys = function (success, error) {
+    exec(success, error, 'IBGPlugin', 'getAvailableSurveys', []);
+};
+
 Instabug.identifyUserWithEmail = function (email, name, success, error) {
     exec(success, error, 'IBGPlugin', 'identifyUserWithEmail', [email, name]);
+};
+
+/**
+ * @deprecated since version 8.0.0.
+ */
+Instabug.setPreInvocationHandler = function (success, error) {
+    exec(success, error, 'IBGPlugin', 'setPreInvocationHandler', []);
+};
+
+/**
+ * @deprecated since version 8.0.0.
+ */
+Instabug.setPostInvocationHandler = function (success, error) {
+    exec(success, error, 'IBGPlugin', 'setPostInvocationHandler', []);
+};
+
+Instabug.setPreSendingHandler = function (success, error) {
+    exec(success, error, 'IBGPlugin', 'setPreSendingHandler', []);
+};
+
+/**
+ * @deprecated since version 8.0.0. 
+ */
+Instabug.setDidSelectPromptOptionHandler = function (success, error) {
+    exec(success, error, 'IBGPlugin', 'didSelectPromptOptionHandler', []);
+};
+
+/**
+ * @deprecated since version 8.0.0.
+ */
+Instabug.setWillShowSurveyHandler = function (success, error) {
+    exec(success, error, 'IBGPlugin', 'willShowSurveyHandler', []);
+};
+
+/**
+ * @deprecated since version 8.0.0.
+ */
+Instabug.setDidDismissSurveyHandler = function (success, error) {
+    exec(success, error, 'IBGPlugin', 'didDismissSurveyHandler', []);
 };
 
 Instabug.setVideoRecordingFloatingButtonPosition = function (position, success, error) {
@@ -222,6 +436,13 @@ Instabug.setVideoRecordingFloatingButtonPosition = function (position, success, 
 
 Instabug.logOut = function (success, error) {
     exec(success, error, 'IBGPlugin', 'logOut', []);
+};
+
+/**
+ * @deprecated since version 8.0.0.
+ */
+Instabug.dismiss = function (success, error) {
+    exec(success, error, 'IBGPlugin', 'dismiss', []);
 };
 
 Instabug.setDebugEnabled = function (isDebugEnabled, success, error) {
@@ -243,18 +464,30 @@ Instabug.setLocale = function (locale, success, error) {
     }
 };
 
+/**
+ * @deprecated since version 8.0.0.
+ */
 Instabug.setThresholdForReshowingSurveyAfterDismiss = function (sessionsCount, daysCount, success, error) {
     exec(success, error, 'IBGPlugin', 'setThresholdForReshowingSurveyAfterDismiss', [sessionsCount, daysCount]);
 };
 
+/**
+ * @deprecated since version 8.0.0.
+ */
 Instabug.setAutoShowingSurveysEnabled = function (autoShowingSurveysEnabled, success, error) {
     exec(success, error, 'IBGPlugin', 'setAutoShowingSurveysEnabled', [autoShowingSurveysEnabled]);
 };
 
+/**
+ * @deprecated since version 8.0.0.
+ */
 Instabug.showFeatureRequests = function (success, error) {
     exec(success, error, 'IBGPlugin', 'showFeatureRequests', []);
 };
 
+/**
+ * @deprecated since version 8.0.0.
+ */
 Instabug.setShouldShowSurveysWelcomeScreen = function (shouldShowWelcomeScreen, success, error) {
     exec(success, error, 'IBGPlugin', 'setShouldShowSurveysWelcomeScreen', [shouldShowWelcomeScreen]);
 };
