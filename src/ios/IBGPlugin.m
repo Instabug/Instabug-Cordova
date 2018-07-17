@@ -811,6 +811,23 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
+-(void) setCommentFieldRequired:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* result;
+    
+    BOOL isRequired = [command argumentAtIndex:0];
+    
+    if (isRequired) {
+        [Instabug setCommentFieldRequired:[[command argumentAtIndex:0] boolValue]];
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"A boolean value must be provided."];
+    }
+    
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
 /**
  * Convenience method for setting whether the email
  * field is validated or not.
@@ -832,12 +849,13 @@
  * @param {NSString*} required
  *        NSString representation of boolean required
  */
-- (void) setCommentFieldRequired:(NSString*)required
+- (void) setCommentRequired:(NSString*)required
 {
     if ([required length] > 0) {
-        [Instabug setCommentFieldRequired:[required boolValue]];
+        [Instabug setCommentFieldRequired:true];
     }
 }
+
 
 /**
  * Convenience method for setting the default SDK
@@ -1299,7 +1317,7 @@
 - (void) applyOptions:(NSDictionary*)options
 {
     [self setEmailFieldRequired:[[options objectForKey:@"emailRequired"] stringValue]];
-    [self setCommentFieldRequired:[[options objectForKey:@"commentRequired"] stringValue]];
+    [self setCommentRequired:[[options objectForKey:@"commentRequired"] stringValue]];
     [self setDefaultInvocationMode:[options objectForKey:@"defaultInvocationMode"]];
     [self setShakingThresholdForIPhone:[options objectForKey:@"shakingThresholdIPhone"]
                                forIPad:[options objectForKey:@"shakingThresholdIPad"]];

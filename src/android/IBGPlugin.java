@@ -242,7 +242,8 @@ public class IBGPlugin extends CordovaPlugin {
             setEmailFieldRequiredForFeatureRequests(callbackContext, args.optBoolean(0), args.optJSONArray(1));
         } else if ("showWelcomeMessage".equals(action)) {
             showWelcomeMessage(callbackContext, args.optString(0));
-
+        } else if ("setCommentFieldRequired".equals(action)) {
+            setCommentFieldRequired(callbackContext, args.optBoolean(0));
         } else {
             // Method not found.
             return false;
@@ -263,6 +264,16 @@ public class IBGPlugin extends CordovaPlugin {
         }
         cordova.getActivity().startActivity(activationIntent);
 
+        callbackContext.success();
+    }
+
+    /**
+     * @deprecated since version 8.0.0.
+     * @param callbackContext
+     * @param required
+     */
+    public void setCommentFieldRequired(final CallbackContext callbackContext, boolean required) {
+        Instabug.setCommentFieldRequired(required);
         callbackContext.success();
     }
 
