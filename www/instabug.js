@@ -492,4 +492,11 @@ Instabug.setShouldShowSurveysWelcomeScreen = function (shouldShowWelcomeScreen, 
     exec(success, error, 'IBGPlugin', 'setShouldShowSurveysWelcomeScreen', [shouldShowWelcomeScreen]);
 };
 
+/**
+ * @deprecated since version 8.0.0.
+ */
+Instabug.setCommentFieldRequired = function(commentRequired, success, error) {
+    exec(success, error, 'IBGPlugin', 'setCommentFieldRequired', [commentRequired])
+} 
+
 module.exports = Instabug;
