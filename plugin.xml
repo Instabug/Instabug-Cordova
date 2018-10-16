@@ -3,7 +3,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="instabug-cordova"
-        version="1.10.0">
+        version="8.0.4">
 
     <name>instabug-cordova</name>
 
@@ -82,7 +82,7 @@
         <source-file src="src/android/IBGPluginActivity.java" target-dir="src/com/instabug/cordova/plugin"/>
         <source-file src="src/android/IBGPlugin.java" target-dir="src/com/instabug/cordova/plugin"/>
         <source-file src="src/android/MyApplication.java" target-dir="src/com/instabug/cordova/plugin"/>
-
+        <hook type="before_plugin_install" src="scripts/android/before_plugin_install.js"/>
     </platform>
 
     <!-- ios -->
