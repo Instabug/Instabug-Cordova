@@ -19,7 +19,7 @@ const writeIbgBuildGradle = (contents) => {
 const getAndroidVersion = () => {
   const target = path.join('config.xml');
   let file = fs.readFileSync(target, 'utf-8');
-  const androidEngine = file.match(/engine name="android" spec="\^[1-9]+.[0-9]+.[0-9]+"/g);
+  const androidEngine = file.match(/engine name="android" spec="\^?[1-9]+.[0-9]+.[0-9]+"/g);
   if (androidEngine) {
     const version = androidEngine[0].match(/[1-9]+.[0-9]+.[0-9]+/g);
     if (version) {
