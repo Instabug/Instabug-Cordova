@@ -7,8 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <InstabugCore/InstabugCore.h>
-#import <InstabugCore/IBGTypes.h>
+#import "IBGTypes.h"
 
 NS_SWIFT_NAME(BugReporting)
 @interface IBGBugReporting : NSObject
@@ -57,16 +56,18 @@ NS_SWIFT_NAME(BugReporting)
 @property(class, atomic, assign) IBGInvocationEvent invocationEvents;
 
 /**
- @brief Sets the threshold value of the shake gesture for iPhone/iPod Touch
+ @brief Sets the threshold value of the shake gesture for iPhone/iPod Touch.
 
- @discussion Default for iPhone is 2.5.
+ @discussion Default for iPhone is 2.5. The lower the threshold, the easier it will be to invoke Instabug with the
+ shake gesture. A threshold which is too low will cause Instabug to be invoked unintentionally.
  */
 @property(class, atomic, assign) CGFloat shakingThresholdForiPhone;
 
 /**
  @brief Sets the threshold value of the shake gesture for iPad.
  
- @discussion Default for iPad is 0.6.
+ @discussion Default for iPad is 0.6. The lower the threshold, the easier it will be to invoke Instabug with the
+ shake gesture. A threshold which is too low will cause Instabug to be invoked unintentionally.
  */
 @property(class, atomic, assign) CGFloat shakingThresholdForiPad;
 
@@ -117,6 +118,14 @@ NS_SWIFT_NAME(BugReporting)
  @discussion See IBGInvocationOptions.
  */
 @property(class, atomic, assign) IBGBugReportingInvocationOption invocationOptions;
+
+
+/**
+ @brief Sets the default position at which the Instabug screen recording button will be shown. Different orientations are already handled.
+ 
+ @discussion Default for `position` is `bottomRight`.
+ */
+@property(class, atomic, assign) IBGPosition videoRecordingFloatingButtonPosition;
 
 /**
  @brief Invokes the SDK manually with the default invocation mode.
