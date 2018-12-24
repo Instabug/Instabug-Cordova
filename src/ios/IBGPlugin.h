@@ -18,4 +18,22 @@
 
 - (void) setLocale:(CDVInvokedUrlCommand*)command;
 
+- (void) setReportTypes:(CDVInvokedUrlCommand*)command;
+
+- (void) show:(CDVInvokedUrlCommand*)command;
+
+- (void) showBugReportingWithReportTypeAndOptions:(CDVInvokedUrlCommand*)command;
+
+- (void) setBugReportingEnabled:(CDVInvokedUrlCommand*)command;
+
+- (void) setChatsEnabled:(CDVInvokedUrlCommand*)command;
+
+- (void) setRepliesEnabled:(CDVInvokedUrlCommand*)command;
+
+- (void) showChats:(CDVInvokedUrlCommand*)command;
+
+- (void) hasChats:(CDVInvokedUrlCommand*)command;
+
+- (void) showReplies:(CDVInvokedUrlCommand*)command;
+
 @end

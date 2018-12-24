@@ -658,6 +658,151 @@
 }
 
 /**
+ * Set supported report types bug, feedback or both.
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) setReportTypes:(CDVInvokedUrlCommand*)command {
+    CDVPluginResult* result;
+    NSArray* types = [command argumentAtIndex:0];
+    IBGBugReportingReportType parsedTypes = 0;
+    
+    for (NSString* type in types) {
+        IBGBugReportingReportType parsedType = [self parseBugReportingReportType:type];
+        if (parsedType == 0) {
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                messageAsString:@"A valid report type must be provided."];
+            [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+            return;
+        }
+        parsedTypes |= parsedType;
+    }
+    [IBGBugReporting setPromptOptionsEnabledReportTypes:parsedTypes];
+    result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+/**
+ * Show new report either bug or feedback with given options.
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) showBugReportingWithReportTypeAndOptions:(CDVInvokedUrlCommand*)command {
+    CDVPluginResult* result;
+    NSString* type = [command argumentAtIndex:0];
+    NSArray* options = [command argumentAtIndex:1];
+    
+    IBGBugReportingReportType parsedType = [self parseBugReportingReportType:type];
+    if (parsedType == 0) {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"A valid report type must be provided."];
+        [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+        return;
+    }
+    
+    IBGBugReportingOption parsedOptions = 0;
+    
+    for (NSString* option in options) {
+        IBGBugReportingOption parsedOption = [self parseInvocationOption:option];
+        if (parsedOption == 0) {
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                       messageAsString:@"A valid bug reporting option must be provided."];
+            [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+            return;
+        }
+        parsedOptions |= parsedOption;
+    }
+    [IBGBugReporting showWithReportType:parsedType options:parsedOptions];
+    result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+/**
+ * Show default Instabug prompt.
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) show:(CDVInvokedUrlCommand*)command {
+    [Instabug show];
+    [self sendSuccessResult:command];
+}
+
+/**
+ * Enable or disable anything that has to do with bug reporting.
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) setBugReportingEnabled:(CDVInvokedUrlCommand*)command {
+    BOOL isEnabled = [[command argumentAtIndex:0] boolValue];
+    IBGBugReporting.enabled = isEnabled;
+    [self sendSuccessResult:command];
+}
+
+/**
+ * Enable or disable anything that has to do with chats.
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) setChatsEnabled:(CDVInvokedUrlCommand*)command {
+    BOOL isEnabled = [[command argumentAtIndex:0] boolValue];
+    IBGChats.enabled = isEnabled;
+    [self sendSuccessResult:command];
+}
+
+/**
+ * Enable or disable anything that has to do with replies.
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) setRepliesEnabled:(CDVInvokedUrlCommand*)command {
+    BOOL isEnabled = [[command argumentAtIndex:0] boolValue];
+    IBGReplies.enabled = isEnabled;
+    [self sendSuccessResult:command];
+}
+
+/**
+ * Show chats view as a list or new message.
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) showChats:(CDVInvokedUrlCommand*)command {
+    BOOL withChatsList = [[command argumentAtIndex:0] boolValue];
+    [IBGChats showWithChatsList:withChatsList];
+    [self sendSuccessResult:command];
+}
+
+/**
+ * See if user has chats.
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) hasChats:(CDVInvokedUrlCommand*)command {
+    BOOL hasChats = [IBGReplies hasChats];
+    if (hasChats) {
+        [self sendSuccessResult:command];
+    }
+}
+
+/**
+ * Show replies to user.
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) showReplies:(CDVInvokedUrlCommand*)command {
+    [IBGReplies show];
+    [self sendSuccessResult:command];
+}
+
+/**
  * Sets the locale used to display the strings in the
  * correct language.
  *
@@ -1251,6 +1396,12 @@
         return IBGBugReportingOptionDisablePostSendingDialog;
     } else return 0;
 }
+
+- (IBGBugReportingReportType) parseBugReportingReportType:(NSString*)type {
+    if ([type isEqualToString:@"bug"]) {
+        return IBGBugReportingReportTypeBug;
+    } else if ([type isEqualToString:@"feedback"]) {
+        return IBGBugReportingReportTypeFeedback;
     } else return 0;
 }
 

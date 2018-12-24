@@ -3,10 +3,15 @@ package com.instabug.cordova.plugin;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.util.Log;
 
 import com.instabug.bug.BugReporting;
 import com.instabug.bug.PromptOption;
 import com.instabug.bug.invocation.InvocationOption;
+import com.instabug.bug.invocation.Option;
+import com.instabug.chat.Chats;
+import com.instabug.chat.Replies;
+import com.instabug.cordova.plugin.util.Util;
 import com.instabug.featuresrequest.ActionType;
 import com.instabug.featuresrequest.FeatureRequests;
 import com.instabug.library.Feature;
@@ -226,11 +231,113 @@ public class IBGPlugin extends CordovaPlugin {
             setEmailFieldRequiredForFeatureRequests(callbackContext, args.optBoolean(0), args.optJSONArray(1));
         } else if ("showWelcomeMessage".equals(action)) {
             showWelcomeMessage(callbackContext, args.optString(0));
+        } else if ("show".equals(action)) {
+            show(callbackContext);
+        } else if ("setReportTypes".equals(action)) {
+            setReportTypes(callbackContext, args.optJSONArray(0));
+        } else if ("showBugReportingWithReportTypeAndOptions".equals(action)) {
+            showBugReportingWithReportTypeAndOptions(callbackContext, args.getString(0), args.optJSONArray(1));
+        } else if ("setBugReportingEnabled".equals(action)) {
+            setBugReportingEnabled(callbackContext, args.getBoolean(0));
+        } else if ("setChatsEnabled".equals(action)) {
+            setChatsEnabled(callbackContext, args.getBoolean(0));
+        } else if ("setRepliesEnabled".equals(action)) {
+            setRepliesEnabled(callbackContext, args.getBoolean(0));
+        } else if ("showChats".equals(action)) {
+            showChats(callbackContext, args.getBoolean(0));
+        } else if ("showReplies".equals(action)) {
+            showReplies(callbackContext);
+        } else if ("hasChats".equals(action)) {
+            hasChats(callbackContext);
         } else {
-            // Method not found.
-            return false;
+                // Method not found.
+                return false;
         }
         return true;
+    }
+
+    private final void show(final CallbackContext callbackContext) {
+        try {
+            Instabug.show();
+            callbackContext.success();
+        } catch (Exception e) {
+            callbackContext.error(e.getMessage());
+        }
+    }
+
+    private final void setBugReportingEnabled(CallbackContext callbackContext, boolean isEnabled) {
+        if (isEnabled) {
+            BugReporting.setState(Feature.State.ENABLED);
+        } else {
+            BugReporting.setState(Feature.State.DISABLED);
+        }
+        callbackContext.success();
+    }
+
+    private final void setChatsEnabled(CallbackContext callbackContext, boolean isEnabled) {
+        if (isEnabled) {
+            Chats.setState(Feature.State.ENABLED);
+        } else {
+            Chats.setState(Feature.State.DISABLED);
+        }
+        callbackContext.success();
+    }
+
+    private final void setRepliesEnabled(CallbackContext callbackContext, boolean isEnabled) {
+        if (isEnabled) {
+            Replies.setState(Feature.State.ENABLED);
+        } else {
+            Replies.setState(Feature.State.DISABLED);
+        }
+        callbackContext.success();
+    }
+
+    private final void showChats(CallbackContext callbackContext, boolean withChatsList) {
+        Chats.show(withChatsList);
+        callbackContext.success();
+    }
+
+    private final void showReplies(CallbackContext callbackContext) {
+        Replies.show();
+        callbackContext.success();
+    }
+
+    private final void hasChats(CallbackContext callbackContext) {
+        if (Replies.hasChats()) {
+            callbackContext.success();
+        }
+    }
+
+    private final void setReportTypes(CallbackContext callbackContext, JSONArray types) {
+        String[] stringArrayOfReportTypes = toStringArray(types);
+        if (stringArrayOfReportTypes.length != 0) {
+            try {
+                BugReporting.setReportTypes(Util.parseReportTypes(stringArrayOfReportTypes));
+                callbackContext.success();
+            } catch (Exception e) {
+                callbackContext.error(e.getMessage());
+            }
+        }
+    }
+    
+    private final void showBugReportingWithReportTypeAndOptions(CallbackContext callbackContext, String reportType, JSONArray options) {
+        boolean error = false;
+        if (reportType.equals("bug")) {
+            BugReporting.show(BugReporting.ReportType.BUG);
+        } else if (reportType.equals("feedback")) {
+            BugReporting.show(BugReporting.ReportType.FEEDBACK);
+        } else {
+            error = true;
+            callbackContext.error("Invalid report type " + reportType);
+        }
+        if (!error) {
+            if (options.length() > 0) {
+                setInvocationOptions(callbackContext, options);
+            } else {
+                callbackContext.success();
+            }
+        }
+        
     }
 
     /**
@@ -267,6 +374,7 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
+     * @Deprecated
      * Sets the prompt options used to invoke Instabug SDK
      *
      * @param options the prompt options values
@@ -304,6 +412,7 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
+     * @Deprecated
      * Shows the Instabug dialog so user can choose to report a bug, or submit
      * feedback. A specific mode of the SDK can be shown if specified.
      *
