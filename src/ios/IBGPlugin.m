@@ -128,14 +128,14 @@
     
     if (iMode) {
         if(invOptions) {
-            IBGBugReportingInvocationOption invocationOptions = 0;
+            IBGBugReportingOption invocationOptions = 0;
             for (NSString *invOption in invOptions) {
-                IBGBugReportingInvocationOption invocationOption = [self parseInvocationOption:invOption];
+                IBGBugReportingOption invocationOption = [self parseInvocationOption:invOption];
                 invocationOptions |= invocationOption;
             }
             [IBGBugReporting invokeWithMode:iMode options:invocationOptions];
         }
-        [IBGBugReporting invokeWithMode:iMode options:IBGBugReportingInvocationOptionNone];
+        [IBGBugReporting invokeWithMode:iMode options:IBGBugReportingOptionNone];
     } else {
         [IBGBugReporting invoke];
     }
@@ -639,15 +639,15 @@
     CDVPluginResult* result;
     
     NSArray* invOptions = [command argumentAtIndex:0];
-    IBGBugReportingInvocationOption invocationOptions = 0;
+    IBGBugReportingOption invocationOptions = 0;
     
     for (NSString *invOption in invOptions) {
-        IBGBugReportingInvocationOption invocationOption = [self parseInvocationOption:invOption];
+        IBGBugReportingOption invocationOption = [self parseInvocationOption:invOption];
         invocationOptions |= invocationOption;
     }
     
     if (invocationOptions != 0) {
-        IBGBugReporting.invocationOptions = invocationOptions;
+        IBGBugReporting.bugReportingOptions = invocationOptions;
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     } else {
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
@@ -840,7 +840,7 @@
        BOOL isEnabled = [command argumentAtIndex:0];
 
        if (isEnabled) {
-           Instabug.replyNotificationsEnabled = [[command argumentAtIndex:0] boolValue];
+           IBGReplies.inAppNotificationsEnabled = [[command argumentAtIndex:0] boolValue];
            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
        } else {
            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
@@ -906,7 +906,7 @@
     {
         CDVPluginResult* result;
 
-        NSInteger messageCount = Instabug.unreadMessagesCount;
+        NSInteger messageCount = IBGReplies.unreadRepliesCount;
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt: messageCount];
 
         [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
@@ -980,21 +980,7 @@
 - (void) setPushNotificationsEnabled:(NSString*)enabled
 {
     if ([enabled length] > 0) {
-        [Instabug setPushNotificationsEnabled:[enabled boolValue]];
-    }
-}
-
-/**
- * Convenience method for setting whether to show the
- * intro message the first time the app is opened or not.
- *
- * @param {NSString*} enabled
- *        NSString representation of boolean enabled
- */
-- (void) setIntroDialogEnabled:(NSString*)enabled
-{
-    if ([enabled length] > 0) {
-        [Instabug setIntroMessageEnabled:[enabled boolValue]];
+        [IBGReplies setPushNotificationsEnabled:[enabled boolValue]];
     }
 }
 
@@ -1253,16 +1239,18 @@
  * @param  {NSString*} option
  *         NSString shortcode for IBGBugReportingInvocationOption
  */
-- (IBGBugReportingInvocationOption) parseInvocationOption:(NSString*)option
+- (IBGBugReportingOption) parseInvocationOption:(NSString*)option
 {
     if ([option isEqualToString:@"emailFieldHidden"]) {
-        return IBGBugReportingInvocationOptionEmailFieldHidden;
+        return IBGBugReportingOptionEmailFieldHidden;
     } else if ([option isEqualToString:@"emailFieldOptional"]) {
-        return IBGBugReportingInvocationOptionEmailFieldOptional;
+        return IBGBugReportingOptionEmailFieldOptional;
     } else if ([option isEqualToString:@"commentFieldRequired"]) {
-        return IBGBugReportingInvocationOptionCommentFieldRequired;
+        return IBGBugReportingOptionCommentFieldRequired;
     } else if ([option isEqualToString:@"disablePostSendingDialog"]) {
-        return IBGBugReportingInvocationOptionDisablePostSendingDialog;
+        return IBGBugReportingOptionDisablePostSendingDialog;
+    } else return 0;
+}
     } else return 0;
 }
 

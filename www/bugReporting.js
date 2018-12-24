@@ -113,6 +113,7 @@ BugReporting.setInvocationOptions = function(options, success, error) {
 };
 
 /**
+ * @deprecated
  * Invokes the SDK manually with the default invocation mode.
  * Shows a view that asks the user whether they want to start a chat, report
  * a problem or suggest an improvement.
@@ -222,6 +223,7 @@ BugReporting.setEnabledAttachmentTypes = function(
 };
 
 /**
+ * @deprecated
  * Sets the prompt options that will be shown to a user when the SDK is invoked.
  * @param {enum} promptOptions Array of PromptOption
  * @param {function(void):void} success callback on function success
@@ -267,15 +269,6 @@ BugReporting.setExtendedBugReportMode = function(extendedBugReportMode, success,
         '" is not valid.'
     );
   }
-};
-
-/**
- * 
- * @param {function():void} success 
- * @param {function():void} error 
- */
-BugReporting.dismiss = function (success, error) {
-  exec(success, error, 'IBGPlugin', 'dismiss', []);
 };
 
 module.exports = BugReporting;

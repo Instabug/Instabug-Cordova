@@ -259,7 +259,7 @@ public class IBGPlugin extends CordovaPlugin {
         if(stringArrayOfInvocationOptions.length != 0) {
             try {
                 ArrayList<Integer> invocationOptions = parseInvocationOptions(stringArrayOfInvocationOptions);
-                BugReporting.setInvocationOptions(convertIntegers(invocationOptions));
+                BugReporting.setOptions(convertIntegers(invocationOptions));
             } catch (IllegalStateException e) {
                 callbackContext.error(errorMsg);
             }
@@ -876,7 +876,7 @@ public class IBGPlugin extends CordovaPlugin {
      */
     private void setChatNotificationEnabled(final CallbackContext callbackContext, boolean isEnabled) {
         try {
-            Instabug.setReplyNotificationEnabled(isEnabled);
+            Replies.setInAppNotificationEnabled(isEnabled);
             callbackContext.success();
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
@@ -1241,13 +1241,13 @@ public class IBGPlugin extends CordovaPlugin {
      */
     public static int parseInvocationOption(String invocationOption) {
         if ("emailFieldHidden".equals(invocationOption)) {
-            return InvocationOption.EMAIL_FIELD_HIDDEN;
+            return Option.EMAIL_FIELD_HIDDEN;
         } else if ("emailFieldOptional".equals(invocationOption)) {
-            return InvocationOption.EMAIL_FIELD_OPTIONAL;
+            return Option.EMAIL_FIELD_OPTIONAL;
         } else if ("commentFieldRequired".equals(invocationOption)) {
-            return InvocationOption.COMMENT_FIELD_REQUIRED;
+            return Option.COMMENT_FIELD_REQUIRED;
         } else if ("disablePostSendingDialog".equals(invocationOption)) {
-            return InvocationOption.DISABLE_POST_SENDING_DIALOG;
+            return Option.DISABLE_POST_SENDING_DIALOG;
         } else return -1;
     }
 
