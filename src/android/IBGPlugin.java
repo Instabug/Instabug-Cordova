@@ -17,9 +17,8 @@ import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.bug.invocation.InvocationMode;
 import com.instabug.library.invocation.OnInvokeCallback;
 import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition;
+import com.instabug.library.logging.InstabugLog;
 import com.instabug.library.model.Report;
-import com.instabug.library.invocation.InstabugInvocationMode;
-import com.instabug.library.invocation.util.InstabugVideoRecordingButtonCorner;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
 import com.instabug.library.visualusersteps.State;
 import com.instabug.survey.OnDismissCallback;
@@ -103,17 +102,8 @@ public class IBGPlugin extends CordovaPlugin {
         } else if ("invoke".equals(action)) {
             invoke(callbackContext, args);
 
-        } else if ("showIntroDialog".equals(action)) {
-            showIntroDialog(callbackContext);
-
         } else if ("setPrimaryColor".equals(action)) {
             setPrimaryColor(callbackContext, args.optString(0));
-
-        } else if ("setUserEmail".equals(action)) {
-            setUserEmail(callbackContext, args.optString(0));
-
-        } else if ("setUserName".equals(action)) {
-            setUserName(callbackContext, args.optString(0));
 
         } else if ("setUserData".equals(action)) {
             setUserData(callbackContext, args.optString(0));
@@ -126,9 +116,6 @@ public class IBGPlugin extends CordovaPlugin {
 
         } else if ("clearLog".equals(action)) {
             clearLog(callbackContext);
-
-        } else if ("changeInvocationEvent".equals(action)) {
-            changeInvocationEvent(callbackContext, args.optString(0));
 
         } else if ("setInvocationEvents".equals(action)) {
             setInvocationEvents(callbackContext, args.optJSONArray(0));
@@ -153,9 +140,6 @@ public class IBGPlugin extends CordovaPlugin {
 
         } else if ("removeUserAttribute".equals(action)) {
             removeUserAttribute(callbackContext, args.optString(0));
-
-        } else if ("setAttachmentTypesEnabled".equals(action)) {
-            setAttachmentTypesEnabled(callbackContext, args);
 
         } else if ("setPreInvocationHandler".equals(action)) {
             setPreInvocationHandler(callbackContext);
@@ -242,8 +226,6 @@ public class IBGPlugin extends CordovaPlugin {
             setEmailFieldRequiredForFeatureRequests(callbackContext, args.optBoolean(0), args.optJSONArray(1));
         } else if ("showWelcomeMessage".equals(action)) {
             showWelcomeMessage(callbackContext, args.optString(0));
-        } else if ("setCommentFieldRequired".equals(action)) {
-            setCommentFieldRequired(callbackContext, args.optBoolean(0));
         } else {
             // Method not found.
             return false;
@@ -264,16 +246,6 @@ public class IBGPlugin extends CordovaPlugin {
         }
         cordova.getActivity().startActivity(activationIntent);
 
-        callbackContext.success();
-    }
-
-    /**
-     * @deprecated since version 8.0.0.
-     * @param callbackContext
-     * @param required
-     */
-    public void setCommentFieldRequired(final CallbackContext callbackContext, boolean required) {
-        Instabug.setCommentFieldRequired(required);
         callbackContext.success();
     }
 
@@ -358,21 +330,6 @@ public class IBGPlugin extends CordovaPlugin {
             } else {
                 BugReporting.invoke();
             }
-        } catch (IllegalStateException e) {
-            callbackContext.error(errorMsg);
-        }
-    }
-
-    /**
-     * Display the discovery dialog explaining the shake gesture or the two finger
-     * swipe gesture, if you've enabled it.
-     *
-     * @param callbackContext Used when calling back into JavaScript
-     */
-    private void showIntroDialog(final CallbackContext callbackContext) {
-        try {
-            Instabug.showIntroMessage();
-            callbackContext.success();
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
         }
@@ -557,73 +514,6 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
-     * If your app already acquires the user's email address and you provide
-     * it to this method, Instabug will pre-fill the user email in reports.
-     * If your app already acquires the user's email address and you provide it to
-     * this method, Instabug will pre-fill the user email in reports.
-     *
-     * @param callbackContext Used when calling back into JavaScript
-     * @param email           User's default email
-     */
-    @Deprecated
-    private void setUserEmail(final CallbackContext callbackContext, String email) {
-        if (email != null && email.length() > 0) {
-            try {
-                Instabug.setUserEmail(email);
-                callbackContext.success();
-            } catch (IllegalStateException e) {
-                callbackContext.error(errorMsg);
-            }
-        } else
-            callbackContext.error("An email must be provided.");
-    }
-
-    /**
-     * Sets the user name that is used in the dashboard's contacts.
-     *
-     * @param callbackContext Used when calling back into JavaScript
-     * @param name            User's name
-     */
-    @Deprecated
-    private void setUserName(final CallbackContext callbackContext, String name) {
-        if (name != null && name.length() > 0) {
-            try {
-                Instabug.setUsername(name);
-                callbackContext.success();
-            } catch (IllegalStateException e) {
-                callbackContext.error(errorMsg);
-            }
-        } else
-            callbackContext.error("A name must be provided.");
-    }
-
-    /**
-     * Sets whether attachments in bug reporting and in-app messaging are enabled.
-     *
-     * @param callbackContext
-     *        Used when calling back into JavaScript
-     * @param args
-     *        arguments passed from JS side
-     */
-    private void setAttachmentTypesEnabled(final CallbackContext callbackContext, JSONArray args) {
-
-        boolean screenshot = args.optBoolean(0);
-        boolean extraScreenshot = args.optBoolean(1);
-        boolean galleryImage = args.optBoolean(2);
-        boolean screenRecording = args.optBoolean(3);
-        if (!args.isNull(0) && !args.isNull(1) && !args.isNull(2) &&
-                !args.isNull(3)) {
-            try {
-                Instabug.setAttachmentTypesEnabled(screenshot, extraScreenshot, galleryImage,
-                        screenRecording);
-                callbackContext.success();
-            } catch (IllegalStateException e) {
-                callbackContext.error(errorMsg);
-            }
-        } else callbackContext.error("A boolean value must be provided.");
-    }
-
-    /**
      * Set the user identity.
      * Instabug will pre-fill the user email in reports.
      * Set the user identity. Instabug will pre-fill the user email in reports.
@@ -729,7 +619,8 @@ public class IBGPlugin extends CordovaPlugin {
                 // we won't be able to notify the containing app when
                 // Instabug API call fails, so we check ourselves.
                 try {
-                    Instabug.setFileAttachment(uri, file.getName());
+                    
+                    Instabug.addFileAttachment(uri, file.getName());
                     callbackContext.success();
                 } catch (IllegalStateException e) {
                     callbackContext.error(errorMsg);
@@ -753,7 +644,7 @@ public class IBGPlugin extends CordovaPlugin {
     private void addLog(final CallbackContext callbackContext, String log) {
         if (log != null && log.length() > 0) {
             try {
-                Instabug.log(log);
+                InstabugLog.d(log);
                 callbackContext.success();
             } catch (IllegalStateException e) {
                 callbackContext.error(errorMsg);
@@ -769,31 +660,11 @@ public class IBGPlugin extends CordovaPlugin {
      */
     private void clearLog(final CallbackContext callbackContext) {
         try {
-            Instabug.clearLog();
+            InstabugLog.clearLogs();
             callbackContext.success();
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
         }
-    }
-
-    /**
-     * Change the event used to invoke Instabug SDK.
-     *
-     * @param callbackContext Used when calling back into JavaScript
-     * @param event           Event to be used to invoke SDK.
-     */
-    private void changeInvocationEvent(final CallbackContext callbackContext, String event) {
-        InstabugInvocationEvent iEvent = parseInvocationEvent(event);
-
-        if (iEvent != null) {
-            try {
-                Instabug.changeInvocationEvent(iEvent);
-                callbackContext.success();
-            } catch (IllegalStateException e) {
-                callbackContext.error(errorMsg);
-            }
-        } else
-            callbackContext.error("A valid event type must be provided.");
     }
 
     /**
@@ -822,8 +693,8 @@ public class IBGPlugin extends CordovaPlugin {
                             case TWO_FINGER_SWIPE_LEFT:
                                 invocationEvents.add(InstabugInvocationEvent.TWO_FINGER_SWIPE_LEFT);
                                 break;
-                            case SCREENSHOT_GESTURE:
-                                invocationEvents.add(InstabugInvocationEvent.SCREENSHOT_GESTURE);
+                            case SCREENSHOT:
+                                invocationEvents.add(InstabugInvocationEvent.SCREENSHOT);
                                 break;
                             case NONE:
                                 invocationEvents.add(InstabugInvocationEvent.NONE);
@@ -1339,7 +1210,7 @@ public class IBGPlugin extends CordovaPlugin {
         } else if ("swipe".equals(event)) {
             return InstabugInvocationEvent.TWO_FINGER_SWIPE_LEFT;
         } else if ("screenshot".equals(event)) {
-            return InstabugInvocationEvent.SCREENSHOT_GESTURE;
+            return InstabugInvocationEvent.SCREENSHOT;
         } else if ("none".equals(event)) {
             return InstabugInvocationEvent.NONE;
         } else

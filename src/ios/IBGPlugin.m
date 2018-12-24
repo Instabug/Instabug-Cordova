@@ -175,19 +175,6 @@
 }
 
 /**
- * Presents a quick tip UI educating the user on how to invoke SDK
- * with the currently set invocation event
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) showIntroDialog:(CDVInvokedUrlCommand*)command
-{
-    [Instabug showIntroMessage];
-    [self sendSuccessResult:command];
-}
-
-/**
  * Sets the primary color of the SDK user interface, mostly
  * indicating interactivity or call to action.
  *
@@ -224,53 +211,6 @@
     } else {
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
                                    messageAsString:@"A hex color must be provided."];
-    }
-
-    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
-}
-
-/**
- * Sets the default value of the email field and hides the
- * email field from the reporting UI.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) setUserEmail:(CDVInvokedUrlCommand*)command
-{
-    CDVPluginResult* result;
-
-    NSString* email = [command argumentAtIndex:0];
-
-    if ([email length] > 0) {
-        [Instabug setUserEmail:email];
-        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-    } else {
-        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                   messageAsString:@"An email must be provided."];
-    }
-
-    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
-}
-
-/**
- * Sets the user name that is used in the dashboard’s contacts.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) setUserName:(CDVInvokedUrlCommand*)command
-{
-    CDVPluginResult* result;
-
-    NSString* name = [command argumentAtIndex:0];
-
-    if ([name length] > 0) {
-        [Instabug setUserName:name];
-        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-    } else {
-        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                   messageAsString:@"A name must be provided."];
     }
 
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
@@ -811,67 +751,6 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
--(void) setCommentFieldRequired:(CDVInvokedUrlCommand*)command
-{
-    CDVPluginResult* result;
-    
-    BOOL isRequired = [command argumentAtIndex:0];
-    
-    if (isRequired) {
-        [Instabug setCommentFieldRequired:[[command argumentAtIndex:0] boolValue]];
-        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-    } else {
-        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                   messageAsString:@"A boolean value must be provided."];
-    }
-    
-    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
-}
-
-/**
- * Convenience method for setting whether the email
- * field is validated or not.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) setEmailFieldRequired:(NSString*)required
-{
-    if ([required length] > 0) {
-        [Instabug setEmailFieldRequired:[required boolValue]];
-    }
-}
-
-/**
- * Convenience method for setting whether the comment
- * field is validated or not.
- *
- * @param {NSString*} required
- *        NSString representation of boolean required
- */
-- (void) setCommentRequired:(NSString*)required
-{
-    if ([required length] > 0) {
-        [Instabug setCommentFieldRequired:true];
-    }
-}
-
-
-/**
- * Convenience method for setting the default SDK
- * mode upon invocation.
- *
- * @param {NSString*} mode
- *        NSString shortcode of IBGInvocationmode
- */
-- (void) setDefaultInvocationMode:(NSString*)mode {
-    IBGInvocationMode iMode = [self parseInvocationMode:mode];
-
-    if (iMode) {
-        [Instabug setDefaultInvocationMode:iMode];
-    }
-}
-
 /**
  * Enable/Disable view hierarchy from Instabug SDK
  *
@@ -1316,16 +1195,12 @@
  */
 - (void) applyOptions:(NSDictionary*)options
 {
-    [self setEmailFieldRequired:[[options objectForKey:@"emailRequired"] stringValue]];
-    [self setCommentRequired:[[options objectForKey:@"commentRequired"] stringValue]];
-    [self setDefaultInvocationMode:[options objectForKey:@"defaultInvocationMode"]];
     [self setShakingThresholdForIPhone:[options objectForKey:@"shakingThresholdIPhone"]
                                forIPad:[options objectForKey:@"shakingThresholdIPad"]];
     [self setFloatingButtonEdge:[options objectForKey:@"floatingButtonEdge"]
                      withOffset:[options objectForKey:@"floatingButtonOffset"]];
     [self setTrackingUserStepsEnabled:[[options objectForKey:@"enableTrackingUserSteps"] stringValue]];
     [self setPushNotificationsEnabled:[[options objectForKey:@"enablePushNotifications"] stringValue]];
-    [self setIntroDialogEnabled:[[options objectForKey:@"enableIntroDialog"] stringValue]];
     [self setSessionProfilerEnabled:[[options objectForKey:@"enableSessionProfiler"] stringValue]];
     [self setColorTheme:[options objectForKey:@"colorTheme"]];
     [self setWelcomeMessageMode:[options objectForKey:@"welcomeMessageMode"]];

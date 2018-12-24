@@ -6,13 +6,7 @@
 
 - (void) invoke:(CDVInvokedUrlCommand*)command;
 
-- (void) showIntroDialog:(CDVInvokedUrlCommand*)command;
-
 - (void) setPrimaryColor:(CDVInvokedUrlCommand*)command;
-
-- (void) setUserEmail:(CDVInvokedUrlCommand*)command;
-
-- (void) setUserName:(CDVInvokedUrlCommand*)command;
 
 - (void) setUserData:(CDVInvokedUrlCommand*)command;
 
