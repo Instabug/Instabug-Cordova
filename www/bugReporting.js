@@ -75,6 +75,13 @@ var getExtendedBugReportMode = function() {
   };
 };
 
+var getReportType = function() {
+  return {
+    bug: 'bug',
+    feedback: 'feedback'
+  };
+};
+
 /**
  * BugReporting module
  * @exports BugReporting
@@ -86,6 +93,55 @@ BugReporting.invocationOptions = getInvocationOptions();
 BugReporting.invocationModes = getInvocationModes();
 BugReporting.promptOptions = getPromptOptions();
 BugReporting.extendedBugReportMode = getExtendedBugReportMode();
+BugReporting.reportType = getReportType();
+
+/**
+ * Enables or disables all bug reporting functionalities.
+ * @param {boolean} isEnabled
+ * @param {function(void):void} success callback on function success
+ * @param {function(void):void} error callback on function error
+ */
+BugReporting.setEnabled = function(isEnabled, success, error) {
+  exec(success, error, 'IBGPlugin', 'setBugReportingEnabled', [isEnabled]);
+};
+
+/**
+ * Sets report type either bug, feedback or both.
+ * @param {enum} reportType Array of reportType
+ * @param {function(void):void} success callback on function success
+ * @param {function(void):void} error callback on function error
+ */
+BugReporting.setReportTypes = function(reportTypes, success, error) {
+  var validatedTypes = [];
+  for (let i = 0; i < reportTypes.length; i++) {
+    var validatedType = getReportType()[reportTypes[i]];
+    if (validatedType) {
+      validatedTypes.push(validatedType);
+    }
+  }
+  if (validatedTypes !== undefined || validatedTypes.length != 0) {
+    exec(success, error, 'IBGPlugin', 'setReportTypes', [reportTypes]);
+  }
+};
+
+/**
+ * Shows report view with specified options.
+ * @param {enum} reportType reportType
+ * @param {array} options array of Invocation options
+ * @param {function(void):void} success callback on function success
+ * @param {function(void):void} error callback on function error
+ */
+BugReporting.showWithOptions = function(reportType, options, success, error) {
+  if (reportType && options) {
+    exec(
+      success,
+      error,
+      'IBGPlugin',
+      'showBugReportingWithReportTypeAndOptions',
+      [reportType, options]
+    );
+  }
+};
 
 /**
  * Sets the invocation options.
@@ -104,10 +160,14 @@ BugReporting.setInvocationOptions = function(options, success, error) {
     }
   }
   if (validatedOptions !== undefined || validatedOptions.length != 0) {
-    exec(success, error, 'IBGPlugin', 'setInvocationOptions', [validatedOptions]);
+    exec(success, error, 'IBGPlugin', 'setInvocationOptions', [
+      validatedOptions
+    ]);
   } else {
     console.log(
-      'Could not change invocation option - "' + validatedOptions + '" is empty.'
+      'Could not change invocation option - "' +
+        validatedOptions +
+        '" is empty.'
     );
   }
 };
@@ -134,13 +194,18 @@ BugReporting.invoke = function(mode, invocationOptions, success, error) {
   }
   if (validatedMode) {
     if (validatedOptions.length != 0) {
-      exec(success, error, 'IBGPlugin', 'invoke', [validatedMode, validatedOptions]);
+      exec(success, error, 'IBGPlugin', 'invoke', [
+        validatedMode,
+        validatedOptions
+      ]);
     } else {
       exec(success, error, 'IBGPlugin', 'invoke', [validatedMode]);
     }
   } else {
     exec(success, error, 'IBGPlugin', 'invoke', []);
-    console.log('Could not apply mode to invocation - "' + mode + '" is not valid.');
+    console.log(
+      'Could not apply mode to invocation - "' + mode + '" is not valid.'
+    );
   }
 };
 
@@ -193,7 +258,9 @@ BugReporting.setInvocationEvents = function(events, success, error) {
   if (validatedEvents !== undefined || validatedEvents.length != 0) {
     exec(success, error, 'IBGPlugin', 'setInvocationEvents', [validatedEvents]);
   } else {
-    console.log('Could not change invocation event - "' + event + '" is not valid.');
+    console.log(
+      'Could not change invocation event - "' + event + '" is not valid.'
+    );
   }
 };
 
@@ -238,25 +305,36 @@ BugReporting.setPromptOptions = function(promptOptions, success, error) {
       validatedPromptOptions.push(validatedPromptOption);
     }
   }
-  if (validatedPromptOptions !== undefined || validatedPromptOptions.length != 0) {
+  if (
+    validatedPromptOptions !== undefined ||
+    validatedPromptOptions.length != 0
+  ) {
     exec(success, error, 'IBGPlugin', 'setPromptOptionsEnabled', [
       validatedPromptOptions
     ]);
   } else {
     console.log(
-      'Could not change prompt option - "' + validatedPromptOption + '" is not valid.'
+      'Could not change prompt option - "' +
+        validatedPromptOption +
+        '" is not valid.'
     );
   }
 };
 
 /**
- * 
+ *
  * @param {enum} extendedBugReportMode ExtendedBugReportMode
  * @param {function} success callback on function success
- * @param {function(string):void} error callback on function error 
+ * @param {function(string):void} error callback on function error
  */
-BugReporting.setExtendedBugReportMode = function(extendedBugReportMode, success, error) {
-  var validatedExtendedBugReportMode = getExtendedBugReportMode()[extendedBugReportMode];
+BugReporting.setExtendedBugReportMode = function(
+  extendedBugReportMode,
+  success,
+  error
+) {
+  var validatedExtendedBugReportMode = getExtendedBugReportMode()[
+    extendedBugReportMode
+  ];
 
   if (validatedExtendedBugReportMode) {
     exec(success, error, 'IBGPlugin', 'setExtendedBugReportMode', [

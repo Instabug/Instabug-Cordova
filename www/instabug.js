@@ -62,6 +62,10 @@ Instabug.activate = function (token, event, options, success, error) {
     }
 };
 
+Instabug.show = function (success, error) {
+    exec(success, error, 'IBGPlugin', 'show');
+}
+
 Instabug.startWithToken = function (token, events, options, success, error) {
   var i;
   var validatedEvents = [];

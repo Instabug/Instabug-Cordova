@@ -37,6 +37,12 @@
     <js-module src="www/surveys.js" name="Surveys">
         <clobbers target="cordova.plugins.surveys"/>
     </js-module>
+    <js-module src="www/chats.js" name="Chats">
+        <clobbers target="cordova.plugins.chats"/>
+    </js-module>
+    <js-module src="www/replies.js" name="Replies">
+        <clobbers target="cordova.plugins.replies"/>
+    </js-module>
 
     <!-- android -->
     <platform name="android">
