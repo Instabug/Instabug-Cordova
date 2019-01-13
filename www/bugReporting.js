@@ -25,7 +25,7 @@ var getInvocationEvents = function() {
  * @readonly
  * @enum {string} InvocationOption
  */
-var getInvocationOptions = function() {
+var getOptions = function() {
   return {
     emailFieldHidden: 'emailFieldHidden',
     emailFieldOptional: 'emailFieldOptional',
@@ -89,8 +89,15 @@ var getReportType = function() {
 var BugReporting = function() {};
 
 BugReporting.invocationEvents = getInvocationEvents();
-BugReporting.invocationOptions = getInvocationOptions();
+/**
+ * @deprecated
+ */
+BugReporting.invocationOptions = getOptions();
+BugReporting.option = getOptions();
 BugReporting.invocationModes = getInvocationModes();
+/**
+ * @deprecated
+ */
 BugReporting.promptOptions = getPromptOptions();
 BugReporting.extendedBugReportMode = getExtendedBugReportMode();
 BugReporting.reportType = getReportType();
@@ -144,9 +151,10 @@ BugReporting.showWithOptions = function(reportType, options, success, error) {
 };
 
 /**
+ * @deprecated use {@link BugReporting.setOptions}
  * Sets the invocation options.
  * Default is set by `Instabug.startWithToken`.
- * @param {enum} invocationOptions Array of InvocationOption
+ * @param {enum} options Array of Option
  * @param {function(void):void} success callback on function success
  * @param {function(void):void} error callback on function error
  */
@@ -154,7 +162,7 @@ BugReporting.setInvocationOptions = function(options, success, error) {
   var i;
   var validatedOptions = [];
   for (i = 0; i < options.length; i++) {
-    var validatedOption = getInvocationOptions()[options[i]];
+    var validatedOption = getOptions()[options[i]];
     if (validatedOption) {
       validatedOptions.push(validatedOption);
     }
@@ -171,6 +179,17 @@ BugReporting.setInvocationOptions = function(options, success, error) {
     );
   }
 };
+
+/**
+ * Sets the invocation options.
+ * Default is set by `Instabug.startWithToken`.
+ * @param {enum} options Array of Option
+ * @param {function(void):void} success callback on function success
+ * @param {function(void):void} error callback on function error
+ */
+BugReporting.setOptions = function(options, success, error) {
+  BugReporting.setInvocationOptions(options, success, error);
+}
 
 /**
  * @deprecated
