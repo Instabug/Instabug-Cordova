@@ -249,6 +249,8 @@ public class IBGPlugin extends CordovaPlugin {
             showReplies(callbackContext);
         } else if ("hasChats".equals(action)) {
             hasChats(callbackContext);
+        } else if ("getUnreadRepliesCount".equals(action)) {
+            getUnreadRepliesCount(callbackContext);
         } else {
                 // Method not found.
                 return false;
@@ -263,6 +265,10 @@ public class IBGPlugin extends CordovaPlugin {
         } catch (Exception e) {
             callbackContext.error(e.getMessage());
         }
+    }
+
+    private void getUnreadRepliesCount(CallbackContext callbackContext) {
+        callbackContext.success(Replies.getUnreadRepliesCount());
     }
 
     private final void setBugReportingEnabled(CallbackContext callbackContext, boolean isEnabled) {

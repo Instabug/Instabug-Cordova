@@ -1047,7 +1047,7 @@
     * @param {CDVInvokedUrlCommand*} command
     *        The command sent from JavaScript
     */
-    - (void) getUnreadMessagesCount:(CDVInvokedUrlCommand*)command
+    - (void) getUnreadRepliesCount:(CDVInvokedUrlCommand*)command
     {
         CDVPluginResult* result;
 

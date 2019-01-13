@@ -39,4 +39,25 @@ Replies.hasChats = function(success, error) {
     exec(success, error, 'IBGPlugin', 'hasChats');
 }
 
+/**
+ * Returns the number of unread replies for the user.
+ * @param {function(void):void} success callback on function success
+ * @param {function(void):void} error callback on function error
+ */
+Replies.getUnreadRepliesCount = function(success, error) {
+    exec(success, error, 'IBGPlugin', 'getUnreadRepliesCount');
+}
+
+/**
+ * Enables in app notifications for any new reply received.
+ * @param {boolean} isEnabled
+ * @param {function(void):void} success callback on function success
+ * @param {function(void):void} error callback on function error
+ */
+Replies.setInAppNotificationEnabled = function (isEnabled, success, error) {
+    exec(success, error, 'IBGPlugin', 'setChatNotificationEnabled', [isEnabled]);
+};
+
+
+
 module.exports = Replies;
