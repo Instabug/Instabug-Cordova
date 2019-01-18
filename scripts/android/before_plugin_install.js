@@ -36,20 +36,20 @@ const getAndroidVersion = () => {
   }
 };
 
-const isAndroid7 = version => {
+const isLessThanAndroid7 = version => {
   if (version) {
     const major = parseInt(version.split('.')[0]);
-    return major >= 7;
+    return major < 7;
   }
 };
 
 module.exports = function(ctx) {
   if (ibgBuildGradleExists) {
     let buildGradle = readIbgBuildGradle();
-    if (isAndroid7(getAndroidVersion())) {
+    if (isLessThanAndroid7(getAndroidVersion())) {
       buildGradle = buildGradle.replace(
-        "manifest.srcFile 'AndroidManifest.xml'",
-        "manifest.srcFile 'src/main/AndroidManifest.xml'"
+        "manifest.srcFile 'src/main/AndroidManifest.xml'",
+        "manifest.srcFile 'AndroidManifest.xml'"
       );
       writeIbgBuildGradle(buildGradle);
     }
