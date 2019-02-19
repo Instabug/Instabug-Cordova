@@ -33,7 +33,7 @@ sourceSets {
         }
     }
 ```
-2. You need to add your app token in the __MyApplication__ class, by replacing ```YOUR_ANDROID_TOKEN```. (You can find this class under this path  ```YourProjectName/plugins/com.instabug.cordova.plugin/src/android/MyApplication.java```)
+2. You need to add your app token in the __MyApplication__ class, by replacing ```YOUR_ANDROID_TOKEN```. (You can find this class under this path  ```YourProjectName/platforms/android/app/src/main/java/com.instabug.cordova.plugin/src/android/MyApplication.java```)
 
 3. You can change the invocation event by changing this line ```InstabugInvocationEvent.SHAKE``` in the __MyApplication__ class to any of the following:
 
