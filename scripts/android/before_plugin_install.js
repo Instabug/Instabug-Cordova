@@ -54,6 +54,6 @@ module.exports = function(ctx) {
       );
       writeIbgBuildGradle(buildGradle);
     }
-    return editManist(ctx);
+    return editManist(ctx, true);
   }
 };
