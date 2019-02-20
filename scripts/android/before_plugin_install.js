@@ -1,5 +1,6 @@
 var fs = require('fs');
 var path = require('path');
+const editManist = require('./edit_manifest');
 
 const ibgBuildGradleExists = () => {
   var target = path.join('plugins', 'instabug-cordova', 'build.gradle');
@@ -53,5 +54,6 @@ module.exports = function(ctx) {
       );
       writeIbgBuildGradle(buildGradle);
     }
+    return editManist(ctx, true);
   }
 };
