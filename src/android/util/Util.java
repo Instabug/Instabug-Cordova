@@ -3,6 +3,8 @@ package com.instabug.cordova.plugin.util;
 
 import com.instabug.bug.BugReporting;
 
+import java.lang.reflect.Method;
+
 public class Util {
 
     public static int[] parseReportTypes(String[] stringTypeArray) throws Exception{
@@ -19,5 +21,26 @@ public class Util {
         }
 
         return parsedArray;
+    }
+
+    public static Method getMethod(Class clazz, String methodName, Class... parameterType) {
+        final Method[] methods = clazz.getDeclaredMethods();
+
+        for (Method method : methods) {
+            if (method.getName().equals(methodName) && method.getParameterTypes().length ==
+                    parameterType.length) {
+                for (int i = 0; i < 2; i++) {
+                    if (method.getParameterTypes()[i] == parameterType[i]) {
+                        if (i == method.getParameterTypes().length - 1) {
+                            method.setAccessible(true);
+                            return method;
+                        }
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        return null;
     }
 }
