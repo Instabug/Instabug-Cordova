@@ -6,7 +6,6 @@ import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
 import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.invocation.InstabugInvocationEvent;
-import com.instabug.library.invocation.InstabugInvocationMode;
 import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
 
@@ -36,44 +35,6 @@ public class IBGPluginActivity extends CordovaActivity
         }
         // Finish activity (required for no-display theme)
         IBGPluginActivity.this.finish();
-    }
-
-    /**
-     * Convenience method for parsing and setting
-     * whether the email field is required.
-     *
-     * @param required
-     *        String representation of boolean required
-     */
-    private void setEmailFieldRequired(String required) {
-        if (required != null && required.length() > 0) {
-            Instabug.setEmailFieldRequired(Boolean.parseBoolean(required));
-        }
-    }
-
-    /**
-     * Convenience method for parsing and setting
-     * whether the comment field is required.
-     *
-     * @param required
-     *        String representation of boolean required
-     */
-    private void setCommentFieldRequired(String required) {
-        if (required != null && required.length() > 0) {
-            Instabug.setCommentFieldRequired(Boolean.parseBoolean(required));
-        }
-    }
-
-    /**
-     * Convenience method for parsing and setting the
-     * shaking threshold.
-     * @param threshold
-     *        String representation of int threshold
-     */
-    private void setShakingThreshold(String threshold) {
-        if (threshold != null && threshold.length() > 0) {
-            Instabug.setShakingThreshold(Integer.parseInt(threshold));
-        }
     }
 
     /**
@@ -172,20 +133,6 @@ public class IBGPluginActivity extends CordovaActivity
 
     /**
      * Convenience method for parsing and setting
-     * whether conversion sounds should be enabled
-     * by the SDK.
-     *
-     * @param enabled
-     *        String representation of boolean enabled
-     */
-    private void setConversationSoundsEnabled(String enabled) {
-        if (enabled != null && enabled.length() > 0) {
-            Instabug.setShouldPlayConversationSounds(Boolean.parseBoolean(enabled));
-        }
-    }
-
-    /**
-     * Convenience method for parsing and setting
      * whether push notifications should be enabled
      * by the SDK.
      *
@@ -194,20 +141,6 @@ public class IBGPluginActivity extends CordovaActivity
      */
     private void setPushNotificationsEnabled(String enabled) {
 
-    }
-
-     /**
-     * Convenience method for parsing and setting
-     * whether the intro dialog should be shown the
-     * first time the app is opened.
-     *
-     * @param enabled
-     *        String representation of boolean enabled
-     */
-    private void setIntroDialogEnabled(String enabled) {
-        if (enabled != null && enabled.length() > 0) {
-            Instabug.setIntroMessageEnabled(Boolean.parseBoolean(enabled));
-        }
     }
 
     /**
@@ -282,9 +215,6 @@ public class IBGPluginActivity extends CordovaActivity
      *        JSONObject representation of options
      */
     private void setBuilderOptions(Bundle opts) {
-        setEmailFieldRequired(opts.getString("emailRequired"));
-        setCommentFieldRequired(opts.getString("commentRequired"));
-        setShakingThreshold(opts.getString("shakingThresholdAndroid"));
         setFloatingButtonEdge(opts.getString("floatingButtonEdge"));
         setFloatingButtonOffset(opts.getString("floatingButtonOffset"));
         setConsoleLogsEnabled(opts.getString("enableConsoleLogs"));
@@ -292,9 +222,7 @@ public class IBGPluginActivity extends CordovaActivity
         setTrackingUserStepsEnabled(opts.getString("enableTrackingUserSteps"));
         setCrashReportingEnabled(opts.getString("enableCrashReporting"));
         setInAppMessagingEnabled(opts.getString("enableInAppMessaging"));
-        setConversationSoundsEnabled(opts.getString("enableConversationSounds"));
         setPushNotificationsEnabled(opts.getString("enablePushNotifications"));
-        setIntroDialogEnabled(opts.getString("enableIntroDialog"));
         setUserDataEnabled(opts.getString("enableUserData"));
         setColorTheme(opts.getString("colorTheme"));
         setSessionProfilerEnabled(opts.getString("enableSessionProfiler"));
