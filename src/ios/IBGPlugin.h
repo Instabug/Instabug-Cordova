@@ -36,4 +36,6 @@
 
 - (void) showReplies:(CDVInvokedUrlCommand*)command;
 
+- (void) identifyUserWithEmail:(CDVInvokedUrlCommand*)command;
+
 @end

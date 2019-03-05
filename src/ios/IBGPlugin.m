@@ -116,6 +116,13 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
+- (void) identifyUserWithEmail:(CDVInvokedUrlCommand*)command {
+    NSString *email = [command argumentAtIndex:0];
+    NSString *name = [command argumentAtIndex:1];
+    [Instabug identifyUserWithEmail:email name:name];
+    [self sendSuccessResult:command];
+}
+
 /**
  * Shows the Instabug dialog so user can choose to report a bug, or
  * submit feedback. A specific mode of the SDK can be shown if specified.
