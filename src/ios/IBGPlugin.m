@@ -43,7 +43,8 @@
                                            messageAsString:@"An invocation event must be provided."];
             } else {
                 // Initialize Instabug
-                [Instabug startWithToken:token invocationEvent:invocationEvent];
+                [Instabug startWithToken:token invocationEvents:invocationEvent];
+                [self setBaseUrlForDeprecationLogs];
 
                 // Apply provided options
                 [self applyOptions:[command argumentAtIndex:2]];
@@ -94,6 +95,7 @@
             } else {
                 // Initialize Instabug
                 [Instabug startWithToken:token invocationEvents:invocationEvents];
+                [self setBaseUrlForDeprecationLogs];
 
                 // Apply provided options
                 [self applyOptions:[command argumentAtIndex:2]];
@@ -537,7 +539,8 @@
             // If the file doesn't exist at the path specified,
             // we won't be able to notify the containing app when
             // Instabug API call fails, so we check ourselves.
-            [Instabug setFileAttachment:filePath];
+            NSURL* url = [NSURL URLWithString:filePath];
+            [Instabug addFileAttachmentWithURL:url];
             result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
         } else {
             result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
@@ -773,8 +776,7 @@
  *        The command sent from JavaScript
  */
 - (void) showChats:(CDVInvokedUrlCommand*)command {
-    BOOL withChatsList = [[command argumentAtIndex:0] boolValue];
-    [IBGChats showWithChatsList:withChatsList];
+    [IBGChats show];
     [self sendSuccessResult:command];
 }
 
@@ -1655,6 +1657,19 @@
     [self.commandDelegate
      sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK]
      callbackId:[command callbackId]];
+}
+
+- (void) setBaseUrlForDeprecationLogs {
+    SEL setCurrentPlatformSEL = NSSelectorFromString(@"setCurrentPlatform:");
+    if([[Instabug class] respondsToSelector:setCurrentPlatformSEL]) {
+        NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[[Instabug class] methodSignatureForSelector:setCurrentPlatformSEL]];
+        [inv setSelector:setCurrentPlatformSEL];
+        [inv setTarget:[Instabug class]];
+        IBGPlatform platform = IBGPlatformCordova;
+        [inv setArgument:&(platform) atIndex:2];
+        
+        [inv invoke];
+    }
 }
 
 @end

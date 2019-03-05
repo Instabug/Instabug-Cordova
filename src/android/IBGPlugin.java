@@ -43,6 +43,8 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.lang.Integer;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -244,7 +246,7 @@ public class IBGPlugin extends CordovaPlugin {
         } else if ("setRepliesEnabled".equals(action)) {
             setRepliesEnabled(callbackContext, args.getBoolean(0));
         } else if ("showChats".equals(action)) {
-            showChats(callbackContext, args.getBoolean(0));
+            showChats(callbackContext);
         } else if ("showReplies".equals(action)) {
             showReplies(callbackContext);
         } else if ("hasChats".equals(action)) {
@@ -298,8 +300,8 @@ public class IBGPlugin extends CordovaPlugin {
         callbackContext.success();
     }
 
-    private final void showChats(CallbackContext callbackContext, boolean withChatsList) {
-        Chats.show(withChatsList);
+    private final void showChats(CallbackContext callbackContext) {
+        Chats.show();
         callbackContext.success();
     }
 
@@ -356,6 +358,18 @@ public class IBGPlugin extends CordovaPlugin {
         if (options != null) {
             // Attach extras
             applyOptions();
+        }
+        try {
+            Method method = Util.getMethod(Class.forName("com.instabug.library.util.InstabugDeprecationLogger"), "setBaseUrl", String.class);
+            if (method != null) {
+                method.invoke(null, "https://docs.instabug.com/docs/cordova-sdk-migration-guide");
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
         }
         cordova.getActivity().startActivity(activationIntent);
 

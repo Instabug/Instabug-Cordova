@@ -27,8 +27,8 @@ Chats.setEnabled = function(isEnabled, success, error) {
  * @param {function(void):void} success callback on function success
  * @param {function(void):void} error callback on function error
  */
-Chats.show = function(withChatsList, success, error) {
-    exec(success, error, 'IBGPlugin', 'showChats', [withChatsList]);
+Chats.show = function(success, error) {
+    exec(success, error, 'IBGPlugin', 'showChats');
 }
 
 module.exports = Chats;
