@@ -25,7 +25,7 @@ var getInvocationEvents = function() {
  * @readonly
  * @enum {string} InvocationOption
  */
-var getInvocationOptions = function() {
+var getOptions = function() {
   return {
     emailFieldHidden: 'emailFieldHidden',
     emailFieldOptional: 'emailFieldOptional',
@@ -75,6 +75,13 @@ var getExtendedBugReportMode = function() {
   };
 };
 
+var getReportType = function() {
+  return {
+    bug: 'bug',
+    feedback: 'feedback'
+  };
+};
+
 /**
  * BugReporting module
  * @exports BugReporting
@@ -82,15 +89,72 @@ var getExtendedBugReportMode = function() {
 var BugReporting = function() {};
 
 BugReporting.invocationEvents = getInvocationEvents();
-BugReporting.invocationOptions = getInvocationOptions();
+/**
+ * @deprecated
+ */
+BugReporting.invocationOptions = getOptions();
+BugReporting.option = getOptions();
 BugReporting.invocationModes = getInvocationModes();
+/**
+ * @deprecated
+ */
 BugReporting.promptOptions = getPromptOptions();
 BugReporting.extendedBugReportMode = getExtendedBugReportMode();
+BugReporting.reportType = getReportType();
 
 /**
+ * Enables or disables all bug reporting functionalities.
+ * @param {boolean} isEnabled
+ * @param {function(void):void} success callback on function success
+ * @param {function(void):void} error callback on function error
+ */
+BugReporting.setEnabled = function(isEnabled, success, error) {
+  exec(success, error, 'IBGPlugin', 'setBugReportingEnabled', [isEnabled]);
+};
+
+/**
+ * Sets report type either bug, feedback or both.
+ * @param {enum} reportType Array of reportType
+ * @param {function(void):void} success callback on function success
+ * @param {function(void):void} error callback on function error
+ */
+BugReporting.setReportTypes = function(reportTypes, success, error) {
+  var validatedTypes = [];
+  for (let i = 0; i < reportTypes.length; i++) {
+    var validatedType = getReportType()[reportTypes[i]];
+    if (validatedType) {
+      validatedTypes.push(validatedType);
+    }
+  }
+  if (validatedTypes !== undefined || validatedTypes.length != 0) {
+    exec(success, error, 'IBGPlugin', 'setReportTypes', [reportTypes]);
+  }
+};
+
+/**
+ * Shows report view with specified options.
+ * @param {enum} reportType reportType
+ * @param {array} options array of Invocation options
+ * @param {function(void):void} success callback on function success
+ * @param {function(void):void} error callback on function error
+ */
+BugReporting.showWithOptions = function(reportType, options, success, error) {
+  if (reportType && options) {
+    exec(
+      success,
+      error,
+      'IBGPlugin',
+      'showBugReportingWithReportTypeAndOptions',
+      [reportType, options]
+    );
+  }
+};
+
+/**
+ * @deprecated use {@link BugReporting.setOptions}
  * Sets the invocation options.
  * Default is set by `Instabug.startWithToken`.
- * @param {enum} invocationOptions Array of InvocationOption
+ * @param {enum} options Array of Option
  * @param {function(void):void} success callback on function success
  * @param {function(void):void} error callback on function error
  */
@@ -98,21 +162,37 @@ BugReporting.setInvocationOptions = function(options, success, error) {
   var i;
   var validatedOptions = [];
   for (i = 0; i < options.length; i++) {
-    var validatedOption = getInvocationOptions()[options[i]];
+    var validatedOption = getOptions()[options[i]];
     if (validatedOption) {
       validatedOptions.push(validatedOption);
     }
   }
   if (validatedOptions !== undefined || validatedOptions.length != 0) {
-    exec(success, error, 'IBGPlugin', 'setInvocationOptions', [validatedOptions]);
+    exec(success, error, 'IBGPlugin', 'setInvocationOptions', [
+      validatedOptions
+    ]);
   } else {
     console.log(
-      'Could not change invocation option - "' + validatedOptions + '" is empty.'
+      'Could not change invocation option - "' +
+        validatedOptions +
+        '" is empty.'
     );
   }
 };
 
 /**
+ * Sets the invocation options.
+ * Default is set by `Instabug.startWithToken`.
+ * @param {enum} options Array of Option
+ * @param {function(void):void} success callback on function success
+ * @param {function(void):void} error callback on function error
+ */
+BugReporting.setOptions = function(options, success, error) {
+  BugReporting.setInvocationOptions(options, success, error);
+}
+
+/**
+ * @deprecated
  * Invokes the SDK manually with the default invocation mode.
  * Shows a view that asks the user whether they want to start a chat, report
  * a problem or suggest an improvement.
@@ -133,13 +213,18 @@ BugReporting.invoke = function(mode, invocationOptions, success, error) {
   }
   if (validatedMode) {
     if (validatedOptions.length != 0) {
-      exec(success, error, 'IBGPlugin', 'invoke', [validatedMode, validatedOptions]);
+      exec(success, error, 'IBGPlugin', 'invoke', [
+        validatedMode,
+        validatedOptions
+      ]);
     } else {
       exec(success, error, 'IBGPlugin', 'invoke', [validatedMode]);
     }
   } else {
     exec(success, error, 'IBGPlugin', 'invoke', []);
-    console.log('Could not apply mode to invocation - "' + mode + '" is not valid.');
+    console.log(
+      'Could not apply mode to invocation - "' + mode + '" is not valid.'
+    );
   }
 };
 
@@ -192,7 +277,9 @@ BugReporting.setInvocationEvents = function(events, success, error) {
   if (validatedEvents !== undefined || validatedEvents.length != 0) {
     exec(success, error, 'IBGPlugin', 'setInvocationEvents', [validatedEvents]);
   } else {
-    console.log('Could not change invocation event - "' + event + '" is not valid.');
+    console.log(
+      'Could not change invocation event - "' + event + '" is not valid.'
+    );
   }
 };
 
@@ -222,6 +309,7 @@ BugReporting.setEnabledAttachmentTypes = function(
 };
 
 /**
+ * @deprecated
  * Sets the prompt options that will be shown to a user when the SDK is invoked.
  * @param {enum} promptOptions Array of PromptOption
  * @param {function(void):void} success callback on function success
@@ -236,25 +324,36 @@ BugReporting.setPromptOptions = function(promptOptions, success, error) {
       validatedPromptOptions.push(validatedPromptOption);
     }
   }
-  if (validatedPromptOptions !== undefined || validatedPromptOptions.length != 0) {
+  if (
+    validatedPromptOptions !== undefined ||
+    validatedPromptOptions.length != 0
+  ) {
     exec(success, error, 'IBGPlugin', 'setPromptOptionsEnabled', [
       validatedPromptOptions
     ]);
   } else {
     console.log(
-      'Could not change prompt option - "' + validatedPromptOption + '" is not valid.'
+      'Could not change prompt option - "' +
+        validatedPromptOption +
+        '" is not valid.'
     );
   }
 };
 
 /**
- * 
+ *
  * @param {enum} extendedBugReportMode ExtendedBugReportMode
  * @param {function} success callback on function success
- * @param {function(string):void} error callback on function error 
+ * @param {function(string):void} error callback on function error
  */
-BugReporting.setExtendedBugReportMode = function(extendedBugReportMode, success, error) {
-  var validatedExtendedBugReportMode = getExtendedBugReportMode()[extendedBugReportMode];
+BugReporting.setExtendedBugReportMode = function(
+  extendedBugReportMode,
+  success,
+  error
+) {
+  var validatedExtendedBugReportMode = getExtendedBugReportMode()[
+    extendedBugReportMode
+  ];
 
   if (validatedExtendedBugReportMode) {
     exec(success, error, 'IBGPlugin', 'setExtendedBugReportMode', [
@@ -267,15 +366,6 @@ BugReporting.setExtendedBugReportMode = function(extendedBugReportMode, success,
         '" is not valid.'
     );
   }
-};
-
-/**
- * 
- * @param {function():void} success 
- * @param {function():void} error 
- */
-BugReporting.dismiss = function (success, error) {
-  exec(success, error, 'IBGPlugin', 'dismiss', []);
 };
 
 module.exports = BugReporting;

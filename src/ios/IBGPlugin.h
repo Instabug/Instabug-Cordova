@@ -6,13 +6,7 @@
 
 - (void) invoke:(CDVInvokedUrlCommand*)command;
 
-- (void) showIntroDialog:(CDVInvokedUrlCommand*)command;
-
 - (void) setPrimaryColor:(CDVInvokedUrlCommand*)command;
-
-- (void) setUserEmail:(CDVInvokedUrlCommand*)command;
-
-- (void) setUserName:(CDVInvokedUrlCommand*)command;
 
 - (void) setUserData:(CDVInvokedUrlCommand*)command;
 
@@ -23,6 +17,24 @@
 - (void) changeInvocationEvent:(CDVInvokedUrlCommand*)command;
 
 - (void) setLocale:(CDVInvokedUrlCommand*)command;
+
+- (void) setReportTypes:(CDVInvokedUrlCommand*)command;
+
+- (void) show:(CDVInvokedUrlCommand*)command;
+
+- (void) showBugReportingWithReportTypeAndOptions:(CDVInvokedUrlCommand*)command;
+
+- (void) setBugReportingEnabled:(CDVInvokedUrlCommand*)command;
+
+- (void) setChatsEnabled:(CDVInvokedUrlCommand*)command;
+
+- (void) setRepliesEnabled:(CDVInvokedUrlCommand*)command;
+
+- (void) showChats:(CDVInvokedUrlCommand*)command;
+
+- (void) hasChats:(CDVInvokedUrlCommand*)command;
+
+- (void) showReplies:(CDVInvokedUrlCommand*)command;
 
 - (void) identifyUserWithEmail:(CDVInvokedUrlCommand*)command;
 
