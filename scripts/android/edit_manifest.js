@@ -1,7 +1,7 @@
+const fs = require('fs');
+const path = require('path');
+const Q = require('q');
 module.exports = (ctx, isInstalling) => {
-  const fs = ctx.requireCordovaModule('fs');
-  const path = ctx.requireCordovaModule('path');
-  const Q = ctx.requireCordovaModule('q');
   const xml = ctx.requireCordovaModule('cordova-common').xmlHelpers;
 
   const deferred = Q.defer();
