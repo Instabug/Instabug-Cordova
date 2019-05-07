@@ -60,6 +60,10 @@ module.exports = function(context) {
     var options = {shellPath: '/bin/sh', shellScript: 'bash "${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/Instabug.framework/strip-frameworks.sh"', runOnlyForDeploymentPostprocessing: 0};
     var buildPhase = myProj.addBuildPhase([], 'PBXShellScriptBuildPhase', 'StripFrameworkScript', myProj.getFirstTarget().uuid, options).buildPhase;
 
+    fs.chmod(projectPath, '0755', function(exc) {
+        fs.writeFileSync(projectPath, myProj.writeSync());
+    });
+    
     fs.writeFileSync(projectPath, myProj.writeSync());
     console.log('Added Arch Trim run script build phase');
 };
