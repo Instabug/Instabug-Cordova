@@ -1,15 +1,25 @@
 package com.instabug.cordova.plugin;
 
 import android.os.Bundle;
+import android.util.Log;
 
+import com.instabug.bug.BugReporting;
 import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
 import com.instabug.library.InstabugColorTheme;
+import com.instabug.library.bugreporting.model.Bug;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
 
 import org.apache.cordova.CordovaActivity;
+
+import static com.instabug.cordova.plugin.IBGPlugin.parseInvocationEvent;
+import static com.instabug.library.invocation.InstabugInvocationEvent.FLOATING_BUTTON;
+import static com.instabug.library.invocation.InstabugInvocationEvent.NONE;
+import static com.instabug.library.invocation.InstabugInvocationEvent.SCREENSHOT;
+import static com.instabug.library.invocation.InstabugInvocationEvent.SHAKE;
+import static com.instabug.library.invocation.InstabugInvocationEvent.TWO_FINGER_SWIPE_LEFT;
 
 public class IBGPluginActivity extends CordovaActivity
 {
@@ -28,6 +38,19 @@ public class IBGPluginActivity extends CordovaActivity
 
         // Retrieve initialization options
         Bundle options = getIntent().getExtras();
+
+        InstabugInvocationEvent invocationEvent = SHAKE;
+        String token = options.getString("token");
+        invocationEvent = parseInvocationEvent(options.getString("invocation"));
+
+
+        new Instabug.Builder(
+                this.getApplication(),
+                token).build();
+
+        if (invocationEvent != null)
+            BugReporting.setInvocationEvents(invocationEvent);
+
 
         // Apply initialization options
         if(options != null) {

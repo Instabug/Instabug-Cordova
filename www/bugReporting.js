@@ -50,19 +50,6 @@ var getInvocationModes = function() {
 };
 
 /**
- * The prompt options available in the SDK
- * @readonly
- * @enum {string} PromptOption
- */
-var getPromptOptions = function() {
-  return {
-    bug: 'bug',
-    chat: 'chat',
-    feedback: 'feedback'
-  };
-};
-
-/**
  * The extended bug report mode.
  * @readonly
  * @enum {string} ExtendedBugReportMode
@@ -78,7 +65,8 @@ var getExtendedBugReportMode = function() {
 var getReportType = function() {
   return {
     bug: 'bug',
-    feedback: 'feedback'
+    feedback: 'feedback',
+    question: 'question'
   };
 };
 
@@ -98,7 +86,6 @@ BugReporting.invocationModes = getInvocationModes();
 /**
  * @deprecated
  */
-BugReporting.promptOptions = getPromptOptions();
 BugReporting.extendedBugReportMode = getExtendedBugReportMode();
 BugReporting.reportType = getReportType();
 
@@ -192,43 +179,6 @@ BugReporting.setOptions = function(options, success, error) {
 }
 
 /**
- * @deprecated
- * Invokes the SDK manually with the default invocation mode.
- * Shows a view that asks the user whether they want to start a chat, report
- * a problem or suggest an improvement.
- * @param {enum} mode InvocationMode
- * @param {enum} invocationOptions Array of InvocationOption
- * @param {function(void):void} success callback on function success
- * @param {function(void):void} error callback on function error
- */
-BugReporting.invoke = function(mode, invocationOptions, success, error) {
-  var validatedMode = getInvocationModes()[mode];
-  var i;
-  var validatedOptions = [];
-  for (i = 0; i < invocationOptions.length; i++) {
-    var validatedOption = getInvocationOptions()[invocationOptions[i]];
-    if (validatedOption) {
-      validatedOptions.push(validatedOption);
-    }
-  }
-  if (validatedMode) {
-    if (validatedOptions.length != 0) {
-      exec(success, error, 'IBGPlugin', 'invoke', [
-        validatedMode,
-        validatedOptions
-      ]);
-    } else {
-      exec(success, error, 'IBGPlugin', 'invoke', [validatedMode]);
-    }
-  } else {
-    exec(success, error, 'IBGPlugin', 'invoke', []);
-    console.log(
-      'Could not apply mode to invocation - "' + mode + '" is not valid.'
-    );
-  }
-};
-
-/**
  * Sets a block of code to be executed just before the SDK's UI is presented.
  * This block is executed on the UI thread. Could be used for performing any
  * UI changes before the SDK's UI is shown.
@@ -248,15 +198,6 @@ BugReporting.setOnInvokeHandler = function(success, error) {
  */
 BugReporting.setOnDismissHandler = function(success, error) {
   exec(success, error, 'IBGPlugin', 'setPostInvocationHandler', []);
-};
-
-/**
- * Sets a block of code to be executed when a prompt option is selected.
- * @param {function(string):void} success callback on function success;param includes promptOption
- * @param {function(void):void} error callback on function error
- */
-BugReporting.setDidSelectPromptOptionHandler = function(success, error) {
-  exec(success, error, 'IBGPlugin', 'didSelectPromptOptionHandler', []);
 };
 
 /**
@@ -306,38 +247,6 @@ BugReporting.setEnabledAttachmentTypes = function(
     galleryImage,
     screenRecording
   ]);
-};
-
-/**
- * @deprecated
- * Sets the prompt options that will be shown to a user when the SDK is invoked.
- * @param {enum} promptOptions Array of PromptOption
- * @param {function(void):void} success callback on function success
- * @param {function(string):void} error callback on function error
- */
-BugReporting.setPromptOptions = function(promptOptions, success, error) {
-  var i;
-  var validatedPromptOptions = [];
-  for (i = 0; i < promptOptions.length; i++) {
-    var validatedPromptOption = getPromptOptions()[promptOptions[i]];
-    if (validatedPromptOption) {
-      validatedPromptOptions.push(validatedPromptOption);
-    }
-  }
-  if (
-    validatedPromptOptions !== undefined ||
-    validatedPromptOptions.length != 0
-  ) {
-    exec(success, error, 'IBGPlugin', 'setPromptOptionsEnabled', [
-      validatedPromptOptions
-    ]);
-  } else {
-    console.log(
-      'Could not change prompt option - "' +
-        validatedPromptOption +
-        '" is not valid.'
-    );
-  }
 };
 
 /**
