@@ -12,6 +12,7 @@ var exec = require('cordova/exec');
 var Chats = function() {};
 
 /**
+ * @deprecated
  * Enables or disables all chats functionalities.
  * @param {boolean} isEnabled
  * @param {function(void):void} success callback on function success
@@ -22,6 +23,7 @@ Chats.setEnabled = function(isEnabled, success, error) {
 };
 
 /**
+ * @deprecated
  * Shows chats with the option of chats list or new chat.
  * @param {boolean} withChatsList
  * @param {function(void):void} success callback on function success

@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.instabug.bug.BugReporting;
-import com.instabug.bug.PromptOption;
 import com.instabug.bug.invocation.InvocationOption;
 import com.instabug.bug.invocation.Option;
 import com.instabug.chat.Chats;
@@ -106,9 +105,6 @@ public class IBGPlugin extends CordovaPlugin {
         } if ("startWithToken".equals(action)) {
             activate(callbackContext, args);
 
-        } else if ("invoke".equals(action)) {
-            invoke(callbackContext, args);
-
         } else if ("setPrimaryColor".equals(action)) {
             setPrimaryColor(callbackContext, args.optString(0));
 
@@ -126,9 +122,6 @@ public class IBGPlugin extends CordovaPlugin {
 
         } else if ("setInvocationEvents".equals(action)) {
             setInvocationEvents(callbackContext, args.optJSONArray(0));
-            
-        } else if ("setPromptOptionsEnabled".equals(action)) {
-            setPromptOptionsEnabled(callbackContext, args.optJSONArray(0));
             
         } else if ("disable".equals(action)) {
             disable(callbackContext);
@@ -163,9 +156,6 @@ public class IBGPlugin extends CordovaPlugin {
         } else if ("willShowSurveyHandler".equals(action)) {
             willShowSurveyHandler(callbackContext);
 
-        } else if ("didSelectPromptOptionHandler".equals(action)) {
-            return true;
-
         } else if ("identifyUserWithEmail".equals(action)) {
             identifyUserWithEmail(callbackContext, args.optString(0), args.optString(1));
 
@@ -190,9 +180,6 @@ public class IBGPlugin extends CordovaPlugin {
         } else if ("setViewHierarchyEnabled".equals(action)) {
             setViewHierarchyEnabled(callbackContext, args.optBoolean(0));
 
-        } else if ("setAutoScreenRecordingEnabled".equals(action)) {
-            setAutoScreenRecordingEnabled(callbackContext, args.optBoolean(0));
-
         } else if ("setAutoScreenRecordingMaxDuration".equals(action)) {
             setAutoScreenRecordingMaxDuration(callbackContext, args.optInt(0));
 
@@ -213,9 +200,6 @@ public class IBGPlugin extends CordovaPlugin {
 
         } else if ("setInvocationOptions".equals(action)) {
             setInvocationOptions(callbackContext, args.optJSONArray(0));
-
-        } else if ("setChatNotificationEnabled".equals(action)) {
-            setAutoScreenRecordingEnabled(callbackContext, args.optBoolean(0));
 
         } else if ("showSurveyIfAvailable".equals(action)) {
             showSurveyIfAvailable(callbackContext);
@@ -319,12 +303,17 @@ public class IBGPlugin extends CordovaPlugin {
     private final void setReportTypes(CallbackContext callbackContext, JSONArray types) {
         String[] stringArrayOfReportTypes = toStringArray(types);
         if (stringArrayOfReportTypes.length != 0) {
-            try {
-                BugReporting.setReportTypes(Util.parseReportTypes(stringArrayOfReportTypes));
-                callbackContext.success();
-            } catch (Exception e) {
-                callbackContext.error(e.getMessage());
-            }
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            BugReporting.setReportTypes(Util.parseReportTypes(stringArrayOfReportTypes));
+                            callbackContext.success();
+                        } catch (Exception e) {
+                            callbackContext.error(e.getMessage());
+                        } 
+                    }
+                });
         }
     }
     
@@ -334,6 +323,8 @@ public class IBGPlugin extends CordovaPlugin {
             BugReporting.show(BugReporting.ReportType.BUG);
         } else if (reportType.equals("feedback")) {
             BugReporting.show(BugReporting.ReportType.FEEDBACK);
+        } else if (reportType.equals("question")) {
+            BugReporting.show(BugReporting.ReportType.QUESTION);
         } else {
             error = true;
             callbackContext.error("Invalid report type " + reportType);
@@ -354,6 +345,20 @@ public class IBGPlugin extends CordovaPlugin {
      * @param callbackContext Used when calling back into JavaScript
      */
     private void activate(final CallbackContext callbackContext, JSONArray args) {
+        try {
+            activationIntent.putExtra("token", args.optJSONObject(0).getString("token"));
+        } catch (JSONException e) {
+            callbackContext.error("An application token must be provided.");
+            return;
+        }
+
+        try {
+            activationIntent.putExtra("invocation", args.getString(1));
+        } catch (JSONException e) {
+            callbackContext.error("An invocation event must be provided.");
+            return;
+        }
+
         this.options = args.optJSONObject(2);
         if (options != null) {
             // Attach extras
@@ -394,24 +399,6 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
-     * @Deprecated
-     * Sets the prompt options used to invoke Instabug SDK
-     *
-     * @param options the prompt options values
-     */
-    public void setPromptOptionsEnabled(final CallbackContext callbackContext, JSONArray options) {
-        String[] stringArrayOfPromptOptions = toStringArray(options);
-        if(stringArrayOfPromptOptions.length != 0) {
-            try {
-                ArrayList<PromptOption> promptOptions = parsePromptOptions(stringArrayOfPromptOptions);
-                BugReporting.setPromptOptionsEnabled(promptOptions.toArray(new PromptOption[0]));
-            } catch (IllegalStateException e) {
-                callbackContext.error(errorMsg);
-            }
-        } else callbackContext.error("A valid prompt option type must be provided.");
-    }
-
-    /**
      * Sets whether users are required to enter an email address or not when doing a certain action `IBGAction`.
      *
      * @param isRequired A boolean to indicate whether email field is required or not.
@@ -431,38 +418,6 @@ public class IBGPlugin extends CordovaPlugin {
         } else callbackContext.error("A valid action type must be provided.");
     }
 
-    /**
-     * @Deprecated
-     * Shows the Instabug dialog so user can choose to report a bug, or submit
-     * feedback. A specific mode of the SDK can be shown if specified.
-     *
-     * @param callbackContext
-     *        Used when calling back into JavaScript
-     * @param args
-     *        args passed with argument
-     */
-    private void invoke(final CallbackContext callbackContext, JSONArray args) {
-        String invocationMode = args.optString(0);
-        JSONArray invocationOptionsArray = args.optJSONArray(1);
-        InvocationMode iMode = parseInvocationMode(invocationMode);
-
-        try {
-            if (iMode != null) {
-                if(invocationOptionsArray != null) {
-                    String[] stringArrayOfPromptOptions = toStringArray(invocationOptionsArray);
-                    List<Integer> invocationOptions = parseInvocationOptions(stringArrayOfPromptOptions);
-                    BugReporting.invoke(iMode, convertIntegers(invocationOptions));
-                } else {
-                    // Invoke specific mode if possible
-                    BugReporting.invoke(iMode);
-                }
-            } else {
-                BugReporting.invoke();
-            }
-        } catch (IllegalStateException e) {
-            callbackContext.error(errorMsg);
-        }
-    }
 
     /**
      * Sets a block of code to be executed just before the SDK's UI is presented.
@@ -616,8 +571,12 @@ public class IBGPlugin extends CordovaPlugin {
         if (colorString != null) {
             try {
                 int colorInt = Color.parseColor(colorString);
-                Instabug.setPrimaryColor(colorInt);
-
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Instabug.setPrimaryColor(colorInt);
+                    }
+                });
             } catch (IllegalStateException e) {
                 callbackContext.error(errorMsg);
             }
@@ -882,25 +841,6 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
-     * Convenience method to parse string array of invocation options into an Arraylist of integers
-     *
-     * @param promptOptionsStringArray
-     *        string array of invocation options
-     */
-    private ArrayList<PromptOption> parsePromptOptions(String[] promptOptionsStringArray) {
-        ArrayList<PromptOption> promptOptions = new ArrayList<PromptOption>();
-        if(promptOptionsStringArray.length != 0) {
-            for (String option : promptOptionsStringArray) {
-                PromptOption pOption = parsePromptOptions(option);
-                if (pOption != null) {
-                    promptOptions.add(pOption);
-                }
-            }
-        }
-        return promptOptions;
-    }
-
-    /**
      * Convenience method to convert from JSON array to string array.
      *
      * @param array
@@ -1042,23 +982,6 @@ public class IBGPlugin extends CordovaPlugin {
     private void showSurveyIfAvailable(final CallbackContext callbackContext) {
         try {
             Surveys.showSurveyIfAvailable();
-            callbackContext.success();
-        } catch (IllegalStateException e) {
-            callbackContext.error(errorMsg);
-        }
-    }
-
-    /**
-     * Sets whether the SDK is recording the screen or not.
-     *
-     * @param isEnabled       A boolean to set auto screen recording to being
-     *                        enabled or disabled.
-     *
-     * @param callbackContext Used when calling back into JavaScript
-     */
-    private void setAutoScreenRecordingEnabled(final CallbackContext callbackContext, boolean isEnabled) {
-        try {
-            Instabug.setAutoScreenRecordingEnabled(isEnabled);
             callbackContext.success();
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
@@ -1344,22 +1267,6 @@ public class IBGPlugin extends CordovaPlugin {
             return InstabugInvocationEvent.NONE;
         } else
             return null;
-    }
-
-    /**
-     * Convenience method for converting string to PromptOption.
-     *
-     * @param promptOption
-     *        String shortcode for prompt option
-     */
-    public static PromptOption parsePromptOptions(String promptOption) {
-        if ("bug".equals(promptOption)) {
-            return PromptOption.BUG;
-        } else if ("feedback".equals(promptOption)) {
-            return PromptOption.FEEDBACK;
-        } else if ("chat".equals(promptOption)) {
-            return PromptOption.CHAT;
-        } else return null;
     }
 
     /**

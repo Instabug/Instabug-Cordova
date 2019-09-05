@@ -19,32 +19,12 @@ ionic cordova plugin add instabug-cordova
 ```
 
 ## Usage
-To initialize Instabug in your app, you need to do the following:
-
-### Android
-1. Change the name of the application class in your AndroidManifest.xml file to ```android:name="com.instabug.cordova.plugin.MyApplication"```.
-
-Since ```Cordova Android 7.0.0``` AndroidManifest.xml position has changed and it is placed under ```app/src/main/AndroidManifest.xml```  ([read more](http://cordova.apache.org/announcements/2017/12/04/cordova-android-7.0.0.html)). You have to point it in your  ```.gradle``` file in ```platforms\android\com.instabug.cordova.plugin``` directory in this way:
-
-```    
-sourceSets {
-        main {
-            manifest.srcFile 'src/main/AndroidManifest.xml'
-        }
-    }
-```
-2. You need to add your app token in the __MyApplication__ class, by replacing ```YOUR_ANDROID_TOKEN```. (You can find this class under this path  ```YourProjectName/platforms/android/app/src/main/java/com.instabug.cordova.plugin/MyApplication.java```)
-
-3. You can change the invocation event by changing this line ```InstabugInvocationEvent.SHAKE``` in the __MyApplication__ class to any of the following:
-
-```InstabugInvocationEvent.FLOATING_BUTTON```, ```InstabugInvocationEvent.SCREENSHOT_GESTURE```, ```InstabugInvocationEvent.TWO_FINGER_SWIPE_LEFT```, or ```InstabugInvocationEvent.NONE```.
-
-### iOS
-You can initialize the SDK by using this method in your JS class
+1. You can initialize the SDK by using this method in your JS class
 ```
 cordova.plugins.instabug.activate(
     {
-        ios: 'MY_IOS_TOKEN'
+        ios: 'MY_IOS_TOKEN',
+        android: 'MY_ANDROID_TOKEN'
     },
     'shake',
     function () {
@@ -57,6 +37,16 @@ cordova.plugins.instabug.activate(
 ```
  You can change the invocation event with any of the following: ```'button'```, ```'screenshot'```, ```'swipe'```, or ```'shake'```.
 
+2.  Make sure to add the following snippet to your project level `build.gradle`.
+```dart
+allprojects {
+	repositories {
+	    maven {
+	        url "https://sdks.instabug.com/nexus/repository/instabug-cp"
+	    }
+	}
+}
+```
  ##### Ionic
 If you're using this plugin with Ionic, you need to add this line at the beginning of your __app.component.ts__ class.
 

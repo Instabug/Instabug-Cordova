@@ -4,8 +4,6 @@
 
 - (void) activate:(CDVInvokedUrlCommand*)command;
 
-- (void) invoke:(CDVInvokedUrlCommand*)command;
-
 - (void) setPrimaryColor:(CDVInvokedUrlCommand*)command;
 
 - (void) setUserData:(CDVInvokedUrlCommand*)command;

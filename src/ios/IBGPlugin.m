@@ -24,7 +24,9 @@
 
     if (tokensForPlatforms) {
         NSString* token = [tokensForPlatforms objectForKey:@"ios"];
-
+        if (![token length] > 0) {
+            token = [tokensForPlatforms objectForKey:@"token"];
+        }
         if ([token length] > 0) {
             id invEvent = [command argumentAtIndex:1];
             IBGInvocationEvent invocationEvent = 0;
@@ -120,35 +122,6 @@
     NSString *email = [command argumentAtIndex:0];
     NSString *name = [command argumentAtIndex:1];
     [Instabug identifyUserWithEmail:email name:name];
-    [self sendSuccessResult:command];
-}
-
-/**
- * Shows the Instabug dialog so user can choose to report a bug, or
- * submit feedback. A specific mode of the SDK can be shown if specified.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) invoke:(CDVInvokedUrlCommand*)command
-{
-    IBGInvocationMode iMode = [self parseInvocationMode:[command argumentAtIndex:0]];
-    NSArray* invOptions = [command argumentAtIndex:1];
-    
-    if (iMode) {
-        if(invOptions) {
-            IBGBugReportingOption invocationOptions = 0;
-            for (NSString *invOption in invOptions) {
-                IBGBugReportingOption invocationOption = [self parseInvocationOption:invOption];
-                invocationOptions |= invocationOption;
-            }
-            [IBGBugReporting invokeWithMode:iMode options:invocationOptions];
-        }
-        [IBGBugReporting invokeWithMode:iMode options:IBGBugReportingOptionNone];
-    } else {
-        [IBGBugReporting invoke];
-    }
-
     [self sendSuccessResult:command];
 }
 
@@ -306,23 +279,6 @@
         [result setKeepCallbackAsBool:true];
         [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
         return report;
-    };
-}
-
-/**
- * Sets a block of code to be executed when a prompt option is selected
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) didSelectPromptOptionHandler:(CDVInvokedUrlCommand*)command
-{
-    IBGBugReporting.didSelectPromptOptionHandler = ^(IBGPromptOption promptOption) {
-        CDVPluginResult* result;
-        NSString *promptOptionString = [self parsePromptOptionToString:promptOption];
-        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:promptOptionString];
-        [result setKeepCallbackAsBool:true];
-        [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
     };
 }
 
@@ -928,58 +884,6 @@
      [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
  }
 
- /**
- * Enables/disables prompt options when SDK is invoked.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
- - (void) setPromptOptionsEnabled:(CDVInvokedUrlCommand*)command
- {
-     CDVPluginResult* result;
-
-     NSArray* promptOptionsArray = [command argumentAtIndex:0];
-     IBGPromptOption promptOptions = 0;
-
-     for (NSString *promptOption in promptOptionsArray) {
-        IBGPromptOption promptOptionValue = [self parsePromptOptions:promptOption];
-        promptOptions |= promptOptionValue;
-     }
-     if (promptOptions == 0) {
-        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                    messageAsString:@"An prompt option must be provided."];
-     } else {
-        IBGBugReporting.promptOptions = promptOptions;
-        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-     }
-
-     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
- }
-
-
- /**
-  * Sets whether the SDK is recording the screen or not.
-  *
-  * @param {CDVInvokedUrlCommand*} command
-  *        The command sent from JavaScript
-  */
-  - (void) setAutoScreenRecordingEnabled:(CDVInvokedUrlCommand*)command
-  {
-      CDVPluginResult* result;
-
-      BOOL isEnabled = [command argumentAtIndex:0];
-
-      if (isEnabled) {
-          Instabug.autoScreenRecordingEnabled = [[command argumentAtIndex:0] boolValue];
-          result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-      } else {
-          result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                     messageAsString:@"A boolean value must be provided."];
-      }
-
-      [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
-  }
-
   /**
    * Enables/disables showing in-app notifications when the user receives a new
    * message.
@@ -1411,26 +1315,8 @@
         return IBGBugReportingReportTypeBug;
     } else if ([type isEqualToString:@"feedback"]) {
         return IBGBugReportingReportTypeFeedback;
-    } else return 0;
-}
-
-/**
- * Convenience method for converting NSString to
- * IBGPromptOption.
- *
- * @param  {NSString*} promptOption
- *         NSString shortcode for IBGPromptOption
- */
-- (IBGPromptOption) parsePromptOptions:(NSString*)event
-{
-    if ([event isEqualToString:@"chat"]) {
-        return IBGPromptOptionChat;
-    } else if ([event isEqualToString:@"feedback"]) {
-        return IBGPromptOptionFeedback;
-    } else if ([event isEqualToString:@"bug"]) {
-        return IBGPromptOptionBug;
-    } else if ([event isEqualToString:@"none"]) {
-        return IBGPromptOptionNone;
+    } else if ([type isEqualToString:@"question"]) {
+        return IBGBugReportingReportTypeQuestion;
     } else return 0;
 }
 
@@ -1551,26 +1437,6 @@
 
 /**
  * Convenience method for converting NSString to
- * IBGPromptOption.
- *
- * @param  {NSString*} promptOption
- *         NSString shortcode for IBGPromptOption
- */
-- (NSString*) parsePromptOptionToString:(IBGPromptOption)promptOption
-{
-    if (promptOption == IBGPromptOptionChat) {
-        return @"chat";
-    } else if (promptOption == IBGPromptOptionBug) {
-        return @"bug";
-    } else if (promptOption == IBGPromptOptionFeedback) {
-        return @"feedback";
-    } else if (promptOption == IBGPromptOptionNone) {
-        return @"none";
-    } else return @"";
-}
-
-/**
- * Convenience method for converting NSString to
  * IBGReportType.
  *
  * @param  {NSString*} reportType
@@ -1582,6 +1448,8 @@
         return @"bug";
     } else if (reportType == IBGReportTypeFeedback) {
         return @"feedback";
+    } else if (reportType == IBGReportTypeQuestion) {
+        return @"question";
     } else return @"";
 }
 
