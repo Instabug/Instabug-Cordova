@@ -23,8 +23,7 @@ ionic cordova plugin add instabug-cordova
 ```
 cordova.plugins.instabug.activate(
     {
-        ios: 'MY_IOS_TOKEN',
-        android: 'MY_ANDROID_TOKEN'
+        token: 'MY_TOKEN'
     },
     'shake',
     function () {
