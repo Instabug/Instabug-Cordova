@@ -24,7 +24,9 @@
 
     if (tokensForPlatforms) {
         NSString* token = [tokensForPlatforms objectForKey:@"ios"];
-
+        if (![token length] > 0) {
+            token = [tokensForPlatforms objectForKey:@"token"];
+        }
         if ([token length] > 0) {
             id invEvent = [command argumentAtIndex:1];
             IBGInvocationEvent invocationEvent = 0;

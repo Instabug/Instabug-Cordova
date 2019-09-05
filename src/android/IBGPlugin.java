@@ -341,9 +341,9 @@ public class IBGPlugin extends CordovaPlugin {
      */
     private void activate(final CallbackContext callbackContext, JSONArray args) {
         try {
-            activationIntent.putExtra("token", args.optJSONObject(0).getString("android"));
+            activationIntent.putExtra("token", args.optJSONObject(0).getString("token"));
         } catch (JSONException e) {
-            callbackContext.error("An Android application token must be provided.");
+            callbackContext.error("An application token must be provided.");
             return;
         }
 
