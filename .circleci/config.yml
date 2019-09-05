@@ -9,7 +9,6 @@ jobs:
       - run: cd Escape; swift build -c release -Xswiftc -static-stdlib
       - run: cd Escape/.build/release; cp -f Escape /usr/local/bin/escape
       - run: Escape cordova publish
-
 workflows:
   version: 2
   publish:
