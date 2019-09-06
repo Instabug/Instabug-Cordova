@@ -72,7 +72,7 @@ public class IBGPluginActivity extends CordovaActivity
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
-                if (edge.equals("left"))
+                if (edge != null && edge.equals("left"))
                     BugReporting.setFloatingButtonEdge(InstabugFloatingButtonEdge.LEFT);
                 else
                     BugReporting.setFloatingButtonEdge(InstabugFloatingButtonEdge.RIGHT);
@@ -90,7 +90,8 @@ public class IBGPluginActivity extends CordovaActivity
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
-                BugReporting.setFloatingButtonOffset(Integer.parseInt(offset));
+                if (offset != null)
+                    BugReporting.setFloatingButtonOffset(Integer.parseInt(offset));
             }
         });
     }
