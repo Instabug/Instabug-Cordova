@@ -30,9 +30,6 @@ jobs:
       - run:
           name: Install emulator dependencies
           command: (yes | sdkmanager "platform-tools" "platforms;android-26" "extras;intel;Hardware_Accelerated_Execution_Manager" "build-tools;26.0.0" "system-images;android-26;google_apis;x86" "emulator" --verbose) || true
-      - run:
-          name: chmod permissions
-          command: ../sampleApp/platforms/android; chmod +x ./gradlew
       - run: avdmanager create avd -n Pixel_2_API_26 -k "system-images;android-26;google_apis;x86" -g google_apis -d "Nexus 5"
       - run:
           name: Run emulator in background
@@ -53,6 +50,9 @@ jobs:
       - run: 
           name: Build App
           command: cd ../sampleApp; cordova build
+      - run:
+          name: chmod permissions
+          command: ../sampleApp/platforms/android; chmod +x ./gradlew
       - run:
           name: Download Android Dependencies
           command: cd ../sampleApp/platforms/android; ./gradlew androidDependencies
