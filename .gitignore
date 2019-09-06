@@ -8,7 +8,6 @@
 .idea/
 
 gradle/
-gradlew
 gradlew.bat
 local.properties
 node_modules/
