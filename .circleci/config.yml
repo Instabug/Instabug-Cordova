@@ -25,7 +25,7 @@ jobs:
             HOMEBREW_NO_AUTO_UPDATE=1 brew tap homebrew/cask
             HOMEBREW_NO_AUTO_UPDATE=1 brew cask install android-sdk
       - run:
-          name: Install Android Studio
+          name: Install Gradle
           command: |
             HOMEBREW_NO_AUTO_UPDATE=1 brew tap homebrew/cask
             HOMEBREW_NO_AUTO_UPDATE=1 brew install gradle
