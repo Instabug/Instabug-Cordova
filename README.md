@@ -36,7 +36,7 @@ cordova.plugins.instabug.activate(
 ```
  You can change the invocation event with any of the following: ```'button'```, ```'screenshot'```, ```'swipe'```, or ```'shake'```.
 
-2.  Make sure to add the following snippet to your project level `build.gradle`.
+2.  Make sure the following snippet is added to your project level `build.gradle`, if not you can manually add it as follows:.
 ```dart
 allprojects {
 	repositories {

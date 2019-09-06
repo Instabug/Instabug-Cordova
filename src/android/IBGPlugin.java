@@ -3,6 +3,8 @@ package com.instabug.cordova.plugin;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import com.instabug.bug.BugReporting;
@@ -303,17 +305,17 @@ public class IBGPlugin extends CordovaPlugin {
     private final void setReportTypes(CallbackContext callbackContext, JSONArray types) {
         String[] stringArrayOfReportTypes = toStringArray(types);
         if (stringArrayOfReportTypes.length != 0) {
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            BugReporting.setReportTypes(Util.parseReportTypes(stringArrayOfReportTypes));
-                            callbackContext.success();
-                        } catch (Exception e) {
-                            callbackContext.error(e.getMessage());
-                        } 
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        BugReporting.setReportTypes(Util.parseReportTypes(stringArrayOfReportTypes));
+                        callbackContext.success();
+                    } catch (Exception e) {
+                        callbackContext.error(e.getMessage());
                     }
-                });
+                }
+            });
         }
     }
     
@@ -577,6 +579,8 @@ public class IBGPlugin extends CordovaPlugin {
                         Instabug.setPrimaryColor(colorInt);
                     }
                 });
+
+
             } catch (IllegalStateException e) {
                 callbackContext.error(errorMsg);
             }

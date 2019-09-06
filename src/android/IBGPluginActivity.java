@@ -2,6 +2,8 @@ package com.instabug.cordova.plugin;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.os.Handler;
+import android.os.Looper;
 
 import com.instabug.bug.BugReporting;
 import com.instabug.library.Feature;
@@ -67,7 +69,15 @@ public class IBGPluginActivity extends CordovaActivity
      *        String representation of edge
      */
     private void setFloatingButtonEdge(String edge) {
-
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                if (edge.equals("left"))
+                    BugReporting.setFloatingButtonEdge(InstabugFloatingButtonEdge.LEFT);
+                else
+                    BugReporting.setFloatingButtonEdge(InstabugFloatingButtonEdge.RIGHT);
+            }
+        });
     }
 
     /**
@@ -77,7 +87,12 @@ public class IBGPluginActivity extends CordovaActivity
      *        String representation of int offset
      */
     private void setFloatingButtonOffset(String offset) {
-
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                BugReporting.setFloatingButtonOffset(Integer.parseInt(offset));
+            }
+        });
     }
 
     /**
