@@ -302,8 +302,8 @@ public class IBGPlugin extends CordovaPlugin {
         }
     }
 
-    private final void setReportTypes(CallbackContext callbackContext, JSONArray types) {
-        String[] stringArrayOfReportTypes = toStringArray(types);
+    private final void setReportTypes(final CallbackContext callbackContext, final JSONArray types) {
+        final String[] stringArrayOfReportTypes = toStringArray(types);
         if (stringArrayOfReportTypes.length != 0) {
             new Handler(Looper.getMainLooper()).post(new Runnable() {
                 @Override
@@ -568,11 +568,11 @@ public class IBGPlugin extends CordovaPlugin {
      * @param callbackContext Used when calling back into JavaScript
      * @param colorString     The value of the primary color
      */
-    private void setPrimaryColor(final CallbackContext callbackContext, String colorString) {
+    private void setPrimaryColor(final CallbackContext callbackContext, final String colorString) {
 
         if (colorString != null) {
             try {
-                int colorInt = Color.parseColor(colorString);
+                final int colorInt = Color.parseColor(colorString);
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
