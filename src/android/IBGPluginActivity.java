@@ -68,7 +68,7 @@ public class IBGPluginActivity extends CordovaActivity
      * @param edge
      *        String representation of edge
      */
-    private void setFloatingButtonEdge(String edge) {
+    private void setFloatingButtonEdge(final String edge) {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
@@ -86,7 +86,7 @@ public class IBGPluginActivity extends CordovaActivity
      * @param offset
      *        String representation of int offset
      */
-    private void setFloatingButtonOffset(String offset) {
+    private void setFloatingButtonOffset(final String offset) {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
