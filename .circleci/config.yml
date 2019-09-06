@@ -41,6 +41,9 @@ jobs:
       - run:
           name: Copy sampleApp
           command: cp -a sampleApp ../
+      - run:
+          name: chmod permissions
+          command: cd ../; chmod -R 777 sampleApp
       - run: 
           name: Npm Install
           command: cd ../sampleApp; npm install
@@ -50,9 +53,6 @@ jobs:
       - run: 
           name: Build App
           command: cd ../sampleApp; cordova build
-      - run:
-          name: chmod permissions
-          command: ../sampleApp/platforms/android; chmod +x ./gradlew
       - run:
           name: Download Android Dependencies
           command: cd ../sampleApp/platforms/android; ./gradlew androidDependencies
