@@ -47,7 +47,8 @@ public class InvokeInstabugUITest {
         Thread.sleep(5000);
         onView(isRoot()).perform(waitId(R.id.instabug_floating_button, 5000));
         onView(withResourceName("instabug_floating_button")).perform(click(click()));
-        onView(isRoot()).perform(waitId(2131296560, 5000));
+        //onView(isRoot()).perform(waitId(2131296560, 5000));
+        Thread.sleep(5000);
         onView(withText("Report a bug")).perform(click(click()));
         onView(isRoot()).perform(waitId(2131296517, 5000));
         onView(withResourceName("instabug_edit_text_email")).perform(replaceText("inst@bug.com"));
