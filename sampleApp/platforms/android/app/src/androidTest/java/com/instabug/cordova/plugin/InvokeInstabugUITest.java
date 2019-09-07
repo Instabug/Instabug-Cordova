@@ -3,10 +3,16 @@ package com.instabug.cordova.plugin;
 import android.support.test.espresso.PerformException;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
+import android.support.test.espresso.action.GeneralClickAction;
+import android.support.test.espresso.action.GeneralLocation;
+import android.support.test.espresso.action.Press;
+import android.support.test.espresso.action.Tap;
 import android.support.test.espresso.util.HumanReadables;
 import android.support.test.espresso.util.TreeIterables;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.view.InputDevice;
+import android.view.MotionEvent;
 import android.view.View;
 
 import org.hamcrest.Matcher;
@@ -20,8 +26,10 @@ import io.cordova.hellocordova.MainActivity;
 import io.cordova.hellocordova.R;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.actionWithAssertions;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.replaceText;
+import static android.support.test.espresso.core.internal.deps.guava.base.Preconditions.checkNotNull;
 import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withResourceName;
@@ -38,15 +46,29 @@ public class InvokeInstabugUITest {
     public void ensureInstabugInvocati1on() throws InterruptedException {
         Thread.sleep(5000);
         onView(isRoot()).perform(waitId(R.id.instabug_floating_button, 5000));
-        onView(withResourceName("instabug_floating_button")).perform(click());
+        onView(withResourceName("instabug_floating_button")).perform(click(click()));
         onView(isRoot()).perform(waitId(2131296560, 5000));
-        onView(withText("Report a bug")).perform(click());
+        onView(withText("Report a bug")).perform(click(click()));
         onView(isRoot()).perform(waitId(2131296517, 5000));
         onView(withResourceName("instabug_edit_text_email")).perform(replaceText("inst@bug.com"));
-        onView(withResourceName("instabug_bugreporting_send")).perform(click());
+        onView(withResourceName("instabug_bugreporting_send")).perform(click(click()));
         onView(isRoot()).perform(waitId(2131296563, 5000));
     }
 
+    public static ViewAction click(ViewAction rollbackAction) {
+        checkNotNull(rollbackAction);
+        return new GeneralClickAction(Tap.SINGLE, GeneralLocation.CENTER, Press.FINGER,
+                rollbackAction);
+    }
+    public static ViewAction click() {
+        return actionWithAssertions(
+                new GeneralClickAction(
+                        Tap.SINGLE,
+                        GeneralLocation.VISIBLE_CENTER,
+                        Press.FINGER,
+                        InputDevice.SOURCE_UNKNOWN,
+                        MotionEvent.BUTTON_PRIMARY));
+    }
     /**
      * Perform action of waiting for a specific view id.
      * @param viewId The id of the view to wait for.
