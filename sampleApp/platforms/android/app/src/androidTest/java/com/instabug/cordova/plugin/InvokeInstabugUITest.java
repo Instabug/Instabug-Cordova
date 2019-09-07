@@ -49,7 +49,8 @@ public class InvokeInstabugUITest {
     public void ensureInstabugInvocati1on() throws InterruptedException {
         Thread.sleep(5000);
         Instabug.setWelcomeMessageState(WelcomeMessage.State.DISABLED);
-        onView(withResourceName("instabug_floating_button")).perform(click());
+        //onView(withResourceName("instabug_floating_button")).perform(click());
+        Instabug.show();
         onView(withText("Report a bug")).perform(click());
         onView(withResourceName("instabug_edit_text_email")).perform(replaceText("inst@bug.com"));
         onView(withResourceName("instabug_bugreporting_send")).perform(click());
