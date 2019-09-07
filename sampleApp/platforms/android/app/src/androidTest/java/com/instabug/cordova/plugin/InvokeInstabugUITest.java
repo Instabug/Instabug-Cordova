@@ -15,6 +15,9 @@ import android.view.InputDevice;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.instabug.library.Instabug;
+import com.instabug.library.ui.onboarding.WelcomeMessage;
+
 import org.hamcrest.Matcher;
 import org.junit.Rule;
 import org.junit.Test;
@@ -45,6 +48,7 @@ public class InvokeInstabugUITest {
     @Test
     public void ensureInstabugInvocati1on() throws InterruptedException {
         Thread.sleep(5000);
+        Instabug.setWelcomeMessageState(WelcomeMessage.State.DISABLED);
         onView(withResourceName("instabug_floating_button")).perform(click());
         onView(withText("Report a bug")).perform(click());
         onView(withResourceName("instabug_edit_text_email")).perform(replaceText("inst@bug.com"));
