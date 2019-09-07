@@ -1,0 +1,18 @@
+{
+  "cordova-plugin-whitelist": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-whitelist@1"
+    },
+    "is_top_level": true,
+    "variables": {}
+  },
+  "instabug-cordova": {
+    "source": {
+      "type": "local",
+      "path": "/Users/alyezz/Cordova/sampleApp/node_modules/instabug-cordova"
+    },
+    "is_top_level": true,
+    "variables": {}
+  }
+}

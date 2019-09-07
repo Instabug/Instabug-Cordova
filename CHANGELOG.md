@@ -1,3 +1,7 @@
+## v8.6.5 (2019-09-06)
+
+* Fixes various android issues
+
 ## v8.6.4 (2019-09-06)
 
 * Fixes missing imports in android.

@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<manifest android:hardwareAccelerated="true" android:versionCode="10000" android:versionName="1.0.0" package="io.cordova.hellocordova" xmlns:android="http://schemas.android.com/apk/res/android">
+    <supports-screens android:anyDensity="true" android:largeScreens="true" android:normalScreens="true" android:resizeable="true" android:smallScreens="true" android:xlargeScreens="true" />
+    <application android:hardwareAccelerated="true" android:icon="@mipmap/ic_launcher" android:label="@string/app_name" android:supportsRtl="true">
+        <activity android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale" android:label="@string/activity_name" android:launchMode="singleTop" android:name="MainActivity" android:theme="@android:style/Theme.DeviceDefault.NoActionBar" android:windowSoftInputMode="adjustResize">
+            <intent-filter android:label="@string/launcher_name">
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:configChanges="keyboardHidden|orientation|screenSize" android:launchMode="singleInstance" android:name="com.instabug.cordova.plugin.IBGPluginActivity" android:theme="@android:style/Theme.NoDisplay" />
+        <service android:name="com.instabug.library.network.worker.uploader.InstabugSessionUploaderService" />
+        <service android:name="com.instabug.bug.network.InstabugBugsUploaderService" />
+        <service android:name="com.instabug.crash.network.InstabugCrashesUploaderService" />
+        <service android:name="com.instabug.library.network.worker.fetcher.InstabugFeaturesFetcherService" />
+        <service android:name="com.instabug.survey.network.service.InstabugSurveysSubmitterService" />
+        <service android:name="com.instabug.library.internal.video.VideoProcessingService" />
+        <service android:name="com.instabug.library.analytics.network.InstabugAnalyticsUploaderService" />
+        <service android:name="com.instabug.chat.network.InstabugMessageUploaderService" />
+    </application>
+    <uses-sdk android:targetSdkVersion="28" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+</manifest>
