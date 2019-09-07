@@ -47,7 +47,7 @@ public class InvokeInstabugUITest {
 
     @Test
     public void ensureInstabugInvocati1on() throws InterruptedException {
-        Thread.sleep(10000);
+        Thread.sleep(20000);
         Instabug.setWelcomeMessageState(WelcomeMessage.State.DISABLED);
         //onView(withResourceName("instabug_floating_button")).perform(click());
         Instabug.show();
