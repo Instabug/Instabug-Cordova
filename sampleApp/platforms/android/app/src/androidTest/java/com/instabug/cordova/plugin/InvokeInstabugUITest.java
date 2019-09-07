@@ -45,22 +45,24 @@ public class InvokeInstabugUITest {
     @Test
     public void ensureInstabugInvocati1on() throws InterruptedException {
         Thread.sleep(5000);
-        onView(isRoot()).perform(waitId(R.id.instabug_floating_button, 5000));
         onView(withResourceName("instabug_floating_button")).perform(click(click()));
-        //onView(isRoot()).perform(waitId(2131296560, 5000));
-        Thread.sleep(5000);
         onView(withText("Report a bug")).perform(click(click()));
-        onView(isRoot()).perform(waitId(2131296517, 5000));
         onView(withResourceName("instabug_edit_text_email")).perform(replaceText("inst@bug.com"));
         onView(withResourceName("instabug_bugreporting_send")).perform(click(click()));
-        onView(isRoot()).perform(waitId(2131296563, 5000));
+        onView(withResourceName("instabug_success_dialog_container")).perform(click(click()));
     }
 
     public static ViewAction click(ViewAction rollbackAction) {
         checkNotNull(rollbackAction);
-        return new GeneralClickAction(Tap.SINGLE, GeneralLocation.CENTER, Press.FINGER,
-                rollbackAction);
+        return actionWithAssertions(
+                new GeneralClickAction(
+                        Tap.SINGLE,
+                        GeneralLocation.VISIBLE_CENTER,
+                        Press.FINGER,
+                        InputDevice.SOURCE_UNKNOWN,
+                        MotionEvent.BUTTON_PRIMARY));
     }
+
     public static ViewAction click() {
         return actionWithAssertions(
                 new GeneralClickAction(
@@ -70,51 +72,5 @@ public class InvokeInstabugUITest {
                         InputDevice.SOURCE_UNKNOWN,
                         MotionEvent.BUTTON_PRIMARY));
     }
-    /**
-     * Perform action of waiting for a specific view id.
-     * @param viewId The id of the view to wait for.
-     * @param millis The timeout of until when to wait for.
-     */
-    public static ViewAction waitId(final int viewId, final long millis) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isRoot();
-            }
-
-            @Override
-            public String getDescription() {
-                return "wait for a specific view with id <" + viewId + "> during " + millis + " millis.";
-            }
-
-            @Override
-            public void perform(final UiController uiController, final View view) {
-                uiController.loopMainThreadUntilIdle();
-                final long startTime = System.currentTimeMillis();
-                final long endTime = startTime + millis;
-                final Matcher<View> viewMatcher = withId(viewId);
-
-                do {
-                    for (View child : TreeIterables.breadthFirstViewTraversal(view)) {
-                        // found view with required ID
-                        if (viewMatcher.matches(child)) {
-                            return;
-                        }
-                    }
-
-                    uiController.loopMainThreadForAtLeast(50);
-                }
-                while (System.currentTimeMillis() < endTime);
-
-                // timeout happens
-                throw new PerformException.Builder()
-                        .withActionDescription(this.getDescription())
-                        .withViewDescription(HumanReadables.describe(view))
-                        .withCause(new TimeoutException())
-                        .build();
-            }
-        };
-    }
-
 
 }
