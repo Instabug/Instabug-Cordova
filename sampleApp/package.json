@@ -21,8 +21,7 @@
   },
   "cordova": {
     "plugins": {
-      "cordova-plugin-whitelist": {},
-      "instabug-cordova": {}
+      "cordova-plugin-whitelist": {}
     },
     "platforms": [
       "ios",
