@@ -12,6 +12,5 @@ node_modules/
 
 #sample-app
 sample-app/.idea
-sample-app/platforms/
 sample-app/hooks/
 sample-app/plugins/
