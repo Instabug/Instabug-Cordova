@@ -72,7 +72,7 @@ public class IBGPluginActivity extends CordovaActivity
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
-                if (edges != null && edge.equals("left"))
+                if (edge != null && edge.equals("left"))
                     BugReporting.setFloatingButtonEdge(InstabugFloatingButtonEdge.LEFT);
                 else
                     BugReporting.setFloatingButtonEdge(InstabugFloatingButtonEdge.RIGHT);
