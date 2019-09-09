@@ -240,7 +240,7 @@ public class IBGPluginTests {
     public void givenArg$setPrimaryColor_whenQuery_thenShouldCallNativeApiWithArg() {
         // given
         PowerMockito.mockStatic(Instabug.class);
-        PowerMockito.mockStatic(Color.class);
+        //PowerMockito.mockStatic(Color.class);
         int color = 3902;
         when(Color.parseColor(anyString())).thenReturn(color);
         // when
