@@ -173,6 +173,7 @@ android {
             minSdkVersion cdvMinSdkVersion
         }
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        targetSdkVersion 28
 
     }
 
