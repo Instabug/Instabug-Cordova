@@ -34,7 +34,6 @@ var app = {
             },
             cordova.plugins.bugReporting.invocationEvents.button,
             {
-                floatingButtonEdge: 'left',
                 commentRequired: true,
                 colorTheme: 'light',
                 enableIntroDialog: false
