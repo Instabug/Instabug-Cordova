@@ -98,19 +98,22 @@ public class IBGPlugin extends CordovaPlugin {
      * @return Whether the action was valid.
      */
     @Override
-    public boolean execute(final String action, JSONArray args, final CallbackContext callbackContext)
-            throws InvocationTargetException, IllegalAccessException {
-        Method[] methods = this.getClass().getMethods();
-        for (Method method : methods) {
-            if (action.equals(method.getName())) {
-                if (args.isNull(0))
-                    method.invoke(this, callbackContext);
-                else
-                    method.invoke(this, callbackContext, args);
-                return true;
+    public boolean execute(final String action, JSONArray args, final CallbackContext callbackContext) {
+        try {
+            Method[] methods = this.getClass().getMethods();
+            for (Method method : methods) {
+                if (action.equals(method.getName())) {
+                    if (args.isNull(0))
+                        method.invoke(this, callbackContext);
+                    else
+                        method.invoke(this, callbackContext, args);
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
-        return false;
+        return true;
     }
 
     public final void show(final CallbackContext callbackContext) {
