@@ -29,16 +29,18 @@ public class InvokeInstabugUITest {
     public void ensureInstabugInvocati1on() throws InterruptedException {
         Thread.sleep(5000);
         Instabug.setWelcomeMessageState(WelcomeMessage.State.DISABLED);
-        int count = 5;
-        while (count > 0) {
-            count --;
-            Thread.sleep(5000);
-            try {
-                onView(withResourceName("instabug_floating_button")).perform(click());
-            } catch (Exception e) {
-                break;
-            }
-        }
+//        int count = 100;
+//        while (count > 0) {
+//            count --;
+//            try {
+//                onView(withResourceName("instabug_floating_button")).perform(click());
+//                Thread.sleep(5000);
+//            } catch (Exception e) {
+//                break;
+//            }
+//        }
+        Instabug.show();
+        Thread.sleep(5000);
         onView(withText("Report a bug")).perform(click());
         onView(withResourceName("instabug_edit_text_email")).perform(replaceText("inst@bug.com"));
         onView(withResourceName("instabug_bugreporting_send")).perform(click());
