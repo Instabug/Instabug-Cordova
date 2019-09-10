@@ -27,12 +27,12 @@ public class InvokeInstabugUITest {
 
     @Test
     public void ensureInstabugInvocati1on() throws InterruptedException {
-        Thread.sleep(1000);
+        Thread.sleep(5000);
         Instabug.setWelcomeMessageState(WelcomeMessage.State.DISABLED);
         int count = 5;
         while (count > 0) {
             count --;
-            Thread.sleep(1000);
+            Thread.sleep(5000);
             try {
                 onView(withResourceName("instabug_floating_button")).perform(click());
             } catch (Exception e) {
