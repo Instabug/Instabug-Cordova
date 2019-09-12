@@ -101,7 +101,7 @@ public class IBGPlugin extends CordovaPlugin {
     public boolean execute(final String action, final JSONArray args, final CallbackContext callbackContext) {
         try {
             Method[] methods = this.getClass().getMethods();
-            for (Method method : methods) {
+            for (final Method method : methods) {
                 if (action.equals(method.getName())) {
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
