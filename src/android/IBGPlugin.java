@@ -98,26 +98,16 @@ public class IBGPlugin extends CordovaPlugin {
      * @return Whether the action was valid.
      */
     @Override
-    public boolean execute(final String action, final JSONArray args, final CallbackContext callbackContext) {
+    public boolean execute(final String action, JSONArray args, final CallbackContext callbackContext) {
         try {
             Method[] methods = this.getClass().getMethods();
-            for (final Method method : methods) {
+            for (Method method : methods) {
                 if (action.equals(method.getName())) {
-                    new Handler(Looper.getMainLooper()).post(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                if (args.isNull(0)) {
-                                    method.invoke(this, callbackContext);
-                                } else {
-                                    method.invoke(this, callbackContext, args);
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                // return false;
-                            }
-                        }
-                    });
+                    if (args.isNull(0)) {
+                        method.invoke(this, callbackContext);
+                    } else {
+                        method.invoke(this, callbackContext, args);
+                    }
                 }
             }
         } catch (Exception e) {
