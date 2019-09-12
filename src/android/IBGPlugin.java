@@ -103,10 +103,16 @@ public class IBGPlugin extends CordovaPlugin {
             Method[] methods = this.getClass().getMethods();
             for (Method method : methods) {
                 if (action.equals(method.getName())) {
-                    if (args.isNull(0))
-                        method.invoke(this, callbackContext);
-                    else
-                        method.invoke(this, callbackContext, args);
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (args.isNull(0)) {
+                                method.invoke(this, callbackContext);
+                            } else {
+                                method.invoke(this, callbackContext, args);
+                            }
+                        }
+                    });
                 }
             }
         } catch (Exception e) {
