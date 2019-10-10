@@ -1,6 +1,6 @@
-framework module Instabug {
+framework module InstabugStatic {
     umbrella header "Instabug.h"
-    
+
     export *
     module * { export * }
 }
