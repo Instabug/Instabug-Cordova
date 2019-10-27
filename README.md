@@ -46,8 +46,8 @@ allprojects {
 	}
 }
 ```
- ##### Ionic
-If you're using this plugin with Ionic, you need to add this line at the beginning of your __app.component.ts__ class.
+ ##### TypeScript
+If you're using this plugin with TypeScript, you need to add this line at the beginning of your __app.component.ts__ class.
 
 ```
 declare let cordova: any;
