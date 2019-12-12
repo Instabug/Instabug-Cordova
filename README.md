@@ -26,6 +26,10 @@ cordova.plugins.instabug.activate(
         token: 'MY_TOKEN'
     },
     'shake',
+    {
+        commentRequired: true,
+        colorTheme: 'dark'
+    },
     function () {
         console.log('Instabug initialized.');
     },
