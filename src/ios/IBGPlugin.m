@@ -422,13 +422,13 @@
     }
 
     if ([filePath length] > 0) {
-        NSFileManager* fileManager = [NSFileManager defaultManager];
+        NSError* err;
+        NSURL* url = [NSURL URLWithString:filePath];
 
-        if ([fileManager fileExistsAtPath:filePath]) {
+        if ([url checkResourceIsReachableAndReturnError:&err] == YES) {
             // If the file doesn't exist at the path specified,
             // we won't be able to notify the containing app when
             // Instabug API call fails, so we check ourselves.
-            NSURL* url = [NSURL URLWithString:filePath];
             [Instabug addFileAttachmentWithURL:url];
             result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
         } else {
