@@ -371,18 +371,16 @@
   */
  - (void) getAvailableSurveys:(CDVInvokedUrlCommand*)command
   {
-      CDVPluginResult* result;
-      NSArray* surveys = [IBGSurveys availableSurveys];
-      NSMutableArray <NSDictionary *> *surveysArray = [[NSMutableArray alloc] init];
-      
-      for (IBGSurvey *survey in surveys) {
-          NSDictionary *surveyObject = @{ @"title" : survey.title};
-          [surveysArray addObject:surveyObject];
-      }
-      result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
-                                 messageAsArray:surveysArray];
-    
-      [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+      [IBGSurveys availableSurveysWithCompletionHandler:^(NSArray<IBGSurvey *> *availableSurveys) {
+        CDVPluginResult* result;
+        NSMutableArray<NSDictionary*>* mappedSurveys = [[NSMutableArray alloc] init];
+        for (IBGSurvey* survey in availableSurveys) {
+            [mappedSurveys addObject:@{@"title": survey.title }];
+        }
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                 messageAsArray:mappedSurveys];
+        [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+    }];
   }
 
 /**
