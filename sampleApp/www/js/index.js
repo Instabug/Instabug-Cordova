@@ -49,6 +49,11 @@ var app = {
         console.log("Instabug could not be initialized - " + error);
       }
     );
+    cordova.plugins.bugReporting.setInvocationEvents(
+      [cordova.plugins.bugReporting.invocationEvents.button],
+      function() {},
+      function(error) {}
+    );
   },
 
   // Update DOM on a Received Event
