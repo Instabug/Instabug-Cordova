@@ -3,12 +3,11 @@ package com.instabug.cordova.plugin;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.instabug.library.Instabug;
-import com.instabug.library.ui.onboarding.WelcomeMessage;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.lang.reflect.Method;
 
 import io.cordova.hellocordova.MainActivity;
 
@@ -27,13 +26,34 @@ public class InvokeInstabugUITest {
 
     @Test
     public void ensureInstabugInvocati1on() throws InterruptedException {
-        Thread.sleep(5000);
+        Thread.sleep(1000);
         onView(withResourceName("instabug_floating_button")).perform(click());
+        Thread.sleep(1000);
+        onView(withText("Report a bug")).perform(click());
+        Thread.sleep(1000);
+        onView(withResourceName("instabug_edit_text_email")).perform(replaceText("inst@bug.com"));
+        onView(withResourceName("instabug_bugreporting_send")).perform(click());
+        onView(withResourceName("instabug_success_dialog_container")).perform(click());
+    }
 
-        // onView(withText("Report a bug")).perform(click());
-        // onView(withResourceName("instabug_edit_text_email")).perform(replaceText("inst@bug.com"));
-        // onView(withResourceName("instabug_bugreporting_send")).perform(click());
-        // onView(withResourceName("instabug_success_dialog_container")).perform(click());
+    public static Method getMethod(Class clazz, String methodName, Class... parameterType) {
+        final Method[] methods = clazz.getDeclaredMethods();
+        for (Method method : methods) {
+            if (method.getName().equals(methodName) && method.getParameterTypes().length ==
+                    parameterType.length) {
+                for (int i = 0; i < parameterType.length; i++) {
+                    if (method.getParameterTypes()[i] == parameterType[i]) {
+                        if (i == method.getParameterTypes().length - 1) {
+                            method.setAccessible(true);
+                            return method;
+                        }
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
 }
