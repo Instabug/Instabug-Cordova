@@ -21,6 +21,6 @@ android {
 }
 
 dependencies {
-	implementation 'com.instabug.library:instabug:8.6.3.0'
+	implementation 'com.instabug.library:instabug:9.0.5.5'
 	implementation 'com.android.support:multidex:1.0.0'
 }
