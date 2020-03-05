@@ -232,21 +232,7 @@ public class IBGPlugin extends CordovaPlugin {
      *
      * @param callbackContext Used when calling back into JavaScript
      */
-    public void activate(final CallbackContext callbackContext, JSONArray args) {
-        try {
-            activationIntent.putExtra("token", args.optJSONObject(0).getString("token"));
-        } catch (JSONException e) {
-            callbackContext.error("An application token must be provided.");
-            return;
-        }
-
-        try {
-            activationIntent.putExtra("invocation", args.getString(1));
-        } catch (JSONException e) {
-            callbackContext.error("An invocation event must be provided.");
-            return;
-        }
-
+    private void activate(final CallbackContext callbackContext, JSONArray args) {
         this.options = args.optJSONObject(2);
         if (options != null) {
             // Attach extras

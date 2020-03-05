@@ -87,10 +87,10 @@
 
         <source-file src="src/android/IBGPluginActivity.java" target-dir="src/com/instabug/cordova/plugin"/>
         <source-file src="src/android/IBGPlugin.java" target-dir="src/com/instabug/cordova/plugin"/>
-        <!-- <source-file src="src/android/MyApplication.java" target-dir="src/com/instabug/cordova/plugin"/> -->
+        <source-file src="src/android/MyApplication.java" target-dir="src/com/instabug/cordova/plugin"/>
         <source-file src="src/android/util/Util.java" target-dir="src/com/instabug/cordova/plugin/util"/>
-        <hook type="before_plugin_install" src="scripts/android/link_gradle.js"/>
-        <hook type="before_plugin_uninstall" src="scripts/android/unlink_gradle.js"/>
+        <hook type="before_plugin_install" src="scripts/android/before_plugin_install.js"/>
+        <hook type="before_plugin_uninstall" src="scripts/android/before_plugin_uninstall.js"/>
     </platform>
 
     <!-- ios -->
