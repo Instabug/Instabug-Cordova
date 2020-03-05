@@ -8,11 +8,9 @@ import android.os.Looper;
 import android.util.Log;
 
 import com.instabug.bug.BugReporting;
-import com.instabug.bug.invocation.InvocationOption;
 import com.instabug.bug.invocation.Option;
 import com.instabug.chat.Chats;
 import com.instabug.chat.Replies;
-import com.instabug.cordova.plugin.util.MainThreadHandler;
 import com.instabug.cordova.plugin.util.Util;
 import com.instabug.featuresrequest.ActionType;
 import com.instabug.featuresrequest.FeatureRequests;
@@ -683,7 +681,7 @@ public class IBGPlugin extends CordovaPlugin {
                         callbackContext.error("A valid event type must be provided.");
                     }
                 }
-                MainThreadHandler.runOnMainThread(new Runnable() {
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
                         BugReporting.setInvocationEvents(invocationEvents.toArray(new InstabugInvocationEvent[0]));
