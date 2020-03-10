@@ -1,3 +1,7 @@
+## v9.0.0 (2020-03-10)
+
+* Bump native SDKs to v9
+
 ## v8.6.5 (2019-09-06)
 
 * Fixes various android issues
