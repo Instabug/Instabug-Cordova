@@ -30,7 +30,9 @@ To initialize Instabug in your app, you need to do the following:
 
 1. Change the name of the application class in your AndroidManifest.xml file to `android:name="com.instabug.cordova.plugin.MyApplication"`.
 
-Since `Cordova Android 7.0.0` AndroidManifest.xml position has changed and it is placed under `app/src/main/AndroidManifest.xml` ([read more](http://cordova.apache.org/announcements/2017/12/04/cordova-android-7.0.0.html)). You have to point it in your `.gradle` file in `platforms\android\com.instabug.cordova.plugin` directory in this way:
+Starting from _Cordova Android v7.0.0_ `AndroidManifest.xml` location has been changed and its new path now is `app/src/main/AndroidManifest.xml` ([read more](http://cordova.apache.org/announcements/2017/12/04/cordova-android-7.0.0.html)).
+
+If you're using _Cordova Android v7+, please make sure you update its location inside Cordova's `build.gradle` file at `platforms/android/CordovaLib/build.gradle`:
 
 ```
     sourceSets {
