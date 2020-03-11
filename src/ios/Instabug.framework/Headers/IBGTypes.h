@@ -5,7 +5,7 @@
  
  Copyright:  (c) 2013-2018 by Instabug, Inc., all rights reserved.
  
- Version:    8.6.2
+ Version:    9.0.12
  */
 
 #import <UIKit/UIKit.h>
@@ -35,11 +35,17 @@ extern NSString * const kIBGInvalidEmailMessageStringName;
 extern NSString * const kIBGInvalidEmailTitleStringName;
 extern NSString * const kIBGInvalidCommentMessageStringName;
 extern NSString * const kIBGInvalidCommentTitleStringName;
+extern NSString * const kIBGInvalidNumberTitleStringName;
+extern NSString * const kIBGInvalidNumberMessageStringName;
 extern NSString * const kIBGInvocationTitleStringName;
 extern NSString * const kIBGFeatureRequetsPromptName;
 extern NSString * const kIBGAskAQuestionStringName;
 extern NSString * const kIBGReportBugStringName;
 extern NSString * const kIBGReportFeedbackStringName;
+extern NSString * const kIBGReportBugDescriptionStringName;
+extern NSString * const kIBGReportFeedbackDescriptionStringName;
+extern NSString * const kIBGReportQuestionDescriptionStringName;
+extern NSString * const kIBGRequestFeatureDescriptionStringName;
 extern NSString * const kIBGPhotoPickerTitle;
 extern NSString * const kIBGProgressViewTitle;
 extern NSString * const kIBGGalleryPermissionDeniedAlertTitle;
@@ -49,6 +55,8 @@ extern NSString * const kIBGMaximumSizeExceededAlertMessage;
 extern NSString * const kIBGiCloudImportErrorAlertTitle;
 extern NSString * const kIBGiCloudImportErrorAlertMessage;
 extern NSString * const kIBGEmailFieldPlaceholderStringName;
+extern NSString * const kIBGNumberFieldPlaceholderStringName;
+extern NSString * const kIBGNumberInfoAlertMessageStringName;
 extern NSString * const kIBGCommentFieldPlaceholderForBugReportStringName;
 extern NSString * const kIBGCommentFieldPlaceholderForFeedbackStringName;
 extern NSString * const kIBGCommentFieldPlaceholderForQuestionStringName;
@@ -137,7 +145,7 @@ extern NSString * const kIBGStringFeatureRequestMyFeaturesText;
 extern NSString * const kIBGSurveyIntroTitleText;
 extern NSString * const kIBGSurveyIntroDescriptionText;
 extern NSString * const kIBGSurveyIntroTakeSurveyButtonText;
-extern NSString * const kIBGSurveyIntroDismissButtonText;
+extern NSString * const kIBDismissButtonTitleStringName;
 extern NSString * const kIBGSurveyThankYouTitleText DEPRECATED_MSG_ATTRIBUTE("kIBGSurveyThankYouTitleText is deprecated. You can edit this string from the dashboard, and use kIBGCustomSurveyThankYouTitleText for Custom surveys.");
 extern NSString * const kIBGSurveyThankYouDescriptionText DEPRECATED_MSG_ATTRIBUTE("kIBGSurveyThankYouDescriptionText is deprecated. You can edit this string from the dashboard, and use kIBGCustomSurveyThankYouDescriptionText for Custom surveys.");
 extern NSString * const kIBGStoreRatingThankYouTitleText;
@@ -296,20 +304,6 @@ typedef NS_ENUM(NSInteger, IBGLocale) {
 };
 
 /**
- Verbosity level of the SDK debug logs. This has nothing to do with IBGLog, and only affect the logs used to debug the
- SDK itself.
- 
- Defaults to IBGSDKDebugLogsLevelError. Make sure you only use IBGSDKDebugLogsLevelError or IBGSDKDebugLogsLevelNone in
- production builds.
- */
-typedef NS_ENUM(NSInteger, IBGSDKDebugLogsLevel) {
-    IBGSDKDebugLogsLevelVerbose,
-    IBGSDKDebugLogsLevelDebug,
-    IBGSDKDebugLogsLevelError,
-    IBGSDKDebugLogsLevelNone
-};
-
-/**
  The prompt option selected in Instabug prompt.
  */
 typedef NS_OPTIONS(NSInteger, IBGPromptOption) {
@@ -339,6 +333,20 @@ typedef NS_ENUM(NSInteger, IBGLogLevel) {
     IBGLogLevelWarning,
     IBGLogLevelError,
     IBGLogLevelFatal
+};
+
+/**
+ Verbosity level of the SDK debug logs. This has nothing to do with IBGLog, and only affect the logs used to debug the
+ SDK itself.
+ 
+ Defaults to IBGSDKDebugLogsLevelError. Make sure you only use IBGSDKDebugLogsLevelError or IBGSDKDebugLogsLevelNone in
+ production builds.
+ */
+typedef NS_ENUM(NSInteger, IBGSDKDebugLogsLevel) {
+    IBGSDKDebugLogsLevelVerbose = 1,
+    IBGSDKDebugLogsLevelDebug = 2,
+    IBGSDKDebugLogsLevelError = 3,
+    IBGSDKDebugLogsLevelNone = 4
 };
 
 /**

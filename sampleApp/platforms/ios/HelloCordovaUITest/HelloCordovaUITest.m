@@ -21,8 +21,7 @@
 - (void)testInstabugSendBugReport {
     
     XCUIApplication *app = [[XCUIApplication alloc] init];
-    XCUIElement *ibgfloatingbuttonaccessibilityidentifierElement = app/*@START_MENU_TOKEN@*/.otherElements[@"IBGFloatingButtonAccessibilityIdentifier"]/*[[".otherElements[@\"Floating Button\"]",".otherElements[@\"IBGFloatingButtonAccessibilityIdentifier\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/;
-    [ibgfloatingbuttonaccessibilityidentifierElement tap];
+    [app/*@START_MENU_TOKEN@*/.buttons[@"IBGFloatingButtonAccessibilityIdentifier"]/*[[".windows[@\"Floating button window\"]",".buttons[@\"Floating Button\"]",".buttons[@\"IBGFloatingButtonAccessibilityIdentifier\"]"],[[[-1,2],[-1,1],[-1,0,1]],[[-1,2],[-1,1]]],[0]]@END_MENU_TOKEN@*/ tap];
     [app.tables.staticTexts[@"Report a bug"] tap];
     
     XCUIElement *textField = app.scrollViews.otherElements.textFields[@"IBGBugInputViewEmailFieldAccessibilityIdentifier"];

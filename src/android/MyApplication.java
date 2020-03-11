@@ -17,6 +17,14 @@ public class MyApplication extends MultiDexApplication
     @Override
     public void onCreate()
     {
+        new Instabug.Builder(
+                this,
+                "YOUR_ANDROID_TOKEN",
+                InstabugInvocationEvent.SHAKE
+        ).build();
+        BugReporting.setFloatingButtonEdge(InstabugFloatingButtonEdge.LEFT);
+        BugReporting.setFloatingButtonOffset(250);
+        Instabug.setPrimaryColor(Color.parseColor("#1D82DC"));
         super.onCreate();
     }
 

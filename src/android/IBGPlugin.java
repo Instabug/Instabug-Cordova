@@ -8,7 +8,6 @@ import android.os.Looper;
 import android.util.Log;
 
 import com.instabug.bug.BugReporting;
-import com.instabug.bug.invocation.InvocationOption;
 import com.instabug.bug.invocation.Option;
 import com.instabug.chat.Chats;
 import com.instabug.chat.Replies;
@@ -232,21 +231,7 @@ public class IBGPlugin extends CordovaPlugin {
      *
      * @param callbackContext Used when calling back into JavaScript
      */
-    public void activate(final CallbackContext callbackContext, JSONArray args) {
-        try {
-            activationIntent.putExtra("token", args.optJSONObject(0).getString("token"));
-        } catch (JSONException e) {
-            callbackContext.error("An application token must be provided.");
-            return;
-        }
-
-        try {
-            activationIntent.putExtra("invocation", args.getString(1));
-        } catch (JSONException e) {
-            callbackContext.error("An invocation event must be provided.");
-            return;
-        }
-
+    private void activate(final CallbackContext callbackContext, JSONArray args) {
         this.options = args.optJSONObject(2);
         if (options != null) {
             // Attach extras
@@ -666,7 +651,7 @@ public class IBGPlugin extends CordovaPlugin {
     public void setInvocationEvents(final CallbackContext callbackContext, JSONArray args) {
         JSONArray events = args.optJSONArray(0);
         String[] stringArrayOfEvents = toStringArray(events);
-        ArrayList<InstabugInvocationEvent> invocationEvents = new ArrayList<InstabugInvocationEvent>();
+        final ArrayList<InstabugInvocationEvent> invocationEvents = new ArrayList<InstabugInvocationEvent>();
         if(stringArrayOfEvents.length != 0) {
             try {
                 for (String event : stringArrayOfEvents) {
@@ -696,7 +681,12 @@ public class IBGPlugin extends CordovaPlugin {
                         callbackContext.error("A valid event type must be provided.");
                     }
                 }
-                BugReporting.setInvocationEvents(invocationEvents.toArray(new InstabugInvocationEvent[0]));
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        BugReporting.setInvocationEvents(invocationEvents.toArray(new InstabugInvocationEvent[0]));
+                    }
+                });
             } catch (IllegalStateException e) {
                 callbackContext.error(errorMsg);
             }
