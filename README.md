@@ -49,13 +49,13 @@ sourceSets {
 4.  Make sure the following snippet is added to your project level `build.gradle`, if not you can manually add it as follows:.
 
 ```dart
-allprojects {
+    allprojects {
 	repositories {
 	    maven {
 	        url "https://sdks.instabug.com/nexus/repository/instabug-cp"
 	    }
 	}
-}
+    }
 ```
 
 ### iOS
