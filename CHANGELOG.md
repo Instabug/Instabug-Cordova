@@ -1,3 +1,7 @@
+## v9.1.0 (2020-03-19)
+
+* Bump native SDKs to v9.1
+
 ## v9.0.0 (2020-03-10)
 
 * Bump native SDKs to v9
