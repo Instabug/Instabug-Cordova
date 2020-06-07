@@ -107,7 +107,7 @@ BugReporting.setEnabled = function(isEnabled, success, error) {
  */
 BugReporting.setReportTypes = function(reportTypes, success, error) {
   var validatedTypes = [];
-  for (let i = 0; i < reportTypes.length; i++) {
+  for (var i = 0; i < reportTypes.length; i++) {
     var validatedType = getReportType()[reportTypes[i]];
     if (validatedType) {
       validatedTypes.push(validatedType);
