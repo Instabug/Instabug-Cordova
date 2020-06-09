@@ -62,7 +62,9 @@
     /*
      * Hide the Top Activity THROBBER in the Battery Bar
      */
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    dispatch_async(dispatch_get_main_queue(), ^{
+       [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO]; 
+    });
 
     [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:CDVPageDidLoadNotification object:self.enginePlugin.webView]];
 }
