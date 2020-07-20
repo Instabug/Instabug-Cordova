@@ -1,3 +1,9 @@
+## v9.1.6 (2020-07-20)
+
+* Bump native SDKs to v9.1.6
+* Fixes an issue with crashing UI calls running on background thread
+* Fixes an issue where setLocale does not work on Android
+
 ## v9.1.0 (2020-03-19)
 
 * Bump native SDKs to v9.1
