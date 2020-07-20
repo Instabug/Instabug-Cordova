@@ -18,6 +18,7 @@ import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
 import com.instabug.library.OnSdkDismissCallback;
 import com.instabug.library.extendedbugreport.ExtendedBugReport;
+import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.bug.invocation.InvocationMode;
 import com.instabug.library.invocation.OnInvokeCallback;
@@ -49,6 +50,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * This plugin initializes Instabug.
@@ -1134,6 +1136,25 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
+     * Change Locale of Instabug UI elements(defaults to English)
+     *
+     *
+     * @param args .optString(0)      locale name
+     *
+     * @param callbackContext Used when calling back into JavaScript
+     */
+    public void setLocale(final CallbackContext callbackContext, JSONArray args) {
+        String locale = args.optString(0);
+        try {
+            InstabugLocale instabugLocale = parseLocale(locale);
+            Instabug.setLocale(new Locale(instabugLocale.getCode(), instabugLocale.getCountry()));
+            callbackContext.success();
+        } catch (IllegalStateException e) {
+            callbackContext.error(errorMsg);
+        }
+    }
+
+    /**
      * Adds intent extras for all options passed to activate().
      */
     private void applyOptions() {
@@ -1191,6 +1212,48 @@ public class IBGPlugin extends CordovaPlugin {
         } else if ("disablePostSendingDialog".equals(invocationOption)) {
             return Option.DISABLE_POST_SENDING_DIALOG;
         } else return -1;
+    }
+
+    /**
+     * Convenience method for converting string to Locale.
+     *
+     * @param locale
+     *        String shortcode for locale
+     */
+    public static InstabugLocale parseLocale(String locale) {
+        if ("arabic".equals(locale)) {
+            return InstabugLocale.ARABIC;
+        } else if ("chineseSimplified".equals(locale)) {
+            return InstabugLocale.SIMPLIFIED_CHINESE;
+        } else if ("chineseTraditional".equals(locale)) {
+            return InstabugLocale.TRADITIONAL_CHINESE;
+        } else if ("english".equals(locale)) {
+            return InstabugLocale.ENGLISH;
+        } else if ("french".equals(locale)) {
+            return InstabugLocale.FRENCH;
+        } else if ("german".equals(locale)) {
+            return InstabugLocale.GERMAN;
+        } else if ("italian".equals(locale)) {
+            return InstabugLocale.ITALIAN;
+        } else if ("japanese".equals(locale)) {
+            return InstabugLocale.JAPANESE;
+        } else if ("korean".equals(locale)) {
+            return InstabugLocale.KOREAN;
+        } else if ("polish".equals(locale)) {
+            return InstabugLocale.POLISH;
+        } else if ("portugueseBrazil".equals(locale)) {
+            return InstabugLocale.PORTUGUESE_BRAZIL;
+        } else if ("russian".equals(locale)) {
+            return InstabugLocale.RUSSIAN;
+        } else if ("spanish".equals(locale)) {
+            return InstabugLocale.SPANISH;
+        } else if ("swedish".equals(locale)) {
+            return InstabugLocale.SWEDISH;
+        } else if ("turkish".equals(locale)) {
+            return InstabugLocale.TURKISH;
+        } else if ("czech".equals(locale)) {
+            return InstabugLocale.CZECH;
+        } else return InstabugLocale.ENGLISH;
     }
 
     /**
