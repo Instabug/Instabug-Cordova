@@ -70,6 +70,10 @@ cordova.plugins.instabug.activate(
         ios: 'MY_IOS_TOKEN'
     },
     'shake',
+    {
+    	commentRequired: true,
+    	colorTheme: 'light'
+    },
     function () {
         console.log('Instabug initialized.');
     },
