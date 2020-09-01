@@ -49,6 +49,13 @@ var getLocales = function () {
     };
 };
 
+var getColorThemes = function () {
+    return {
+        light: 'light',
+        dark: 'dark',
+    };
+};
+
 var Instabug = function () {
 };
 
@@ -79,7 +86,7 @@ Instabug.startWithToken = function (token, events, options, success, error) {
   if (validatedEvents !== undefined || validatedEvents.length != 0) {
     exec(success, error, 'IBGPlugin', 'startWithToken', [token, validatedEvents, options]);
   } else {
-      console.log('Could not activate Instabug - invocation event is not valid.');
+    console.log('Could not activate Instabug - invocation event is not valid.');
   }
 };
 
@@ -219,6 +226,16 @@ Instabug.setLocale = function (locale, success, error) {
         exec(success, error, 'IBGPlugin', 'setLocale', [validatedLocale]);
     } else {
         console.log('Could not set locale - "' + locale + '" is not valid.');
+    }
+};
+
+Instabug.setColorTheme = function (colorTheme, success, error) {
+    var validatedColorTheme = getColorThemes()[colorTheme];
+
+    if (validatedColorTheme) {
+        exec(success, error, 'IBGPlugin', 'setColorTheme', [validatedColorTheme]);
+    } else {
+        console.log('Could not set color theme - "' + colorTheme + '" is not valid.');
     }
 };
 
