@@ -16,6 +16,7 @@ import com.instabug.featuresrequest.ActionType;
 import com.instabug.featuresrequest.FeatureRequests;
 import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
+import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.OnSdkDismissCallback;
 import com.instabug.library.extendedbugreport.ExtendedBugReport;
 import com.instabug.library.internal.module.InstabugLocale;
@@ -464,6 +465,40 @@ public class IBGPlugin extends CordovaPlugin {
 
         } else
             callbackContext.error("A colorInt must be provided.");
+    }
+
+    /**
+     * Convenience method for parsing and setting
+     * whether the desired color theme for the SDK
+     * invocation.
+     *
+     * @param callbackContext Used when calling back into JavaScript
+     * @param args .optString(0)     Theme
+     *
+     */
+    public void setColorTheme(final CallbackContext callbackContext, final JSONArray args) {
+        final String colorTheme = args.optString(0);
+        if (colorTheme != null) {
+            try {
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if ("dark".equals(colorTheme)) {
+                            Instabug.setColorTheme(InstabugColorTheme.InstabugColorThemeDark);
+                        } else if ("light".equals(colorTheme)) {
+                            Instabug.setColorTheme(InstabugColorTheme.InstabugColorThemeLight);
+                        } else {
+                            callbackContext.error("Color theme value is not valid.");
+                        }
+                    }
+                });
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+                callbackContext.error(errorMsg);
+            }
+        } else {
+            callbackContext.error("A color theme must be provided.");
+        }
     }
 
     /**
