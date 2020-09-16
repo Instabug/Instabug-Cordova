@@ -14,7 +14,7 @@ Currently, this plugin can only be installed via the Command-Line Interface.
 cordova plugin add instabug-cordova
 ```
 
-##### Ionic
+#### Ionic
 
 If you're using this plugin with Ionic, you can install using this command.
 
@@ -85,9 +85,7 @@ cordova.plugins.instabug.activate(
 
 You can change the invocation event with any of the following: `'button'`, `'screenshot'`, `'swipe'`, or `'shake'`.
 
-##### Ionic
-
-If you're using this plugin with Ionic, you need to add this line at the beginning of your **app.component.ts** class.
+**Note:** In case you're using TypeScript, make sure to declare _cordova_ reference at the beginning of your TS class.
 
 ```
 declare let cordova: any;
