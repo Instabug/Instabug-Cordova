@@ -85,7 +85,7 @@ cordova.plugins.instabug.activate(
 
 You can change the invocation event with any of the following: `'button'`, `'screenshot'`, `'swipe'`, or `'shake'`.
 
-**Note:** In case you're using TypeScript, make sure to declare _cordova_ at the beginning of your TS class.
+**Note:** For TypeScript users, make sure to declare _cordova_ at the beginning of your TS class.
 
 ```
 declare let cordova: any;
