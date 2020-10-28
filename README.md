@@ -8,7 +8,7 @@ For more info, visit [Instabug.com](https://instabug.com).
 
 ### Prerequisites
 
-- Starting from Instabug-Cordova v9 we require the compileSdkVersion on Android to be set to minimum of 29.
+- Starting from Instabug-Cordova v9, we require the `compileSdkVersion` on Android to be set to a minimum of `29`.
 
 ### Installation
 
@@ -104,7 +104,6 @@ declare let cordova: any;
 - View hierarchy.
 - Crash reporting.
 - Push notification for in-app messaging.
-
 
 ## License
 
