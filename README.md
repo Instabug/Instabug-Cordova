@@ -8,7 +8,14 @@ For more info, visit [Instabug.com](https://instabug.com).
 
 ### Prerequisites
 
-- Starting from Instabug-Cordova v9, we require the `compileSdkVersion` on Android to be set to a minimum of `29`.
+- Starting from Instabug-Cordova v9, we require the `compileSdkVersion` on Android to be set to a minimum of `29`. It can be set inside the app's `build.gradle` file as below:  
+
+	```
+	    android {
+	        compileSdkVersion 29
+	        ...
+	    }
+	```
 
 ### Installation
 
