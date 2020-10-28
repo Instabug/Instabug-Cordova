@@ -6,6 +6,10 @@ Instabug is a bug reporting and in-app feedback tool that provides your testers 
 
 For more info, visit [Instabug.com](https://instabug.com).
 
+### Prerequisites
+
+- Starting from Instabug-Cordova v9 we require the compileSdkVersion on Android to be set to minimum of 29.
+
 ### Installation
 
 Currently, this plugin can only be installed via the Command-Line Interface.
@@ -92,6 +96,15 @@ If you're using this plugin with Ionic, you need to add this line at the beginni
 ```
 declare let cordova: any;
 ```
+
+### Features that are not supported yet
+- User steps.
+- Repro steps.
+- Network logging.
+- View hierarchy.
+- Crash reporting.
+- Push notification for in-app messaging.
+
 
 ## License
 
