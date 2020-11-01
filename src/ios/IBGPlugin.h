@@ -38,4 +38,6 @@
 
 - (void)setUserAttribute:(CDVInvokedUrlCommand *)command;
 
+- (void)removeUserAttribute:(CDVInvokedUrlCommand *)command;
+
 @end

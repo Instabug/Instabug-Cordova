@@ -1246,6 +1246,27 @@
        [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
      }
 
+    /**
+     * Removes a given key and its associated value from user attributes.
+     * Does nothing if a key does not exist.
+    */
+     - (void) removeUserAttribute:(CDVInvokedUrlCommand*)command
+     {
+       CDVPluginResult* result;
+
+       NSString* key = [command argumentAtIndex:0];
+
+       if (key) {
+           [Instabug removeUserAttributeForKey:key];
+           result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+       } else {
+           result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                      messageAsString:@"key parameter must be provided."];
+       }
+
+       [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+     }
+
    /**
     * Shows one of the surveys that were not shown before, that also have
     * conditions that match the current device/user.
