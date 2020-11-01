@@ -42,4 +42,6 @@
 
 - (void)getUserAttribute:(CDVInvokedUrlCommand *)command;
 
+- (void)getAllUserAttributes:(CDVInvokedUrlCommand *)command;
+
 @end
