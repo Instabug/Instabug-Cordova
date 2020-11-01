@@ -1267,6 +1267,21 @@
        [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
      }
 
+    /**
+     * Returns the user attribute associated with a given key.
+    */
+    - (void) getUserAttribute:(CDVInvokedUrlCommand*)command
+    {
+       CDVPluginResult* result;
+
+       NSString* key = [command argumentAtIndex:0];
+       NSString* userAttribute = @[[Instabug userAttributeForKey:key]];
+
+       result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString: userAttribute];
+
+       [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+    }
+
    /**
     * Shows one of the surveys that were not shown before, that also have
     * conditions that match the current device/user.
