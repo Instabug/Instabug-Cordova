@@ -13,7 +13,6 @@ For more info, visit [Instabug.com](https://instabug.com).
 	```
 	    android {
 	        compileSdkVersion 29
-	        ...
 	    }
 	```
 
