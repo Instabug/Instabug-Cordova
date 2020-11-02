@@ -1224,9 +1224,6 @@
 
     /**
      * Set custom user attributes that are going to be sent with each feedback, bug or crash.
-     *
-     * @param {CDVInvokedUrlCommand*} command
-     *        The command sent from JavaScript
      */
      - (void) setUserAttribute:(CDVInvokedUrlCommand*)command
      {
