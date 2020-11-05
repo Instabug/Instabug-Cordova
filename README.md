@@ -11,9 +11,9 @@ For more info, visit [Instabug.com](https://instabug.com).
 - Starting from Instabug-Cordova v9, we require the `compileSdkVersion` on Android to be set to a minimum of `29`. It can be set inside the app's `build.gradle` file as below:  
 
 	```
-	    android {
-	        compileSdkVersion 29
-	    }
+	android {
+	    compileSdkVersion 29
+	}
 	```
 
 ### Installation
@@ -45,11 +45,11 @@ Starting from _Cordova Android v7.0.0_ `AndroidManifest.xml` location has been c
 If you're using _Cordova Android v7+, please make sure you update its location inside Cordova's `build.gradle` file at `platforms/android/CordovaLib/build.gradle`:
 
 ```
-    sourceSets {
-        main {
-            manifest.srcFile 'src/main/AndroidManifest.xml'
-        }
+sourceSets {
+    main {
+        manifest.srcFile 'src/main/AndroidManifest.xml'
     }
+}
 ```
 
 2. You need to add your app token in the **MyApplication** class, by replacing `YOUR_ANDROID_TOKEN`. (You can find this class under this path `YourProjectName/platforms/android/app/src/main/java/com.instabug.cordova.plugin/MyApplication.java`)
@@ -61,13 +61,13 @@ If you're using _Cordova Android v7+, please make sure you update its location i
 4.  Make sure the following snippet is added to your project level `build.gradle`, if not you can manually add it as follows:.
 
 ```dart
-    allprojects {
-	repositories {
-	    maven {
-	        url "https://sdks.instabug.com/nexus/repository/instabug-cp"
-	    }
-	}
+allprojects {
+    repositories {
+        maven {
+            url "https://sdks.instabug.com/nexus/repository/instabug-cp"
+        }
     }
+}
 ```
 
 ### iOS
