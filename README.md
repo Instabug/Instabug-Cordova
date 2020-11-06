@@ -20,7 +20,7 @@ cordova plugin add instabug-cordova
 ionic cordova plugin add instabug-cordova
 ```
 
-## Android Usage
+## Android Integration Steps
 
 1. Change the name of the application class in your AndroidManifest.xml file to `android:name="com.instabug.cordova.plugin.MyApplication"`.
 
@@ -48,7 +48,7 @@ allprojects {
 	    compileSdkVersion 29
 	}
 
-## iOS Usage
+## iOS Integration Steps
 
 You can initialize the SDK by using this method in your App JS file.
 
@@ -73,13 +73,11 @@ cordova.plugins.instabug.activate(
 
 You can change the invocation event with any of the following: `'button'`, `'screenshot'`, `'swipe'`, or `'shake'`.
 
-
-### TypeScript:
-For TypeScript users, make sure you declare cordova at the beginning of your App TS class:
+⚠️ TypeScript users, make sure you declare cordova at the beginning of your App TS class:
 
 	declare let cordova: any;
 
-### Features that are not supported yet
+## Features Not Yet Supported
 - User steps.
 - Repro steps.
 - Network logging.
