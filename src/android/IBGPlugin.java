@@ -127,6 +127,28 @@ public class IBGPlugin extends CordovaPlugin {
         }
     }
 
+    public void getCordovaPrivateViews() {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                webView.loadUrl("javascript:cordova.plugins.instabug.getPrivateViews()");
+            }
+        });
+    }
+
+    public void returnCordovaPrivateViewsCoordinates(CallbackContext callbackContext, JSONArray args) {
+        String coordinates = args.optString(0);
+        JSONArray arr = new JSONArray();
+        try {
+             arr = new JSONArray(coordinates);
+            Log.e("ALYYYYY", "Call native side here with coordinates");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        callbackContext.success();
+    }
+
     public void getUnreadRepliesCount(CallbackContext callbackContext) {
         callbackContext.success(Replies.getUnreadRepliesCount());
     }

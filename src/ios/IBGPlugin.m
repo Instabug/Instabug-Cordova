@@ -5,6 +5,11 @@
 #import <Instabug/IBGSurveys.h>
 #import <Instabug/IBGFeatureRequests.h>
 
+@interface Instabug (PrivateWillSendAPI)
+
++ (void)setWillTakeScreenshotHandler_private:(void (^)())screenshotHandler;
+
+@end
 /**
  * This plugin initializes Instabug.
  */
@@ -103,6 +108,10 @@
                 [self applyOptions:[command argumentAtIndex:2]];
 
                 result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+                
+                [Instabug setWillTakeScreenshotHandler_private:^() {
+                    [self.commandDelegate evalJs:@"cordova.plugins.instabug.getPrivateViews()"];
+                }];
             }
         } else {
             // Without a token, Instabug cannot be initialized.
@@ -116,6 +125,12 @@
     }
 
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+
+- (void) returnCordovaPrivateViewsCoordinates:(CDVInvokedUrlCommand*)command {
+    NSLog(@"KEDAAA I NEED TO CALL THEE NATIVEE BASSSS");
+    [self sendSuccessResult:command];
 }
 
 - (void) identifyUserWithEmail:(CDVInvokedUrlCommand*)command {

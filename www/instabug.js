@@ -1,3 +1,4 @@
+cordova.define("instabug-cordova.Instabug", function (require, exports, module) {
 var exec = require('cordova/exec');
 
 var getInvocationEvents = function () {
@@ -221,4 +222,31 @@ Instabug.setLocale = function (locale, success, error) {
     }
 };
 
-module.exports = Instabug;
+
+    var privateViews = [];
+
+    Instabug.setPrivateView = function (view) {
+        privateViews.push(view);
+    };
+
+    Instabug.getPrivateViews = function () {
+        let coordinates = [];
+        for (var i = 0; i < privateViews.length; i++) {
+            if (document.getElementById(privateViews[i])) {
+                let newCoordinate = {
+                    x: document.getElementById(privateViews[i]).getBoundingClientRect().x * window.devicePixelRatio,
+                    y: document.getElementById(privateViews[i]).getBoundingClientRect().y * window.devicePixelRatio,
+                    width: document.getElementById(privateViews[i]).getBoundingClientRect().width * window.devicePixelRatio,
+                    height: document.getElementById(privateViews[i]).getBoundingClientRect().height * window.devicePixelRatio,
+                }
+                coordinates.push(newCoordinate);
+                console.log(document.getElementById(privateViews[i]).id, document.getElementById(privateViews[i]).getBoundingClientRect());
+            }
+        }
+        exec(() => { }, () => { }, 'IBGPlugin', 'returnCordovaPrivateViewsCoordinates', [JSON.stringify(coordinates)]);
+        return privateViews;
+    };
+
+    module.exports = Instabug;
+
+});
