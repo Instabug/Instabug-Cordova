@@ -1012,6 +1012,29 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
+     * Customize the attachment options available to users to send with a bug reeport.
+     *
+     * @param callbackContext Used when calling back into JavaScript
+     * @param args .optBoolean(0)           whether or not to include an initial screenshot
+     * @param args .optBoolean(1)           whether or not to allow attaching additional screenshots
+     * @param args .optBoolean(2)           whether or not to allow attaching images from the gallery
+     * @param args .optBoolean(3)           whether or not to allow recording the screen
+     */
+    public void setAttachmentTypesEnabled(final CallbackContext callbackContext, JSONArray args) {
+        Boolean initialScreenshot = args.optBoolean(0);
+        Boolean extraScreenshot = args.optBoolean(1);
+        Boolean galleryImage = args.optBoolean(2);
+        Boolean screenRecording = args.optBoolean(3);
+        try {
+            // Arguments:initialScreenshot, extraScreenshot, galleryImage & ScreenRecording
+            BugReporting.setAttachmentTypesEnabled(initialScreenshot, extraScreenshot, galleryImage, screenRecording);
+            callbackContext.success();
+        } catch (IllegalStateException e) {
+            callbackContext.error(errorMsg);
+        }
+    }
+
+    /**
      * Sets whether the extended bug report mode should be disabled, enabled with
      * required fields or enabled with optional fields.
      *
