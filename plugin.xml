@@ -102,8 +102,15 @@
             </feature>
         </config-file>
 
-        <framework src="src/ios/Instabug.framework" custom="true" embed="true" />
-        <hook type="after_plugin_install" src="scripts/zStripScript.js" />
+        <podspec>
+            <config>
+                <source url="https://github.com/CocoaPods/Specs.git"/>
+            </config>
+            <pods use-frameworks="true">
+                <pod name="Instabug" spec="10.1.1" />
+            </pods>
+        </podspec>
+
         <header-file src="src/ios/IBGPlugin.h" />
         <source-file src="src/ios/IBGPlugin.m" />
     </platform>
