@@ -57,6 +57,12 @@ jobs:
           name: Add Android Token
           command: cd ../sampleApp/platforms/android/app/src/main/java/com/instabug/cordova/plugin; ex -s -c '%s/YOUR_ANDROID_TOKEN/$CORDOVA_E2E_APP_TOKEN/g|x' MyApplication.java
       - run:
+          name: Install gnu-sed to edit initialization code
+          command: HOMEBREW_NO_AUTO_UPDATE=1 brew install gnu-sed
+      - run:
+          name: Import & disable Instabug Android welcome message
+          command: cd ../sampleApp/platforms/android/app/src/main/java/com/instabug/cordova/plugin; gsed -i '11 a import com.instabug.library.ui.onboarding.WelcomeMessage;' MyApplication.java; gsed -i '27 a Instabug.setWelcomeMessageState(WelcomeMessage.State.DISABLED);' MyApplication.java
+      - run:
           name: Build App
           command: cd ../sampleApp; cordova build android
       - run:

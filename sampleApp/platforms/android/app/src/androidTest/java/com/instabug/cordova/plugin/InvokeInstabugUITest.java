@@ -27,7 +27,11 @@ public class InvokeInstabugUITest {
 
     @Test
     public void ensureInstabugInvocati1on() throws InterruptedException {
-        Thread.sleep(5000);
+        try {
+            Thread.sleep(7000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         onView(withResourceName("instabug_floating_button")).perform(click());
 
         // onView(withText("Report a bug")).perform(click());
