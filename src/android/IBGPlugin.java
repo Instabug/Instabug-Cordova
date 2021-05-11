@@ -1266,8 +1266,6 @@ public class IBGPlugin extends CordovaPlugin {
             return InstabugLocale.TRADITIONAL_CHINESE;
         } else if ("danish".equals(locale)) {
             return InstabugLocale.DANISH;
-        } else if ("dutch".equals(locale)) {
-            return InstabugLocale.DUTCH;
         } else if ("english".equals(locale)) {
             return InstabugLocale.ENGLISH;
         } else if ("french".equals(locale)) {
