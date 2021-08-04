@@ -30,8 +30,11 @@ var getWelcomeMessageMode = function () {
 var getLocales = function () {
     return {
         arabic: 'arabic',
+        azerbaijani: 'azerbaijani',
         chineseSimplified: 'chineseSimplified',
         chineseTraditional: 'chineseTraditional',
+        danish: 'danish',
+        dutch: 'dutch',
         english: 'english',
         french: 'french',
         german: 'german',

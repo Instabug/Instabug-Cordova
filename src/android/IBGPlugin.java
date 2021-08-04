@@ -1258,10 +1258,14 @@ public class IBGPlugin extends CordovaPlugin {
     public static InstabugLocale parseLocale(String locale) {
         if ("arabic".equals(locale)) {
             return InstabugLocale.ARABIC;
+        } else if ("azerbaijani".equals(locale)) {
+            return InstabugLocale.AZERBAIJANI;
         } else if ("chineseSimplified".equals(locale)) {
             return InstabugLocale.SIMPLIFIED_CHINESE;
         } else if ("chineseTraditional".equals(locale)) {
             return InstabugLocale.TRADITIONAL_CHINESE;
+        } else if ("danish".equals(locale)) {
+            return InstabugLocale.DANISH;
         } else if ("english".equals(locale)) {
             return InstabugLocale.ENGLISH;
         } else if ("french".equals(locale)) {

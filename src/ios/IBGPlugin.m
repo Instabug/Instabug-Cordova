@@ -1565,6 +1565,8 @@
         return IBGLocaleArabic;
     } else if ([locale isEqualToString:@"chineseTaiwan"]) {
         return IBGLocaleChineseTaiwan;
+    } else if ([locale isEqualToString:@"azerbaijani"]) {
+        return IBGLocaleAzerbaijani;
     } else if ([locale isEqualToString:@"chineseSimplified"]) {
         return IBGLocaleChineseSimplified;
     } else if ([locale isEqualToString:@"chineseTraditional"]) {
@@ -1573,6 +1575,8 @@
         return IBGLocaleEnglish;
     } else if ([locale isEqualToString:@"danish"]) {
         return IBGLocaleDanish;
+    } else if ([locale isEqualToString:@"dutch"]) {
+        return IBGLocaleDutch;
     } else if ([locale isEqualToString:@"english"]) {
         return IBGLocaleEnglish;
     } else if ([locale isEqualToString:@"french"]) {

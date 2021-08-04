@@ -67,11 +67,11 @@ jobs:
             adb shell settings put global animator_duration_scale 0.0
             adb shell settings put secure long_press_timeout 1500
       - run:
-          name: Run UI Tests
-          command: cd ../sampleApp/platforms/android; ./gradlew app:connectedAndroidTest
-      - run:
           name: Run unit Tests
           command: cd ../sampleApp/platforms/android; ./gradlew test
+      # - run:
+      #     name: Run UI Tests
+      #     command: cd ../sampleApp/platforms/android; ./gradlew app:connectedAndroidTest
 
   ios_tests:
     macos:
