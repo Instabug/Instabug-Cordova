@@ -1,7 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 const editManist = require('./edit_manifest');
-require('./link_gradle');
+// require('./link_gradle');
 
 const ibgBuildGradleExists = () => {
   var target = path.join('plugins', 'instabug-cordova', 'build.gradle');
