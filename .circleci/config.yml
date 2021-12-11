@@ -23,13 +23,12 @@ jobs:
       - run:
           name: Install Android sdk
           command: |
-            HOMEBREW_NO_AUTO_UPDATE=1 brew tap homebrew/cask
-            HOMEBREW_NO_AUTO_UPDATE=1 brew cask install android-sdk
+            HOMEBREW_NO_AUTO_UPDATE=1 brew install --cask android-sdk
       - run:
           name: Install Gradle
           command: |
-            HOMEBREW_NO_AUTO_UPDATE=1 brew tap homebrew/cask
             HOMEBREW_NO_AUTO_UPDATE=1 brew install gradle
+          no_output_timeout: 30m
       - run:
           name: Install emulator dependencies
           command: (yes | sdkmanager "platform-tools" "platforms;android-26" "extras;intel;Hardware_Accelerated_Execution_Manager" "build-tools;26.0.0" "system-images;android-26;google_apis;x86" "emulator" --verbose) || true
@@ -67,11 +66,11 @@ jobs:
             adb shell settings put global animator_duration_scale 0.0
             adb shell settings put secure long_press_timeout 1500
       - run:
-          name: Run UI Tests
-          command: cd ../sampleApp/platforms/android; ./gradlew app:connectedAndroidTest
-      - run:
           name: Run unit Tests
           command: cd ../sampleApp/platforms/android; ./gradlew test
+      # - run:
+      #     name: Run UI Tests
+      #     command: cd ../sampleApp/platforms/android; ./gradlew app:connectedAndroidTest
 
   ios_tests:
     macos:

@@ -6,41 +6,23 @@ Instabug is a bug reporting and in-app feedback tool that provides your testers 
 
 For more info, visit [Instabug.com](https://instabug.com).
 
-### Installation
+## Installation
 
-Currently, this plugin can only be installed via the Command-Line Interface.
+### Cordova:
 
 ```
 cordova plugin add instabug-cordova
 ```
 
-##### Ionic
-
-If you're using this plugin with Ionic, you can install using this command.
+### Ionic:
 
 ```
 ionic cordova plugin add instabug-cordova
 ```
 
-## Usage
-
-To initialize Instabug in your app, you need to do the following:
-
-### Android
+## Android Integration Steps
 
 1. Change the name of the application class in your AndroidManifest.xml file to `android:name="com.instabug.cordova.plugin.MyApplication"`.
-
-Starting from _Cordova Android v7.0.0_ `AndroidManifest.xml` location has been changed and its new path now is `app/src/main/AndroidManifest.xml` ([read more](http://cordova.apache.org/announcements/2017/12/04/cordova-android-7.0.0.html)).
-
-If you're using _Cordova Android v7+, please make sure you update its location inside Cordova's `build.gradle` file at `platforms/android/CordovaLib/build.gradle`:
-
-```
-    sourceSets {
-        main {
-            manifest.srcFile 'src/main/AndroidManifest.xml'
-        }
-    }
-```
 
 2. You need to add your app token in the **MyApplication** class, by replacing `YOUR_ANDROID_TOKEN`. (You can find this class under this path `YourProjectName/platforms/android/app/src/main/java/com.instabug.cordova.plugin/MyApplication.java`)
 
@@ -51,18 +33,24 @@ If you're using _Cordova Android v7+, please make sure you update its location i
 4.  Make sure the following snippet is added to your project level `build.gradle`, if not you can manually add it as follows:.
 
 ```dart
-    allprojects {
-	repositories {
-	    maven {
-	        url "https://sdks.instabug.com/nexus/repository/instabug-cp"
-	    }
-	}
+allprojects {
+    repositories {
+        maven {
+            url "https://sdks.instabug.com/nexus/repository/instabug-cp"
+        }
     }
+}
 ```
 
-### iOS
+⚠️ Starting from Instabug-Cordova v9, we require the `compileSdkVersion` to be set to a minimum of `29`. It can be set inside the app's `build.gradle` file as below:  
 
-You can initialize the SDK by using this method in your JS class
+	android {
+	    compileSdkVersion 29
+	}
+
+## iOS Integration Steps
+
+You can initialize the SDK by using this method in your App JS file.
 
 ```
 cordova.plugins.instabug.activate(
@@ -70,6 +58,10 @@ cordova.plugins.instabug.activate(
         ios: 'MY_IOS_TOKEN'
     },
     'shake',
+    {
+    	commentRequired: true,
+    	colorTheme: 'light'
+    },
     function () {
         console.log('Instabug initialized.');
     },
@@ -81,13 +73,17 @@ cordova.plugins.instabug.activate(
 
 You can change the invocation event with any of the following: `'button'`, `'screenshot'`, `'swipe'`, or `'shake'`.
 
-##### Ionic
+⚠️  TypeScript users, make sure you declare `cordova` at the beginning of your app class (app.component.ts):
 
-If you're using this plugin with Ionic, you need to add this line at the beginning of your **app.component.ts** class.
+	declare let cordova: any;
 
-```
-declare let cordova: any;
-```
+## Features Not Yet Supported
+- User steps.
+- Repro steps.
+- Network logging.
+- View hierarchy.
+- Crash reporting.
+- Push notification for in-app messaging.
 
 ## License
 

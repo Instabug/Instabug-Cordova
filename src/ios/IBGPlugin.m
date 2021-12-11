@@ -1075,13 +1075,43 @@
  * @param {NSString*} theme
  *        NSString representation of color theme
  */
-- (void) setColorTheme:(NSString*)theme
+- (void) setColorThemeInOptions:(NSString*)theme
 {
     if ([theme isEqualToString:@"dark"]) {
         [Instabug setColorTheme:IBGColorThemeDark];
     } else if ([theme isEqualToString:@"light"]) {
         [Instabug setColorTheme:IBGColorThemeLight];
     }
+}
+
+/**
+ * Sets the SDK color theme
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) setColorTheme:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* result;
+    NSString* theme = [command argumentAtIndex:0];
+
+    if ([theme length] > 0) {
+        if ([theme isEqualToString:@"dark"]) {
+            [Instabug setColorTheme:IBGColorThemeDark];
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+        } else if ([theme isEqualToString:@"light"]) {
+            [Instabug setColorTheme:IBGColorThemeLight];
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+        } else {
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"Color theme value is not valid."];
+        }
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                   messageAsString:@"Color theme must be provided."];
+    }
+
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
 /**
@@ -1192,6 +1222,77 @@
        [self sendSuccessResult:command];
      }
 
+    /**
+     * Set custom user attributes that are going to be sent with each feedback, bug or crash.
+     */
+     - (void) setUserAttribute:(CDVInvokedUrlCommand*)command
+     {
+       CDVPluginResult* result;
+
+       NSString* key = [command argumentAtIndex:0];
+       NSString* value = [command argumentAtIndex:1];
+
+       if (key && value) {
+           [Instabug setUserAttribute:value withKey:key];
+           result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+       } else {
+           result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                      messageAsString:@"key and value parameters must be provided."];
+       }
+
+       [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+     }
+
+    /**
+     * Removes a given key and its associated value from user attributes.
+     * Does nothing if a key does not exist.
+    */
+     - (void) removeUserAttribute:(CDVInvokedUrlCommand*)command
+     {
+       CDVPluginResult* result;
+
+       NSString* key = [command argumentAtIndex:0];
+
+       if (key) {
+           [Instabug removeUserAttributeForKey:key];
+           result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+       } else {
+           result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                      messageAsString:@"key parameter must be provided."];
+       }
+
+       [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+     }
+
+    /**
+     * Returns the user attribute associated with a given key.
+    */
+    - (void) getUserAttribute:(CDVInvokedUrlCommand*)command
+    {
+       CDVPluginResult* result;
+
+       NSString* key = [command argumentAtIndex:0];
+       NSString* userAttribute = @[[Instabug userAttributeForKey:key]];
+
+       result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString: userAttribute];
+
+       [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+    }
+
+    /**
+     * Returns the user attribute associated with a given key.
+    */
+    - (void) getAllUserAttributes:(CDVInvokedUrlCommand*)command
+    {
+       CDVPluginResult* result;
+
+       NSDictionary* userAttributes = @[[Instabug userAttributes]];
+
+       result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:userAttributes];
+
+       [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+    }
+
    /**
     * Shows one of the surveys that were not shown before, that also have
     * conditions that match the current device/user.
@@ -1244,7 +1345,7 @@
     [self setTrackingUserStepsEnabled:[[options objectForKey:@"enableTrackingUserSteps"] stringValue]];
     [self setPushNotificationsEnabled:[[options objectForKey:@"enablePushNotifications"] stringValue]];
     [self setSessionProfilerEnabled:[[options objectForKey:@"enableSessionProfiler"] stringValue]];
-    [self setColorTheme:[options objectForKey:@"colorTheme"]];
+    [self setColorThemeInOptions:[options objectForKey:@"colorTheme"]];
     [self setWelcomeMessageMode:[options objectForKey:@"welcomeMessageMode"]];
 }
 
@@ -1464,6 +1565,8 @@
         return IBGLocaleArabic;
     } else if ([locale isEqualToString:@"chineseTaiwan"]) {
         return IBGLocaleChineseTaiwan;
+    } else if ([locale isEqualToString:@"azerbaijani"]) {
+        return IBGLocaleAzerbaijani;
     } else if ([locale isEqualToString:@"chineseSimplified"]) {
         return IBGLocaleChineseSimplified;
     } else if ([locale isEqualToString:@"chineseTraditional"]) {
@@ -1472,6 +1575,8 @@
         return IBGLocaleEnglish;
     } else if ([locale isEqualToString:@"danish"]) {
         return IBGLocaleDanish;
+    } else if ([locale isEqualToString:@"dutch"]) {
+        return IBGLocaleDutch;
     } else if ([locale isEqualToString:@"english"]) {
         return IBGLocaleEnglish;
     } else if ([locale isEqualToString:@"french"]) {

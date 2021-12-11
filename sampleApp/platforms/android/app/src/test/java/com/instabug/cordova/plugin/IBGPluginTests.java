@@ -9,6 +9,7 @@ import android.view.View;
 import android.webkit.WebChromeClient;
 
 import com.instabug.library.Instabug;
+import com.instabug.library.InstabugColorTheme;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
@@ -253,5 +254,20 @@ public class IBGPluginTests {
         Instabug.setPrimaryColor(color);
     }
 
+    @Test
+    public void givenArg$setColorTheme_whenQuery_thenShouldCallNativeApiWithArg() {
+        // given
+        PowerMockito.mockStatic(Instabug.class);
+        String colorTheme = "dark";
+        JSONArray args = new JSONArray();
+        args.put(colorTheme);
+
+        // when
+        cordovaModule.execute("setColorTheme", args, callbackContext);
+
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        Instabug.setColorTheme(InstabugColorTheme.InstabugColorThemeDark);
+    }
 
 }

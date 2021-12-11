@@ -1,3 +1,10 @@
+## v9.1.7 (2021-05-11)
+
+* Adds support for Azerbaijani and Danish locales
+* Removes the use of `android:requestLegacyExternalStorage` attribute on Android
+* Bumps iOS SDK to v9.1.7
+* Bumps Android SDK to v9.1.8
+
 ## v9.1.6 (2020-07-20)
 
 * Bump native SDKs to v9.1.6
