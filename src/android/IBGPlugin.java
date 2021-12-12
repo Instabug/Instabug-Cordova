@@ -454,6 +454,7 @@ public class IBGPlugin extends CordovaPlugin {
                     @Override
                     public void run() {
                         Instabug.setPrimaryColor(colorInt);
+                        callbackContext.success();
                     }
                 });
 
@@ -485,8 +486,10 @@ public class IBGPlugin extends CordovaPlugin {
                     public void run() {
                         if ("dark".equals(colorTheme)) {
                             Instabug.setColorTheme(InstabugColorTheme.InstabugColorThemeDark);
+                            callbackContext.success();
                         } else if ("light".equals(colorTheme)) {
                             Instabug.setColorTheme(InstabugColorTheme.InstabugColorThemeLight);
+                            callbackContext.success();
                         } else {
                             callbackContext.error("Color theme value is not valid.");
                         }

@@ -89,6 +89,10 @@ Instabug.setPrimaryColor = function (colorInteger, success, error) {
     exec(success, error, 'IBGPlugin', 'setPrimaryColor', [colorInteger]);
 };
 
+Instabug.setColorTheme = function (themeName, success, error) {
+    exec(success, error, 'IBGPlugin', 'setColorTheme', [themeName]);
+};
+
 Instabug.setViewHierarchyEnabled = function (enabled, success, error) {
     exec(success, error, 'IBGPlugin', 'setViewHierarchyEnabled', [enabled]);
 };
