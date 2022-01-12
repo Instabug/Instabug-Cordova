@@ -107,7 +107,7 @@
                 <source url="https://github.com/CocoaPods/Specs.git"/>
             </config>
             <pods use-frameworks="true">
-                <pod name="Instabug" spec="10.1.1" />
+                <pod name="Instabug" spec="10.11.3" />
             </pods>
         </podspec>
 
