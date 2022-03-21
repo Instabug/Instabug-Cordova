@@ -19,8 +19,3 @@ android {
         applicationId = doExtractStringFromManifest("package")
     }
 }
-
-dependencies {
-	implementation 'com.instabug.library:instabug:10.13.0'
-	implementation 'com.android.support:multidex:1.0.0'
-}

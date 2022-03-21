@@ -69,8 +69,6 @@
             <service android:name="com.instabug.library.analytics.network.InstabugAnalyticsUploaderService"/>
             <service android:name="com.instabug.chat.network.InstabugMessageUploaderService"/>
 
-
-
         </config-file>
 
         <config-file target="AndroidManifest.xml" parent="/manifest">
@@ -83,12 +81,15 @@
             <uses-permission android:name="android.permission.INTERNET"/>
         </config-file>
 
+        <framework src="com.instabug.library:instabug:10.13.0"/>
+        <framework src="com.android.support:multidex:1.0.0"/>
         <framework src="build.gradle" custom="true" type="gradleReference"/>
 
         <source-file src="src/android/IBGPluginActivity.java" target-dir="src/com/instabug/cordova/plugin"/>
         <source-file src="src/android/IBGPlugin.java" target-dir="src/com/instabug/cordova/plugin"/>
         <source-file src="src/android/MyApplication.java" target-dir="src/com/instabug/cordova/plugin"/>
         <source-file src="src/android/util/Util.java" target-dir="src/com/instabug/cordova/plugin/util"/>
+
         <hook type="before_plugin_install" src="scripts/android/before_plugin_install.js"/>
         <hook type="before_plugin_uninstall" src="scripts/android/before_plugin_uninstall.js"/>
     </platform>
