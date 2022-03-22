@@ -1,6 +1,7 @@
 ## master
 
 * Migrates Instabug iOS SDK to be installed through CocoaPods
+* Supports starting SDK from JS only
 * Bumps Instabug iOS SDK to v10.11.9
 * Bumps Android SDK to v10.13.0
 
