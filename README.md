@@ -20,7 +20,25 @@ cordova plugin add instabug-cordova
 ionic cordova plugin add instabug-cordova
 ```
 
-## Android Integration Steps
+## Integration Steps
+
+### instabug-cordova >= 10.0.0
+
+Add the following snippet to your `index.js` file:   
+> Don't forget to replace `YOUR_CORDOVA_TOKEN` with your token.
+
+```js
+cordova.plugins.instabug.start(
+    "YOUR_CORDOVA_TOKEN",
+    [cordova.plugins.bugReporting.invocationEvents.button],
+    () => console.log("Instabug initialized."),
+    (error) => console.log("Instabug could not be initialized - " + error)
+);
+```
+
+### instabug-cordova <= 9.1.7
+
+#### Android
 
 1. Change the name of the application class in your AndroidManifest.xml file to `android:name="com.instabug.cordova.plugin.MyApplication"`.
 
@@ -48,7 +66,7 @@ allprojects {
 	    compileSdkVersion 29
 	}
 
-## iOS Integration Steps
+#### iOS
 
 You can initialize the SDK by using this method in your App JS file.
 
