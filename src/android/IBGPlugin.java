@@ -1,5 +1,7 @@
 package com.instabug.cordova.plugin;
 
+import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -76,6 +78,8 @@ public class IBGPlugin extends CordovaPlugin {
     // Generic error message
     private final String errorMsg = "Instabug object must first be activated.";
 
+    private Context context;
+
     /**
      * Called after plugin construction and fields have been initialized.
      */
@@ -85,8 +89,8 @@ public class IBGPlugin extends CordovaPlugin {
 
         // Initialize intent so that extras can be attached subsequently
         activationIntent = new Intent(cordova.getActivity(), com.instabug.cordova.plugin.IBGPluginActivity.class);
-
         options = new JSONObject();
+        context = cordova.getContext();
     }
 
     /**
@@ -116,6 +120,39 @@ public class IBGPlugin extends CordovaPlugin {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Initializes Instabug.
+     *
+     * @param callbackContext Used when calling back into JavaScript
+     */
+    public void start(final CallbackContext callbackContext, JSONArray args) {
+        String token = args.optString(0);
+        JSONArray options = args.optJSONArray(1);
+
+        if (options.length() == 0) {
+            callbackContext.error("A valid prompt option type must be provided.");
+            return;
+        }
+
+        try {
+            String[] invocationEventsNames = toStringArray(options);
+            InstabugInvocationEvent[] invocationEvents = new InstabugInvocationEvent[options.length()];
+
+            for (int i = 0, invocationEventsNamesLength = invocationEventsNames.length; i < invocationEventsNamesLength; i++) {
+                invocationEvents[i] = parseInvocationEvent(invocationEventsNames[i]);
+            }
+
+            final Application application = (Application) context.getApplicationContext();
+            new Instabug.Builder(application, token)
+                    .setInvocationEvents(invocationEvents)
+                    .build();
+
+            callbackContext.success();
+        } catch (IllegalStateException e) {
+            callbackContext.error(errorMsg);
+        }
     }
 
     public final void show(final CallbackContext callbackContext) {
@@ -222,8 +259,12 @@ public class IBGPlugin extends CordovaPlugin {
     /**
      * Creates intent to initialize Instabug.
      *
+     * @deprecated
+     * Use {@link IBGPlugin#start(CallbackContext, JSONArray)} instead.
+     *
      * @param callbackContext Used when calling back into JavaScript
      */
+    @Deprecated
     public void startWithToken(final CallbackContext callbackContext, JSONArray args) {
         activate(callbackContext, args);
     }
@@ -231,8 +272,12 @@ public class IBGPlugin extends CordovaPlugin {
     /**
      * Creates intent to initialize Instabug.
      *
+     * @deprecated
+     * Use {@link IBGPlugin#start(CallbackContext, JSONArray)} instead.
+     *
      * @param callbackContext Used when calling back into JavaScript
      */
+    @Deprecated
     private void activate(final CallbackContext callbackContext, JSONArray args) {
         this.options = args.optJSONObject(2);
         if (options != null) {
