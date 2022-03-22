@@ -1,3 +1,7 @@
+## master
+
+* Bumps iOS SDK to v10.11.9
+
 ## v9.1.7 (2021-05-11)
 
 * Adds support for Azerbaijani and Danish locales
