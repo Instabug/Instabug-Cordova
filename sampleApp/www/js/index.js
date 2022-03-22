@@ -32,27 +32,12 @@ var app = {
   // 'pause', 'resume', etc.
   onDeviceReady: function() {
     this.receivedEvent("deviceready");
-    cordova.plugins.instabug.activate(
-      {
-        ios: "cb518c145decef204b0735cb7efa6016"
-      },
-      cordova.plugins.bugReporting.invocationEvents.button,
-      {
-        commentRequired: true,
-        colorTheme: "light",
-        enableIntroDialog: false
-      },
-      function() {
-        console.log("Instabug initialized.");
-      },
-      function(error) {
-        console.log("Instabug could not be initialized - " + error);
-      }
-    );
-    cordova.plugins.bugReporting.setInvocationEvents(
+    
+    cordova.plugins.instabug.start(
+      "cb518c145decef204b0735cb7efa6016",
       [cordova.plugins.bugReporting.invocationEvents.button],
-      function() {},
-      function(error) {}
+      () => console.log("Instabug initialized."),
+      (error) => console.log("Instabug could not be initialized - " + error)
     );
   },
 
