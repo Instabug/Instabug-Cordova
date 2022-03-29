@@ -1,7 +1,9 @@
-# Logs
 logs
 *.log
 npm-debug.log*
+   
+.circleci/
+.github/
 
-#sample-app
-sample-app/
+node_modules/
+example/
