@@ -14,12 +14,16 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "cordova-android": "^10.1.1",
-    "cordova-ios": "^6.2.0"
+    "cordova-ios": "^6.2.0",
+    "instabug-cordova": "file:.."
   },
   "cordova": {
     "platforms": [
       "ios",
       "android"
-    ]
+    ],
+    "plugins": {
+      "instabug-cordova": {}
+    }
   }
 }
