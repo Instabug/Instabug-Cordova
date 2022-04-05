@@ -10,9 +10,23 @@
 
     <platform name="android">
         <framework src="src/android/tests.gradle" custom="true" type="gradleReference"/>
-        
         <source-file src="src/android/IBGPluginTests.java" target-dir="../../test/java/com/instabug/example"/>
         <source-file src="src/android/InvokeInstabugUITest.java" target-dir="../../androidTest/java/com/instabug/example"/>
     </platform>
 
+    <platform name="android">
+        <framework src="src/android/tests.gradle" custom="true" type="gradleReference"/>
+        <source-file src="src/android/IBGPluginTests.java" target-dir="../../test/java/com/instabug/example"/>
+        <source-file src="src/android/InvokeInstabugUITest.java" target-dir="../../androidTest/java/com/instabug/example"/>
+    </platform>
+
+    <platform name="ios">
+        <!-- Adds UI and Unit Test Targets -->
+        <hook type="after_prepare" src="scripts/xcode-project.js"/>
+        
+        <!-- Test Files -->
+        <source-file src="src/ios/InstabugExampleTests/InstabugExampleTests.m" target-dir="../../../InstabugExampleTests"/>
+        <source-file src="src/ios/InstabugExampleUITests/InvokeInstabugUITest.m" target-dir="../../../InstabugExampleUITests"/>
+    </platform>
+    
 </plugin>
