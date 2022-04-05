@@ -15,7 +15,8 @@
   "devDependencies": {
     "cordova-android": "^10.1.1",
     "cordova-ios": "^6.2.0",
-    "instabug-cordova": "file:.."
+    "instabug-cordova": "file:..",
+    "tests-example": "file:tests"
   },
   "cordova": {
     "platforms": [
@@ -23,7 +24,8 @@
       "android"
     ],
     "plugins": {
-      "instabug-cordova": {}
+      "instabug-cordova": {},
+      "tests-example": {}
     }
   }
 }

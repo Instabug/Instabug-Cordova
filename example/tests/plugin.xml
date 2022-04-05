@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        id="tests-example"
+        version="1.0.0">
+
+    <name>instabug-tests</name>
+    <description>Contains tests for example projects.</description>
+
+    <platform name="android">
+        <framework src="src/android/tests.gradle" custom="true" type="gradleReference"/>
+        
+        <source-file src="src/android/IBGPluginTests.java" target-dir="../../test/java/com/instabug/example"/>
+        <source-file src="src/android/InvokeInstabugUITest.java" target-dir="../../androidTest/java/com/instabug/example"/>
+    </platform>
+
+</plugin>
