@@ -15,9 +15,12 @@
     XCUIApplication *app = [[XCUIApplication alloc] init];
     [app.buttons[@"IBGFloatingButtonAccessibilityIdentifier"] tap];
 
-    [app.tables.staticTexts[@"Report a bug"] tap];
+    XCUIElement *reportBugButton = app.tables.staticTexts[@"Report a bug"];
+    [self waitForElementToAppear:reportBugButton withTimeout:5];
+    [reportBugButton tap];
 
-    XCUIElement *textField = app.scrollViews.otherElements.textFields[@"IBGBugInputViewEmailFieldAccessibilityIdentifier"];
+    XCUIElement *textField = app.scrollViews.textFields[@"IBGBugInputViewEmailFieldAccessibilityIdentifier"];
+    
     [textField tap];
     if (![textField.value  isEqual: @"Enter your email"]) {
         [textField pressForDuration:1.2];
