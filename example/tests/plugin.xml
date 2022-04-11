@@ -10,14 +10,8 @@
 
     <platform name="android">
         <framework src="src/android/tests.gradle" custom="true" type="gradleReference"/>
-        <source-file src="src/android/IBGPluginTests.java" target-dir="../../test/java/com/instabug/example"/>
-        <source-file src="src/android/InvokeInstabugUITest.java" target-dir="../../androidTest/java/com/instabug/example"/>
-    </platform>
-
-    <platform name="android">
-        <framework src="src/android/tests.gradle" custom="true" type="gradleReference"/>
-        <source-file src="src/android/IBGPluginTests.java" target-dir="../../test/java/com/instabug/example"/>
-        <source-file src="src/android/InvokeInstabugUITest.java" target-dir="../../androidTest/java/com/instabug/example"/>
+        <source-file src="src/android/test/IBGPluginTests.java" target-dir="../../test/java/com/instabug/example"/>
+        <source-file src="src/android/androidTest/InvokeInstabugUITest.java" target-dir="../../androidTest/java/com/instabug/example"/>
     </platform>
 
     <platform name="ios">
