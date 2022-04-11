@@ -6,7 +6,7 @@
         version="1.0.0">
 
     <name>instabug-tests</name>
-    <description>Contains tests for example projects.</description>
+    <description>Injects unit and UI tests for android and iOS platforms in the example app.</description>
 
     <platform name="android">
         <framework src="src/android/tests.gradle" custom="true" type="gradleReference"/>
