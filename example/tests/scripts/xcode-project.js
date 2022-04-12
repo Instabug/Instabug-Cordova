@@ -1,10 +1,11 @@
 const fs = require("fs");
 const path = require('path');
 
-// Overwrites both the project file (.pbxproj) and the workspace scheme (xcscheme)
+// Overwrites both the project file (.pbxproj)
+// and the workspace scheme file (.xcscheme)
 // by the files found in src/ios.
 // 
-// The new files should contains two targets as follows:
+// The new files should contain two targets as follows:
 // 1. InstabugExampleTests   : unit tests bundle target
 // 2. InstabugExampleUITests : ui tests bundle target
 
@@ -23,8 +24,7 @@ module.exports = (ctx) => {
     }
   );
 
-  const schemeFile =
-    "InstabugExample.xcworkspace/xcshareddata/xcschemes/InstabugExample.xcscheme";
+  const schemeFile = "InstabugExample.xcworkspace/xcshareddata/xcschemes/InstabugExample.xcscheme";
 
   fs.copyFile(
     path.join(srcRoot, schemeFile),
