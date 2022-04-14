@@ -1,6 +1,7 @@
 ## master
 
-* Bumps iOS SDK to v10.11.9
+* Migrates Instabug iOS SDK to be installed through CocoaPods
+* Bumps Instabug iOS SDK to v10.11.9
 
 ## v9.1.7 (2021-05-11)
 
