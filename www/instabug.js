@@ -69,7 +69,7 @@ Instabug.activate = function (token, event, options, success, error) {
     var validatedEvent = getInvocationEvents()[event];
 
     if (validatedEvent) {
-        console.warn("The method [activate] is now deprecated. Use start(token, invocationEvents) instead.")
+        console.warn("The method [activate] is now deprecated. Please use start(token, invocationEvents) instead.")
         exec(success, error, 'IBGPlugin', 'activate', [token, event, options]);
     } else {
         console.log('Could not activate Instabug - invocation event "' + event + '" is not valid.');
