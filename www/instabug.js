@@ -90,7 +90,7 @@ Instabug.startWithToken = function (token, events, options, success, error) {
     }
   }
   if (validatedEvents !== undefined || validatedEvents.length != 0) {
-    console.warn("The method [startWithToken] is now deprecated. Use start(token, invocationEvents) instead.")
+    console.warn("The method [startWithToken] is now deprecated. Please use start(token, invocationEvents) instead.")
     exec(success, error, 'IBGPlugin', 'startWithToken', [token, validatedEvents, options]);
   } else {
       console.log('Could not activate Instabug - invocation event is not valid.');
