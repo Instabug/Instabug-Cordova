@@ -28,8 +28,7 @@ import com.instabug.library.logging.InstabugLog;
 import com.instabug.library.model.Report;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
 import com.instabug.library.visualusersteps.State;
-import com.instabug.survey.OnDismissCallback;
-import com.instabug.survey.OnShowCallback;
+import com.instabug.survey.callbacks.*;
 import com.instabug.survey.Survey;
 import com.instabug.survey.Surveys;
 
