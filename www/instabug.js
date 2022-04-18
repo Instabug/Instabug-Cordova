@@ -54,11 +54,22 @@ var getLocales = function () {
 var Instabug = function () {
 };
 
+Instabug.start = function (token, invocationEvents, success, error) {
+    const validEvents = getInvocationEvents();
+    const isValid = invocationEvents.every((e) => validEvents[e]);
+
+    if (isValid && invocationEvents.length > 0) {
+        exec(success, error, 'IBGPlugin', 'start', [token, invocationEvents]);
+    } else {
+        console.log('Could not activate Instabug -  invalid invocation events');
+    }
+};
+
 Instabug.activate = function (token, event, options, success, error) {
     var validatedEvent = getInvocationEvents()[event];
 
     if (validatedEvent) {
-        console.warn("This method is now deprecated, and will be removed in an upcoming version.")
+        console.warn("The method [activate] is now deprecated. Please use start(token, invocationEvents) instead.")
         exec(success, error, 'IBGPlugin', 'activate', [token, event, options]);
     } else {
         console.log('Could not activate Instabug - invocation event "' + event + '" is not valid.');
@@ -79,6 +90,7 @@ Instabug.startWithToken = function (token, events, options, success, error) {
     }
   }
   if (validatedEvents !== undefined || validatedEvents.length != 0) {
+    console.warn("The method [startWithToken] is now deprecated. Please use start(token, invocationEvents) instead.")
     exec(success, error, 'IBGPlugin', 'startWithToken', [token, validatedEvents, options]);
   } else {
       console.log('Could not activate Instabug - invocation event is not valid.');

@@ -2,7 +2,11 @@
 
 @interface IBGPlugin : CDVPlugin
 
-- (void)activate:(CDVInvokedUrlCommand *)command;
+- (void)start:(CDVInvokedUrlCommand *)command;
+
+- (void)activate:(CDVInvokedUrlCommand *)command __deprecated;
+
+- (void)startWithToken:(CDVInvokedUrlCommand *)command __deprecated;
 
 - (void)setPrimaryColor:(CDVInvokedUrlCommand *)command;
 

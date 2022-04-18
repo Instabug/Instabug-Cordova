@@ -11,6 +11,41 @@
 @implementation IBGPlugin
 
 /**
+ * Intializes Instabug.
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) start:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* result;
+
+    NSString* token = [command argumentAtIndex:0];
+    NSArray* invEvents = [command argumentAtIndex:1];
+
+    IBGInvocationEvent invocationEvents = 0;
+
+    for (NSString *invEvent in invEvents) {
+        IBGInvocationEvent invocationEvent = [self parseInvocationEvent:invEvent];
+        invocationEvents |= invocationEvent;
+    }
+
+    if (invocationEvents == 0) {
+        // Instabug iOS SDK requires invocation event for initialization
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                    messageAsString:@"An invocation event must be provided."];
+    } else {
+        // Initialize Instabug
+        [Instabug startWithToken:token invocationEvents:invocationEvents];
+        [self setBaseUrlForDeprecationLogs];
+
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    }
+
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+/**
  * Intializes Instabug and sets provided options.
  *
  * @param {CDVInvokedUrlCommand*} command
