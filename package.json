@@ -12,8 +12,6 @@
   "bugs": {
     "url": "https://github.com/Instabug/instabug-cordova/issues"
   },
-  "dependencies": {
-    "xcode": "^0.9.0"
-  },
+  "dependencies": {},
   "homepage": "https://github.com/Instabug/instabug-cordova#readme"
 }
