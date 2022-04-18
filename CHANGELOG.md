@@ -4,6 +4,7 @@
 * Supports starting SDK from JS only
 * Bumps Instabug iOS SDK to v10.11.9
 * Bumps Android SDK to v10.13.0
+* Removes Android multidex dependency
 
 ## v9.1.7 (2021-05-11)
 
