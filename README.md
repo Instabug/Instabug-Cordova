@@ -24,13 +24,16 @@ ionic cordova plugin add instabug-cordova
 
 ### instabug-cordova >= 10.0.0
 
-Add the following snippet to your `index.js` file:   
+Add the following snippet to your `index.js` file inside `onDeviceReady` function:   
 > Don't forget to replace `YOUR_CORDOVA_TOKEN` with your token.
 
 ```js
-cordova.plugins.instabug.start(
+var Instabug = cordova.require("instabug-cordova.Instabug");
+var BugReporting = cordova.require("instabug-cordova.BugReporting");
+
+Instabug.start(
     "YOUR_CORDOVA_TOKEN",
-    [cordova.plugins.bugReporting.invocationEvents.button],
+    [BugReporting.invocationEvents.button],
     () => console.log("Instabug initialized."),
     (error) => console.log("Instabug could not be initialized - " + error)
 );
