@@ -26,22 +26,22 @@
 
     <!-- js -->
     <js-module src="www/instabug.js" name="Instabug">
-        <clobbers target="cordova.plugins.instabug"/>
+        <runs/>
     </js-module>
    <js-module src="www/bugReporting.js" name="BugReporting">
-        <clobbers target="cordova.plugins.bugReporting"/>
+        <runs/>
     </js-module>
     <js-module src="www/featureRequests.js" name="FeatureRequests">
-        <clobbers target="cordova.plugins.featureRequests"/>
+        <runs/>
     </js-module>
     <js-module src="www/surveys.js" name="Surveys">
-        <clobbers target="cordova.plugins.surveys"/>
+        <runs/>
     </js-module>
     <js-module src="www/chats.js" name="Chats">
-        <clobbers target="cordova.plugins.chats"/>
+        <runs/>
     </js-module>
     <js-module src="www/replies.js" name="Replies">
-        <clobbers target="cordova.plugins.replies"/>
+        <runs/>
     </js-module>
 
     <!-- android -->
