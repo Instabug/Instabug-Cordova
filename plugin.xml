@@ -25,22 +25,22 @@
     <!-- dependencies -->
 
     <!-- js -->
-    <js-module src="www/instabug.js" name="Instabug">
+    <js-module src="www/Instabug.js" name="Instabug">
         <runs/>
     </js-module>
-   <js-module src="www/bugReporting.js" name="BugReporting">
+   <js-module src="www/BugReporting.js" name="BugReporting">
         <runs/>
     </js-module>
-    <js-module src="www/featureRequests.js" name="FeatureRequests">
+    <js-module src="www/FeatureRequests.js" name="FeatureRequests">
         <runs/>
     </js-module>
-    <js-module src="www/surveys.js" name="Surveys">
+    <js-module src="www/Surveys.js" name="Surveys">
         <runs/>
     </js-module>
-    <js-module src="www/chats.js" name="Chats">
+    <js-module src="www/Chats.js" name="Chats">
         <runs/>
     </js-module>
-    <js-module src="www/replies.js" name="Replies">
+    <js-module src="www/Replies.js" name="Replies">
         <runs/>
     </js-module>
 
