@@ -1449,7 +1449,7 @@
     } else if ([locale isEqualToString:@"polish"]) {
         return IBGLocalePolish;
     } else if ([locale isEqualToString:@"portuguese"]) {
-        return IBGLocalePortugese;
+        return IBGLocalePortuguese;
     } else if ([locale isEqualToString:@"portugueseBrazil"]) {
         return IBGLocalePortugueseBrazil;
     } else if ([locale isEqualToString:@"russian"]) {
