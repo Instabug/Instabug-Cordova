@@ -852,12 +852,12 @@ public class IBGPlugin extends CordovaPlugin {
      * @param callbackContext Used when calling back into JavaScript
      */
     public void setViewHierarchyEnabled(final CallbackContext callbackContext, JSONArray args) {
-        Boolean isEnabled = args.optBoolean(0);
+        boolean isEnabled = args.optBoolean(0);
         try {
             if (isEnabled) {
-                Instabug.setViewHierarchyState(Feature.State.ENABLED);
+                BugReporting.setViewHierarchyState(Feature.State.ENABLED);
             } else {
-                Instabug.setViewHierarchyState(Feature.State.DISABLED);
+                BugReporting.setViewHierarchyState(Feature.State.DISABLED);
             }
             callbackContext.success();
         } catch (IllegalStateException e) {

@@ -131,6 +131,17 @@ BugReporting.showWithOptions = function(reportType, options, success, error) {
 };
 
 /**
+ * Enables or disables view hierarchy.
+ * 
+ * @param {boolean} enabled
+ * @param {function(void):void} success callback on function success
+ * @param {function(void):void} error callback on function error
+ */
+BugReporting.setViewHierarchyEnabled = function (enabled, success, error) {
+  exec(success, error, 'IBGPlugin', 'setViewHierarchyEnabled', [enabled]);
+};
+
+/**
  * Sets the invocation options.
  * Default is set by `Instabug.start`.
  * @param {enum} options Array of Option

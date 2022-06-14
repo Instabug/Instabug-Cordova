@@ -776,7 +776,7 @@
      BOOL isEnabled = [command argumentAtIndex:0];
 
      if (isEnabled) {
-         Instabug.shouldCaptureViewHierarchy = [[command argumentAtIndex:0] boolValue];
+         IBGBugReporting.shouldCaptureViewHierarchy = [[command argumentAtIndex:0] boolValue];
          result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
      } else {
          result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
