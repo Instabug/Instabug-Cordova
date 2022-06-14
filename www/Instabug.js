@@ -127,20 +127,6 @@ Instabug.clearLog = function (success, error) {
     exec(success, error, 'IBGPlugin', 'clearLog', []);
 };
 
-/**
- * @deprecated use {@link Replies.getUnreadRepliesCount}
- */
-Instabug.getUnreadMessagesCount = function (success, error) {
-    exec(success, error, 'IBGPlugin', 'getUnreadRepliesCount', []);
-};
-
-/**
- * @deprecated use {@link Replies.setInAppNotificationEnabled}
- */
-Instabug.setChatNotificationEnabled = function (isEnabled, success, error) {
-    exec(success, error, 'IBGPlugin', 'setChatNotificationEnabled', [isEnabled]);
-};
-
 Instabug.setIBGLogPrintsToConsole = function (isEnabled, success, error) {
     exec(success, error, 'IBGPlugin', 'setIBGLogPrintsToConsole', [isEnabled]);
 };
