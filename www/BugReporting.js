@@ -138,14 +138,13 @@ BugReporting.showWithOptions = function(reportType, options, success, error) {
 };
 
 /**
- * @deprecated use {@link BugReporting.setOptions}
  * Sets the invocation options.
- * Default is set by `Instabug.startWithToken`.
+ * Default is set by `Instabug.start`.
  * @param {enum} options Array of Option
  * @param {function(void):void} success callback on function success
  * @param {function(void):void} error callback on function error
  */
-BugReporting.setInvocationOptions = function(options, success, error) {
+BugReporting.setOptions = function(options, success, error) {
   var i;
   var validatedOptions = [];
   for (i = 0; i < options.length; i++) {
@@ -165,17 +164,6 @@ BugReporting.setInvocationOptions = function(options, success, error) {
         '" is empty.'
     );
   }
-};
-
-/**
- * Sets the invocation options.
- * Default is set by `Instabug.startWithToken`.
- * @param {enum} options Array of Option
- * @param {function(void):void} success callback on function success
- * @param {function(void):void} error callback on function error
- */
-BugReporting.setOptions = function(options, success, error) {
-  BugReporting.setInvocationOptions(options, success, error);
 }
 
 /**
