@@ -22,7 +22,6 @@ import com.instabug.library.OnSdkDismissCallback;
 import com.instabug.library.extendedbugreport.ExtendedBugReport;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
-import com.instabug.bug.invocation.InvocationMode;
 import com.instabug.library.invocation.OnInvokeCallback;
 import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition;
 import com.instabug.library.logging.InstabugLog;
@@ -1224,25 +1223,6 @@ public class IBGPlugin extends CordovaPlugin {
         } else if ("addCommentToFeature".equals(actionType)) {
             return ActionType.ADD_COMMENT_TO_FEATURE;
         } else return -1;
-    }
-
-    /**
-     * Convenience method for converting string to InstabugInvocationMode.
-     *
-     * @param mode String shortcode for mode
-     */
-    public static InvocationMode parseInvocationMode(String mode) {
-        if ("chat".equals(mode)) {
-            return InvocationMode.NEW_CHAT;
-        } else if ("chats".equals(mode)) {
-            return InvocationMode.CHATS_LIST;
-        } else if ("bug".equals(mode)) {
-            return InvocationMode.NEW_BUG;
-        } else if ("feedback".equals(mode)) {
-            return InvocationMode.NEW_FEEDBACK;
-        } else if ("options".equals(mode)) {
-            return InvocationMode.PROMPT_OPTION;
-        } else return null;
     }
 
     /**

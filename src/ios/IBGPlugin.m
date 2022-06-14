@@ -1300,28 +1300,6 @@
 
 /**
  * Convenience method for converting NSString to
- * IBGInvocationMode.
- *
- * @param  {NSString*}
- *         NSString shortcode for IBGInvocationMode
- */
-- (IBGInvocationMode) parseInvocationMode:(NSString*)mode
-{
-    if ([mode isEqualToString:@"bug"]) {
-        return IBGInvocationModeNewBug;
-    } else if ([mode isEqualToString:@"feedback"]) {
-        return IBGInvocationModeNewFeedback;
-    } else if ([mode isEqualToString:@"chat"]) {
-        return IBGInvocationModeNewChat;
-    } else if ([mode isEqualToString:@"chatList"]) {
-        return IBGInvocationModeChatsList;
-    } else if ([mode isEqualToString:@"na"]) {
-        return IBGInvocationModeNA;
-    } else return 0;
-}
-
-/**
- * Convenience method for converting NSString to
  * IBGPosition.
  *
  * @param  {NSString*} position
