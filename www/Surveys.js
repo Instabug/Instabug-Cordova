@@ -84,20 +84,6 @@ Surveys.showSurveyWithToken = function (surveyToken, success, error) {
 };
 
 /**
- * Sets a threshold for numbers of sessions and another for number of days
- * required before a survey, that has been dismissed once, would show again.
- * @param {number} sessionsCount Number of sessions required to be
- *                initialized before a dismissed survey can be shown again.
- * @param {number} daysCount Number of days required to pass before a
- *                dismissed survey can be shown again.
- * @param {function():void} success 
- * @param {function(string):void} error 
- */
-Surveys.setThresholdForReshowingSurveyAfterDismiss = function (sessionsCount, daysCount, success, error) {
-    exec(success, error, 'IBGPlugin', 'setThresholdForReshowingSurveyAfterDismiss', [sessionsCount, daysCount]);
-};
-
-/**
  * Returns true if the survey with a specific token was answered before.
  * Will return false if the token does not exist or if the survey was not answered before.
  * @param {string} surveyToken a string with a survey token.

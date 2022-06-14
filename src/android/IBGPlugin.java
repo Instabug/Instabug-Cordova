@@ -1077,29 +1077,6 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
-     * Set after how many sessions should the dismissed survey would show again.
-     *
-     * @param callbackContext Used when calling back into JavaScript
-     * @param args .optInt(0)   number of sessions that the dismissed survey will be
-     *                        shown after.
-     * @param args .optInt(1)       number of days that the dismissed survey will show
-     *                        after.
-     */
-    public void setThresholdForReshowingSurveyAfterDismiss(final CallbackContext callbackContext, JSONArray args) {
-        int sessionsCount = args.optInt(0);
-        int daysCount = args.optInt(1);
-        if (Math.signum(sessionsCount) != -1 && Math.signum(daysCount) != -1) {
-            try {
-                Surveys.setThresholdForReshowingSurveyAfterDismiss(sessionsCount, daysCount);
-                callbackContext.success();
-            } catch (IllegalStateException e) {
-                callbackContext.error(errorMsg);
-            }
-        } else
-            callbackContext.error("Session count and days count must be provided.");
-    }
-
-    /**
      * Shows the UI for feature requests list
      *
      * @param callbackContext Used when calling back into JavaScript
