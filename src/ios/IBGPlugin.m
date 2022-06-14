@@ -275,12 +275,13 @@
  */
 - (void) hasRespondedToSurveyWithToken:(CDVInvokedUrlCommand*)command
  {
-     CDVPluginResult* result;
+     __block CDVPluginResult* result;
      NSString *surveyToken = [command argumentAtIndex:0];
 
      if (surveyToken.length > 0) {
-         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
-                                    messageAsBool:[IBGSurveys hasRespondedToSurveyWithToken:surveyToken]];
+         [IBGSurveys hasRespondedToSurveyWithToken:surveyToken completionHandler:^(BOOL hasResponded) {
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:hasResponded];
+         }];
      } else {
          result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
                                     messageAsString:@"A non-empty survey token must be provided."];
