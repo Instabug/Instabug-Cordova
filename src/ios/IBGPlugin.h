@@ -4,8 +4,6 @@
 
 - (void)start:(CDVInvokedUrlCommand *)command;
 
-- (void)activate:(CDVInvokedUrlCommand *)command __deprecated;
-
 - (void)setPrimaryColor:(CDVInvokedUrlCommand *)command;
 
 - (void)setUserData:(CDVInvokedUrlCommand *)command;

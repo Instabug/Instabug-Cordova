@@ -58,23 +58,6 @@ import java.util.Locale;
  * This plugin initializes Instabug.
  */
 public class IBGPlugin extends CordovaPlugin {
-
-    // Reference to intent that start activity
-    // to initialize Instabug
-    private Intent activationIntent;
-
-    // Initialization options
-    private JSONObject options;
-
-    // All possible option keys
-    private final String[] optionKeys = { "emailRequired", "commentRequired", 
-            "shakingThresholdAndroid", "floatingButtonEdge", "colorTheme",
-            "floatingButtonOffset", "enableDebug", "enableConsoleLogs", 
-            "enableInstabugLogs", "enableTrackingUserSteps", "enableUserData",
-            "enableCrashReporting", "enableInAppMessaging", "enableIntroDialog", 
-            "enableConversationSounds", "enablePushNotifications", 
-            "enableSessionProfiler", "welcomeMessageMode" };
-
     // Generic error message
     private final String errorMsg = "Instabug object must first be activated.";
 
@@ -86,10 +69,6 @@ public class IBGPlugin extends CordovaPlugin {
     @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
-
-        // Initialize intent so that extras can be attached subsequently
-        activationIntent = new Intent(cordova.getActivity(), com.instabug.cordova.plugin.IBGPluginActivity.class);
-        options = new JSONObject();
         context = cordova.getContext();
     }
 
@@ -254,38 +233,6 @@ public class IBGPlugin extends CordovaPlugin {
             }
         }
         
-    }
-
-    /**
-     * Creates intent to initialize Instabug.
-     *
-     * @deprecated
-     * Use {@link IBGPlugin#start(CallbackContext, JSONArray)} instead.
-     *
-     * @param callbackContext Used when calling back into JavaScript
-     */
-    @Deprecated
-    private void activate(final CallbackContext callbackContext, JSONArray args) {
-        this.options = args.optJSONObject(2);
-        if (options != null) {
-            // Attach extras
-            applyOptions();
-        }
-        try {
-            Method method = Util.getMethod(Class.forName("com.instabug.library.util.InstabugDeprecationLogger"), "setBaseUrl", String.class);
-            if (method != null) {
-                method.invoke(null, "https://docs.instabug.com/docs/cordova-sdk-migration-guide");
-            }
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
-        cordova.getActivity().startActivity(activationIntent);
-
-        callbackContext.success();
     }
 
     /**
@@ -1217,28 +1164,6 @@ public class IBGPlugin extends CordovaPlugin {
             callbackContext.success();
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
-        }
-    }
-
-    /**
-     * Adds intent extras for all options passed to activate().
-     */
-    private void applyOptions() {
-        for (int i = 0; i < optionKeys.length; i++) {
-            applyOption(optionKeys[i]);
-        }
-    }
-
-    /**
-     * Convenience method for setting intent extras where valid.
-     *
-     * @param key Name of option to be included
-     */
-    private void applyOption(String key) {
-        String val = options.optString(key);
-
-        if (val != null && val.length() > 0) {
-            activationIntent.putExtra(key, val);
         }
     }
 
