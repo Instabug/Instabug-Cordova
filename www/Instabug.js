@@ -80,23 +80,6 @@ Instabug.show = function (success, error) {
     exec(success, error, 'IBGPlugin', 'show');
 }
 
-Instabug.startWithToken = function (token, events, options, success, error) {
-  var i;
-  var validatedEvents = [];
-  for (i = 0; i < events.length; i++) {
-    var validatedEvent = getInvocationEvents()[events[i]];
-    if(validatedEvent) {
-      validatedEvents.push(validatedEvent);
-    }
-  }
-  if (validatedEvents !== undefined || validatedEvents.length != 0) {
-    console.warn("The method [startWithToken] is now deprecated. Please use start(token, invocationEvents) instead.")
-    exec(success, error, 'IBGPlugin', 'startWithToken', [token, validatedEvents, options]);
-  } else {
-      console.log('Could not activate Instabug - invocation event is not valid.');
-  }
-};
-
 Instabug.setPrimaryColor = function (colorInteger, success, error) {
     exec(success, error, 'IBGPlugin', 'setPrimaryColor', [colorInteger]);
 };

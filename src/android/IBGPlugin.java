@@ -265,19 +265,6 @@ public class IBGPlugin extends CordovaPlugin {
      * @param callbackContext Used when calling back into JavaScript
      */
     @Deprecated
-    public void startWithToken(final CallbackContext callbackContext, JSONArray args) {
-        activate(callbackContext, args);
-    }
-
-    /**
-     * Creates intent to initialize Instabug.
-     *
-     * @deprecated
-     * Use {@link IBGPlugin#start(CallbackContext, JSONArray)} instead.
-     *
-     * @param callbackContext Used when calling back into JavaScript
-     */
-    @Deprecated
     private void activate(final CallbackContext callbackContext, JSONArray args) {
         this.options = args.optJSONObject(2);
         if (options != null) {
