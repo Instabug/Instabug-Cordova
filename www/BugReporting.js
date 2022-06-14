@@ -77,10 +77,6 @@ var getReportType = function() {
 var BugReporting = function() {};
 
 BugReporting.invocationEvents = getInvocationEvents();
-/**
- * @deprecated
- */
-BugReporting.invocationOptions = getOptions();
 BugReporting.option = getOptions();
 BugReporting.invocationModes = getInvocationModes();
 /**
