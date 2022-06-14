@@ -634,18 +634,6 @@
 }
 
 /**
- * Enable or disable anything that has to do with chats.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) setChatsEnabled:(CDVInvokedUrlCommand*)command {
-    BOOL isEnabled = [[command argumentAtIndex:0] boolValue];
-    IBGChats.enabled = isEnabled;
-    [self sendSuccessResult:command];
-}
-
-/**
  * Enable or disable anything that has to do with replies.
  *
  * @param {CDVInvokedUrlCommand*} command
@@ -654,17 +642,6 @@
 - (void) setRepliesEnabled:(CDVInvokedUrlCommand*)command {
     BOOL isEnabled = [[command argumentAtIndex:0] boolValue];
     IBGReplies.enabled = isEnabled;
-    [self sendSuccessResult:command];
-}
-
-/**
- * Show chats view as a list or new message.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) showChats:(CDVInvokedUrlCommand*)command {
-    [IBGChats show];
     [self sendSuccessResult:command];
 }
 

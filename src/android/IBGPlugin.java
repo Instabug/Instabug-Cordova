@@ -11,7 +11,6 @@ import android.util.Log;
 
 import com.instabug.bug.BugReporting;
 import com.instabug.bug.invocation.Option;
-import com.instabug.chat.Chats;
 import com.instabug.chat.Replies;
 import com.instabug.cordova.plugin.util.Util;
 import com.instabug.featuresrequest.ActionType;
@@ -157,16 +156,6 @@ public class IBGPlugin extends CordovaPlugin {
         callbackContext.success();
     }
 
-    public final void setChatsEnabled(CallbackContext callbackContext, JSONArray args) {
-        Boolean isEnabled = args.optBoolean(0);
-        if (isEnabled) {
-            Chats.setState(Feature.State.ENABLED);
-        } else {
-            Chats.setState(Feature.State.DISABLED);
-        }
-        callbackContext.success();
-    }
-
     public final void setRepliesEnabled(CallbackContext callbackContext, JSONArray args) {
         Boolean isEnabled = args.optBoolean(0);
         if (isEnabled) {
@@ -174,11 +163,6 @@ public class IBGPlugin extends CordovaPlugin {
         } else {
             Replies.setState(Feature.State.DISABLED);
         }
-        callbackContext.success();
-    }
-
-    public final void showChats(CallbackContext callbackContext) {
-        Chats.show();
         callbackContext.success();
     }
 
