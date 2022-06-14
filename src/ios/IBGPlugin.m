@@ -833,29 +833,6 @@
         [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
     }
 
-  /**
-   * Sets maximum auto screen recording video duration.
-   *
-   * @param {CDVInvokedUrlCommand*} command
-   *        The command sent from JavaScript
-   */
-   - (void) setAutoScreenRecordingMaxDuration:(CDVInvokedUrlCommand*)command
-   {
-       CDVPluginResult* result;
-
-       CGFloat duration = [[command argumentAtIndex:0] floatValue];
-
-       if (duration) {
-           Instabug.autoScreenRecordingDuration = duration;
-           result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-       } else {
-           result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                      messageAsString:@"A duration must be provided."];
-       }
-
-       [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
-   }
-
    /**
     * Returns the number of unread messages the user currently has.
     *

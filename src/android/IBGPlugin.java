@@ -881,25 +881,6 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
-     * Sets maximum auto screen recording video duration.
-     *
-     * @param args .optInt(0)        maximum duration of the screen recording video seconds
-     *                        The maximum duration is 30 seconds
-     *
-     * @param callbackContext Used when calling back into JavaScript
-     */
-    public void setAutoScreenRecordingMaxDuration(final CallbackContext callbackContext, JSONArray args) {
-        int duration = args.optInt(0);
-        try {
-            int durationInMilli = duration * 1000;
-            Instabug.setAutoScreenRecordingMaxDuration(durationInMilli);
-            callbackContext.success();
-        } catch (IllegalStateException e) {
-            callbackContext.error(errorMsg);
-        }
-    }
-
-    /**
      * Sets user attribute to overwrite it's value or create a new one if it doesn't
      * exist.
      *
