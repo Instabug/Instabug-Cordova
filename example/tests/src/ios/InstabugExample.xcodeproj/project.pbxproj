@@ -8,27 +8,28 @@
 
 /* Begin PBXBuildFile section */
 		0207DA581B56EA530066E2B4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0207DA571B56EA530066E2B4 /* Images.xcassets */; };
-		0E2C41C027FF4D1500CDED97 /* InstabugExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E2C41BF27FF4D1500CDED97 /* InstabugExampleTests.m */; };
-		0E2C41C727FF4D5900CDED97 /* InvokeInstabugUITest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E2C41C627FF4D5900CDED97 /* InvokeInstabugUITest.m */; };
+		0E31CB20285A12920090BCF6 /* InvokeInstabugUITest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E31CB1F285A12920090BCF6 /* InvokeInstabugUITest.m */; };
+		0E31CB30285A12A50090BCF6 /* InstabugExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E31CB2F285A12A50090BCF6 /* InstabugExampleTests.m */; };
 		1D3623260D0F684500981E51 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* AppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		301BF552109A68D80062928A /* libCordova.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 301BF535109A57CC0062928A /* libCordova.a */; settings = {ATTRIBUTES = (Required, ); }; };
 		302D95F114D2391D003F00A1 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 302D95EF14D2391D003F00A1 /* MainViewController.m */; };
 		302D95F214D2391D003F00A1 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 302D95F014D2391D003F00A1 /* MainViewController.xib */; };
+		5E56E9D77C2A469E968F11CB /* ArgsRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = 1718742CB8BD4C72AC4D8AFB /* ArgsRegistry.m */; };
 		6AFF5BF91D6E424B00AB3073 /* CDVLaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6AFF5BF81D6E424B00AB3073 /* CDVLaunchScreen.storyboard */; };
-		9579A5D0DB0A4A3ABD89BF8C /* IBGPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 96324002051B45579BB301BF /* IBGPlugin.m */; };
-		BBA2D46EB54E23EF583A33EB /* Pods_InstabugExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC9578F1BFBDE0319E9C9807 /* Pods_InstabugExample.framework */; };
+		8163E8A2B4324A7EAB9F01BB /* IBGPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E7C69F401A64034A22084C5 /* IBGPlugin.m */; };
+		A89BFCA79E392FD771BA8CA1 /* Pods_InstabugExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FD05904E49982B6BC61107A /* Pods_InstabugExample.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		0E2C41B327FF4D0100CDED97 /* PBXContainerItemProxy */ = {
+		0E31CB23285A12920090BCF6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 1D6058900D05DD3D006BFB54;
 			remoteInfo = InstabugExample;
 		};
-		0E2C41C127FF4D1500CDED97 /* PBXContainerItemProxy */ = {
+		0E31CB31285A12A50090BCF6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
 			proxyType = 1;
@@ -60,10 +61,11 @@
 
 /* Begin PBXFileReference section */
 		0207DA571B56EA530066E2B4 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = InstabugExample/Images.xcassets; sourceTree = SOURCE_ROOT; };
-		0E2C41AD27FF4D0100CDED97 /* InstabugExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InstabugExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		0E2C41BD27FF4D1500CDED97 /* InstabugExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InstabugExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		0E2C41BF27FF4D1500CDED97 /* InstabugExampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstabugExampleTests.m; sourceTree = "<group>"; };
-		0E2C41C627FF4D5900CDED97 /* InvokeInstabugUITest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InvokeInstabugUITest.m; sourceTree = "<group>"; };
+		0E31CB1D285A12920090BCF6 /* InstabugExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InstabugExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0E31CB1F285A12920090BCF6 /* InvokeInstabugUITest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InvokeInstabugUITest.m; sourceTree = "<group>"; };
+		0E31CB2D285A12A50090BCF6 /* InstabugExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InstabugExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0E31CB2F285A12A50090BCF6 /* InstabugExampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstabugExampleTests.m; sourceTree = "<group>"; };
+		1718742CB8BD4C72AC4D8AFB /* ArgsRegistry.m */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.objc; name = ArgsRegistry.m; path = ../../../../../src/ios/util/ArgsRegistry.m; sourceTree = "<group>"; };
 		1D3623240D0F684500981E51 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		1D6058910D05DD3D006BFB54 /* InstabugExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InstabugExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -77,28 +79,29 @@
 		3047A5101AB8059700498E2A /* build-release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "build-release.xcconfig"; path = "cordova/build-release.xcconfig"; sourceTree = SOURCE_ROOT; };
 		3047A5111AB8059700498E2A /* build.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = build.xcconfig; path = cordova/build.xcconfig; sourceTree = SOURCE_ROOT; };
 		32CA4F630368D1EE00C91783 /* InstabugExample-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "InstabugExample-Prefix.pch"; sourceTree = "<group>"; };
-		3DBBB11FD550DD8F55808D48 /* Pods-InstabugExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstabugExample.release.xcconfig"; path = "Target Support Files/Pods-InstabugExample/Pods-InstabugExample.release.xcconfig"; sourceTree = "<group>"; };
+		4FD05904E49982B6BC61107A /* Pods_InstabugExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_InstabugExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6A632DF3F21A402FBC537F53 /* ArgsRegistry.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = ArgsRegistry.h; path = ../../../../../src/ios/util/ArgsRegistry.h; sourceTree = "<group>"; };
 		6AFF5BF81D6E424B00AB3073 /* CDVLaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = CDVLaunchScreen.storyboard; path = InstabugExample/CDVLaunchScreen.storyboard; sourceTree = SOURCE_ROOT; };
 		8D1107310486CEB800E47090 /* InstabugExample-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "InstabugExample-Info.plist"; path = "InstabugExample/InstabugExample-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = SOURCE_ROOT; };
-		96324002051B45579BB301BF /* IBGPlugin.m */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.objc; name = IBGPlugin.m; path = ../../../../../src/ios/IBGPlugin.m; sourceTree = "<group>"; };
-		A1EF5C58D6BC4FCAA2944B40 /* IBGPlugin.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = IBGPlugin.h; path = ../../../../../src/ios/IBGPlugin.h; sourceTree = "<group>"; };
-		CA483302A5AD2FC624CC850A /* Pods-InstabugExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstabugExample.debug.xcconfig"; path = "Target Support Files/Pods-InstabugExample/Pods-InstabugExample.debug.xcconfig"; sourceTree = "<group>"; };
-		CC9578F1BFBDE0319E9C9807 /* Pods_InstabugExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_InstabugExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8E7C69F401A64034A22084C5 /* IBGPlugin.m */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.objc; name = IBGPlugin.m; path = ../../../../../src/ios/IBGPlugin.m; sourceTree = "<group>"; };
+		BDE959C269D6DC7381B8FA15 /* Pods-InstabugExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstabugExample.release.xcconfig"; path = "Target Support Files/Pods-InstabugExample/Pods-InstabugExample.release.xcconfig"; sourceTree = "<group>"; };
 		EB87FDF31871DA8E0020F90C /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; name = www; path = ../../www; sourceTree = "<group>"; };
 		EB87FDF41871DAF40020F90C /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = ../../config.xml; sourceTree = "<group>"; };
 		ED33DF2A687741AEAF9F8254 /* Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
+		EDF9F5601B46201F82297D24 /* Pods-InstabugExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstabugExample.debug.xcconfig"; path = "Target Support Files/Pods-InstabugExample/Pods-InstabugExample.debug.xcconfig"; sourceTree = "<group>"; };
 		F840E1F0165FE0F500CFE078 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = InstabugExample/config.xml; sourceTree = "<group>"; };
+		FD0720A4FF3A41AC8B3F2ED5 /* IBGPlugin.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = IBGPlugin.h; path = ../../../../../src/ios/IBGPlugin.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		0E2C41AA27FF4D0100CDED97 /* Frameworks */ = {
+		0E31CB1A285A12920090BCF6 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		0E2C41BA27FF4D1500CDED97 /* Frameworks */ = {
+		0E31CB2A285A12A50090BCF6 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -110,7 +113,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				301BF552109A68D80062928A /* libCordova.a in Frameworks */,
-				BBA2D46EB54E23EF583A33EB /* Pods_InstabugExample.framework in Frameworks */,
+				A89BFCA79E392FD771BA8CA1 /* Pods_InstabugExample.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -130,18 +133,18 @@
 			path = InstabugExample/Classes;
 			sourceTree = SOURCE_ROOT;
 		};
-		0E2C41AE27FF4D0100CDED97 /* InstabugExampleUITests */ = {
+		0E31CB1E285A12920090BCF6 /* InstabugExampleUITests */ = {
 			isa = PBXGroup;
 			children = (
-				0E2C41C627FF4D5900CDED97 /* InvokeInstabugUITest.m */,
+				0E31CB1F285A12920090BCF6 /* InvokeInstabugUITest.m */,
 			);
 			path = InstabugExampleUITests;
 			sourceTree = "<group>";
 		};
-		0E2C41BE27FF4D1500CDED97 /* InstabugExampleTests */ = {
+		0E31CB2E285A12A50090BCF6 /* InstabugExampleTests */ = {
 			isa = PBXGroup;
 			children = (
-				0E2C41BF27FF4D1500CDED97 /* InstabugExampleTests.m */,
+				0E31CB2F285A12A50090BCF6 /* InstabugExampleTests.m */,
 			);
 			path = InstabugExampleTests;
 			sourceTree = "<group>";
@@ -150,8 +153,8 @@
 			isa = PBXGroup;
 			children = (
 				1D6058910D05DD3D006BFB54 /* InstabugExample.app */,
-				0E2C41AD27FF4D0100CDED97 /* InstabugExampleUITests.xctest */,
-				0E2C41BD27FF4D1500CDED97 /* InstabugExampleTests.xctest */,
+				0E31CB1D285A12920090BCF6 /* InstabugExampleUITests.xctest */,
+				0E31CB2D285A12A50090BCF6 /* InstabugExampleTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -167,11 +170,11 @@
 				307C750510C5A3420062BCA9 /* Plugins */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
-				0E2C41AE27FF4D0100CDED97 /* InstabugExampleUITests */,
-				0E2C41BE27FF4D1500CDED97 /* InstabugExampleTests */,
+				0E31CB1E285A12920090BCF6 /* InstabugExampleUITests */,
+				0E31CB2E285A12A50090BCF6 /* InstabugExampleTests */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
-				81AAC303DD016070BDE1FC0C /* Pods */,
+				B76558EE59B0DAC9B313741D /* Pods */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -202,7 +205,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CC9578F1BFBDE0319E9C9807 /* Pods_InstabugExample.framework */,
+				4FD05904E49982B6BC61107A /* Pods_InstabugExample.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -229,18 +232,20 @@
 		307C750510C5A3420062BCA9 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
-				96324002051B45579BB301BF /* IBGPlugin.m */,
-				A1EF5C58D6BC4FCAA2944B40 /* IBGPlugin.h */,
+				8E7C69F401A64034A22084C5 /* IBGPlugin.m */,
+				1718742CB8BD4C72AC4D8AFB /* ArgsRegistry.m */,
+				FD0720A4FF3A41AC8B3F2ED5 /* IBGPlugin.h */,
+				6A632DF3F21A402FBC537F53 /* ArgsRegistry.h */,
 			);
 			name = Plugins;
 			path = InstabugExample/Plugins;
 			sourceTree = SOURCE_ROOT;
 		};
-		81AAC303DD016070BDE1FC0C /* Pods */ = {
+		B76558EE59B0DAC9B313741D /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				CA483302A5AD2FC624CC850A /* Pods-InstabugExample.debug.xcconfig */,
-				3DBBB11FD550DD8F55808D48 /* Pods-InstabugExample.release.xcconfig */,
+				EDF9F5601B46201F82297D24 /* Pods-InstabugExample.debug.xcconfig */,
+				BDE959C269D6DC7381B8FA15 /* Pods-InstabugExample.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -257,52 +262,52 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		0E2C41AC27FF4D0100CDED97 /* InstabugExampleUITests */ = {
+		0E31CB1C285A12920090BCF6 /* InstabugExampleUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 0E2C41B827FF4D0100CDED97 /* Build configuration list for PBXNativeTarget "InstabugExampleUITests" */;
+			buildConfigurationList = 0E31CB28285A12920090BCF6 /* Build configuration list for PBXNativeTarget "InstabugExampleUITests" */;
 			buildPhases = (
-				0E2C41A927FF4D0100CDED97 /* Sources */,
-				0E2C41AA27FF4D0100CDED97 /* Frameworks */,
-				0E2C41AB27FF4D0100CDED97 /* Resources */,
+				0E31CB19285A12920090BCF6 /* Sources */,
+				0E31CB1A285A12920090BCF6 /* Frameworks */,
+				0E31CB1B285A12920090BCF6 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				0E2C41B427FF4D0100CDED97 /* PBXTargetDependency */,
+				0E31CB24285A12920090BCF6 /* PBXTargetDependency */,
 			);
 			name = InstabugExampleUITests;
 			productName = InstabugExampleUITests;
-			productReference = 0E2C41AD27FF4D0100CDED97 /* InstabugExampleUITests.xctest */;
+			productReference = 0E31CB1D285A12920090BCF6 /* InstabugExampleUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
-		0E2C41BC27FF4D1500CDED97 /* InstabugExampleTests */ = {
+		0E31CB2C285A12A50090BCF6 /* InstabugExampleTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 0E2C41C327FF4D1500CDED97 /* Build configuration list for PBXNativeTarget "InstabugExampleTests" */;
+			buildConfigurationList = 0E31CB33285A12A50090BCF6 /* Build configuration list for PBXNativeTarget "InstabugExampleTests" */;
 			buildPhases = (
-				0E2C41B927FF4D1500CDED97 /* Sources */,
-				0E2C41BA27FF4D1500CDED97 /* Frameworks */,
-				0E2C41BB27FF4D1500CDED97 /* Resources */,
+				0E31CB29285A12A50090BCF6 /* Sources */,
+				0E31CB2A285A12A50090BCF6 /* Frameworks */,
+				0E31CB2B285A12A50090BCF6 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				0E2C41C227FF4D1500CDED97 /* PBXTargetDependency */,
+				0E31CB32285A12A50090BCF6 /* PBXTargetDependency */,
 			);
 			name = InstabugExampleTests;
 			productName = InstabugExampleTests;
-			productReference = 0E2C41BD27FF4D1500CDED97 /* InstabugExampleTests.xctest */;
+			productReference = 0E31CB2D285A12A50090BCF6 /* InstabugExampleTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		1D6058900D05DD3D006BFB54 /* InstabugExample */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "InstabugExample" */;
 			buildPhases = (
-				BB3BBD823F9DE0D4B601D9E8 /* [CP] Check Pods Manifest.lock */,
+				BC7C68A1A8714B8585B103AF /* [CP] Check Pods Manifest.lock */,
 				304B58A110DAC018002A0835 /* Copy www directory */,
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
 				1D60588F0D05DD3D006BFB54 /* Frameworks */,
-				BB1A6BA61CEE926B2F2FF764 /* [CP] Embed Pods Frameworks */,
+				A50B1BF1D93A04BFDC9741F5 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -322,11 +327,11 @@
 			attributes = {
 				LastUpgradeCheck = 1130;
 				TargetAttributes = {
-					0E2C41AC27FF4D0100CDED97 = {
+					0E31CB1C285A12920090BCF6 = {
 						CreatedOnToolsVersion = 13.3;
 						TestTargetID = 1D6058900D05DD3D006BFB54;
 					};
-					0E2C41BC27FF4D1500CDED97 = {
+					0E31CB2C285A12A50090BCF6 = {
 						CreatedOnToolsVersion = 13.3;
 						TestTargetID = 1D6058900D05DD3D006BFB54;
 					};
@@ -355,8 +360,8 @@
 			projectRoot = "";
 			targets = (
 				1D6058900D05DD3D006BFB54 /* InstabugExample */,
-				0E2C41AC27FF4D0100CDED97 /* InstabugExampleUITests */,
-				0E2C41BC27FF4D1500CDED97 /* InstabugExampleTests */,
+				0E31CB1C285A12920090BCF6 /* InstabugExampleUITests */,
+				0E31CB2C285A12A50090BCF6 /* InstabugExampleTests */,
 			);
 		};
 /* End PBXProject section */
@@ -379,14 +384,14 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
-		0E2C41AB27FF4D0100CDED97 /* Resources */ = {
+		0E31CB1B285A12920090BCF6 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		0E2C41BB27FF4D1500CDED97 /* Resources */ = {
+		0E31CB2B285A12A50090BCF6 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -421,7 +426,7 @@
 			shellScript = "\"$SRCROOT/InstabugExample/Scripts/copy-www-build-step.sh\"";
 			showEnvVarsInLog = 0;
 		};
-		BB1A6BA61CEE926B2F2FF764 /* [CP] Embed Pods Frameworks */ = {
+		A50B1BF1D93A04BFDC9741F5 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -438,7 +443,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-InstabugExample/Pods-InstabugExample-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		BB3BBD823F9DE0D4B601D9E8 /* [CP] Check Pods Manifest.lock */ = {
+		BC7C68A1A8714B8585B103AF /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -463,19 +468,19 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		0E2C41A927FF4D0100CDED97 /* Sources */ = {
+		0E31CB19285A12920090BCF6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0E2C41C727FF4D5900CDED97 /* InvokeInstabugUITest.m in Sources */,
+				0E31CB20285A12920090BCF6 /* InvokeInstabugUITest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		0E2C41B927FF4D1500CDED97 /* Sources */ = {
+		0E31CB29285A12A50090BCF6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0E2C41C027FF4D1500CDED97 /* InstabugExampleTests.m in Sources */,
+				0E31CB30285A12A50090BCF6 /* InstabugExampleTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -486,22 +491,23 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* AppDelegate.m in Sources */,
 				302D95F114D2391D003F00A1 /* MainViewController.m in Sources */,
-				9579A5D0DB0A4A3ABD89BF8C /* IBGPlugin.m in Sources */,
+				8163E8A2B4324A7EAB9F01BB /* IBGPlugin.m in Sources */,
+				5E56E9D77C2A469E968F11CB /* ArgsRegistry.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		0E2C41B427FF4D0100CDED97 /* PBXTargetDependency */ = {
+		0E31CB24285A12920090BCF6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 1D6058900D05DD3D006BFB54 /* InstabugExample */;
-			targetProxy = 0E2C41B327FF4D0100CDED97 /* PBXContainerItemProxy */;
+			targetProxy = 0E31CB23285A12920090BCF6 /* PBXContainerItemProxy */;
 		};
-		0E2C41C227FF4D1500CDED97 /* PBXTargetDependency */ = {
+		0E31CB32285A12A50090BCF6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 1D6058900D05DD3D006BFB54 /* InstabugExample */;
-			targetProxy = 0E2C41C127FF4D1500CDED97 /* PBXContainerItemProxy */;
+			targetProxy = 0E31CB31285A12A50090BCF6 /* PBXContainerItemProxy */;
 		};
 		301BF551109A68C00062928A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -511,7 +517,7 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		0E2C41B527FF4D0100CDED97 /* Debug */ = {
+		0E31CB25285A12920090BCF6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -550,7 +556,7 @@
 			};
 			name = Debug;
 		};
-		0E2C41B627FF4D0100CDED97 /* Release */ = {
+		0E31CB26285A12920090BCF6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -585,7 +591,7 @@
 			};
 			name = Release;
 		};
-		0E2C41C427FF4D1500CDED97 /* Debug */ = {
+		0E31CB34285A12A50090BCF6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -625,7 +631,7 @@
 			};
 			name = Debug;
 		};
-		0E2C41C527FF4D1500CDED97 /* Release */ = {
+		0E31CB35285A12A50090BCF6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -796,20 +802,20 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		0E2C41B827FF4D0100CDED97 /* Build configuration list for PBXNativeTarget "InstabugExampleUITests" */ = {
+		0E31CB28285A12920090BCF6 /* Build configuration list for PBXNativeTarget "InstabugExampleUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				0E2C41B527FF4D0100CDED97 /* Debug */,
-				0E2C41B627FF4D0100CDED97 /* Release */,
+				0E31CB25285A12920090BCF6 /* Debug */,
+				0E31CB26285A12920090BCF6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		0E2C41C327FF4D1500CDED97 /* Build configuration list for PBXNativeTarget "InstabugExampleTests" */ = {
+		0E31CB33285A12A50090BCF6 /* Build configuration list for PBXNativeTarget "InstabugExampleTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				0E2C41C427FF4D1500CDED97 /* Debug */,
-				0E2C41C527FF4D1500CDED97 /* Release */,
+				0E31CB34285A12A50090BCF6 /* Debug */,
+				0E31CB35285A12A50090BCF6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

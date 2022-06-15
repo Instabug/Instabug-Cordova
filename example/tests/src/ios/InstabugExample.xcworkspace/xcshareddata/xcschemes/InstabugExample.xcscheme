@@ -41,7 +41,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "0E2C41AC27FF4D0100CDED97"
+               BlueprintIdentifier = "0E31CB1C285A12920090BCF6"
                BuildableName = "InstabugExampleUITests.xctest"
                BlueprintName = "InstabugExampleUITests"
                ReferencedContainer = "container:InstabugExample.xcodeproj">
@@ -51,7 +51,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "0E2C41BC27FF4D1500CDED97"
+               BlueprintIdentifier = "0E31CB2C285A12A50090BCF6"
                BuildableName = "InstabugExampleTests.xctest"
                BlueprintName = "InstabugExampleTests"
                ReferencedContainer = "container:InstabugExample.xcodeproj">
