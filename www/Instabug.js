@@ -1,4 +1,5 @@
 var exec = require('cordova/exec');
+var { strings } = require('./ArgsRegistry');
 
 var getInvocationEvents = function () {
     return {
@@ -53,6 +54,8 @@ var getLocales = function () {
 
 var Instabug = function () {
 };
+
+Instabug.strings = strings;
 
 Instabug.start = function (token, invocationEvents, success, error) {
     const validEvents = getInvocationEvents();
@@ -184,6 +187,17 @@ Instabug.setLocale = function (locale, success, error) {
     } else {
         console.log('Could not set locale - "' + locale + '" is not valid.');
     }
+};
+
+
+/**
+ * Overrides any of the strings shown in the SDK with custom ones.
+ * Allows you to customize any of the strings shown to users in the SDK.
+ * @param {strings} key Key of string to override.
+ * @param {string} value String value to override the default one.
+ */
+Instabug.setString = function (key, value, success, error) {
+    exec(success, error, 'IBGPlugin', 'setString', [key, value]);
 };
 
 module.exports = Instabug;

@@ -1,4 +1,5 @@
 #import <Cordova/CDVPlugin.h>
+#import "util/ArgsRegistry.h"
 
 @interface IBGPlugin : CDVPlugin
 
@@ -39,5 +40,7 @@
 - (void)getUserAttribute:(CDVInvokedUrlCommand *)command;
 
 - (void)getAllUserAttributes:(CDVInvokedUrlCommand *)command;
+
+- (void)setString:(CDVInvokedUrlCommand *)command;
 
 @end

@@ -1485,4 +1485,11 @@
     }
 }
 
+- (void)setString:(CDVInvokedUrlCommand*)command {
+    NSString* key = [command argumentAtIndex:0];
+    NSString* value = [command argumentAtIndex:1];
+    NSString* placeholder = ArgsRegistry.placeholders[key];
+    [Instabug setValue:value forStringWithKey:placeholder];
+}
+
 @end
