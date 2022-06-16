@@ -26,22 +26,22 @@
 
     <!-- js -->
     <js-module src="www/Instabug.js" name="Instabug">
-        <runs/>
+        <clobbers target="InstabugLib.Instabug" />
     </js-module>
    <js-module src="www/BugReporting.js" name="BugReporting">
-        <runs/>
+        <clobbers target="InstabugLib.BugReporting" />
     </js-module>
     <js-module src="www/FeatureRequests.js" name="FeatureRequests">
-        <runs/>
+        <clobbers target="InstabugLib.FeatureRequests" />
     </js-module>
     <js-module src="www/Surveys.js" name="Surveys">
-        <runs/>
+        <clobbers target="InstabugLib.Surveys" />
     </js-module>
     <js-module src="www/Chats.js" name="Chats">
-        <runs/>
+        <clobbers target="InstabugLib.Chats" />
     </js-module>
     <js-module src="www/Replies.js" name="Replies">
-        <runs/>
+        <clobbers target="InstabugLib.Replies" />
     </js-module>
 
     <!-- android -->
