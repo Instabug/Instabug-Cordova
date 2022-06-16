@@ -73,14 +73,6 @@ Instabug.setPrimaryColor = function (colorInteger, success, error) {
     exec(success, error, 'IBGPlugin', 'setPrimaryColor', [colorInteger]);
 };
 
-Instabug.setViewHierarchyEnabled = function (enabled, success, error) {
-    exec(success, error, 'IBGPlugin', 'setViewHierarchyEnabled', [enabled]);
-};
-
-Instabug.setAutoScreenRecordingMaxDuration = function (duration, success, error) {
-    exec(success, error, 'IBGPlugin', 'setAutoScreenRecordingMaxDuration', [duration]);
-};
-
 Instabug.logUserEventWithName = function (userEvent, success, error) {
     exec(success, error, 'IBGPlugin', 'logUserEventWithName', [userEvent]);
 };

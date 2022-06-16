@@ -22,7 +22,6 @@ import com.instabug.library.OnSdkDismissCallback;
 import com.instabug.library.extendedbugreport.ExtendedBugReport;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
-import com.instabug.bug.invocation.InvocationMode;
 import com.instabug.library.invocation.OnInvokeCallback;
 import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition;
 import com.instabug.library.logging.InstabugLog;
@@ -852,12 +851,12 @@ public class IBGPlugin extends CordovaPlugin {
      * @param callbackContext Used when calling back into JavaScript
      */
     public void setViewHierarchyEnabled(final CallbackContext callbackContext, JSONArray args) {
-        Boolean isEnabled = args.optBoolean(0);
+        boolean isEnabled = args.optBoolean(0);
         try {
             if (isEnabled) {
-                Instabug.setViewHierarchyState(Feature.State.ENABLED);
+                BugReporting.setViewHierarchyState(Feature.State.ENABLED);
             } else {
-                Instabug.setViewHierarchyState(Feature.State.DISABLED);
+                BugReporting.setViewHierarchyState(Feature.State.DISABLED);
             }
             callbackContext.success();
         } catch (IllegalStateException e) {
@@ -875,25 +874,6 @@ public class IBGPlugin extends CordovaPlugin {
     public void showSurveyIfAvailable(final CallbackContext callbackContext) {
         try {
             Surveys.showSurveyIfAvailable();
-            callbackContext.success();
-        } catch (IllegalStateException e) {
-            callbackContext.error(errorMsg);
-        }
-    }
-
-    /**
-     * Sets maximum auto screen recording video duration.
-     *
-     * @param args .optInt(0)        maximum duration of the screen recording video seconds
-     *                        The maximum duration is 30 seconds
-     *
-     * @param callbackContext Used when calling back into JavaScript
-     */
-    public void setAutoScreenRecordingMaxDuration(final CallbackContext callbackContext, JSONArray args) {
-        int duration = args.optInt(0);
-        try {
-            int durationInMilli = duration * 1000;
-            Instabug.setAutoScreenRecordingMaxDuration(durationInMilli);
             callbackContext.success();
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
@@ -1077,29 +1057,6 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
-     * Set after how many sessions should the dismissed survey would show again.
-     *
-     * @param callbackContext Used when calling back into JavaScript
-     * @param args .optInt(0)   number of sessions that the dismissed survey will be
-     *                        shown after.
-     * @param args .optInt(1)       number of days that the dismissed survey will show
-     *                        after.
-     */
-    public void setThresholdForReshowingSurveyAfterDismiss(final CallbackContext callbackContext, JSONArray args) {
-        int sessionsCount = args.optInt(0);
-        int daysCount = args.optInt(1);
-        if (Math.signum(sessionsCount) != -1 && Math.signum(daysCount) != -1) {
-            try {
-                Surveys.setThresholdForReshowingSurveyAfterDismiss(sessionsCount, daysCount);
-                callbackContext.success();
-            } catch (IllegalStateException e) {
-                callbackContext.error(errorMsg);
-            }
-        } else
-            callbackContext.error("Session count and days count must be provided.");
-    }
-
-    /**
      * Shows the UI for feature requests list
      *
      * @param callbackContext Used when calling back into JavaScript
@@ -1247,25 +1204,6 @@ public class IBGPlugin extends CordovaPlugin {
         } else if ("addCommentToFeature".equals(actionType)) {
             return ActionType.ADD_COMMENT_TO_FEATURE;
         } else return -1;
-    }
-
-    /**
-     * Convenience method for converting string to InstabugInvocationMode.
-     *
-     * @param mode String shortcode for mode
-     */
-    public static InvocationMode parseInvocationMode(String mode) {
-        if ("chat".equals(mode)) {
-            return InvocationMode.NEW_CHAT;
-        } else if ("chats".equals(mode)) {
-            return InvocationMode.CHATS_LIST;
-        } else if ("bug".equals(mode)) {
-            return InvocationMode.NEW_BUG;
-        } else if ("feedback".equals(mode)) {
-            return InvocationMode.NEW_FEEDBACK;
-        } else if ("options".equals(mode)) {
-            return InvocationMode.PROMPT_OPTION;
-        } else return null;
     }
 
     /**

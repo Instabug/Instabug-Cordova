@@ -275,12 +275,13 @@
  */
 - (void) hasRespondedToSurveyWithToken:(CDVInvokedUrlCommand*)command
  {
-     CDVPluginResult* result;
+     __block CDVPluginResult* result;
      NSString *surveyToken = [command argumentAtIndex:0];
 
      if (surveyToken.length > 0) {
-         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
-                                    messageAsBool:[IBGSurveys hasRespondedToSurveyWithToken:surveyToken]];
+         [IBGSurveys hasRespondedToSurveyWithToken:surveyToken completionHandler:^(BOOL hasResponded) {
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:hasResponded];
+         }];
      } else {
          result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
                                     messageAsString:@"A non-empty survey token must be provided."];
@@ -776,7 +777,7 @@
      BOOL isEnabled = [command argumentAtIndex:0];
 
      if (isEnabled) {
-         Instabug.shouldCaptureViewHierarchy = [[command argumentAtIndex:0] boolValue];
+         IBGBugReporting.shouldCaptureViewHierarchy = [[command argumentAtIndex:0] boolValue];
          result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
      } else {
          result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
@@ -832,29 +833,6 @@
 
         [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
     }
-
-  /**
-   * Sets maximum auto screen recording video duration.
-   *
-   * @param {CDVInvokedUrlCommand*} command
-   *        The command sent from JavaScript
-   */
-   - (void) setAutoScreenRecordingMaxDuration:(CDVInvokedUrlCommand*)command
-   {
-       CDVPluginResult* result;
-
-       CGFloat duration = [[command argumentAtIndex:0] floatValue];
-
-       if (duration) {
-           Instabug.autoScreenRecordingDuration = duration;
-           result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-       } else {
-           result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                      messageAsString:@"A duration must be provided."];
-       }
-
-       [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
-   }
 
    /**
     * Returns the number of unread messages the user currently has.
@@ -1017,31 +995,6 @@
 
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
-
-/**
- * Sets a threshold for numbers of sessions and another for number of days
- * required before a survey, that has been dismissed once, would show again.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
- - (void) setThresholdForReshowingSurveyAfterDismiss:(CDVInvokedUrlCommand*)command
- {
-     CDVPluginResult* result;
-
-     NSInteger sessionsCount = [[command argumentAtIndex:0] integerValue];
-     NSInteger daysCount = [[command argumentAtIndex:1] integerValue];
-
-     if (sessionsCount && daysCount) {
-         [IBGSurveys setThresholdForReshowingSurveyAfterDismiss:sessionsCount daysCount:daysCount];
-         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-     } else {
-         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                    messageAsString:@"A sessions count and days count must be provided."];
-     }
-
-     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
- }
 
  /**
   * Sets a threshold for numbers of sessions and another for number of days
@@ -1325,28 +1278,6 @@
 
 /**
  * Convenience method for converting NSString to
- * IBGInvocationMode.
- *
- * @param  {NSString*}
- *         NSString shortcode for IBGInvocationMode
- */
-- (IBGInvocationMode) parseInvocationMode:(NSString*)mode
-{
-    if ([mode isEqualToString:@"bug"]) {
-        return IBGInvocationModeNewBug;
-    } else if ([mode isEqualToString:@"feedback"]) {
-        return IBGInvocationModeNewFeedback;
-    } else if ([mode isEqualToString:@"chat"]) {
-        return IBGInvocationModeNewChat;
-    } else if ([mode isEqualToString:@"chatList"]) {
-        return IBGInvocationModeChatsList;
-    } else if ([mode isEqualToString:@"na"]) {
-        return IBGInvocationModeNA;
-    } else return 0;
-}
-
-/**
- * Convenience method for converting NSString to
  * IBGPosition.
  *
  * @param  {NSString*} position
@@ -1496,7 +1427,7 @@
     } else if ([locale isEqualToString:@"polish"]) {
         return IBGLocalePolish;
     } else if ([locale isEqualToString:@"portuguese"]) {
-        return IBGLocalePortugese;
+        return IBGLocalePortuguese;
     } else if ([locale isEqualToString:@"portugueseBrazil"]) {
         return IBGLocalePortugueseBrazil;
     } else if ([locale isEqualToString:@"russian"]) {

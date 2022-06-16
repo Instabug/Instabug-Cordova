@@ -35,21 +35,6 @@ var getOptions = function() {
 };
 
 /**
- * The mode used upon invocating the SDK
- * @readonly
- * @enum {string} InvocationMode
- */
-var getInvocationModes = function() {
-  return {
-    chat: 'chat',
-    chats: 'chats',
-    bug: 'bug',
-    feedback: 'feedback',
-    options: 'options'
-  };
-};
-
-/**
  * The extended bug report mode.
  * @readonly
  * @enum {string} ExtendedBugReportMode
@@ -78,7 +63,6 @@ var BugReporting = function() {};
 
 BugReporting.invocationEvents = getInvocationEvents();
 BugReporting.option = getOptions();
-BugReporting.invocationModes = getInvocationModes();
 BugReporting.extendedBugReportMode = getExtendedBugReportMode();
 BugReporting.reportType = getReportType();
 
@@ -128,6 +112,17 @@ BugReporting.showWithOptions = function(reportType, options, success, error) {
       [reportType, options]
     );
   }
+};
+
+/**
+ * Enables or disables view hierarchy.
+ * 
+ * @param {boolean} enabled
+ * @param {function(void):void} success callback on function success
+ * @param {function(void):void} error callback on function error
+ */
+BugReporting.setViewHierarchyEnabled = function (enabled, success, error) {
+  exec(success, error, 'IBGPlugin', 'setViewHierarchyEnabled', [enabled]);
 };
 
 /**
