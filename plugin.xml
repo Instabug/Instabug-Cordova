@@ -25,23 +25,23 @@
     <!-- dependencies -->
 
     <!-- js -->
-    <js-module src="www/instabug.js" name="Instabug">
-        <clobbers target="cordova.plugins.instabug"/>
+    <js-module src="www/Instabug.js" name="Instabug">
+        <clobbers target="InstabugLib.Instabug" />
     </js-module>
-   <js-module src="www/bugReporting.js" name="BugReporting">
-        <clobbers target="cordova.plugins.bugReporting"/>
+   <js-module src="www/BugReporting.js" name="BugReporting">
+        <clobbers target="InstabugLib.BugReporting" />
     </js-module>
-    <js-module src="www/featureRequests.js" name="FeatureRequests">
-        <clobbers target="cordova.plugins.featureRequests"/>
+    <js-module src="www/FeatureRequests.js" name="FeatureRequests">
+        <clobbers target="InstabugLib.FeatureRequests" />
     </js-module>
-    <js-module src="www/surveys.js" name="Surveys">
-        <clobbers target="cordova.plugins.surveys"/>
+    <js-module src="www/Surveys.js" name="Surveys">
+        <clobbers target="InstabugLib.Surveys" />
     </js-module>
-    <js-module src="www/chats.js" name="Chats">
-        <clobbers target="cordova.plugins.chats"/>
+    <js-module src="www/Chats.js" name="Chats">
+        <clobbers target="InstabugLib.Chats" />
     </js-module>
-    <js-module src="www/replies.js" name="Replies">
-        <clobbers target="cordova.plugins.replies"/>
+    <js-module src="www/Replies.js" name="Replies">
+        <clobbers target="InstabugLib.Replies" />
     </js-module>
 
     <!-- android -->
