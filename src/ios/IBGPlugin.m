@@ -45,114 +45,6 @@
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
-/**
- * Intializes Instabug and sets provided options.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) activate:(CDVInvokedUrlCommand*)command
-{
-    CDVPluginResult* result;
-
-    NSDictionary* tokensForPlatforms = [command argumentAtIndex:0];
-
-    if (tokensForPlatforms) {
-        NSString* token = [tokensForPlatforms objectForKey:@"ios"];
-        if (![token length] > 0) {
-            token = [tokensForPlatforms objectForKey:@"token"];
-        }
-        if ([token length] > 0) {
-            id invEvent = [command argumentAtIndex:1];
-            IBGInvocationEvent invocationEvent = 0;
-
-            if ([invEvent isKindOfClass:[NSString class]]) {
-                invocationEvent = [self parseInvocationEvent:invEvent];
-            } else if ([invEvent isKindOfClass:[NSDictionary class]]) {
-                // Desired invocation event may be different across platforms
-                // and can be specified as such
-                invocationEvent = [self parseInvocationEvent: [invEvent objectForKey:@"ios"]];
-            }
-
-            if (!invocationEvent) {
-                // Instabug iOS SDK requires invocation event for initialization
-                result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                           messageAsString:@"An invocation event must be provided."];
-            } else {
-                // Initialize Instabug
-                [Instabug startWithToken:token invocationEvents:invocationEvent];
-                [self setBaseUrlForDeprecationLogs];
-
-                // Apply provided options
-                [self applyOptions:[command argumentAtIndex:2]];
-
-                result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-            }
-        } else {
-            // Without a token, Instabug cannot be initialized.
-            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                       messageAsString:@"An application token must be provided."];
-        }
-    } else {
-        // Without a token, Instabug cannot be initialized.
-        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                   messageAsString:@"An application token must be provided."];
-    }
-
-    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
-}
-
-/**
- * Intializes Instabug and sets provided options.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) startWithToken:(CDVInvokedUrlCommand*)command
-{
-    CDVPluginResult* result;
-
-    NSDictionary* tokensForPlatforms = [command argumentAtIndex:0];
-
-    if (tokensForPlatforms) {
-        NSString* token = [tokensForPlatforms objectForKey:@"ios"];
-
-        if ([token length] > 0) {
-            NSArray* invEvents = [command argumentAtIndex:1];
-            IBGInvocationEvent invocationEvents = 0;
-
-            for (NSString *invEvent in invEvents) {
-              IBGInvocationEvent invocationEvent = [self parseInvocationEvent:invEvent];
-              invocationEvents |= invocationEvent;
-            }
-            if (invocationEvents == 0) {
-                // Instabug iOS SDK requires invocation event for initialization
-                result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                           messageAsString:@"An invocation event must be provided."];
-            } else {
-                // Initialize Instabug
-                [Instabug startWithToken:token invocationEvents:invocationEvents];
-                [self setBaseUrlForDeprecationLogs];
-
-                // Apply provided options
-                [self applyOptions:[command argumentAtIndex:2]];
-
-                result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-            }
-        } else {
-            // Without a token, Instabug cannot be initialized.
-            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                       messageAsString:@"An application token must be provided."];
-        }
-    } else {
-        // Without a token, Instabug cannot be initialized.
-        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                   messageAsString:@"An application token must be provided."];
-    }
-
-    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
-}
-
 - (void) identifyUserWithEmail:(CDVInvokedUrlCommand*)command {
     NSString *email = [command argumentAtIndex:0];
     NSString *name = [command argumentAtIndex:1];
@@ -742,18 +634,6 @@
 }
 
 /**
- * Enable or disable anything that has to do with chats.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) setChatsEnabled:(CDVInvokedUrlCommand*)command {
-    BOOL isEnabled = [[command argumentAtIndex:0] boolValue];
-    IBGChats.enabled = isEnabled;
-    [self sendSuccessResult:command];
-}
-
-/**
  * Enable or disable anything that has to do with replies.
  *
  * @param {CDVInvokedUrlCommand*} command
@@ -762,17 +642,6 @@
 - (void) setRepliesEnabled:(CDVInvokedUrlCommand*)command {
     BOOL isEnabled = [[command argumentAtIndex:0] boolValue];
     IBGReplies.enabled = isEnabled;
-    [self sendSuccessResult:command];
-}
-
-/**
- * Show chats view as a list or new message.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) showChats:(CDVInvokedUrlCommand*)command {
-    [IBGChats show];
     [self sendSuccessResult:command];
 }
 

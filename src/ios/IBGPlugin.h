@@ -4,10 +4,6 @@
 
 - (void)start:(CDVInvokedUrlCommand *)command;
 
-- (void)activate:(CDVInvokedUrlCommand *)command __deprecated;
-
-- (void)startWithToken:(CDVInvokedUrlCommand *)command __deprecated;
-
 - (void)setPrimaryColor:(CDVInvokedUrlCommand *)command;
 
 - (void)setUserData:(CDVInvokedUrlCommand *)command;
@@ -28,11 +24,7 @@
 
 - (void)setBugReportingEnabled:(CDVInvokedUrlCommand *)command;
 
-- (void)setChatsEnabled:(CDVInvokedUrlCommand *)command;
-
 - (void)setRepliesEnabled:(CDVInvokedUrlCommand *)command;
-
-- (void)showChats:(CDVInvokedUrlCommand *)command;
 
 - (void)hasChats:(CDVInvokedUrlCommand *)command;
 

@@ -37,9 +37,6 @@
     <js-module src="www/Surveys.js" name="Surveys">
         <clobbers target="InstabugLib.Surveys" />
     </js-module>
-    <js-module src="www/Chats.js" name="Chats">
-        <clobbers target="InstabugLib.Chats" />
-    </js-module>
     <js-module src="www/Replies.js" name="Replies">
         <clobbers target="InstabugLib.Replies" />
     </js-module>
@@ -67,7 +64,6 @@
             <service android:name="com.instabug.survey.network.service.InstabugSurveysSubmitterService" />
             <service android:name="com.instabug.library.internal.video.VideoProcessingService"/>
             <service android:name="com.instabug.library.analytics.network.InstabugAnalyticsUploaderService"/>
-            <service android:name="com.instabug.chat.network.InstabugMessageUploaderService"/>
 
         </config-file>
 

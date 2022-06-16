@@ -61,41 +61,13 @@ Instabug.start = function (token, invocationEvents, success, error) {
     if (isValid && invocationEvents.length > 0) {
         exec(success, error, 'IBGPlugin', 'start', [token, invocationEvents]);
     } else {
-        console.log('Could not activate Instabug -  invalid invocation events');
-    }
-};
-
-Instabug.activate = function (token, event, options, success, error) {
-    var validatedEvent = getInvocationEvents()[event];
-
-    if (validatedEvent) {
-        console.warn("The method [activate] is now deprecated. Please use start(token, invocationEvents) instead.")
-        exec(success, error, 'IBGPlugin', 'activate', [token, event, options]);
-    } else {
-        console.log('Could not activate Instabug - invocation event "' + event + '" is not valid.');
+        console.log('Could not start Instabug -  invalid invocation events');
     }
 };
 
 Instabug.show = function (success, error) {
     exec(success, error, 'IBGPlugin', 'show');
 }
-
-Instabug.startWithToken = function (token, events, options, success, error) {
-  var i;
-  var validatedEvents = [];
-  for (i = 0; i < events.length; i++) {
-    var validatedEvent = getInvocationEvents()[events[i]];
-    if(validatedEvent) {
-      validatedEvents.push(validatedEvent);
-    }
-  }
-  if (validatedEvents !== undefined || validatedEvents.length != 0) {
-    console.warn("The method [startWithToken] is now deprecated. Please use start(token, invocationEvents) instead.")
-    exec(success, error, 'IBGPlugin', 'startWithToken', [token, validatedEvents, options]);
-  } else {
-      console.log('Could not activate Instabug - invocation event is not valid.');
-  }
-};
 
 Instabug.setPrimaryColor = function (colorInteger, success, error) {
     exec(success, error, 'IBGPlugin', 'setPrimaryColor', [colorInteger]);
@@ -153,20 +125,6 @@ Instabug.addLog = function (content, success, error) {
 
 Instabug.clearLog = function (success, error) {
     exec(success, error, 'IBGPlugin', 'clearLog', []);
-};
-
-/**
- * @deprecated use {@link Replies.getUnreadRepliesCount}
- */
-Instabug.getUnreadMessagesCount = function (success, error) {
-    exec(success, error, 'IBGPlugin', 'getUnreadRepliesCount', []);
-};
-
-/**
- * @deprecated use {@link Replies.setInAppNotificationEnabled}
- */
-Instabug.setChatNotificationEnabled = function (isEnabled, success, error) {
-    exec(success, error, 'IBGPlugin', 'setChatNotificationEnabled', [isEnabled]);
 };
 
 Instabug.setIBGLogPrintsToConsole = function (isEnabled, success, error) {
