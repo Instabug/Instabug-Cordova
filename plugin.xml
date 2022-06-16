@@ -25,6 +25,7 @@
     <!-- dependencies -->
 
     <!-- js -->
+    <js-module src="www/ArgsRegistry.js" />
     <js-module src="www/Instabug.js" name="Instabug">
         <clobbers target="InstabugLib.Instabug" />
     </js-module>
@@ -82,6 +83,7 @@
         <source-file src="src/android/IBGPluginActivity.java" target-dir="src/com/instabug/cordova/plugin"/>
         <source-file src="src/android/IBGPlugin.java" target-dir="src/com/instabug/cordova/plugin"/>
         <source-file src="src/android/util/Util.java" target-dir="src/com/instabug/cordova/plugin/util"/>
+        <source-file src="src/android/util/ArgsRegistry.java" target-dir="src/com/instabug/cordova/plugin/util"/>
     </platform>
 
     <!-- ios -->
@@ -104,6 +106,9 @@
 
         <header-file src="src/ios/IBGPlugin.h" />
         <source-file src="src/ios/IBGPlugin.m" />
+
+        <header-file src="src//ios/util/ArgsRegistry.h" target-dir="util" />
+        <source-file src="src/ios/util/ArgsRegistry.m" target-dir="util" />
     </platform>
 
 </plugin>

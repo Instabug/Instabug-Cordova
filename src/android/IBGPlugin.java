@@ -12,12 +12,14 @@ import android.util.Log;
 import com.instabug.bug.BugReporting;
 import com.instabug.bug.invocation.Option;
 import com.instabug.chat.Replies;
+import com.instabug.cordova.plugin.util.ArgsRegistry;
 import com.instabug.cordova.plugin.util.Util;
 import com.instabug.featuresrequest.ActionType;
 import com.instabug.featuresrequest.FeatureRequests;
 import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
 import com.instabug.library.InstabugColorTheme;
+import com.instabug.library.InstabugCustomTextPlaceHolder;
 import com.instabug.library.OnSdkDismissCallback;
 import com.instabug.library.extendedbugreport.ExtendedBugReport;
 import com.instabug.library.internal.module.InstabugLocale;
@@ -60,6 +62,7 @@ public class IBGPlugin extends CordovaPlugin {
     private final String errorMsg = "Instabug object must first be activated.";
 
     private Context context;
+    private InstabugCustomTextPlaceHolder placeHolders = new InstabugCustomTextPlaceHolder();
 
     /**
      * Called after plugin construction and fields have been initialized.
@@ -1260,5 +1263,19 @@ public class IBGPlugin extends CordovaPlugin {
             e.printStackTrace();
         }
         return jsonArray;
+    }
+
+    public void setString(final CallbackContext callbackContext, JSONArray args) {
+        try {
+            final String key = args.getString(0);
+            final String value = args.getString(1);
+            final InstabugCustomTextPlaceHolder.Key placeholder = ArgsRegistry.placeholders.get(key);
+            placeHolders.set(placeholder, value);
+            Instabug.setCustomTextPlaceHolders(placeHolders);
+            callbackContext.success();
+        } catch (java.lang.Exception exception) {
+            exception.printStackTrace();
+            callbackContext.error(exception.getMessage());
+        }
     }
 }
