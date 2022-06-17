@@ -2,6 +2,13 @@
 
 @implementation ArgsRegistry
 
++ (ArgsDictionary *) colorThemes {
+    return @{
+        @"light": @(IBGColorThemeLight),
+        @"dark": @(IBGColorThemeDark),
+    };
+}
+
 + (ArgsDictionary *) floatingButtonEdges {
     return @{
         @"left": @(CGRectMinXEdge),

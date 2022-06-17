@@ -945,22 +945,6 @@
 }
 
 /**
- * Convenience method for setting the color theme of
- * the SDK invocation.
- *
- * @param {NSString*} theme
- *        NSString representation of color theme
- */
-- (void) setColorThemeInOptions:(NSString*)theme
-{
-    if ([theme isEqualToString:@"dark"]) {
-        [Instabug setColorTheme:IBGColorThemeDark];
-    } else if ([theme isEqualToString:@"light"]) {
-        [Instabug setColorTheme:IBGColorThemeLight];
-    }
-}
-
-/**
  * Sets the SDK color theme
  *
  * @param {CDVInvokedUrlCommand*} command
@@ -968,26 +952,13 @@
  */
 - (void) setColorTheme:(CDVInvokedUrlCommand*)command
 {
-    CDVPluginResult* result;
     NSString* theme = [command argumentAtIndex:0];
+    IBGColorTheme parsedTheme = (IBGColorTheme) [ArgsRegistry.colorThemes[theme] intValue];
 
-    if ([theme length] > 0) {
-        if ([theme isEqualToString:@"dark"]) {
-            [Instabug setColorTheme:IBGColorThemeDark];
-            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-        } else if ([theme isEqualToString:@"light"]) {
-            [Instabug setColorTheme:IBGColorThemeLight];
-            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-        } else {
-            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                   messageAsString:@"Color theme value is not valid."];
-        }
-    } else {
-        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                   messageAsString:@"Color theme must be provided."];
-    }
+    [Instabug setColorTheme:parsedTheme];
 
-    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK]
+                                callbackId:[command callbackId]];
 }
 
  /**
@@ -1194,7 +1165,6 @@
     [self setTrackingUserStepsEnabled:[[options objectForKey:@"enableTrackingUserSteps"] stringValue]];
     [self setPushNotificationsEnabled:[[options objectForKey:@"enablePushNotifications"] stringValue]];
     [self setSessionProfilerEnabled:[[options objectForKey:@"enableSessionProfiler"] stringValue]];
-    [self setColorThemeInOptions:[options objectForKey:@"colorTheme"]];
     [self setWelcomeMessageMode:[options objectForKey:@"welcomeMessageMode"]];
 }
 

@@ -2,6 +2,7 @@ package com.instabug.cordova.plugin.util;
 
 import androidx.annotation.NonNull;
 
+import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.InstabugCustomTextPlaceHolder.Key;
 import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
 
@@ -26,6 +27,11 @@ public class ArgsRegistry {
             return values;
         }
     }
+
+    public static final ArgsMap<InstabugColorTheme> colorThemes = new ArgsMap<InstabugColorTheme>() {{
+        put("light", InstabugColorTheme.InstabugColorThemeLight);
+        put("dark", InstabugColorTheme.InstabugColorThemeDark);
+    }};
 
     public static final ArgsMap<InstabugFloatingButtonEdge> floatingButtonEdges = new ArgsMap<InstabugFloatingButtonEdge>() {{
         put("left", InstabugFloatingButtonEdge.LEFT);

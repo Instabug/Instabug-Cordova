@@ -176,22 +176,6 @@ public class IBGPluginActivity extends CordovaActivity
       }
 
     /**
-     * Convenience method for parsing and setting
-     * whether the desired color theme for the SDK
-     * invocation.
-     *
-     * @param theme
-     *        String representation of InstabugColorTheme
-     */
-    private void setColorTheme(String theme) {
-        if ("dark".equals(theme)) {
-            Instabug.setColorTheme(InstabugColorTheme.InstabugColorThemeDark);
-        } else if ("light".equals(theme)) {
-            Instabug.setColorTheme(InstabugColorTheme.InstabugColorThemeLight);
-        }
-    }
-
-    /**
      * Wrapper method for parsing and setting all
      * provided options.
      *
@@ -206,7 +190,6 @@ public class IBGPluginActivity extends CordovaActivity
         setInAppMessagingEnabled(opts.getString("enableInAppMessaging"));
         setPushNotificationsEnabled(opts.getString("enablePushNotifications"));
         setUserDataEnabled(opts.getString("enableUserData"));
-        setColorTheme(opts.getString("colorTheme"));
         setSessionProfilerEnabled(opts.getString("enableSessionProfiler"));
         setWelcomeMessageMode(opts.getString("welcomeMessageMode"));
     }

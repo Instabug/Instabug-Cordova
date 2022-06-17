@@ -5,6 +5,7 @@ typedef NSDictionary<NSString*, NSNumber*> ArgsDictionary;
 
 @interface ArgsRegistry : NSObject
 
++ (ArgsDictionary *) colorThemes;
 + (ArgsDictionary *) floatingButtonEdges;
 + (NSDictionary<NSString *, NSString *> *) placeholders;
 

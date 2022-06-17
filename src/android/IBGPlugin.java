@@ -438,31 +438,19 @@ public class IBGPlugin extends CordovaPlugin {
      * invocation.
      *
      * @param callbackContext Used when calling back into JavaScript
-     * @param args .optString(0)     Theme
+     * @param args [colorTheme: String]
      *
      */
     public void setColorTheme(final CallbackContext callbackContext, final JSONArray args) {
-        final String colorTheme = args.optString(0);
-        if (colorTheme != null) {
-            try {
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if ("dark".equals(colorTheme)) {
-                            Instabug.setColorTheme(InstabugColorTheme.InstabugColorThemeDark);
-                        } else if ("light".equals(colorTheme)) {
-                            Instabug.setColorTheme(InstabugColorTheme.InstabugColorThemeLight);
-                        } else {
-                            callbackContext.error("Color theme value is not valid.");
-                        }
-                    }
-                });
-            } catch (IllegalStateException e) {
-                e.printStackTrace();
-                callbackContext.error(errorMsg);
-            }
-        } else {
-            callbackContext.error("A color theme must be provided.");
+        try {
+            final String colorTheme = args.optString(0);
+            final InstabugColorTheme parsedColorTheme = ArgsRegistry.colorThemes
+                    .getOrDefault(colorTheme, InstabugColorTheme.InstabugColorThemeLight);
+
+            Instabug.setColorTheme(parsedColorTheme);
+            callbackContext.success();
+        } catch (Exception e) {
+            callbackContext.error(e.getMessage());
         }
     }
 

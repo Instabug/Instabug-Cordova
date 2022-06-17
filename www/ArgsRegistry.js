@@ -3,6 +3,11 @@ module.exports.floatingButtonEdge = {
   right: 'right',
 };
 
+module.exports.colorTheme = {
+  light: 'light',
+  dark: 'dark',
+};
+
 module.exports.strings = {
   shakeHint: "shakeHint",
   swipeHint: "swipeHint",

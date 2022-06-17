@@ -1,5 +1,5 @@
 var exec = require('cordova/exec');
-var { strings, floatingButtonEdge } = require('./ArgsRegistry');
+var { strings, floatingButtonEdge, colorTheme } = require('./ArgsRegistry');
 
 var getInvocationEvents = function () {
     return {
@@ -57,6 +57,7 @@ var Instabug = function () {
 
 Instabug.strings = strings;
 Instabug.floatingButtonEdge = floatingButtonEdge;
+Instabug.colorTheme = colorTheme;
 
 Instabug.start = function (token, invocationEvents, success, error) {
     const validEvents = getInvocationEvents();
@@ -190,6 +191,15 @@ Instabug.setLocale = function (locale, success, error) {
     }
 };
 
+/**
+ * Sets SDK color theme.
+ * @param {keyof Instabug.colorTheme} theme.
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
+Instabug.setColorTheme = function (theme, success, error) {
+    exec(success, error, 'IBGPlugin', 'setColorTheme', [theme]);
+};
 
 /**
  * Overrides any of the strings shown in the SDK with custom ones.
