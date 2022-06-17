@@ -1,5 +1,5 @@
 var exec = require('cordova/exec');
-var { strings } = require('./ArgsRegistry');
+var { strings, floatingButtonEdge } = require('./ArgsRegistry');
 
 var getInvocationEvents = function () {
     return {
@@ -56,6 +56,7 @@ var Instabug = function () {
 };
 
 Instabug.strings = strings;
+Instabug.floatingButtonEdge = floatingButtonEdge;
 
 Instabug.start = function (token, invocationEvents, success, error) {
     const validEvents = getInvocationEvents();

@@ -42,40 +42,6 @@ public class IBGPluginActivity extends CordovaActivity
     }
 
     /**
-     * Convenience method for parsing and setting the
-     * edge on which to float the button.
-     * @param edge
-     *        String representation of edge
-     */
-    private void setFloatingButtonEdge(final String edge) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                if (edge != null && edge.equals("left"))
-                    BugReporting.setFloatingButtonEdge(InstabugFloatingButtonEdge.LEFT);
-                else
-                    BugReporting.setFloatingButtonEdge(InstabugFloatingButtonEdge.RIGHT);
-            }
-        });
-    }
-
-    /**
-     * Convenience method for parsing and setting the
-     * offset from the top for the floating button.
-     * @param offset
-     *        String representation of int offset
-     */
-    private void setFloatingButtonOffset(final String offset) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                if (offset != null)
-                    BugReporting.setFloatingButtonOffset(Integer.parseInt(offset));
-            }
-        });
-    }
-
-    /**
      * Convenience method for parsing and setting
      * whether the debug logs from the Instabug SDK
      * are should be printed to LogCat.
@@ -233,8 +199,6 @@ public class IBGPluginActivity extends CordovaActivity
      *        JSONObject representation of options
      */
     private void setBuilderOptions(Bundle opts) {
-        setFloatingButtonEdge(opts.getString("floatingButtonEdge"));
-        setFloatingButtonOffset(opts.getString("floatingButtonOffset"));
         setConsoleLogsEnabled(opts.getString("enableConsoleLogs"));
         setInstabugLogsEnabled(opts.getString("enableInstabugLogs"));
         setTrackingUserStepsEnabled(opts.getString("enableTrackingUserSteps"));

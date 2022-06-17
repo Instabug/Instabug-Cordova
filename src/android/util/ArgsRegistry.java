@@ -3,6 +3,7 @@ package com.instabug.cordova.plugin.util;
 import androidx.annotation.NonNull;
 
 import com.instabug.library.InstabugCustomTextPlaceHolder.Key;
+import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +26,11 @@ public class ArgsRegistry {
             return values;
         }
     }
+
+    public static final ArgsMap<InstabugFloatingButtonEdge> floatingButtonEdges = new ArgsMap<InstabugFloatingButtonEdge>() {{
+        put("left", InstabugFloatingButtonEdge.LEFT);
+        put("right", InstabugFloatingButtonEdge.RIGHT);
+    }};
 
     public static final ArgsMap<Key> placeholders = new ArgsMap<Key>() {{
         put("shakeHint", Key.SHAKE_HINT);

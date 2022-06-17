@@ -253,4 +253,17 @@ BugReporting.setExtendedBugReportMode = function(
   }
 };
 
+/**
+ * Sets the default edge and offset from the top at which the floating button
+ * will be shown. Different orientations are already handled.
+ * 
+ * @param {keyof Instabug.floatingButtonEdge} edge - The position of the edge, the default is right.
+ * @param {number} offset From the top edge, default is left.
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
+BugReporting.setFloatingButtonEdge = function(edge, offset, success, error) {
+  exec(success, error, 'IBGPlugin', 'setFloatingButtonEdge', [edge, offset]);
+},
+
 module.exports = BugReporting;

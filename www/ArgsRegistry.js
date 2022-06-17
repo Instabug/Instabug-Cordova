@@ -1,3 +1,8 @@
+module.exports.floatingButtonEdge = {
+  left: 'left',
+  right: 'right',
+};
+
 module.exports.strings = {
   shakeHint: "shakeHint",
   swipeHint: "swipeHint",
@@ -71,3 +76,4 @@ module.exports.strings = {
   reproStepsListEmptyStateDescription: "reproStepsListEmptyStateDescription",
   reproStepsListItemTitle: "reproStepsListItemTitle",
 };
+

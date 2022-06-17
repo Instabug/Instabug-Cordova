@@ -874,24 +874,18 @@
  * Convenience method for setting the default edge on
  * which the floating button will be shown and its
  * offset from the top.
- *
- * @param {NSString*} edge
- *        NSString representation of edge
- * @param {NSString*} offset
- *        NSString representation of double offset
  */
-- (void) setFloatingButtonEdge:(NSString*)edge withOffset:(NSNumber* )offset
+- (void) setFloatingButtonEdge:(CDVInvokedUrlCommand*)command
 {
-    double offsetFromTop = [offset doubleValue];
+    NSString* edge = [command argumentAtIndex:0 withDefault:@"right"];
+    double offset = [[command argumentAtIndex:1] doubleValue];
+    NSNumber* parsedEdge = ArgsRegistry.floatingButtonEdges[edge];
 
-    if (offset) {
-        IBGBugReporting.floatingButtonTopOffset = offsetFromTop;
-    }
-    if ([edge isEqualToString:@"left"]) {
-        IBGBugReporting.floatingButtonEdge = CGRectMinXEdge;
-    } else if ([edge isEqualToString:@"right"]) {
-        IBGBugReporting.floatingButtonEdge = CGRectMaxXEdge;
-    }
+    IBGBugReporting.floatingButtonTopOffset = offset;
+    IBGBugReporting.floatingButtonEdge = (CGRectEdge) [parsedEdge intValue];
+    
+    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK]
+                                callbackId:[command callbackId]];
 }
 
 /**
@@ -1197,8 +1191,6 @@
 {
     [self setShakingThresholdForIPhone:[options objectForKey:@"shakingThresholdIPhone"]
                                forIPad:[options objectForKey:@"shakingThresholdIPad"]];
-    [self setFloatingButtonEdge:[options objectForKey:@"floatingButtonEdge"]
-                     withOffset:[options objectForKey:@"floatingButtonOffset"]];
     [self setTrackingUserStepsEnabled:[[options objectForKey:@"enableTrackingUserSteps"] stringValue]];
     [self setPushNotificationsEnabled:[[options objectForKey:@"enablePushNotifications"] stringValue]];
     [self setSessionProfilerEnabled:[[options objectForKey:@"enableSessionProfiler"] stringValue]];

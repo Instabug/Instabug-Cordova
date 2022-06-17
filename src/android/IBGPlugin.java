@@ -25,6 +25,7 @@ import com.instabug.library.extendedbugreport.ExtendedBugReport;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.invocation.OnInvokeCallback;
+import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
 import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition;
 import com.instabug.library.logging.InstabugLog;
 import com.instabug.library.model.Report;
@@ -969,6 +970,27 @@ public class IBGPlugin extends CordovaPlugin {
             callbackContext.sendPluginResult(new PluginResult(Status.OK, hasResponded));
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
+        }
+    }
+
+    /**
+     * Sets the position of the Instabug floating button on the screen.
+     * @param callbackContext Used when calling back into JavaScript
+     * @param args [edge: String, offset: int]
+     */
+    public void setFloatingButtonEdge(final CallbackContext callbackContext, JSONArray args) {
+        try {
+            final String edge = args.optString(0);
+            final int offset = args.optInt(1);
+            final InstabugFloatingButtonEdge parsedEdge = ArgsRegistry.floatingButtonEdges
+                    .getOrDefault(edge, InstabugFloatingButtonEdge.RIGHT);
+
+            BugReporting.setFloatingButtonOffset(offset);
+            BugReporting.setFloatingButtonEdge(parsedEdge);
+
+            callbackContext.success();
+        } catch (Exception e) {
+            callbackContext.error(e.getMessage());
         }
     }
 

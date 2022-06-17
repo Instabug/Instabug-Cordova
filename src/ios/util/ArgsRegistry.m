@@ -2,6 +2,13 @@
 
 @implementation ArgsRegistry
 
++ (ArgsDictionary *) floatingButtonEdges {
+    return @{
+        @"left": @(CGRectMinXEdge),
+        @"right": @(CGRectMaxXEdge),
+    };
+}
+
 + (NSDictionary<NSString *, NSString *> *) placeholders {
     return @{
         @"shakeHint": kIBGShakeStartAlertTextStringName,
