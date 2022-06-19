@@ -1,5 +1,10 @@
 var exec = require('cordova/exec');
-var { strings, floatingButtonEdge, colorTheme } = require('./ArgsRegistry');
+var {
+  welcomeMessageMode,
+  floatingButtonEdge,
+  colorTheme,
+  strings,
+} = require("./ArgsRegistry");
 
 var getInvocationEvents = function () {
     return {
@@ -25,7 +30,6 @@ var getWelcomeMessageMode = function () {
         welcomeMessageModeBeta: 'welcomeMessageModeBeta',
         welcomeMessageModeDisabled: 'welcomeMessageModeDisabled'
     }
-    
 };
 
 var getLocales = function () {
@@ -55,9 +59,10 @@ var getLocales = function () {
 var Instabug = function () {
 };
 
-Instabug.strings = strings;
+Instabug.welcomeMessageMode = welcomeMessageMode;
 Instabug.floatingButtonEdge = floatingButtonEdge;
 Instabug.colorTheme = colorTheme;
+Instabug.strings = strings;
 
 Instabug.start = function (token, invocationEvents, success, error) {
     const validEvents = getInvocationEvents();
@@ -97,16 +102,25 @@ Instabug.setReproStepsMode = function (reproStepsMode, success, error) {
   }
 };
 
-Instabug.showWelcomeMessage = function (welcomeMessageMode, success, error) {
+/**
+ * Sets the welcome message mode to live, beta or disabled.
+ * @param {keyof Instabug.welcomeMessageMode} mode.
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
+Instabug.setWelcomeMessageMode = function (mode, success, error) {
+    exec(success, error, 'IBGPlugin', 'setWelcomeMessageMode', [mode]);
+};
 
-    var validatedWelcomeMessageMode = getWelcomeMessageMode()[welcomeMessageMode];
-  
-    if (validatedWelcomeMessageMode) {
-        exec(success, error, 'IBGPlugin', 'showWelcomeMessage', [validatedWelcomeMessageMode]);
-    } else {
-        console.log('Could not set welcome message mode - "' + validatedWelcomeMessageMode + '" is not valid.');
-    }
-  };
+/**
+ * Shows the welcome message in a specific mode.
+ * @param {keyof Instabug.welcomeMessageMode} mode.
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
+Instabug.showWelcomeMessage = function (mode, success, error) {
+    exec(success, error, 'IBGPlugin', 'showWelcomeMessage', [mode]);
+};
 
 Instabug.setUserData = function (data, success, error) {
     exec(success, error, 'IBGPlugin', 'setUserData', [data]);

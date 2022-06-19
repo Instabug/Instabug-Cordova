@@ -1,11 +1,17 @@
+module.exports.welcomeMessageMode = {
+  live: "welcomeMessageModeLive",
+  beta: "welcomeMessageModeBeta",
+  disabled: "welcomeMessageModeDisabled",
+};
+
 module.exports.floatingButtonEdge = {
-  left: 'left',
-  right: 'right',
+  left: "left",
+  right: "right",
 };
 
 module.exports.colorTheme = {
-  light: 'light',
-  dark: 'dark',
+  light: "light",
+  dark: "dark",
 };
 
 module.exports.strings = {
@@ -81,4 +87,3 @@ module.exports.strings = {
   reproStepsListEmptyStateDescription: "reproStepsListEmptyStateDescription",
   reproStepsListItemTitle: "reproStepsListItemTitle",
 };
-

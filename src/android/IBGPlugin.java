@@ -1048,24 +1048,42 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
+     * Sets the welcome message mode.
+     *
+     * @param callbackContext Used when calling back into JavaScript
+     * @param  args [mode: String]
+     */
+    public void setWelcomeMessageMode(final CallbackContext callbackContext, JSONArray args) {
+        try {
+            final String mode = args.optString(0);
+            final WelcomeMessage.State parsedMode = ArgsRegistry.welcomeMessageModes
+                    .getOrDefault(mode, WelcomeMessage.State.LIVE);
+
+            Instabug.setWelcomeMessageState(parsedMode);
+
+            callbackContext.success();
+        } catch (Exception e) {
+            callbackContext.error(e.getMessage());
+        }
+    }
+
+    /**
      * Shows the welcome message in a specific mode.
      *
-     * @param callbackContext    Used when calling back into JavaScript
-     * @param  args .optString(0) A string to set user steps tracking to be enabled,
-     *                           non visual or disabled.
+     * @param callbackContext Used when calling back into JavaScript
+     * @param  args [mode: String]
      */
     public void showWelcomeMessage(final CallbackContext callbackContext, JSONArray args) {
-        String welcomeMessageMode = args.optString(0);
         try {
-            if (welcomeMessageMode.equals("welcomeMessageModeLive")) {
-                Instabug.showWelcomeMessage(WelcomeMessage.State.LIVE);
-            } else if (welcomeMessageMode.equals("welcomeMessageModeBeta")) {
-                Instabug.showWelcomeMessage(WelcomeMessage.State.BETA);
-            } else {
-                Instabug.showWelcomeMessage(WelcomeMessage.State.LIVE);
-            }
-        } catch (IllegalStateException e) {
-            callbackContext.error(errorMsg);
+            final String mode = args.optString(0);
+            final WelcomeMessage.State parsedMode = ArgsRegistry.welcomeMessageModes
+                    .getOrDefault(mode, WelcomeMessage.State.LIVE);
+
+            Instabug.showWelcomeMessage(parsedMode);
+
+            callbackContext.success();
+        } catch (Exception e) {
+            callbackContext.error(e.getMessage());
         }
     }
 

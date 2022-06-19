@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.InstabugCustomTextPlaceHolder.Key;
 import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
+import com.instabug.library.ui.onboarding.WelcomeMessage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +28,12 @@ public class ArgsRegistry {
             return values;
         }
     }
+
+    public static ArgsMap<WelcomeMessage.State> welcomeMessageModes = new ArgsMap<WelcomeMessage.State>() {{
+        put("welcomeMessageModeLive", WelcomeMessage.State.LIVE);
+        put("welcomeMessageModeBeta", WelcomeMessage.State.BETA);
+        put("welcomeMessageModeDisabled", WelcomeMessage.State.DISABLED);
+    }};
 
     public static final ArgsMap<InstabugColorTheme> colorThemes = new ArgsMap<InstabugColorTheme>() {{
         put("light", InstabugColorTheme.InstabugColorThemeLight);

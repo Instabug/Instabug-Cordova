@@ -2,6 +2,14 @@
 
 @implementation ArgsRegistry
 
++ (ArgsDictionary *) welcomeMessageModes {
+    return @{
+        @"welcomeMessageModeLive": @(IBGWelcomeMessageModeLive),
+        @"welcomeMessageModeBeta": @(IBGWelcomeMessageModeBeta),
+        @"welcomeMessageModeDisabled": @(IBGWelcomeMessageModeDisabled),
+    };
+}
+
 + (ArgsDictionary *) colorThemes {
     return @{
         @"light": @(IBGColorThemeLight),

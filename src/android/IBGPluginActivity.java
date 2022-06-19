@@ -156,26 +156,6 @@ public class IBGPluginActivity extends CordovaActivity
     }
 
     /**
-     * Convenience method for parsing and setting the welcome message mode
-     *
-     * @param welcomeMessageMode
-     *        String representation of welcomeMessageMode
-     */
-    private void setWelcomeMessageMode(String welcomeMessageMode) {
-        if (welcomeMessageMode != null && welcomeMessageMode.length() > 0) {
-            if (welcomeMessageMode.equals("welcomeMessageModeLive")) {
-                Instabug.setWelcomeMessageState(WelcomeMessage.State.LIVE);
-            } else if (welcomeMessageMode.equals("welcomeMessageModeBeta")) {
-                Instabug.setWelcomeMessageState(WelcomeMessage.State.BETA);
-            } else if (welcomeMessageMode.equals("welcomeMessageModeDisabled")) {
-                Instabug.setWelcomeMessageState(WelcomeMessage.State.DISABLED);
-            } else {
-                Instabug.setWelcomeMessageState(WelcomeMessage.State.LIVE);
-            }
-        }
-      }
-
-    /**
      * Wrapper method for parsing and setting all
      * provided options.
      *
@@ -191,6 +171,5 @@ public class IBGPluginActivity extends CordovaActivity
         setPushNotificationsEnabled(opts.getString("enablePushNotifications"));
         setUserDataEnabled(opts.getString("enableUserData"));
         setSessionProfilerEnabled(opts.getString("enableSessionProfiler"));
-        setWelcomeMessageMode(opts.getString("welcomeMessageMode"));
     }
 }

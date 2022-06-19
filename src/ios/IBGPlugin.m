@@ -718,6 +718,23 @@
 }
 
 /**
+ * Sets the welcome message mode.
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) setWelcomeMessageMode:(CDVInvokedUrlCommand*)command
+{
+    NSString* mode = [command argumentAtIndex:0];
+    IBGWelcomeMessageMode parsedMode = (IBGWelcomeMessageMode) [ArgsRegistry.welcomeMessageModes[mode] intValue];
+
+    [Instabug setWelcomeMessageMode:parsedMode];
+
+    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK]
+                                callbackId:[command callbackId]];
+}
+
+/**
  * Shows the welcome message in a specific mode.
  *
  * @param {CDVInvokedUrlCommand*} command
@@ -725,19 +742,13 @@
  */
 - (void) showWelcomeMessage:(CDVInvokedUrlCommand*)command
 {
-    CDVPluginResult* result;
+    NSString* mode = [command argumentAtIndex:0];
+    IBGWelcomeMessageMode parsedMode = (IBGWelcomeMessageMode) [ArgsRegistry.welcomeMessageModes[mode] intValue];
 
-    IBGWelcomeMessageMode welcomeMessageMode = [self parseWelcomeMessageMode:[command argumentAtIndex:0]];
+    [Instabug showWelcomeMessageWithMode:parsedMode];
 
-    if (welcomeMessageMode) {
-        [Instabug showWelcomeMessageWithMode:welcomeMessageMode];
-        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-    } else {
-        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                   messageAsString:@"A valid welcome message mode must be provided."];
-    }
-
-    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK]
+                                callbackId:[command callbackId]];
 }
 
 /**
@@ -927,20 +938,6 @@
 {
     if ([enabled length] > 0) {
         [Instabug setSessionProfilerEnabled:[enabled boolValue]];
-    }
-}
-
-/**
- * Convenience method for parsing and setting the welcome message mode
- *
- * @param {NSString*} enabled
- *        NSString representation of welcomeMessageMode
- */
-- (void) setWelcomeMessageMode:(NSString*)welcomeMessageMode
-{
-    if ([welcomeMessageMode length] > 0) {
-        IBGWelcomeMessageMode welcomeMessageModeEnum = [self parseWelcomeMessageMode:welcomeMessageMode];
-        [Instabug setWelcomeMessageMode:welcomeMessageModeEnum];
     }
 }
 
@@ -1165,7 +1162,6 @@
     [self setTrackingUserStepsEnabled:[[options objectForKey:@"enableTrackingUserSteps"] stringValue]];
     [self setPushNotificationsEnabled:[[options objectForKey:@"enablePushNotifications"] stringValue]];
     [self setSessionProfilerEnabled:[[options objectForKey:@"enableSessionProfiler"] stringValue]];
-    [self setWelcomeMessageMode:[options objectForKey:@"welcomeMessageMode"]];
 }
 
 /**
@@ -1274,24 +1270,6 @@
         return IBGUserStepsModeDisable;
     } else if ([mode isEqualToString:@"enabledWithNoScreenshots"]) {
         return IBGUserStepsModeEnabledWithNoScreenshots;
-    } else return 0;
-}
-
-/**
- * Convenience method for converting NSString to
- * IBGWelcomeMessageMode.
- *
- * @param  {NSString*} mode
- *         NSString shortcode for IBGWelcomeMessageMode
- */
-- (IBGWelcomeMessageMode) parseWelcomeMessageMode:(NSString*)mode
-{
-    if ([mode isEqualToString:@"welcomeMessageModeLive"]) {
-        return IBGWelcomeMessageModeLive;
-    } else if ([mode isEqualToString:@"welcomeMessageModeBeta"]) {
-        return IBGWelcomeMessageModeBeta;
-    } else if ([mode isEqualToString:@"welcomeMessageModeDisabled"]) {
-        return IBGWelcomeMessageModeDisabled;
     } else return 0;
 }
 
