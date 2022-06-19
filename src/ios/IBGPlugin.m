@@ -930,17 +930,18 @@
 }
 
 /**
- * Convenience method for setting whether to enable the
- * session profiler or not.
+ * Sets whether to enable the session profiler or not.
  *
- * @param {NSString*} enabled
- *        NSString representation of boolean enabled
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
  */
-- (void) setSessionProfilerEnabled:(NSString*)enabled
+- (void) setSessionProfilerEnabled:(CDVInvokedUrlCommand*)command
 {
-    if ([enabled length] > 0) {
-        [Instabug setSessionProfilerEnabled:[enabled boolValue]];
-    }
+    bool enabled = [[command argumentAtIndex:0] boolValue];
+    [Instabug setSessionProfilerEnabled:enabled];
+
+    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK]
+                            callbackId:[command callbackId]];
 }
 
 /**
@@ -1161,7 +1162,6 @@
 {
     [self setShakingThresholdForIPhone:[options objectForKey:@"shakingThresholdIPhone"]
                                forIPad:[options objectForKey:@"shakingThresholdIPad"]];
-    [self setSessionProfilerEnabled:[[options objectForKey:@"enableSessionProfiler"] stringValue]];
 }
 
 /**

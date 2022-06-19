@@ -115,23 +115,6 @@ public class IBGPluginActivity extends CordovaActivity
     }
 
     /**
-     * Convenience method for parsing and setting
-     * whether session profiler should be enabled or not.
-     *
-     * @param enabled
-     *        String representation of boolean enabled
-     */
-    private void setSessionProfilerEnabled(String enabled) {
-      if (enabled != null && enabled.length() > 0) {
-        if(Boolean.parseBoolean(enabled)) {
-          Instabug.setSessionProfilerState(Feature.State.ENABLED);
-        } else {
-          Instabug.setSessionProfilerState(Feature.State.DISABLED);
-        }
-      }
-    }
-
-    /**
      * Wrapper method for parsing and setting all
      * provided options.
      *
@@ -144,6 +127,5 @@ public class IBGPluginActivity extends CordovaActivity
         setCrashReportingEnabled(opts.getString("enableCrashReporting"));
         setInAppMessagingEnabled(opts.getString("enableInAppMessaging"));
         setUserDataEnabled(opts.getString("enableUserData"));
-        setSessionProfilerEnabled(opts.getString("enableSessionProfiler"));
     }
 }

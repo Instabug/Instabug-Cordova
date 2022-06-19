@@ -1039,7 +1039,7 @@ public class IBGPlugin extends CordovaPlugin {
             callbackContext.error(errorMsg);
         }
     }
-    
+
     /**
      * Sets whether to track the user’s steps while using the app or not.
      *
@@ -1050,6 +1050,22 @@ public class IBGPlugin extends CordovaPlugin {
         try {
             boolean isEnabled = args.optBoolean(0);
             Instabug.setTrackingUserStepsState(isEnabled ? Feature.State.ENABLED : Feature.State.DISABLED);
+            callbackContext.success();
+        } catch (Exception e) {
+            callbackContext.error(e.getMessage());
+        }
+    }
+
+    /**
+     * Sets whether to enable the session profiler or not.
+     *
+     * @param callbackContext Used when calling back into JavaScript
+     * @param args [isEnabled: boolean]
+     */
+    public void setSessionProfilerEnabled(final CallbackContext callbackContext, JSONArray args) {
+        try {
+            boolean isEnabled = args.optBoolean(0);
+            Instabug.setSessionProfilerState(isEnabled ? Feature.State.ENABLED : Feature.State.DISABLED);
             callbackContext.success();
         } catch (Exception e) {
             callbackContext.error(e.getMessage());

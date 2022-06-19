@@ -103,6 +103,17 @@ Instabug.setReproStepsMode = function (reproStepsMode, success, error) {
 };
 
 /**
+ * The session profiler is enabled by default and it attaches to the bug and
+ * crash reports the following information during the last 60 seconds before the report is sent.
+ * @param {boolean} isEnabled - A boolean parameter to enable or disable the feature.
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
+ Instabug.setSessionProfilerEnabled = function (isEnabled, success, error) {
+    exec(success, error, 'IBGPlugin', 'setSessionProfilerEnabled', [isEnabled]);
+};
+
+/**
  * Sets whether the SDK is tracking user steps or not.
  * Enabling user steps would give you an insight on the scenario a user has
  * performed before encountering a bug or a crash. User steps are attached
