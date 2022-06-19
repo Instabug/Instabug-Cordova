@@ -52,12 +52,6 @@
         </config-file>
 
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
-
-            <activity android:name="com.instabug.cordova.plugin.IBGPluginActivity"
-                      android:launchMode="singleInstance"
-                      android:theme="@android:style/Theme.NoDisplay"
-                      android:configChanges="keyboardHidden|orientation|screenSize"/>
-
             <service android:name="com.instabug.library.network.worker.uploader.InstabugSessionUploaderService" />
             <service android:name="com.instabug.bug.network.InstabugBugsUploaderService" />
             <service android:name="com.instabug.crash.network.InstabugCrashesUploaderService" />
@@ -65,7 +59,6 @@
             <service android:name="com.instabug.survey.network.service.InstabugSurveysSubmitterService" />
             <service android:name="com.instabug.library.internal.video.VideoProcessingService"/>
             <service android:name="com.instabug.library.analytics.network.InstabugAnalyticsUploaderService"/>
-
         </config-file>
 
         <config-file target="AndroidManifest.xml" parent="/manifest">
@@ -80,7 +73,6 @@
 
         <framework src="com.instabug.library:instabug:11.2.0"/>
 
-        <source-file src="src/android/IBGPluginActivity.java" target-dir="src/com/instabug/cordova/plugin"/>
         <source-file src="src/android/IBGPlugin.java" target-dir="src/com/instabug/cordova/plugin"/>
         <source-file src="src/android/util/Util.java" target-dir="src/com/instabug/cordova/plugin/util"/>
         <source-file src="src/android/util/ArgsRegistry.java" target-dir="src/com/instabug/cordova/plugin/util"/>
