@@ -914,17 +914,18 @@
 }
 
 /**
- * Convenience method for setting whether to allow
- * the SDK to use push notifications or not.
+ * Sets whether to allow the SDK to use push notifications or not.
  *
- * @param {NSString*} enabled
- *        NSString representation of boolean enabled
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
  */
-- (void) setPushNotificationsEnabled:(NSString*)enabled
+- (void) setPushNotificationsEnabled:(CDVInvokedUrlCommand*)command
 {
-    if ([enabled length] > 0) {
-        [IBGReplies setPushNotificationsEnabled:[enabled boolValue]];
-    }
+    bool enabled = [[command argumentAtIndex:0] boolValue];
+    [IBGReplies setPushNotificationsEnabled:enabled];
+
+    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK]
+                            callbackId:[command callbackId]];
 }
 
 /**
@@ -1160,7 +1161,6 @@
     [self setShakingThresholdForIPhone:[options objectForKey:@"shakingThresholdIPhone"]
                                forIPad:[options objectForKey:@"shakingThresholdIPad"]];
     [self setTrackingUserStepsEnabled:[[options objectForKey:@"enableTrackingUserSteps"] stringValue]];
-    [self setPushNotificationsEnabled:[[options objectForKey:@"enablePushNotifications"] stringValue]];
     [self setSessionProfilerEnabled:[[options objectForKey:@"enableSessionProfiler"] stringValue]];
 }
 

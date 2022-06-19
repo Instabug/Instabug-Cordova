@@ -117,18 +117,6 @@ public class IBGPluginActivity extends CordovaActivity
 
     /**
      * Convenience method for parsing and setting
-     * whether push notifications should be enabled
-     * by the SDK.
-     *
-     * @param enabled
-     *        String representation of boolean enabled
-     */
-    private void setPushNotificationsEnabled(String enabled) {
-
-    }
-
-    /**
-     * Convenience method for parsing and setting
      * whether user data should be added to reports.
      *
      * @param enabled
@@ -168,7 +156,6 @@ public class IBGPluginActivity extends CordovaActivity
         setTrackingUserStepsEnabled(opts.getString("enableTrackingUserSteps"));
         setCrashReportingEnabled(opts.getString("enableCrashReporting"));
         setInAppMessagingEnabled(opts.getString("enableInAppMessaging"));
-        setPushNotificationsEnabled(opts.getString("enablePushNotifications"));
         setUserDataEnabled(opts.getString("enableUserData"));
         setSessionProfilerEnabled(opts.getString("enableSessionProfiler"));
     }

@@ -58,6 +58,15 @@ Replies.setInAppNotificationEnabled = function (isEnabled, success, error) {
     exec(success, error, 'IBGPlugin', 'setChatNotificationEnabled', [isEnabled]);
 };
 
-
+/**
+ * Enables/disables the use of push notifications in the SDK.
+ * Defaults to YES.
+ * @param {boolean} isEnabled
+ * @param {function(void):void} success callback on function success
+ * @param {function(void):void} error callback on function error
+ */
+Replies.setPushNotificationsEnabled = function (isEnabled, success, error) {
+    exec(success, error, 'IBGPlugin', 'setPushNotificationsEnabled', [isEnabled]);
+};
 
 module.exports = Replies;
