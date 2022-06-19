@@ -1,10 +1,5 @@
 var exec = require('cordova/exec');
-var {
-  welcomeMessageMode,
-  floatingButtonEdge,
-  colorTheme,
-  strings,
-} = require("./ArgsRegistry");
+var registry = require("./ArgsRegistry");
 
 var getInvocationEvents = function () {
     return {
@@ -59,10 +54,10 @@ var getLocales = function () {
 var Instabug = function () {
 };
 
-Instabug.welcomeMessageMode = welcomeMessageMode;
-Instabug.floatingButtonEdge = floatingButtonEdge;
-Instabug.colorTheme = colorTheme;
-Instabug.strings = strings;
+Instabug.welcomeMessageMode = registry.welcomeMessageMode;
+Instabug.floatingButtonEdge = registry.floatingButtonEdge;
+Instabug.colorTheme = registry.colorTheme;
+Instabug.strings = registry.strings;
 
 Instabug.start = function (token, invocationEvents, success, error) {
     const validEvents = getInvocationEvents();
