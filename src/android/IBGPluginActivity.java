@@ -81,18 +81,6 @@ public class IBGPluginActivity extends CordovaActivity
 
     /**
      * Convenience method for parsing and setting
-     * whether tracking user steps should be enabled
-     * by the SDK.
-     *
-     * @param enabled
-     *        String representation of boolean enabled
-     */
-    private void setTrackingUserStepsEnabled(String enabled) {
-
-    }
-
-    /**
-     * Convenience method for parsing and setting
      * whether crash reporting should be enabled
      * by the SDK.
      *
@@ -153,7 +141,6 @@ public class IBGPluginActivity extends CordovaActivity
     private void setBuilderOptions(Bundle opts) {
         setConsoleLogsEnabled(opts.getString("enableConsoleLogs"));
         setInstabugLogsEnabled(opts.getString("enableInstabugLogs"));
-        setTrackingUserStepsEnabled(opts.getString("enableTrackingUserSteps"));
         setCrashReportingEnabled(opts.getString("enableCrashReporting"));
         setInAppMessagingEnabled(opts.getString("enableInAppMessaging"));
         setUserDataEnabled(opts.getString("enableUserData"));

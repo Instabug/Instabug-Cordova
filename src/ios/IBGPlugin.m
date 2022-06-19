@@ -900,17 +900,18 @@
 }
 
 /**
- * Convenience method for setting whether to track
- * the user’s steps while using the app or not.
+ * Sets whether to track the user’s steps while using the app or not.
  *
- * @param {NSString*} enabled
- *        NSString representation of boolean enabled
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
  */
-- (void) setTrackingUserStepsEnabled:(NSString*)enabled
+- (void) setTrackUserStepsEnabled:(CDVInvokedUrlCommand*)command
 {
-    if ([enabled length] > 0) {
-        Instabug.trackUserSteps = [enabled boolValue];
-    }
+    bool enabled = [[command argumentAtIndex:0] boolValue];
+    Instabug.trackUserSteps = enabled;
+
+    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK]
+                            callbackId:[command callbackId]];
 }
 
 /**
@@ -1160,7 +1161,6 @@
 {
     [self setShakingThresholdForIPhone:[options objectForKey:@"shakingThresholdIPhone"]
                                forIPad:[options objectForKey:@"shakingThresholdIPad"]];
-    [self setTrackingUserStepsEnabled:[[options objectForKey:@"enableTrackingUserSteps"] stringValue]];
     [self setSessionProfilerEnabled:[[options objectForKey:@"enableSessionProfiler"] stringValue]];
 }
 

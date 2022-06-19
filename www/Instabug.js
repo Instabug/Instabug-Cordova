@@ -103,6 +103,20 @@ Instabug.setReproStepsMode = function (reproStepsMode, success, error) {
 };
 
 /**
+ * Sets whether the SDK is tracking user steps or not.
+ * Enabling user steps would give you an insight on the scenario a user has
+ * performed before encountering a bug or a crash. User steps are attached
+ * with each report being sent.
+ * @param {boolean} isEnabled A boolean to set user steps tracking
+ * to being enabled or disabled.
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
+Instabug.setTrackUserStepsEnabled = function (isEnabled, success, error) {
+    exec(success, error, 'IBGPlugin', 'setTrackUserStepsEnabled', [isEnabled]);
+};
+
+/**
  * Sets the welcome message mode to live, beta or disabled.
  * @param {keyof Instabug.welcomeMessageMode} mode.
  * @param {function} success callback on function success
