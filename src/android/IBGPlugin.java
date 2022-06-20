@@ -457,17 +457,16 @@ public class IBGPlugin extends CordovaPlugin {
     /**
      * Sets the threshold value of the shake gesture on the device
      *
-     * @param callbackContext
-     *        Used when calling back into JavaScript
-     * @param args .optInt(0)
-     *        The value of the primary color
+     * @param callbackContext Used when calling back into JavaScript
+     * @param args [threshold: int]
      */
     public void setShakingThreshold(final CallbackContext callbackContext, JSONArray args) {
-        int shakingThreshold = args.optInt(0);
          try {
-             BugReporting.setShakingThreshold(shakingThreshold);
-         } catch (IllegalStateException e) {
-            callbackContext.error(errorMsg);
+             int threshold = args.optInt(0);
+             BugReporting.setShakingThreshold(threshold);
+             callbackContext.success();
+         } catch (Exception e) {
+             callbackContext.error(e.getMessage());
          }
     }
 

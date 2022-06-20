@@ -862,23 +862,35 @@
     }
 
 /**
- * Convenience method for setting the threshold value
- * of the shake gesture for iPhone/iPod touch and iPad.
+ * Sets the threshold value of the shake gesture for iPhone/iPod touch.
  *
- * @param {NSString*} iPhoneThreshold
- *        NSString representation of double iPhone threshold
- * @param {NSString*}
- *        NSString representation of double iPad threshold
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
  */
-- (void) setShakingThresholdForIPhone:(NSString*)iPhoneThreshold forIPad:(NSString*)iPadThreshold
+- (void) setShakingThresholdForiPhone:(CDVInvokedUrlCommand*)command
 {
-    double iPhone = [iPhoneThreshold doubleValue];
-    double iPad = [iPadThreshold doubleValue];
+    double threshold = [[command argumentAtIndex:0] doubleValue];
 
-    if (iPhone && iPad) {
-      IBGBugReporting.shakingThresholdForiPhone = iPhone;
-      IBGBugReporting.shakingThresholdForiPad = iPad;
-    }
+    IBGBugReporting.shakingThresholdForiPhone = threshold;
+
+    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK]
+                                callbackId:[command callbackId]];
+}
+
+/**
+ * Sets the threshold value of the shake gesture for iPad.
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) setShakingThresholdForiPad:(CDVInvokedUrlCommand*)command
+{
+    double threshold = [[command argumentAtIndex:0] doubleValue];
+
+    IBGBugReporting.shakingThresholdForiPad = threshold;
+
+    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK]
+                                callbackId:[command callbackId]];
 }
 
 /**
@@ -1151,18 +1163,6 @@
 
         [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
     }
-
-/**
- * Wrapper method for applying all provided options.
- *
- * @param {NSDictionary*} options
- *        Provided options
- */
-- (void) applyOptions:(NSDictionary*)options
-{
-    [self setShakingThresholdForIPhone:[options objectForKey:@"shakingThresholdIPhone"]
-                               forIPad:[options objectForKey:@"shakingThresholdIPad"]];
-}
 
 /**
  * Convenience method for converting NSString to

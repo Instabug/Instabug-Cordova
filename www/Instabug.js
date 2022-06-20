@@ -82,10 +82,6 @@ Instabug.logUserEventWithName = function (userEvent, success, error) {
     exec(success, error, 'IBGPlugin', 'logUserEventWithName', [userEvent]);
 };
 
-Instabug.setShakingThreshold = function (shakingThreshold, success, error) {
-    exec(success, error, 'IBGPlugin', 'setShakingThreshold', [shakingThreshold]);
-};
-
 Instabug.setReproStepsMode = function (reproStepsMode, success, error) {
 
   var validatedReproStepsMode = getReproStepsMode()[reproStepsMode];
