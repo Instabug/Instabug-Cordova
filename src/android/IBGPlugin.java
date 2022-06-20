@@ -234,6 +234,7 @@ public class IBGPlugin extends CordovaPlugin {
             try {
                 ArrayList<Integer> invocationOptions = parseInvocationOptions(stringArrayOfInvocationOptions);
                 BugReporting.setOptions(convertIntegers(invocationOptions));
+                callbackContext.success();
             } catch (IllegalStateException e) {
                 callbackContext.error(errorMsg);
             }
@@ -255,7 +256,7 @@ public class IBGPlugin extends CordovaPlugin {
             try {
                 ArrayList<Integer> actionTypesArray = parseActionTypes(stringArrayOfActionTypes);
                 FeatureRequests.setEmailFieldRequired(isRequired, convertIntegers(actionTypesArray));
-
+                callbackContext.success();
             } catch (IllegalStateException e) {
                 callbackContext.error(errorMsg);
             }
@@ -419,6 +420,7 @@ public class IBGPlugin extends CordovaPlugin {
                     @Override
                     public void run() {
                         Instabug.setPrimaryColor(colorInt);
+                        callbackContext.success();
                     }
                 });
 
@@ -674,6 +676,7 @@ public class IBGPlugin extends CordovaPlugin {
                     @Override
                     public void run() {
                         BugReporting.setInvocationEvents(invocationEvents.toArray(new InstabugInvocationEvent[0]));
+                        callbackContext.success();
                     }
                 });
             } catch (IllegalStateException e) {
@@ -820,13 +823,12 @@ public class IBGPlugin extends CordovaPlugin {
      * Enables/disables showing in-app notifications when the user receives a new
      * message.
      *
-     * @param isEnabled whether debug logs should be printed or not into LogCat
-     *
-     * @param callbackContext
-     *        Used when calling back into JavaScript
+     * @param callbackContext Used when calling back into JavaScript
+     * @param args [isEnabled: boolean]
      */
-    public void setChatNotificationEnabled(final CallbackContext callbackContext, boolean isEnabled) {
+    public void setChatNotificationEnabled(final CallbackContext callbackContext, JSONArray args) {
         try {
+            boolean isEnabled = args.optBoolean(0);
             Replies.setInAppNotificationEnabled(isEnabled);
             callbackContext.success();
         } catch (IllegalStateException e) {
@@ -1057,6 +1059,7 @@ public class IBGPlugin extends CordovaPlugin {
           } else if(mode.equals("disabled")) {
               BugReporting.setExtendedBugReportState(ExtendedBugReport.State.DISABLED);
           }
+          callbackContext.success();
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
         }
@@ -1112,6 +1115,7 @@ public class IBGPlugin extends CordovaPlugin {
             } else if (reproStepsMode.equals("disabled")) {
                 Instabug.setReproStepsState(State.DISABLED);
             }
+            callbackContext.success();
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
         }
