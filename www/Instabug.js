@@ -59,6 +59,19 @@ Instabug.floatingButtonEdge = registry.floatingButtonEdge;
 Instabug.colorTheme = registry.colorTheme;
 Instabug.strings = registry.strings;
 
+/**
+ * Starts the SDK.
+ * This is the main SDK method that does all the magic. This is the only
+ * method that SHOULD be called.
+ * Should be called in constructor of the AppRegistry component
+ * 
+ * @param {string} token The token that identifies the app, you can find
+ * it on your dashboard.
+ * @param {keyof BugReporting.option} invocationEvents events that invokes
+ * the SDK's UI.
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
 Instabug.start = function (token, invocationEvents, success, error) {
     const validEvents = getInvocationEvents();
     const isValid = invocationEvents.every((e) => validEvents[e]);
@@ -70,18 +83,52 @@ Instabug.start = function (token, invocationEvents, success, error) {
     }
 };
 
+/**
+ * Shows default Instabug prompt.
+ * 
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
 Instabug.show = function (success, error) {
     exec(success, error, 'IBGPlugin', 'show');
 }
 
-Instabug.setPrimaryColor = function (colorInteger, success, error) {
+/**
+ * Sets the primary color of the SDK's UI.
+ * Sets the color of UI elements indicating interactivity or call to action.
+ * To use, import processColor and pass to it with argument the color hex
+ * as argument.
+ * 
+ * @param {color} color A color to set the UI elements of the SDK to.
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
+Instabug.setPrimaryColor = function (color, success, error) {
     exec(success, error, 'IBGPlugin', 'setPrimaryColor', [colorInteger]);
 };
 
+/**
+ * Logs a user event that happens through the lifecycle of the application.
+ * Logged user events are going to be sent with each report, as well as at the end of a session.
+ * 
+ * @param {string} userEvent Event name.
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
 Instabug.logUserEventWithName = function (userEvent, success, error) {
     exec(success, error, 'IBGPlugin', 'logUserEventWithName', [userEvent]);
 };
 
+/**
+ * Sets whether user steps tracking is visual, non visual or disabled.
+ * User Steps tracking is enabled by default if it's available
+ * in your current plan.
+ *
+ * @param {reproStepsMode} reproStepsMode An enum to set user steps tracking
+ * to be enabled, non visual or disabled.
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
 Instabug.setReproStepsMode = function (reproStepsMode, success, error) {
 
   var validatedReproStepsMode = getReproStepsMode()[reproStepsMode];
@@ -138,30 +185,90 @@ Instabug.showWelcomeMessage = function (mode, success, error) {
     exec(success, error, 'IBGPlugin', 'showWelcomeMessage', [mode]);
 };
 
+/**
+ * Attaches user data to each report being sent.
+ * Each call to this method overrides the user data to be attached.
+ * Maximum size of the string is 1,000 characters.
+ * 
+ * @param {string} data A string to be attached to each report, with a
+ * maximum size of 1,000 characters.
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
 Instabug.setUserData = function (data, success, error) {
     exec(success, error, 'IBGPlugin', 'setUserData', [data]);
 };
 
+/**
+ * Add file to be attached to the bug report.
+ * 
+ * @param {string} filePath
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
 Instabug.addFile = function (filePath, success, error) {
     exec(success, error, 'IBGPlugin', 'addFile', [filePath]);
 }
 
+/**
+ * Appends a log message to Instabug internal log
+ * <p>
+ * These logs are then sent along the next uploaded report.
+ * All log messages are timestamped <br/>
+ * Logs aren't cleared per single application run.
+ * If you wish to reset the logs,
+ * use {@link #clearLogs()} ()}
+ * </p>
+ * Note: logs passed to this method are <b>NOT</b> printed to Logcat
+ *
+ * @param message the message
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
 Instabug.addLog = function (content, success, error) {
     exec(success, error, 'IBGPlugin', 'addLog', [content]);
 };
 
+/**
+ * Clear all Instabug logs, console logs, network logs and user steps.
+ * 
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
 Instabug.clearLog = function (success, error) {
     exec(success, error, 'IBGPlugin', 'clearLog', []);
 };
 
+/**
+ * Sets whether IBGLog should also print to Xcode's console log or not.
+ * 
+ * @param {boolean} isEnabled A boolean to set whether printing to
+ *                  Xcode's console is enabled or not.
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
 Instabug.setIBGLogPrintsToConsole = function (isEnabled, success, error) {
     exec(success, error, 'IBGPlugin', 'setIBGLogPrintsToConsole', [isEnabled]);
 };
 
+/**
+ * Disables all Instabug functionality
+ * It works on android only
+ * 
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
 Instabug.disable = function (success, error) {
     exec(success, error, 'IBGPlugin', 'disable', []);
 };
 
+/**
+ * Enables all Instabug functionality
+ * It works on android only
+ * 
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
 Instabug.enable = function (success, error) {
     exec(success, error, 'IBGPlugin', 'enable', []);
 };
@@ -170,22 +277,64 @@ Instabug.isEnabled = function (success, error) {
     exec(success, error, 'IBGPlugin', 'isEnabled', []);
 };
 
+/**
+ * Sets user attribute to overwrite it's value or create a new one if it doesn't exist.
+ *
+ * @param key   the attribute
+ * @param value the value
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
 Instabug.setUserAttribute = function (key, value, success, error) {
     exec(success, error, 'IBGPlugin', 'setUserAttribute', [key, value]);
 };
 
+/**
+ * Removes user attribute if exists.
+ *
+ * @param key the attribute key as string
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
 Instabug.removeUserAttribute = function (key, success, error) {
     exec(success, error, 'IBGPlugin', 'removeUserAttribute', [key]);
 };
 
+/**
+ * Returns all user attributes.
+ * 
+ * @param {function} userAttributesCallback callback with argument A new dictionary containing
+ * all the currently set user attributes, or an empty dictionary if no user attributes have been set.
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
 Instabug.getAllUserAttributes = function (success, error) {
     exec(success, error, 'IBGPlugin', 'getAllUserAttributes', []);
 };
 
+/**
+ * Returns the user attribute associated with a given key.
+ * 
+ * @param {string} key The attribute key as string
+ * @param {function} userAttributeCallback callback with argument as the desired user attribute value
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
 Instabug.getUserAttribute = function (key, success, error) {
     exec(success, error, 'IBGPlugin', 'getUserAttribute', [key]);
 };
 
+/**
+ * Sets the default value of the user's email and hides the email field from the reporting UI
+ * and set the user's name to be included with all reports.
+ * It also reset the chats on device to that email and removes user attributes,
+ * user data and completed surveys.
+ * 
+ * @param {string} email Email address to be set as the user's email.
+ * @param {string} name Name of the user to be set.
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
 Instabug.identifyUserWithEmail = function (email, name, success, error) {
     exec(success, error, 'IBGPlugin', 'identifyUserWithEmail', [email, name]);
 };
@@ -194,14 +343,40 @@ Instabug.setPreSendingHandler = function (success, error) {
     exec(success, error, 'IBGPlugin', 'setPreSendingHandler', []);
 };
 
+/**
+ * Sets the default position at which the Instabug screen recording button will be shown.
+ * Different orientations are already handled.
+ * (Default for `position` is `bottomRight`)
+ *
+ * @param position is of type position `topLeft` to show on the top left of screen,
+ * or `bottomRight` to show on the bottom right of screen.
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
 Instabug.setVideoRecordingFloatingButtonPosition = function (position, success, error) {
     exec(success, error, 'IBGPlugin', 'setVideoRecordingFloatingButtonPosition', [position]);
 };
 
+/**
+ * Sets the default value of the user's email to nil and show email field and remove user name
+ * from all reports
+ * It also reset the chats on device and removes user attributes, user data and completed surveys.
+ * 
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
 Instabug.logOut = function (success, error) {
     exec(success, error, 'IBGPlugin', 'logOut', []);
 };
 
+/**
+ * Enable/Disable debug logs from Instabug SDK
+ * Default state: disabled
+ *
+ * @param {boolean} isDebugEnabled whether debug logs should be printed or not into LogCat
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
 Instabug.setDebugEnabled = function (isDebugEnabled, success, error) {
     exec(success, error, 'IBGPlugin', 'setDebugEnabled', [isDebugEnabled]);
     if(success) {
@@ -211,6 +386,15 @@ Instabug.setDebugEnabled = function (isDebugEnabled, success, error) {
     }
 };
 
+/**
+ * Sets the SDK's locale.
+ * Use to change the SDK's UI to different language.
+ * Defaults to the device's current locale.
+ * 
+ * @param {locale} locale A locale to set the SDK to.
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
 Instabug.setLocale = function (locale, success, error) {
     var validatedLocale = getLocales()[locale];
 
@@ -223,6 +407,7 @@ Instabug.setLocale = function (locale, success, error) {
 
 /**
  * Sets SDK color theme.
+ * 
  * @param {keyof Instabug.colorTheme} theme.
  * @param {function} success callback on function success
  * @param {function(string):void} error callback on function error
@@ -236,6 +421,8 @@ Instabug.setColorTheme = function (theme, success, error) {
  * Allows you to customize any of the strings shown to users in the SDK.
  * @param {strings} key Key of string to override.
  * @param {string} value String value to override the default one.
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
  */
 Instabug.setString = function (key, value, success, error) {
     exec(success, error, 'IBGPlugin', 'setString', [key, value]);
