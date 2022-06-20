@@ -25,6 +25,7 @@ import com.instabug.library.extendedbugreport.ExtendedBugReport;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.invocation.OnInvokeCallback;
+import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
 import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition;
 import com.instabug.library.logging.InstabugLog;
 import com.instabug.library.model.Report;
@@ -437,48 +438,35 @@ public class IBGPlugin extends CordovaPlugin {
      * invocation.
      *
      * @param callbackContext Used when calling back into JavaScript
-     * @param args .optString(0)     Theme
+     * @param args [colorTheme: String]
      *
      */
     public void setColorTheme(final CallbackContext callbackContext, final JSONArray args) {
-        final String colorTheme = args.optString(0);
-        if (colorTheme != null) {
-            try {
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if ("dark".equals(colorTheme)) {
-                            Instabug.setColorTheme(InstabugColorTheme.InstabugColorThemeDark);
-                        } else if ("light".equals(colorTheme)) {
-                            Instabug.setColorTheme(InstabugColorTheme.InstabugColorThemeLight);
-                        } else {
-                            callbackContext.error("Color theme value is not valid.");
-                        }
-                    }
-                });
-            } catch (IllegalStateException e) {
-                e.printStackTrace();
-                callbackContext.error(errorMsg);
-            }
-        } else {
-            callbackContext.error("A color theme must be provided.");
+        try {
+            final String colorTheme = args.optString(0);
+            final InstabugColorTheme parsedColorTheme = ArgsRegistry.colorThemes
+                    .getOrDefault(colorTheme, InstabugColorTheme.InstabugColorThemeLight);
+
+            Instabug.setColorTheme(parsedColorTheme);
+            callbackContext.success();
+        } catch (Exception e) {
+            callbackContext.error(e.getMessage());
         }
     }
 
     /**
      * Sets the threshold value of the shake gesture on the device
      *
-     * @param callbackContext
-     *        Used when calling back into JavaScript
-     * @param args .optInt(0)
-     *        The value of the primary color
+     * @param callbackContext Used when calling back into JavaScript
+     * @param args [threshold: int]
      */
     public void setShakingThreshold(final CallbackContext callbackContext, JSONArray args) {
-        int shakingThreshold = args.optInt(0);
          try {
-             BugReporting.setShakingThreshold(shakingThreshold);
-         } catch (IllegalStateException e) {
-            callbackContext.error(errorMsg);
+             int threshold = args.optInt(0);
+             BugReporting.setShakingThreshold(threshold);
+             callbackContext.success();
+         } catch (Exception e) {
+             callbackContext.error(e.getMessage());
          }
     }
 
@@ -847,6 +835,22 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
+     * Enabled/disable push notifications
+     *
+     * @param callbackContext Used when calling back into JavaScript
+     * @param args [isEnabled: boolean]
+     */
+    public void setPushNotificationsEnabled(final CallbackContext callbackContext, JSONArray args) {
+        try {
+            boolean isEnabled = args.optBoolean(0);
+            Replies.setPushNotificationState(isEnabled ? Feature.State.ENABLED : Feature.State.DISABLED);
+            callbackContext.success();
+        } catch (Exception e) {
+            callbackContext.error(e.getMessage());
+        }
+    }
+
+    /**
      * Enable/Disable view hierarchy from Instabug SDK
      *
      * @param args .optBoolean(0)       whether view hierarchy should be enabled or not
@@ -973,6 +977,27 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
+     * Sets the position of the Instabug floating button on the screen.
+     * @param callbackContext Used when calling back into JavaScript
+     * @param args [edge: String, offset: int]
+     */
+    public void setFloatingButtonEdge(final CallbackContext callbackContext, JSONArray args) {
+        try {
+            final String edge = args.optString(0);
+            final int offset = args.optInt(1);
+            final InstabugFloatingButtonEdge parsedEdge = ArgsRegistry.floatingButtonEdges
+                    .getOrDefault(edge, InstabugFloatingButtonEdge.RIGHT);
+
+            BugReporting.setFloatingButtonOffset(offset);
+            BugReporting.setFloatingButtonEdge(parsedEdge);
+
+            callbackContext.success();
+        } catch (Exception e) {
+            callbackContext.error(e.getMessage());
+        }
+    }
+
+    /**
      * Sets the default position at which the Instabug screen recording button will
      * be shown. Different orientations are already handled.
      *
@@ -1038,6 +1063,38 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
+     * Sets whether to track the user’s steps while using the app or not.
+     *
+     * @param callbackContext Used when calling back into JavaScript
+     * @param args [isEnabled: boolean]
+     */
+    public void setTrackUserStepsEnabled(final CallbackContext callbackContext, JSONArray args) {
+        try {
+            boolean isEnabled = args.optBoolean(0);
+            Instabug.setTrackingUserStepsState(isEnabled ? Feature.State.ENABLED : Feature.State.DISABLED);
+            callbackContext.success();
+        } catch (Exception e) {
+            callbackContext.error(e.getMessage());
+        }
+    }
+
+    /**
+     * Sets whether to enable the session profiler or not.
+     *
+     * @param callbackContext Used when calling back into JavaScript
+     * @param args [isEnabled: boolean]
+     */
+    public void setSessionProfilerEnabled(final CallbackContext callbackContext, JSONArray args) {
+        try {
+            boolean isEnabled = args.optBoolean(0);
+            Instabug.setSessionProfilerState(isEnabled ? Feature.State.ENABLED : Feature.State.DISABLED);
+            callbackContext.success();
+        } catch (Exception e) {
+            callbackContext.error(e.getMessage());
+        }
+    }
+
+    /**
      * Sets whether user steps tracking is visual, non visual or disabled. User
      * Steps tracking is enabled by default if it's available in your current plan.
      *
@@ -1061,24 +1118,42 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
+     * Sets the welcome message mode.
+     *
+     * @param callbackContext Used when calling back into JavaScript
+     * @param  args [mode: String]
+     */
+    public void setWelcomeMessageMode(final CallbackContext callbackContext, JSONArray args) {
+        try {
+            final String mode = args.optString(0);
+            final WelcomeMessage.State parsedMode = ArgsRegistry.welcomeMessageModes
+                    .getOrDefault(mode, WelcomeMessage.State.LIVE);
+
+            Instabug.setWelcomeMessageState(parsedMode);
+
+            callbackContext.success();
+        } catch (Exception e) {
+            callbackContext.error(e.getMessage());
+        }
+    }
+
+    /**
      * Shows the welcome message in a specific mode.
      *
-     * @param callbackContext    Used when calling back into JavaScript
-     * @param  args .optString(0) A string to set user steps tracking to be enabled,
-     *                           non visual or disabled.
+     * @param callbackContext Used when calling back into JavaScript
+     * @param  args [mode: String]
      */
     public void showWelcomeMessage(final CallbackContext callbackContext, JSONArray args) {
-        String welcomeMessageMode = args.optString(0);
         try {
-            if (welcomeMessageMode.equals("welcomeMessageModeLive")) {
-                Instabug.showWelcomeMessage(WelcomeMessage.State.LIVE);
-            } else if (welcomeMessageMode.equals("welcomeMessageModeBeta")) {
-                Instabug.showWelcomeMessage(WelcomeMessage.State.BETA);
-            } else {
-                Instabug.showWelcomeMessage(WelcomeMessage.State.LIVE);
-            }
-        } catch (IllegalStateException e) {
-            callbackContext.error(errorMsg);
+            final String mode = args.optString(0);
+            final WelcomeMessage.State parsedMode = ArgsRegistry.welcomeMessageModes
+                    .getOrDefault(mode, WelcomeMessage.State.LIVE);
+
+            Instabug.showWelcomeMessage(parsedMode);
+
+            callbackContext.success();
+        } catch (Exception e) {
+            callbackContext.error(e.getMessage());
         }
     }
 

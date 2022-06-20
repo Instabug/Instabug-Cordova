@@ -1,5 +1,5 @@
 var exec = require('cordova/exec');
-var { strings } = require('./ArgsRegistry');
+var registry = require("./ArgsRegistry");
 
 var getInvocationEvents = function () {
     return {
@@ -25,7 +25,6 @@ var getWelcomeMessageMode = function () {
         welcomeMessageModeBeta: 'welcomeMessageModeBeta',
         welcomeMessageModeDisabled: 'welcomeMessageModeDisabled'
     }
-    
 };
 
 var getLocales = function () {
@@ -55,7 +54,10 @@ var getLocales = function () {
 var Instabug = function () {
 };
 
-Instabug.strings = strings;
+Instabug.welcomeMessageMode = registry.welcomeMessageMode;
+Instabug.floatingButtonEdge = registry.floatingButtonEdge;
+Instabug.colorTheme = registry.colorTheme;
+Instabug.strings = registry.strings;
 
 Instabug.start = function (token, invocationEvents, success, error) {
     const validEvents = getInvocationEvents();
@@ -80,10 +82,6 @@ Instabug.logUserEventWithName = function (userEvent, success, error) {
     exec(success, error, 'IBGPlugin', 'logUserEventWithName', [userEvent]);
 };
 
-Instabug.setShakingThreshold = function (shakingThreshold, success, error) {
-    exec(success, error, 'IBGPlugin', 'setShakingThreshold', [shakingThreshold]);
-};
-
 Instabug.setReproStepsMode = function (reproStepsMode, success, error) {
 
   var validatedReproStepsMode = getReproStepsMode()[reproStepsMode];
@@ -95,16 +93,50 @@ Instabug.setReproStepsMode = function (reproStepsMode, success, error) {
   }
 };
 
-Instabug.showWelcomeMessage = function (welcomeMessageMode, success, error) {
+/**
+ * The session profiler is enabled by default and it attaches to the bug and
+ * crash reports the following information during the last 60 seconds before the report is sent.
+ * @param {boolean} isEnabled - A boolean parameter to enable or disable the feature.
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
+ Instabug.setSessionProfilerEnabled = function (isEnabled, success, error) {
+    exec(success, error, 'IBGPlugin', 'setSessionProfilerEnabled', [isEnabled]);
+};
 
-    var validatedWelcomeMessageMode = getWelcomeMessageMode()[welcomeMessageMode];
-  
-    if (validatedWelcomeMessageMode) {
-        exec(success, error, 'IBGPlugin', 'showWelcomeMessage', [validatedWelcomeMessageMode]);
-    } else {
-        console.log('Could not set welcome message mode - "' + validatedWelcomeMessageMode + '" is not valid.');
-    }
-  };
+/**
+ * Sets whether the SDK is tracking user steps or not.
+ * Enabling user steps would give you an insight on the scenario a user has
+ * performed before encountering a bug or a crash. User steps are attached
+ * with each report being sent.
+ * @param {boolean} isEnabled A boolean to set user steps tracking
+ * to being enabled or disabled.
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
+Instabug.setTrackUserStepsEnabled = function (isEnabled, success, error) {
+    exec(success, error, 'IBGPlugin', 'setTrackUserStepsEnabled', [isEnabled]);
+};
+
+/**
+ * Sets the welcome message mode to live, beta or disabled.
+ * @param {keyof Instabug.welcomeMessageMode} mode.
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
+Instabug.setWelcomeMessageMode = function (mode, success, error) {
+    exec(success, error, 'IBGPlugin', 'setWelcomeMessageMode', [mode]);
+};
+
+/**
+ * Shows the welcome message in a specific mode.
+ * @param {keyof Instabug.welcomeMessageMode} mode.
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
+Instabug.showWelcomeMessage = function (mode, success, error) {
+    exec(success, error, 'IBGPlugin', 'showWelcomeMessage', [mode]);
+};
 
 Instabug.setUserData = function (data, success, error) {
     exec(success, error, 'IBGPlugin', 'setUserData', [data]);
@@ -189,6 +221,15 @@ Instabug.setLocale = function (locale, success, error) {
     }
 };
 
+/**
+ * Sets SDK color theme.
+ * @param {keyof Instabug.colorTheme} theme.
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
+Instabug.setColorTheme = function (theme, success, error) {
+    exec(success, error, 'IBGPlugin', 'setColorTheme', [theme]);
+};
 
 /**
  * Overrides any of the strings shown in the SDK with custom ones.

@@ -2,7 +2,10 @@ package com.instabug.cordova.plugin.util;
 
 import androidx.annotation.NonNull;
 
+import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.InstabugCustomTextPlaceHolder.Key;
+import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
+import com.instabug.library.ui.onboarding.WelcomeMessage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +28,22 @@ public class ArgsRegistry {
             return values;
         }
     }
+
+    public static ArgsMap<WelcomeMessage.State> welcomeMessageModes = new ArgsMap<WelcomeMessage.State>() {{
+        put("welcomeMessageModeLive", WelcomeMessage.State.LIVE);
+        put("welcomeMessageModeBeta", WelcomeMessage.State.BETA);
+        put("welcomeMessageModeDisabled", WelcomeMessage.State.DISABLED);
+    }};
+
+    public static final ArgsMap<InstabugColorTheme> colorThemes = new ArgsMap<InstabugColorTheme>() {{
+        put("light", InstabugColorTheme.InstabugColorThemeLight);
+        put("dark", InstabugColorTheme.InstabugColorThemeDark);
+    }};
+
+    public static final ArgsMap<InstabugFloatingButtonEdge> floatingButtonEdges = new ArgsMap<InstabugFloatingButtonEdge>() {{
+        put("left", InstabugFloatingButtonEdge.LEFT);
+        put("right", InstabugFloatingButtonEdge.RIGHT);
+    }};
 
     public static final ArgsMap<Key> placeholders = new ArgsMap<Key>() {{
         put("shakeHint", Key.SHAKE_HINT);

@@ -253,4 +253,53 @@ BugReporting.setExtendedBugReportMode = function(
   }
 };
 
+/**
+ * Sets the default edge and offset from the top at which the floating button
+ * will be shown. Different orientations are already handled.
+ * 
+ * @param {keyof Instabug.floatingButtonEdge} edge - The position of the edge, the default is right.
+ * @param {number} offset From the top edge, default is left.
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
+BugReporting.setFloatingButtonEdge = function(edge, offset, success, error) {
+  exec(success, error, 'IBGPlugin', 'setFloatingButtonEdge', [edge, offset]);
+};
+
+/**
+ * Sets the threshold value of the shake gesture for iPhone/iPod Touch
+ * Default for iPhone is 2.5.
+ * @param {number} threshold Threshold for iPhone.
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
+BugReporting.setShakingThresholdForiPhone = function(threshold, success, error) {
+  exec(success, error, 'IBGPlugin', 'setShakingThresholdForiPhone', [threshold]);
+};
+
+/**
+ * Sets the threshold value of the shake gesture for iPad.
+ * Default for iPad is 0.6.
+ * @param {number} threshold Threshold for iPad.
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
+BugReporting.setShakingThresholdForiPad = function(threshold, success, error) {
+  exec(success, error, 'IBGPlugin', 'setShakingThresholdForiPad', [threshold]);
+};
+
+/**
+ * Sets the threshold value of the shake gesture for android devices.
+ * Default for android is an integer value equals 350.
+ * you could increase the shaking difficulty level by
+ * increasing the `350` value and vice versa
+ * @param {number} threshold Threshold for android devices.
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
+BugReporting.setShakingThresholdForAndroid = function(threshold, success, error) {
+  exec(success, error, 'IBGPlugin', 'setShakingThreshold', [threshold]);
+};
+
+
 module.exports = BugReporting;

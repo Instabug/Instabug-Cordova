@@ -2,6 +2,28 @@
 
 @implementation ArgsRegistry
 
++ (ArgsDictionary *) welcomeMessageModes {
+    return @{
+        @"welcomeMessageModeLive": @(IBGWelcomeMessageModeLive),
+        @"welcomeMessageModeBeta": @(IBGWelcomeMessageModeBeta),
+        @"welcomeMessageModeDisabled": @(IBGWelcomeMessageModeDisabled),
+    };
+}
+
++ (ArgsDictionary *) colorThemes {
+    return @{
+        @"light": @(IBGColorThemeLight),
+        @"dark": @(IBGColorThemeDark),
+    };
+}
+
++ (ArgsDictionary *) floatingButtonEdges {
+    return @{
+        @"left": @(CGRectMinXEdge),
+        @"right": @(CGRectMaxXEdge),
+    };
+}
+
 + (NSDictionary<NSString *, NSString *> *) placeholders {
     return @{
         @"shakeHint": kIBGShakeStartAlertTextStringName,

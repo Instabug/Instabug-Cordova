@@ -718,6 +718,23 @@
 }
 
 /**
+ * Sets the welcome message mode.
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) setWelcomeMessageMode:(CDVInvokedUrlCommand*)command
+{
+    NSString* mode = [command argumentAtIndex:0];
+    IBGWelcomeMessageMode parsedMode = (IBGWelcomeMessageMode) [ArgsRegistry.welcomeMessageModes[mode] intValue];
+
+    [Instabug setWelcomeMessageMode:parsedMode];
+
+    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK]
+                                callbackId:[command callbackId]];
+}
+
+/**
  * Shows the welcome message in a specific mode.
  *
  * @param {CDVInvokedUrlCommand*} command
@@ -725,19 +742,13 @@
  */
 - (void) showWelcomeMessage:(CDVInvokedUrlCommand*)command
 {
-    CDVPluginResult* result;
+    NSString* mode = [command argumentAtIndex:0];
+    IBGWelcomeMessageMode parsedMode = (IBGWelcomeMessageMode) [ArgsRegistry.welcomeMessageModes[mode] intValue];
 
-    IBGWelcomeMessageMode welcomeMessageMode = [self parseWelcomeMessageMode:[command argumentAtIndex:0]];
+    [Instabug showWelcomeMessageWithMode:parsedMode];
 
-    if (welcomeMessageMode) {
-        [Instabug showWelcomeMessageWithMode:welcomeMessageMode];
-        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-    } else {
-        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                   messageAsString:@"A valid welcome message mode must be provided."];
-    }
-
-    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK]
+                                callbackId:[command callbackId]];
 }
 
 /**
@@ -851,119 +862,98 @@
     }
 
 /**
- * Convenience method for setting the threshold value
- * of the shake gesture for iPhone/iPod touch and iPad.
+ * Sets the threshold value of the shake gesture for iPhone/iPod touch.
  *
- * @param {NSString*} iPhoneThreshold
- *        NSString representation of double iPhone threshold
- * @param {NSString*}
- *        NSString representation of double iPad threshold
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
  */
-- (void) setShakingThresholdForIPhone:(NSString*)iPhoneThreshold forIPad:(NSString*)iPadThreshold
+- (void) setShakingThresholdForiPhone:(CDVInvokedUrlCommand*)command
 {
-    double iPhone = [iPhoneThreshold doubleValue];
-    double iPad = [iPadThreshold doubleValue];
+    double threshold = [[command argumentAtIndex:0] doubleValue];
 
-    if (iPhone && iPad) {
-      IBGBugReporting.shakingThresholdForiPhone = iPhone;
-      IBGBugReporting.shakingThresholdForiPad = iPad;
-    }
+    IBGBugReporting.shakingThresholdForiPhone = threshold;
+
+    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK]
+                                callbackId:[command callbackId]];
+}
+
+/**
+ * Sets the threshold value of the shake gesture for iPad.
+ *
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void) setShakingThresholdForiPad:(CDVInvokedUrlCommand*)command
+{
+    double threshold = [[command argumentAtIndex:0] doubleValue];
+
+    IBGBugReporting.shakingThresholdForiPad = threshold;
+
+    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK]
+                                callbackId:[command callbackId]];
 }
 
 /**
  * Convenience method for setting the default edge on
  * which the floating button will be shown and its
  * offset from the top.
- *
- * @param {NSString*} edge
- *        NSString representation of edge
- * @param {NSString*} offset
- *        NSString representation of double offset
  */
-- (void) setFloatingButtonEdge:(NSString*)edge withOffset:(NSNumber* )offset
+- (void) setFloatingButtonEdge:(CDVInvokedUrlCommand*)command
 {
-    double offsetFromTop = [offset doubleValue];
+    NSString* edge = [command argumentAtIndex:0 withDefault:@"right"];
+    double offset = [[command argumentAtIndex:1] doubleValue];
+    NSNumber* parsedEdge = ArgsRegistry.floatingButtonEdges[edge];
 
-    if (offset) {
-        IBGBugReporting.floatingButtonTopOffset = offsetFromTop;
-    }
-    if ([edge isEqualToString:@"left"]) {
-        IBGBugReporting.floatingButtonEdge = CGRectMinXEdge;
-    } else if ([edge isEqualToString:@"right"]) {
-        IBGBugReporting.floatingButtonEdge = CGRectMaxXEdge;
-    }
+    IBGBugReporting.floatingButtonTopOffset = offset;
+    IBGBugReporting.floatingButtonEdge = (CGRectEdge) [parsedEdge intValue];
+    
+    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK]
+                                callbackId:[command callbackId]];
 }
 
 /**
- * Convenience method for setting whether to track
- * the user’s steps while using the app or not.
+ * Sets whether to track the user’s steps while using the app or not.
  *
- * @param {NSString*} enabled
- *        NSString representation of boolean enabled
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
  */
-- (void) setTrackingUserStepsEnabled:(NSString*)enabled
+- (void) setTrackUserStepsEnabled:(CDVInvokedUrlCommand*)command
 {
-    if ([enabled length] > 0) {
-        Instabug.trackUserSteps = [enabled boolValue];
-    }
+    bool enabled = [[command argumentAtIndex:0] boolValue];
+    Instabug.trackUserSteps = enabled;
+
+    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK]
+                            callbackId:[command callbackId]];
 }
 
 /**
- * Convenience method for setting whether to allow
- * the SDK to use push notifications or not.
+ * Sets whether to allow the SDK to use push notifications or not.
  *
- * @param {NSString*} enabled
- *        NSString representation of boolean enabled
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
  */
-- (void) setPushNotificationsEnabled:(NSString*)enabled
+- (void) setPushNotificationsEnabled:(CDVInvokedUrlCommand*)command
 {
-    if ([enabled length] > 0) {
-        [IBGReplies setPushNotificationsEnabled:[enabled boolValue]];
-    }
+    bool enabled = [[command argumentAtIndex:0] boolValue];
+    [IBGReplies setPushNotificationsEnabled:enabled];
+
+    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK]
+                            callbackId:[command callbackId]];
 }
 
 /**
- * Convenience method for setting whether to enable the
- * session profiler or not.
+ * Sets whether to enable the session profiler or not.
  *
- * @param {NSString*} enabled
- *        NSString representation of boolean enabled
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
  */
-- (void) setSessionProfilerEnabled:(NSString*)enabled
+- (void) setSessionProfilerEnabled:(CDVInvokedUrlCommand*)command
 {
-    if ([enabled length] > 0) {
-        [Instabug setSessionProfilerEnabled:[enabled boolValue]];
-    }
-}
+    bool enabled = [[command argumentAtIndex:0] boolValue];
+    [Instabug setSessionProfilerEnabled:enabled];
 
-/**
- * Convenience method for parsing and setting the welcome message mode
- *
- * @param {NSString*} enabled
- *        NSString representation of welcomeMessageMode
- */
-- (void) setWelcomeMessageMode:(NSString*)welcomeMessageMode
-{
-    if ([welcomeMessageMode length] > 0) {
-        IBGWelcomeMessageMode welcomeMessageModeEnum = [self parseWelcomeMessageMode:welcomeMessageMode];
-        [Instabug setWelcomeMessageMode:welcomeMessageModeEnum];
-    }
-}
-
-/**
- * Convenience method for setting the color theme of
- * the SDK invocation.
- *
- * @param {NSString*} theme
- *        NSString representation of color theme
- */
-- (void) setColorThemeInOptions:(NSString*)theme
-{
-    if ([theme isEqualToString:@"dark"]) {
-        [Instabug setColorTheme:IBGColorThemeDark];
-    } else if ([theme isEqualToString:@"light"]) {
-        [Instabug setColorTheme:IBGColorThemeLight];
-    }
+    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK]
+                            callbackId:[command callbackId]];
 }
 
 /**
@@ -974,26 +964,13 @@
  */
 - (void) setColorTheme:(CDVInvokedUrlCommand*)command
 {
-    CDVPluginResult* result;
     NSString* theme = [command argumentAtIndex:0];
+    IBGColorTheme parsedTheme = (IBGColorTheme) [ArgsRegistry.colorThemes[theme] intValue];
 
-    if ([theme length] > 0) {
-        if ([theme isEqualToString:@"dark"]) {
-            [Instabug setColorTheme:IBGColorThemeDark];
-            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-        } else if ([theme isEqualToString:@"light"]) {
-            [Instabug setColorTheme:IBGColorThemeLight];
-            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-        } else {
-            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                   messageAsString:@"Color theme value is not valid."];
-        }
-    } else {
-        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                   messageAsString:@"Color theme must be provided."];
-    }
+    [Instabug setColorTheme:parsedTheme];
 
-    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK]
+                                callbackId:[command callbackId]];
 }
 
  /**
@@ -1188,25 +1165,6 @@
     }
 
 /**
- * Wrapper method for applying all provided options.
- *
- * @param {NSDictionary*} options
- *        Provided options
- */
-- (void) applyOptions:(NSDictionary*)options
-{
-    [self setShakingThresholdForIPhone:[options objectForKey:@"shakingThresholdIPhone"]
-                               forIPad:[options objectForKey:@"shakingThresholdIPad"]];
-    [self setFloatingButtonEdge:[options objectForKey:@"floatingButtonEdge"]
-                     withOffset:[options objectForKey:@"floatingButtonOffset"]];
-    [self setTrackingUserStepsEnabled:[[options objectForKey:@"enableTrackingUserSteps"] stringValue]];
-    [self setPushNotificationsEnabled:[[options objectForKey:@"enablePushNotifications"] stringValue]];
-    [self setSessionProfilerEnabled:[[options objectForKey:@"enableSessionProfiler"] stringValue]];
-    [self setColorThemeInOptions:[options objectForKey:@"colorTheme"]];
-    [self setWelcomeMessageMode:[options objectForKey:@"welcomeMessageMode"]];
-}
-
-/**
  * Convenience method for converting NSString to
  * IBGInvocationEvent.
  *
@@ -1312,24 +1270,6 @@
         return IBGUserStepsModeDisable;
     } else if ([mode isEqualToString:@"enabledWithNoScreenshots"]) {
         return IBGUserStepsModeEnabledWithNoScreenshots;
-    } else return 0;
-}
-
-/**
- * Convenience method for converting NSString to
- * IBGWelcomeMessageMode.
- *
- * @param  {NSString*} mode
- *         NSString shortcode for IBGWelcomeMessageMode
- */
-- (IBGWelcomeMessageMode) parseWelcomeMessageMode:(NSString*)mode
-{
-    if ([mode isEqualToString:@"welcomeMessageModeLive"]) {
-        return IBGWelcomeMessageModeLive;
-    } else if ([mode isEqualToString:@"welcomeMessageModeBeta"]) {
-        return IBGWelcomeMessageModeBeta;
-    } else if ([mode isEqualToString:@"welcomeMessageModeDisabled"]) {
-        return IBGWelcomeMessageModeDisabled;
     } else return 0;
 }
 
