@@ -344,20 +344,6 @@ Instabug.setPreSendingHandler = function (success, error) {
 };
 
 /**
- * Sets the default position at which the Instabug screen recording button will be shown.
- * Different orientations are already handled.
- * (Default for `position` is `bottomRight`)
- *
- * @param position is of type position `topLeft` to show on the top left of screen,
- * or `bottomRight` to show on the bottom right of screen.
- * @param {function} success callback on function success
- * @param {function(string):void} error callback on function error
- */
-Instabug.setVideoRecordingFloatingButtonPosition = function (position, success, error) {
-    exec(success, error, 'IBGPlugin', 'setVideoRecordingFloatingButtonPosition', [position]);
-};
-
-/**
  * Sets the default value of the user's email to nil and show email field and remove user name
  * from all reports
  * It also reset the chats on device and removes user attributes, user data and completed surveys.

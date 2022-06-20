@@ -1008,13 +1008,16 @@ public class IBGPlugin extends CordovaPlugin {
      *
      */
     public void setVideoRecordingFloatingButtonPosition(final CallbackContext callbackContext, JSONArray args) {
-        String corner = args.optString(0);
         try {
-          InstabugVideoRecordingButtonPosition buttonPosition = parseInstabugVideoRecordingButtonCorner(corner);
-          BugReporting.setVideoRecordingFloatingButtonPosition(buttonPosition);
-          callbackContext.success();
-        } catch (IllegalStateException e) {
-            callbackContext.error(errorMsg);
+            final String position = args.optString(0);
+            final InstabugVideoRecordingButtonPosition parsedPosition = ArgsRegistry.recordButtonPositions
+                    .getOrDefault(position, InstabugVideoRecordingButtonPosition.BOTTOM_RIGHT);
+
+            BugReporting.setVideoRecordingFloatingButtonPosition(parsedPosition);
+
+            callbackContext.success();
+        } catch (Exception e) {
+            callbackContext.error(e.getMessage());
         }
     }
 
@@ -1310,25 +1313,6 @@ public class IBGPlugin extends CordovaPlugin {
             return ActionType.ADD_COMMENT_TO_FEATURE;
         } else return -1;
     }
-
-    /**
-     * Convenience method for converting string to
-     * InstabugVideoRecordingButtonCorner.
-     *
-     * @param position String shortcode for position
-     */
-    public static InstabugVideoRecordingButtonPosition parseInstabugVideoRecordingButtonCorner(String position) {
-        if ("topLeft".equals(position)) {
-            return InstabugVideoRecordingButtonPosition.TOP_LEFT;
-        } else if ("topRight".equals(position)) {
-            return InstabugVideoRecordingButtonPosition.TOP_RIGHT;
-        } else if ("bottomLeft".equals(position)) {
-            return InstabugVideoRecordingButtonPosition.BOTTOM_LEFT;
-        } else if ("bottomRight".equals(position)) {
-            return InstabugVideoRecordingButtonPosition.BOTTOM_RIGHT;
-        } else return null;
-    }
-
 
     /**
      * Convenience method to convert a list of integers into an int array

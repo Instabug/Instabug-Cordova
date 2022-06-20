@@ -4,6 +4,7 @@
  */
 
 var exec = require('cordova/exec');
+var registry = require("./ArgsRegistry");
 
 /**
  * The event used to invoke the feedback form
@@ -65,6 +66,7 @@ BugReporting.invocationEvents = getInvocationEvents();
 BugReporting.option = getOptions();
 BugReporting.extendedBugReportMode = getExtendedBugReportMode();
 BugReporting.reportType = getReportType();
+BugReporting.position = registry.position;
 
 /**
  * Enables or disables all bug reporting functionalities.
@@ -299,6 +301,20 @@ BugReporting.setShakingThresholdForiPad = function(threshold, success, error) {
  */
 BugReporting.setShakingThresholdForAndroid = function(threshold, success, error) {
   exec(success, error, 'IBGPlugin', 'setShakingThreshold', [threshold]);
+};
+
+/**
+ * Sets the default position at which the Instabug screen recording button will be shown.
+ * Different orientations are already handled.
+ * (Default for `position` is `bottomRight`)
+ *
+ * @param {keyof BugReporting.position} position is of type position `topLeft`
+ * to show on the top left of screen, or `bottomRight` to show on the bottom right of screen.
+ * @param {function} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
+BugReporting.setVideoRecordingFloatingButtonPosition = function (position, success, error) {
+  exec(success, error, 'IBGPlugin', 'setVideoRecordingFloatingButtonPosition', [position]);
 };
 
 

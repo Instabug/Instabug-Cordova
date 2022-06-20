@@ -1,3 +1,10 @@
+module.exports.position = {
+  topLeft: "topLeft",
+  topRight: "topRight",
+  bottomLeft: "bottomLeft",
+  bottomRight: "bottomRight",
+};
+
 module.exports.welcomeMessageMode = {
   live: "welcomeMessageModeLive",
   beta: "welcomeMessageModeBeta",

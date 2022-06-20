@@ -2,6 +2,15 @@
 
 @implementation ArgsRegistry
 
++ (ArgsDictionary *) recordButtonPositions {
+    return @{
+        @"topLeft": @(IBGPositionTopLeft),
+        @"topRight": @(IBGPositionTopRight),
+        @"bottomLeft": @(IBGPositionBottomLeft),
+        @"bottomRight": @(IBGPositionBottomRight),
+    };
+}
+
 + (ArgsDictionary *) welcomeMessageModes {
     return @{
         @"welcomeMessageModeLive": @(IBGWelcomeMessageModeLive),
