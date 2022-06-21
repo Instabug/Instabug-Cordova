@@ -383,19 +383,13 @@
  */
 - (void) setVideoRecordingFloatingButtonPosition:(CDVInvokedUrlCommand*)command
 {
-    CDVPluginResult* result;
+    NSString* postion = [command argumentAtIndex:0];
+    IBGPosition parsePosition = (IBGPosition) [ArgsRegistry.recordButtonPositions[postion] intValue];
 
-    IBGPosition position = [self parseIBGPosition:[command argumentAtIndex:0]];
+    IBGBugReporting.videoRecordingFloatingButtonPosition = parsePosition;
 
-    if (position) {
-//        IBGBugReporting.videoRecordingFloatingButtonPosition = position;
-        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-    } else {
-        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                   messageAsString:@"A position must be provided."];
-    }
-
-    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK]
+                                callbackId:[command callbackId]];
 }
 
 /**

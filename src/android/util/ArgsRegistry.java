@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.InstabugCustomTextPlaceHolder.Key;
 import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
+import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
 
 import java.util.ArrayList;
@@ -28,6 +29,13 @@ public class ArgsRegistry {
             return values;
         }
     }
+
+    public static ArgsMap<InstabugVideoRecordingButtonPosition> recordButtonPositions = new ArgsMap<InstabugVideoRecordingButtonPosition>() {{
+        put("topLeft", InstabugVideoRecordingButtonPosition.TOP_LEFT);
+        put("topRight", InstabugVideoRecordingButtonPosition.TOP_RIGHT);
+        put("bottomLeft", InstabugVideoRecordingButtonPosition.BOTTOM_LEFT);
+        put("bottomRight", InstabugVideoRecordingButtonPosition.BOTTOM_RIGHT);
+    }};
 
     public static ArgsMap<WelcomeMessage.State> welcomeMessageModes = new ArgsMap<WelcomeMessage.State>() {{
         put("welcomeMessageModeLive", WelcomeMessage.State.LIVE);
