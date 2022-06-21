@@ -73,8 +73,8 @@ Instabug.strings = registry.strings;
  * @param {function(string):void} error callback on function error
  */
 Instabug.start = function (token, invocationEvents, success, error) {
-    const validEvents = getInvocationEvents();
-    const isValid = invocationEvents.every((e) => validEvents[e]);
+    var validEvents = getInvocationEvents();
+    var isValid = invocationEvents.every((e) => validEvents[e]);
 
     if (isValid && invocationEvents.length > 0) {
         exec(success, error, 'IBGPlugin', 'start', [token, invocationEvents]);
