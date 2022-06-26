@@ -87,7 +87,7 @@ workflows:
           type: approval
           requires:
             - test_android
-            - test_ios
+            # - test_ios
           filters:
             branches:
               only: master
