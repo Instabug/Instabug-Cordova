@@ -22,8 +22,7 @@ ionic cordova plugin add instabug-cordova
 
 ## Integration Steps
 
-Add the following snippet to your `index.js` file inside `onDeviceReady` function:   
-> Don't forget to replace `YOUR_CORDOVA_TOKEN` with your token.
+- Add the following snippet to your `index.js` file inside `onDeviceReady` function:   
 
 ```js
 var Instabug = cordova.require("instabug-cordova.Instabug");
@@ -37,13 +36,9 @@ Instabug.start(
 );
 ```
 
+- Replace `YOUR_CORDOVA_TOKEN` with your application token.
+
 > :warning:  If you're updating the SDK from versions prior to v11, please check our [migration guide](https://docs.instabug.com/docs/cordova-migration-guide).
-
-> :warning:  Starting from Instabug-Cordova v9, we require the `compileSdkVersion` to be set to a minimum of `29`. It can be set inside the app's `build.gradle` file as below:  
-
-	android {
-	    compileSdkVersion 29
-	}
 
 ## Features Not Yet Supported
 - User steps.
