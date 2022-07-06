@@ -921,21 +921,6 @@
 }
 
 /**
- * Sets whether to allow the SDK to use push notifications or not.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) setPushNotificationsEnabled:(CDVInvokedUrlCommand*)command
-{
-    bool enabled = [[command argumentAtIndex:0] boolValue];
-    [IBGReplies setPushNotificationsEnabled:enabled];
-
-    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK]
-                            callbackId:[command callbackId]];
-}
-
-/**
  * Sets whether to enable the session profiler or not.
  *
  * @param {CDVInvokedUrlCommand*} command

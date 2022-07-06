@@ -837,22 +837,6 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
-     * Enabled/disable push notifications
-     *
-     * @param callbackContext Used when calling back into JavaScript
-     * @param args [isEnabled: boolean]
-     */
-    public void setPushNotificationsEnabled(final CallbackContext callbackContext, JSONArray args) {
-        try {
-            boolean isEnabled = args.optBoolean(0);
-            Replies.setPushNotificationState(isEnabled ? Feature.State.ENABLED : Feature.State.DISABLED);
-            callbackContext.success();
-        } catch (Exception e) {
-            callbackContext.error(e.getMessage());
-        }
-    }
-
-    /**
      * Enable/Disable view hierarchy from Instabug SDK
      *
      * @param args .optBoolean(0)       whether view hierarchy should be enabled or not
