@@ -273,8 +273,15 @@ Instabug.enable = function (success, error) {
     exec(success, error, 'IBGPlugin', 'enable', []);
 };
 
+/**
+ * Gets a boolean indicating whether the SDK is enabled or not
+ * It works on android only
+ * 
+ * @param {function(boolean):void} success callback on function success
+ * @param {function(string):void} error callback on function error
+ */
 Instabug.isEnabled = function (success, error) {
-    exec(success, error, 'IBGPlugin', 'isEnabled', []);
+    exec(success, error, 'IBGPlugin', 'getIsEnabled', []);
 };
 
 /**
