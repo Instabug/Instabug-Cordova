@@ -1053,22 +1053,6 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
-     * Sets whether to track the user’s steps while using the app or not.
-     *
-     * @param callbackContext Used when calling back into JavaScript
-     * @param args [isEnabled: boolean]
-     */
-    public void setTrackUserStepsEnabled(final CallbackContext callbackContext, JSONArray args) {
-        try {
-            boolean isEnabled = args.optBoolean(0);
-            Instabug.setTrackingUserStepsState(isEnabled ? Feature.State.ENABLED : Feature.State.DISABLED);
-            callbackContext.success();
-        } catch (Exception e) {
-            callbackContext.error(e.getMessage());
-        }
-    }
-
-    /**
      * Sets whether to enable the session profiler or not.
      *
      * @param callbackContext Used when calling back into JavaScript

@@ -906,21 +906,6 @@
 }
 
 /**
- * Sets whether to track the user’s steps while using the app or not.
- *
- * @param {CDVInvokedUrlCommand*} command
- *        The command sent from JavaScript
- */
-- (void) setTrackUserStepsEnabled:(CDVInvokedUrlCommand*)command
-{
-    bool enabled = [[command argumentAtIndex:0] boolValue];
-    Instabug.trackUserSteps = enabled;
-
-    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK]
-                            callbackId:[command callbackId]];
-}
-
-/**
  * Sets whether to enable the session profiler or not.
  *
  * @param {CDVInvokedUrlCommand*} command
