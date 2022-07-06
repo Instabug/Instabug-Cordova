@@ -777,7 +777,7 @@ public class IBGPlugin extends CordovaPlugin {
     public void getIsEnabled(final CallbackContext callbackContext) {
         try {
             boolean enabled = Instabug.isEnabled();
-            callbackContext.success(enabled ? 1 : 0);
+            callbackContext.sendPluginResult(new PluginResult(Status.OK, enabled));
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
         }
