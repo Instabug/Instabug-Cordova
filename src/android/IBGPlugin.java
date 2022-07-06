@@ -837,27 +837,6 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
-     * Enable/Disable view hierarchy from Instabug SDK
-     *
-     * @param args .optBoolean(0)       whether view hierarchy should be enabled or not
-     *
-     * @param callbackContext Used when calling back into JavaScript
-     */
-    public void setViewHierarchyEnabled(final CallbackContext callbackContext, JSONArray args) {
-        boolean isEnabled = args.optBoolean(0);
-        try {
-            if (isEnabled) {
-                BugReporting.setViewHierarchyState(Feature.State.ENABLED);
-            } else {
-                BugReporting.setViewHierarchyState(Feature.State.DISABLED);
-            }
-            callbackContext.success();
-        } catch (IllegalStateException e) {
-            callbackContext.error(errorMsg);
-        }
-    }
-
-    /**
      * Shows one of the surveys that were not shown before, that also have conditions that
      * match the current device/user.
      *
