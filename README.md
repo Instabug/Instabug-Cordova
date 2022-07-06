@@ -31,8 +31,12 @@ var BugReporting = cordova.require("instabug-cordova.BugReporting");
 Instabug.start(
     "YOUR_CORDOVA_TOKEN",
     [BugReporting.invocationEvents.button],
-    () => console.log("Instabug initialized."),
-    (error) => console.log("Instabug could not be initialized - " + error)
+    function () {
+        console.log('Instabug initialized.');
+    },
+    function (error) {
+        console.log('Instabug could not be initialized - ' + error);
+    }
 );
 ```
 
