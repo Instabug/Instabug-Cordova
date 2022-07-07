@@ -56,4 +56,4 @@ Instabug.start(
 
 This software is released under the <a href="http://opensource.org/licenses/Apache-2.0">Apache 2.0 License</a>.
 
-© 2016 Instabug. All rights reserved.
+© 2022 Instabug. All rights reserved.
