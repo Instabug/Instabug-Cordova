@@ -3,7 +3,7 @@
 * Bumps Instabug native SDKs to v11
 * Adds the ability to initialize the Android SDK from JavaScript. Check the migration guide referenced in our docs
 * Improves Instabug modules import usage. Check the migration guide referenced in our docs
-* Migrates Instabug iOS SDK to be installed through CocoaPods. Check the migration guide referenced in our docs
+* Migrates Instabug iOS SDK to be installed through CocoaPods
 * Moves Instabug.setVideoRecordingFloatingButtonPosition to the BugReporting module
 * Adds Instabug.setString API to allow for SDK text customizations
 * Replaces Instabug.setShakingThreshold with BugReporting.setShakingThresholdForAndroid
