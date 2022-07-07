@@ -20,48 +20,17 @@ cordova plugin add instabug-cordova
 ionic cordova plugin add instabug-cordova
 ```
 
-## Android Integration Steps
+## Integration Steps
 
-1. Change the name of the application class in your AndroidManifest.xml file to `android:name="com.instabug.cordova.plugin.MyApplication"`.
+- Add the following snippet to your `index.js` file inside `onDeviceReady` function:   
 
-2. You need to add your app token in the **MyApplication** class, by replacing `YOUR_ANDROID_TOKEN`. (You can find this class under this path `YourProjectName/platforms/android/app/src/main/java/com.instabug.cordova.plugin/MyApplication.java`)
+```js
+var Instabug = cordova.require('instabug-cordova.Instabug');
+var BugReporting = cordova.require('instabug-cordova.BugReporting');
 
-3. You can change the invocation event by changing this line `InstabugInvocationEvent.SHAKE` in the **MyApplication** class to any of the following:
-
-`InstabugInvocationEvent.FLOATING_BUTTON`, `InstabugInvocationEvent.SCREENSHOT_GESTURE`, `InstabugInvocationEvent.TWO_FINGER_SWIPE_LEFT`, or `InstabugInvocationEvent.NONE`.
-
-4.  Make sure the following snippet is added to your project level `build.gradle`, if not you can manually add it as follows:.
-
-```dart
-allprojects {
-    repositories {
-        maven {
-            url "https://sdks.instabug.com/nexus/repository/instabug-cp"
-        }
-    }
-}
-```
-
-⚠️ Starting from Instabug-Cordova v9, we require the `compileSdkVersion` to be set to a minimum of `29`. It can be set inside the app's `build.gradle` file as below:  
-
-	android {
-	    compileSdkVersion 29
-	}
-
-## iOS Integration Steps
-
-You can initialize the SDK by using this method in your App JS file.
-
-```
-cordova.plugins.instabug.activate(
-    {
-        ios: 'MY_IOS_TOKEN'
-    },
-    'shake',
-    {
-    	commentRequired: true,
-    	colorTheme: 'light'
-    },
+Instabug.start(
+    'YOUR_CORDOVA_TOKEN',
+    [BugReporting.invocationEvents.button],
     function () {
         console.log('Instabug initialized.');
     },
@@ -71,11 +40,9 @@ cordova.plugins.instabug.activate(
 );
 ```
 
-You can change the invocation event with any of the following: `'button'`, `'screenshot'`, `'swipe'`, or `'shake'`.
+- Replace `YOUR_CORDOVA_TOKEN` with your application token.
 
-⚠️  TypeScript users, make sure you declare `cordova` at the beginning of your app class (app.component.ts):
-
-	declare let cordova: any;
+> :warning:  If you're updating the SDK from versions prior to v11, please check our [migration guide](https://docs.instabug.com/docs/cordova-migration-guide).
 
 ## Features Not Yet Supported
 - User steps.
@@ -89,4 +56,4 @@ You can change the invocation event with any of the following: `'button'`, `'scr
 
 This software is released under the <a href="http://opensource.org/licenses/Apache-2.0">Apache 2.0 License</a>.
 
-© 2016 Instabug. All rights reserved.
+© 2022 Instabug. All rights reserved.

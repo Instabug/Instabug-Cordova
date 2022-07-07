@@ -1,5 +1,7 @@
 package com.instabug.cordova.plugin;
 
+import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -9,27 +11,27 @@ import android.util.Log;
 
 import com.instabug.bug.BugReporting;
 import com.instabug.bug.invocation.Option;
-import com.instabug.chat.Chats;
 import com.instabug.chat.Replies;
+import com.instabug.cordova.plugin.util.ArgsRegistry;
 import com.instabug.cordova.plugin.util.Util;
 import com.instabug.featuresrequest.ActionType;
 import com.instabug.featuresrequest.FeatureRequests;
 import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
 import com.instabug.library.InstabugColorTheme;
+import com.instabug.library.InstabugCustomTextPlaceHolder;
 import com.instabug.library.OnSdkDismissCallback;
 import com.instabug.library.extendedbugreport.ExtendedBugReport;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
-import com.instabug.bug.invocation.InvocationMode;
 import com.instabug.library.invocation.OnInvokeCallback;
+import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
 import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition;
 import com.instabug.library.logging.InstabugLog;
 import com.instabug.library.model.Report;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
 import com.instabug.library.visualusersteps.State;
-import com.instabug.survey.OnDismissCallback;
-import com.instabug.survey.OnShowCallback;
+import com.instabug.survey.callbacks.*;
 import com.instabug.survey.Survey;
 import com.instabug.survey.Surveys;
 
@@ -57,25 +59,11 @@ import java.util.Locale;
  * This plugin initializes Instabug.
  */
 public class IBGPlugin extends CordovaPlugin {
-
-    // Reference to intent that start activity
-    // to initialize Instabug
-    private Intent activationIntent;
-
-    // Initialization options
-    private JSONObject options;
-
-    // All possible option keys
-    private final String[] optionKeys = { "emailRequired", "commentRequired", 
-            "shakingThresholdAndroid", "floatingButtonEdge", "colorTheme",
-            "floatingButtonOffset", "enableDebug", "enableConsoleLogs", 
-            "enableInstabugLogs", "enableTrackingUserSteps", "enableUserData",
-            "enableCrashReporting", "enableInAppMessaging", "enableIntroDialog", 
-            "enableConversationSounds", "enablePushNotifications", 
-            "enableSessionProfiler", "welcomeMessageMode" };
-
     // Generic error message
     private final String errorMsg = "Instabug object must first be activated.";
+
+    private Context context;
+    private InstabugCustomTextPlaceHolder placeHolders = new InstabugCustomTextPlaceHolder();
 
     /**
      * Called after plugin construction and fields have been initialized.
@@ -83,11 +71,7 @@ public class IBGPlugin extends CordovaPlugin {
     @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
-
-        // Initialize intent so that extras can be attached subsequently
-        activationIntent = new Intent(cordova.getActivity(), com.instabug.cordova.plugin.IBGPluginActivity.class);
-
-        options = new JSONObject();
+        context = cordova.getContext();
     }
 
     /**
@@ -119,6 +103,39 @@ public class IBGPlugin extends CordovaPlugin {
         return true;
     }
 
+    /**
+     * Initializes Instabug.
+     *
+     * @param callbackContext Used when calling back into JavaScript
+     */
+    public void start(final CallbackContext callbackContext, JSONArray args) {
+        String token = args.optString(0);
+        JSONArray options = args.optJSONArray(1);
+
+        if (options.length() == 0) {
+            callbackContext.error("A valid prompt option type must be provided.");
+            return;
+        }
+
+        try {
+            String[] invocationEventsNames = toStringArray(options);
+            InstabugInvocationEvent[] invocationEvents = new InstabugInvocationEvent[options.length()];
+
+            for (int i = 0, invocationEventsNamesLength = invocationEventsNames.length; i < invocationEventsNamesLength; i++) {
+                invocationEvents[i] = parseInvocationEvent(invocationEventsNames[i]);
+            }
+
+            final Application application = (Application) context.getApplicationContext();
+            new Instabug.Builder(application, token)
+                    .setInvocationEvents(invocationEvents)
+                    .build();
+
+            callbackContext.success();
+        } catch (IllegalStateException e) {
+            callbackContext.error(errorMsg);
+        }
+    }
+
     public final void show(final CallbackContext callbackContext) {
         try {
             Instabug.show();
@@ -142,16 +159,6 @@ public class IBGPlugin extends CordovaPlugin {
         callbackContext.success();
     }
 
-    public final void setChatsEnabled(CallbackContext callbackContext, JSONArray args) {
-        Boolean isEnabled = args.optBoolean(0);
-        if (isEnabled) {
-            Chats.setState(Feature.State.ENABLED);
-        } else {
-            Chats.setState(Feature.State.DISABLED);
-        }
-        callbackContext.success();
-    }
-
     public final void setRepliesEnabled(CallbackContext callbackContext, JSONArray args) {
         Boolean isEnabled = args.optBoolean(0);
         if (isEnabled) {
@@ -159,11 +166,6 @@ public class IBGPlugin extends CordovaPlugin {
         } else {
             Replies.setState(Feature.State.DISABLED);
         }
-        callbackContext.success();
-    }
-
-    public final void showChats(CallbackContext callbackContext) {
-        Chats.show();
         callbackContext.success();
     }
 
@@ -221,43 +223,6 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
-     * Creates intent to initialize Instabug.
-     *
-     * @param callbackContext Used when calling back into JavaScript
-     */
-    public void startWithToken(final CallbackContext callbackContext, JSONArray args) {
-        activate(callbackContext, args);
-    }
-
-    /**
-     * Creates intent to initialize Instabug.
-     *
-     * @param callbackContext Used when calling back into JavaScript
-     */
-    private void activate(final CallbackContext callbackContext, JSONArray args) {
-        this.options = args.optJSONObject(2);
-        if (options != null) {
-            // Attach extras
-            applyOptions();
-        }
-        try {
-            Method method = Util.getMethod(Class.forName("com.instabug.library.util.InstabugDeprecationLogger"), "setBaseUrl", String.class);
-            if (method != null) {
-                method.invoke(null, "https://docs.instabug.com/docs/cordova-sdk-migration-guide");
-            }
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
-        cordova.getActivity().startActivity(activationIntent);
-
-        callbackContext.success();
-    }
-
-    /**
      * Sets the invocation options used when invoke Instabug SDK
      *
      * @param args .optJSONArray(0) the invocation options array
@@ -269,6 +234,7 @@ public class IBGPlugin extends CordovaPlugin {
             try {
                 ArrayList<Integer> invocationOptions = parseInvocationOptions(stringArrayOfInvocationOptions);
                 BugReporting.setOptions(convertIntegers(invocationOptions));
+                callbackContext.success();
             } catch (IllegalStateException e) {
                 callbackContext.error(errorMsg);
             }
@@ -290,7 +256,7 @@ public class IBGPlugin extends CordovaPlugin {
             try {
                 ArrayList<Integer> actionTypesArray = parseActionTypes(stringArrayOfActionTypes);
                 FeatureRequests.setEmailFieldRequired(isRequired, convertIntegers(actionTypesArray));
-
+                callbackContext.success();
             } catch (IllegalStateException e) {
                 callbackContext.error(errorMsg);
             }
@@ -454,6 +420,7 @@ public class IBGPlugin extends CordovaPlugin {
                     @Override
                     public void run() {
                         Instabug.setPrimaryColor(colorInt);
+                        callbackContext.success();
                     }
                 });
 
@@ -473,48 +440,35 @@ public class IBGPlugin extends CordovaPlugin {
      * invocation.
      *
      * @param callbackContext Used when calling back into JavaScript
-     * @param args .optString(0)     Theme
+     * @param args [colorTheme: String]
      *
      */
     public void setColorTheme(final CallbackContext callbackContext, final JSONArray args) {
-        final String colorTheme = args.optString(0);
-        if (colorTheme != null) {
-            try {
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if ("dark".equals(colorTheme)) {
-                            Instabug.setColorTheme(InstabugColorTheme.InstabugColorThemeDark);
-                        } else if ("light".equals(colorTheme)) {
-                            Instabug.setColorTheme(InstabugColorTheme.InstabugColorThemeLight);
-                        } else {
-                            callbackContext.error("Color theme value is not valid.");
-                        }
-                    }
-                });
-            } catch (IllegalStateException e) {
-                e.printStackTrace();
-                callbackContext.error(errorMsg);
-            }
-        } else {
-            callbackContext.error("A color theme must be provided.");
+        try {
+            final String colorTheme = args.optString(0);
+            final InstabugColorTheme parsedColorTheme = ArgsRegistry.colorThemes
+                    .getOrDefault(colorTheme, InstabugColorTheme.InstabugColorThemeLight);
+
+            Instabug.setColorTheme(parsedColorTheme);
+            callbackContext.success();
+        } catch (Exception e) {
+            callbackContext.error(e.getMessage());
         }
     }
 
     /**
      * Sets the threshold value of the shake gesture on the device
      *
-     * @param callbackContext
-     *        Used when calling back into JavaScript
-     * @param args .optInt(0)
-     *        The value of the primary color
+     * @param callbackContext Used when calling back into JavaScript
+     * @param args [threshold: int]
      */
     public void setShakingThreshold(final CallbackContext callbackContext, JSONArray args) {
-        int shakingThreshold = args.optInt(0);
          try {
-             BugReporting.setShakingThreshold(shakingThreshold);
-         } catch (IllegalStateException e) {
-            callbackContext.error(errorMsg);
+             int threshold = args.optInt(0);
+             BugReporting.setShakingThreshold(threshold);
+             callbackContext.success();
+         } catch (Exception e) {
+             callbackContext.error(e.getMessage());
          }
     }
 
@@ -722,6 +676,7 @@ public class IBGPlugin extends CordovaPlugin {
                     @Override
                     public void run() {
                         BugReporting.setInvocationEvents(invocationEvents.toArray(new InstabugInvocationEvent[0]));
+                        callbackContext.success();
                     }
                 });
             } catch (IllegalStateException e) {
@@ -822,7 +777,7 @@ public class IBGPlugin extends CordovaPlugin {
     public void getIsEnabled(final CallbackContext callbackContext) {
         try {
             boolean enabled = Instabug.isEnabled();
-            callbackContext.success(enabled ? 1 : 0);
+            callbackContext.sendPluginResult(new PluginResult(Status.OK, enabled));
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
         }
@@ -868,35 +823,13 @@ public class IBGPlugin extends CordovaPlugin {
      * Enables/disables showing in-app notifications when the user receives a new
      * message.
      *
-     * @param isEnabled whether debug logs should be printed or not into LogCat
-     *
-     * @param callbackContext
-     *        Used when calling back into JavaScript
-     */
-    public void setChatNotificationEnabled(final CallbackContext callbackContext, boolean isEnabled) {
-        try {
-            Replies.setInAppNotificationEnabled(isEnabled);
-            callbackContext.success();
-        } catch (IllegalStateException e) {
-            callbackContext.error(errorMsg);
-        }
-    }
-
-    /**
-     * Enable/Disable view hierarchy from Instabug SDK
-     *
-     * @param args .optBoolean(0)       whether view hierarchy should be enabled or not
-     *
      * @param callbackContext Used when calling back into JavaScript
+     * @param args [isEnabled: boolean]
      */
-    public void setViewHierarchyEnabled(final CallbackContext callbackContext, JSONArray args) {
-        Boolean isEnabled = args.optBoolean(0);
+    public void setChatNotificationEnabled(final CallbackContext callbackContext, JSONArray args) {
         try {
-            if (isEnabled) {
-                Instabug.setViewHierarchyState(Feature.State.ENABLED);
-            } else {
-                Instabug.setViewHierarchyState(Feature.State.DISABLED);
-            }
+            boolean isEnabled = args.optBoolean(0);
+            Replies.setInAppNotificationEnabled(isEnabled);
             callbackContext.success();
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
@@ -913,25 +846,6 @@ public class IBGPlugin extends CordovaPlugin {
     public void showSurveyIfAvailable(final CallbackContext callbackContext) {
         try {
             Surveys.showSurveyIfAvailable();
-            callbackContext.success();
-        } catch (IllegalStateException e) {
-            callbackContext.error(errorMsg);
-        }
-    }
-
-    /**
-     * Sets maximum auto screen recording video duration.
-     *
-     * @param args .optInt(0)        maximum duration of the screen recording video seconds
-     *                        The maximum duration is 30 seconds
-     *
-     * @param callbackContext Used when calling back into JavaScript
-     */
-    public void setAutoScreenRecordingMaxDuration(final CallbackContext callbackContext, JSONArray args) {
-        int duration = args.optInt(0);
-        try {
-            int durationInMilli = duration * 1000;
-            Instabug.setAutoScreenRecordingMaxDuration(durationInMilli);
             callbackContext.success();
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
@@ -1028,6 +942,27 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
+     * Sets the position of the Instabug floating button on the screen.
+     * @param callbackContext Used when calling back into JavaScript
+     * @param args [edge: String, offset: int]
+     */
+    public void setFloatingButtonEdge(final CallbackContext callbackContext, JSONArray args) {
+        try {
+            final String edge = args.optString(0);
+            final int offset = args.optInt(1);
+            final InstabugFloatingButtonEdge parsedEdge = ArgsRegistry.floatingButtonEdges
+                    .getOrDefault(edge, InstabugFloatingButtonEdge.RIGHT);
+
+            BugReporting.setFloatingButtonOffset(offset);
+            BugReporting.setFloatingButtonEdge(parsedEdge);
+
+            callbackContext.success();
+        } catch (Exception e) {
+            callbackContext.error(e.getMessage());
+        }
+    }
+
+    /**
      * Sets the default position at which the Instabug screen recording button will
      * be shown. Different orientations are already handled.
      *
@@ -1036,11 +971,37 @@ public class IBGPlugin extends CordovaPlugin {
      *
      */
     public void setVideoRecordingFloatingButtonPosition(final CallbackContext callbackContext, JSONArray args) {
-        String corner = args.optString(0);
         try {
-          InstabugVideoRecordingButtonPosition buttonPosition = parseInstabugVideoRecordingButtonCorner(corner);
-          BugReporting.setVideoRecordingFloatingButtonPosition(buttonPosition);
-          callbackContext.success();
+            final String position = args.optString(0);
+            final InstabugVideoRecordingButtonPosition parsedPosition = ArgsRegistry.recordButtonPositions
+                    .getOrDefault(position, InstabugVideoRecordingButtonPosition.BOTTOM_RIGHT);
+
+            BugReporting.setVideoRecordingFloatingButtonPosition(parsedPosition);
+
+            callbackContext.success();
+        } catch (Exception e) {
+            callbackContext.error(e.getMessage());
+        }
+    }
+
+    /**
+     * Customize the attachment options available to users to send with a bug reeport.
+     *
+     * @param callbackContext Used when calling back into JavaScript
+     * @param args .optBoolean(0)           whether or not to include an initial screenshot
+     * @param args .optBoolean(1)           whether or not to allow attaching additional screenshots
+     * @param args .optBoolean(2)           whether or not to allow attaching images from the gallery
+     * @param args .optBoolean(3)           whether or not to allow recording the screen
+     */
+    public void setAttachmentTypesEnabled(final CallbackContext callbackContext, JSONArray args) {
+        Boolean initialScreenshot = args.optBoolean(0);
+        Boolean extraScreenshot = args.optBoolean(1);
+        Boolean galleryImage = args.optBoolean(2);
+        Boolean screenRecording = args.optBoolean(3);
+        try {
+            // Arguments:initialScreenshot, extraScreenshot, galleryImage & ScreenRecording
+            BugReporting.setAttachmentTypesEnabled(initialScreenshot, extraScreenshot, galleryImage, screenRecording);
+            callbackContext.success();
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
         }
@@ -1064,8 +1025,25 @@ public class IBGPlugin extends CordovaPlugin {
           } else if(mode.equals("disabled")) {
               BugReporting.setExtendedBugReportState(ExtendedBugReport.State.DISABLED);
           }
+          callbackContext.success();
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
+        }
+    }
+
+    /**
+     * Sets whether to enable the session profiler or not.
+     *
+     * @param callbackContext Used when calling back into JavaScript
+     * @param args [isEnabled: boolean]
+     */
+    public void setSessionProfilerEnabled(final CallbackContext callbackContext, JSONArray args) {
+        try {
+            boolean isEnabled = args.optBoolean(0);
+            Instabug.setSessionProfilerState(isEnabled ? Feature.State.ENABLED : Feature.State.DISABLED);
+            callbackContext.success();
+        } catch (Exception e) {
+            callbackContext.error(e.getMessage());
         }
     }
 
@@ -1087,54 +1065,50 @@ public class IBGPlugin extends CordovaPlugin {
             } else if (reproStepsMode.equals("disabled")) {
                 Instabug.setReproStepsState(State.DISABLED);
             }
+            callbackContext.success();
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
+        }
+    }
+
+    /**
+     * Sets the welcome message mode.
+     *
+     * @param callbackContext Used when calling back into JavaScript
+     * @param  args [mode: String]
+     */
+    public void setWelcomeMessageMode(final CallbackContext callbackContext, JSONArray args) {
+        try {
+            final String mode = args.optString(0);
+            final WelcomeMessage.State parsedMode = ArgsRegistry.welcomeMessageModes
+                    .getOrDefault(mode, WelcomeMessage.State.LIVE);
+
+            Instabug.setWelcomeMessageState(parsedMode);
+
+            callbackContext.success();
+        } catch (Exception e) {
+            callbackContext.error(e.getMessage());
         }
     }
 
     /**
      * Shows the welcome message in a specific mode.
      *
-     * @param callbackContext    Used when calling back into JavaScript
-     * @param  args .optString(0) A string to set user steps tracking to be enabled,
-     *                           non visual or disabled.
+     * @param callbackContext Used when calling back into JavaScript
+     * @param  args [mode: String]
      */
     public void showWelcomeMessage(final CallbackContext callbackContext, JSONArray args) {
-        String welcomeMessageMode = args.optString(0);
         try {
-            if (welcomeMessageMode.equals("welcomeMessageModeLive")) {
-                Instabug.showWelcomeMessage(WelcomeMessage.State.LIVE);
-            } else if (welcomeMessageMode.equals("welcomeMessageModeBeta")) {
-                Instabug.showWelcomeMessage(WelcomeMessage.State.BETA);
-            } else {
-                Instabug.showWelcomeMessage(WelcomeMessage.State.LIVE);
-            }
-        } catch (IllegalStateException e) {
-            callbackContext.error(errorMsg);
-        }
-    }
+            final String mode = args.optString(0);
+            final WelcomeMessage.State parsedMode = ArgsRegistry.welcomeMessageModes
+                    .getOrDefault(mode, WelcomeMessage.State.LIVE);
 
-    /**
-     * Set after how many sessions should the dismissed survey would show again.
-     *
-     * @param callbackContext Used when calling back into JavaScript
-     * @param args .optInt(0)   number of sessions that the dismissed survey will be
-     *                        shown after.
-     * @param args .optInt(1)       number of days that the dismissed survey will show
-     *                        after.
-     */
-    public void setThresholdForReshowingSurveyAfterDismiss(final CallbackContext callbackContext, JSONArray args) {
-        int sessionsCount = args.optInt(0);
-        int daysCount = args.optInt(1);
-        if (Math.signum(sessionsCount) != -1 && Math.signum(daysCount) != -1) {
-            try {
-                Surveys.setThresholdForReshowingSurveyAfterDismiss(sessionsCount, daysCount);
-                callbackContext.success();
-            } catch (IllegalStateException e) {
-                callbackContext.error(errorMsg);
-            }
-        } else
-            callbackContext.error("Session count and days count must be provided.");
+            Instabug.showWelcomeMessage(parsedMode);
+
+            callbackContext.success();
+        } catch (Exception e) {
+            callbackContext.error(e.getMessage());
+        }
     }
 
     /**
@@ -1186,28 +1160,6 @@ public class IBGPlugin extends CordovaPlugin {
             callbackContext.success();
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
-        }
-    }
-
-    /**
-     * Adds intent extras for all options passed to activate().
-     */
-    private void applyOptions() {
-        for (int i = 0; i < optionKeys.length; i++) {
-            applyOption(optionKeys[i]);
-        }
-    }
-
-    /**
-     * Convenience method for setting intent extras where valid.
-     *
-     * @param key Name of option to be included
-     */
-    private void applyOption(String key) {
-        String val = options.optString(key);
-
-        if (val != null && val.length() > 0) {
-            activationIntent.putExtra(key, val);
         }
     }
 
@@ -1310,44 +1262,6 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
-     * Convenience method for converting string to InstabugInvocationMode.
-     *
-     * @param mode String shortcode for mode
-     */
-    public static InvocationMode parseInvocationMode(String mode) {
-        if ("chat".equals(mode)) {
-            return InvocationMode.NEW_CHAT;
-        } else if ("chats".equals(mode)) {
-            return InvocationMode.CHATS_LIST;
-        } else if ("bug".equals(mode)) {
-            return InvocationMode.NEW_BUG;
-        } else if ("feedback".equals(mode)) {
-            return InvocationMode.NEW_FEEDBACK;
-        } else if ("options".equals(mode)) {
-            return InvocationMode.PROMPT_OPTION;
-        } else return null;
-    }
-
-    /**
-     * Convenience method for converting string to
-     * InstabugVideoRecordingButtonCorner.
-     *
-     * @param position String shortcode for position
-     */
-    public static InstabugVideoRecordingButtonPosition parseInstabugVideoRecordingButtonCorner(String position) {
-        if ("topLeft".equals(position)) {
-            return InstabugVideoRecordingButtonPosition.TOP_LEFT;
-        } else if ("topRight".equals(position)) {
-            return InstabugVideoRecordingButtonPosition.TOP_RIGHT;
-        } else if ("bottomLeft".equals(position)) {
-            return InstabugVideoRecordingButtonPosition.BOTTOM_LEFT;
-        } else if ("bottomRight".equals(position)) {
-            return InstabugVideoRecordingButtonPosition.BOTTOM_RIGHT;
-        } else return null;
-    }
-
-
-    /**
      * Convenience method to convert a list of integers into an int array
      *
      * @param integers
@@ -1382,5 +1296,19 @@ public class IBGPlugin extends CordovaPlugin {
             e.printStackTrace();
         }
         return jsonArray;
+    }
+
+    public void setString(final CallbackContext callbackContext, JSONArray args) {
+        try {
+            final String key = args.getString(0);
+            final String value = args.getString(1);
+            final InstabugCustomTextPlaceHolder.Key placeholder = ArgsRegistry.placeholders.get(key);
+            placeHolders.set(placeholder, value);
+            Instabug.setCustomTextPlaceHolders(placeHolders);
+            callbackContext.success();
+        } catch (java.lang.Exception exception) {
+            exception.printStackTrace();
+            callbackContext.error(exception.getMessage());
+        }
     }
 }

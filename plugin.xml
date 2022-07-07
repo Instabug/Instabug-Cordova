@@ -3,7 +3,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="instabug-cordova"
-        version="9.1.7">
+        version="11.0.0">
 
     <name>instabug-cordova</name>
 
@@ -25,23 +25,21 @@
     <!-- dependencies -->
 
     <!-- js -->
-    <js-module src="www/instabug.js" name="Instabug">
-        <clobbers target="cordova.plugins.instabug"/>
+    <js-module src="www/ArgsRegistry.js" />
+    <js-module src="www/Instabug.js" name="Instabug">
+        <clobbers target="InstabugLib.Instabug" />
     </js-module>
-   <js-module src="www/bugReporting.js" name="BugReporting">
-        <clobbers target="cordova.plugins.bugReporting"/>
+   <js-module src="www/BugReporting.js" name="BugReporting">
+        <clobbers target="InstabugLib.BugReporting" />
     </js-module>
-    <js-module src="www/featureRequests.js" name="FeatureRequests">
-        <clobbers target="cordova.plugins.featureRequests"/>
+    <js-module src="www/FeatureRequests.js" name="FeatureRequests">
+        <clobbers target="InstabugLib.FeatureRequests" />
     </js-module>
-    <js-module src="www/surveys.js" name="Surveys">
-        <clobbers target="cordova.plugins.surveys"/>
+    <js-module src="www/Surveys.js" name="Surveys">
+        <clobbers target="InstabugLib.Surveys" />
     </js-module>
-    <js-module src="www/chats.js" name="Chats">
-        <clobbers target="cordova.plugins.chats"/>
-    </js-module>
-    <js-module src="www/replies.js" name="Replies">
-        <clobbers target="cordova.plugins.replies"/>
+    <js-module src="www/Replies.js" name="Replies">
+        <clobbers target="InstabugLib.Replies" />
     </js-module>
 
     <!-- android -->
@@ -54,12 +52,6 @@
         </config-file>
 
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
-
-            <activity android:name="com.instabug.cordova.plugin.IBGPluginActivity"
-                      android:launchMode="singleInstance"
-                      android:theme="@android:style/Theme.NoDisplay"
-                      android:configChanges="keyboardHidden|orientation|screenSize"/>
-
             <service android:name="com.instabug.library.network.worker.uploader.InstabugSessionUploaderService" />
             <service android:name="com.instabug.bug.network.InstabugBugsUploaderService" />
             <service android:name="com.instabug.crash.network.InstabugCrashesUploaderService" />
@@ -67,10 +59,6 @@
             <service android:name="com.instabug.survey.network.service.InstabugSurveysSubmitterService" />
             <service android:name="com.instabug.library.internal.video.VideoProcessingService"/>
             <service android:name="com.instabug.library.analytics.network.InstabugAnalyticsUploaderService"/>
-            <service android:name="com.instabug.chat.network.InstabugMessageUploaderService"/>
-
-
-
         </config-file>
 
         <config-file target="AndroidManifest.xml" parent="/manifest">
@@ -83,14 +71,11 @@
             <uses-permission android:name="android.permission.INTERNET"/>
         </config-file>
 
-        <framework src="build.gradle" custom="true" type="gradleReference"/>
+        <framework src="com.instabug.library:instabug:11.2.0"/>
 
-        <source-file src="src/android/IBGPluginActivity.java" target-dir="src/com/instabug/cordova/plugin"/>
         <source-file src="src/android/IBGPlugin.java" target-dir="src/com/instabug/cordova/plugin"/>
-        <source-file src="src/android/MyApplication.java" target-dir="src/com/instabug/cordova/plugin"/>
         <source-file src="src/android/util/Util.java" target-dir="src/com/instabug/cordova/plugin/util"/>
-        <hook type="before_plugin_install" src="scripts/android/before_plugin_install.js"/>
-        <hook type="before_plugin_uninstall" src="scripts/android/before_plugin_uninstall.js"/>
+        <source-file src="src/android/util/ArgsRegistry.java" target-dir="src/com/instabug/cordova/plugin/util"/>
     </platform>
 
     <!-- ios -->
@@ -102,10 +87,20 @@
             </feature>
         </config-file>
 
-        <framework src="src/ios/Instabug.framework" custom="true" embed="true" />
-        <hook type="after_plugin_install" src="scripts/zStripScript.js" />
+        <podspec>
+            <config>
+                <source url="https://github.com/CocoaPods/Specs.git"/>
+            </config>
+            <pods use-frameworks="true">
+                <pod name="Instabug" spec="11.0.2" />
+            </pods>
+        </podspec>
+
         <header-file src="src/ios/IBGPlugin.h" />
         <source-file src="src/ios/IBGPlugin.m" />
+
+        <header-file src="src//ios/util/ArgsRegistry.h" target-dir="util" />
+        <source-file src="src/ios/util/ArgsRegistry.m" target-dir="util" />
     </platform>
 
 </plugin>

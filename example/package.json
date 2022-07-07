@@ -1,0 +1,31 @@
+{
+  "name": "com.instabug.example",
+  "displayName": "InstabugExample",
+  "version": "1.0.0",
+  "description": "A sample Apache Cordova application that responds to the deviceready event.",
+  "main": "index.js",
+  "scripts": {
+    "build": "cordova prepare; cordova plugins add --link ../ tests"
+  },
+  "keywords": [
+    "ecosystem:cordova"
+  ],
+  "author": "Apache Cordova Team",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "cordova-android": "^10.1.1",
+    "cordova-ios": "^6.2.0",
+    "instabug-cordova": "file:..",
+    "tests-example": "file:tests"
+  },
+  "cordova": {
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "plugins": {
+      "instabug-cordova": {},
+      "tests-example": {}
+    }
+  }
+}

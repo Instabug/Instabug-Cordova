@@ -1,8 +1,9 @@
 #import <Cordova/CDVPlugin.h>
+#import "util/ArgsRegistry.h"
 
 @interface IBGPlugin : CDVPlugin
 
-- (void)activate:(CDVInvokedUrlCommand *)command;
+- (void)start:(CDVInvokedUrlCommand *)command;
 
 - (void)setPrimaryColor:(CDVInvokedUrlCommand *)command;
 
@@ -24,11 +25,7 @@
 
 - (void)setBugReportingEnabled:(CDVInvokedUrlCommand *)command;
 
-- (void)setChatsEnabled:(CDVInvokedUrlCommand *)command;
-
 - (void)setRepliesEnabled:(CDVInvokedUrlCommand *)command;
-
-- (void)showChats:(CDVInvokedUrlCommand *)command;
 
 - (void)hasChats:(CDVInvokedUrlCommand *)command;
 
@@ -43,5 +40,7 @@
 - (void)getUserAttribute:(CDVInvokedUrlCommand *)command;
 
 - (void)getAllUserAttributes:(CDVInvokedUrlCommand *)command;
+
+- (void)setString:(CDVInvokedUrlCommand *)command;
 
 @end

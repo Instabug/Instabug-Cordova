@@ -9,8 +9,3 @@
 
 local.properties
 node_modules/
-
-#sample-app
-sample-app/.idea
-sample-app/hooks/
-sample-app/plugins/
