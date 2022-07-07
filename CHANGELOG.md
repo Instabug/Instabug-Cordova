@@ -1,4 +1,4 @@
-## v11.0.0 (2022-07-06)
+## v11.0.0 (2022-07-07)
 
 * Bumps Instabug native SDKs to v11
 * Adds the ability to initialize the Android SDK from JavaScript. Check the migration guide referenced in our docs
