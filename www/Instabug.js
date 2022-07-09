@@ -104,7 +104,7 @@ Instabug.show = function (success, error) {
  * @param {function(string):void} error callback on function error
  */
 Instabug.setPrimaryColor = function (color, success, error) {
-    exec(success, error, 'IBGPlugin', 'setPrimaryColor', [colorInteger]);
+    exec(success, error, 'IBGPlugin', 'setPrimaryColor', [color]);
 };
 
 /**
