@@ -71,11 +71,12 @@ jobs:
       xcode: 13.3.0
     working_directory: "~"
     steps:
-      - checkout
+      - checkout:
+          path: ~/project
       - run: git clone https://InstabugCI:$RELEASE_GITHUB_TOKEN@github.com/Instabug/Escape.git
       - run: cd Escape && swift build -c release
       - run: cd Escape/.build/release && cp -f Escape /usr/local/bin/escape
-      - run: Escape cordova publish
+      - run: cd project && Escape cordova publish
 
 workflows:
   version: 2
