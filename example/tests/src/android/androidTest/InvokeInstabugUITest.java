@@ -1,13 +1,21 @@
 package com.instabug.example;
 
+import static androidx.test.InstrumentationRegistry.getTargetContext;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withResourceName;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.uiautomator.UiDevice;
+
+import android.os.Environment;
+import java.io.File;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -22,13 +30,18 @@ public class InvokeInstabugUITest {
 
     @Test
     public void ensureInstabugInvocation() throws InterruptedException {
-        Thread.sleep(5000);
+        onView(isRoot()).perform(new WaitUntilVisibleAction(withResourceName("instabug_floating_button"), 5000));
         onView(withResourceName("instabug_floating_button")).perform(click());
 
+        onView(isRoot()).perform(new WaitUntilVisibleAction(withText("Report a bug"), 5000));
         onView(withText("Report a bug")).perform(click());
-        onView(withResourceName("instabug_edit_text_email")).perform(replaceText("inst@bug.com"));
-        onView(withResourceName("instabug_bugreporting_send")).perform(click());
-        onView(withResourceName("instabug_success_dialog_container")).perform(click());
-    }
 
+        onView(isRoot()).perform(new WaitUntilVisibleAction(withResourceName("instabug_edit_text_email"), 5000));
+        onView(withResourceName("instabug_edit_text_email")).perform(replaceText("inst@bug.com"));
+
+        onView(isRoot()).perform(new WaitUntilVisibleAction(withResourceName("instabug_bugreporting_send"), 5000));
+        onView(withResourceName("instabug_bugreporting_send")).perform(click());
+
+        onView(isRoot()).perform(new WaitUntilVisibleAction(withResourceName("instabug_success_dialog_container"), 5000));
+    }
 }
