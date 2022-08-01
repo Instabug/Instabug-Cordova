@@ -33,6 +33,7 @@ public class InvokeInstabugUITest {
         onView(isRoot()).perform(new WaitUntilVisibleAction(withResourceName("instabug_floating_button"), 5000));
         onView(withResourceName("instabug_floating_button")).perform(click());
 
+        Thread.sleep(5000);
         onView(isRoot()).perform(new WaitUntilVisibleAction(withText("Report a bug"), 5000));
         onView(withText("Report a bug")).perform(click());
 
