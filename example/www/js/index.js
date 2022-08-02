@@ -14,4 +14,5 @@ function onDeviceReady() {
     () => console.log("Instabug initialized."),
     (error) => console.log("Instabug could not be initialized - " + error)
   );
+  Instabug.setWelcomeMessageMode(Instabug.welcomeMessageMode.welcomeMessageModeDisabled);
 }
