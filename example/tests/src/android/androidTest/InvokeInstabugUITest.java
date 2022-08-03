@@ -33,14 +33,14 @@ public class InvokeInstabugUITest {
         onView(isRoot()).perform(new WaitUntilVisibleAction(withResourceName("instabug_floating_button"), 5000));
         onView(withResourceName("instabug_floating_button")).perform(click());
 
-        Thread.sleep(5000);
-        onView(isRoot()).perform(new WaitUntilVisibleAction(withText("Report a bug"), 5000));
+        Thread.sleep(1000);
+        onView(isRoot()).perform(new WaitUntilVisibleAction(withText("Report a bug"), 3000));
         onView(withText("Report a bug")).perform(click());
 
-        onView(isRoot()).perform(new WaitUntilVisibleAction(withResourceName("instabug_edit_text_email"), 5000));
+        onView(isRoot()).perform(new WaitUntilVisibleAction(withResourceName("instabug_edit_text_email"), 1000));
         onView(withResourceName("instabug_edit_text_email")).perform(replaceText("inst@bug.com"));
 
-        onView(isRoot()).perform(new WaitUntilVisibleAction(withResourceName("instabug_bugreporting_send"), 5000));
+        onView(isRoot()).perform(new WaitUntilVisibleAction(withResourceName("instabug_bugreporting_send"), 1000));
         onView(withResourceName("instabug_bugreporting_send")).perform(click());
 
         onView(isRoot()).perform(new WaitUntilVisibleAction(withResourceName("instabug_success_dialog_container"), 5000));

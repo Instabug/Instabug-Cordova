@@ -15,7 +15,7 @@ import org.hamcrest.Matcher;
 import java.util.concurrent.TimeoutException;
 
 class WaitUntilVisibleAction implements ViewAction {
-    int loopTime = 400;
+    long loopTime = 200;
     long tries = 0;
     long millis;
     Matcher<View> viewMatcher;
