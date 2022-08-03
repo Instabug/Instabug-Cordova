@@ -40,6 +40,7 @@ public class InvokeInstabugUITest {
         onView(isRoot()).perform(new WaitUntilVisibleAction(withResourceName("instabug_edit_text_email"), 1000));
         onView(withResourceName("instabug_edit_text_email")).perform(replaceText("inst@bug.com"));
 
+        Thread.sleep(1000);
         onView(isRoot()).perform(new WaitUntilVisibleAction(withResourceName("instabug_bugreporting_send"), 1000));
         onView(withResourceName("instabug_bugreporting_send")).perform(click());
 
