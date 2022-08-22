@@ -99,8 +99,8 @@
         <header-file src="src/ios/IBGPlugin.h" />
         <source-file src="src/ios/IBGPlugin.m" />
 
-        <header-file src="src//ios/util/ArgsRegistry.h" target-dir="util" />
-        <source-file src="src/ios/util/ArgsRegistry.m" target-dir="util" />
+        <header-file src="src//ios/util/ArgsRegistry.h" />
+        <source-file src="src/ios/util/ArgsRegistry.m" />
     </platform>
 
 </plugin>

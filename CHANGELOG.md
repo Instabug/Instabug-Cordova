@@ -1,3 +1,7 @@
+## Unreleased
+
+* Fix ArgsRegistry import on iOS.
+
 ## v11.0.0 (2022-07-07)
 
 * Bumps Instabug native SDKs to v11
