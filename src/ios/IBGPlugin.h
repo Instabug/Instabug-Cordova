@@ -1,5 +1,5 @@
 #import <Cordova/CDVPlugin.h>
-#import "util/ArgsRegistry.h"
+#import "ArgsRegistry.h"
 
 @interface IBGPlugin : CDVPlugin
 
