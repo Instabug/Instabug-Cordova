@@ -1,6 +1,7 @@
 ## Unreleased
 
-* Fix ArgsRegistry import on iOS.
+* Fixes ArgsRegistry import on iOS
+* Fixes a typo in Instabug.setPrimaryColor causing the API not to work
 
 ## v11.0.0 (2022-07-07)
 
