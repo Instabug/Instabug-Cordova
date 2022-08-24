@@ -1,17 +1,22 @@
 {
   "name": "instabug-cordova",
+  "description": "Cordova plugin for integrating the Instabug SDK.",
   "version": "11.0.1",
-  "description": "The purpose of this plugin is to simplify the process of integrating the Instabug SDK in a hybrid application, as well as to provide an interface to interfacing with the SDK through JavaScript.",
-  "main": "www/index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Instabug/instabug-cordova"
-  },
-  "author": "Instabug <https://instabug.com>",
+  "author": "Instabug (https://instabug.com)",
+  "repository": "github:Instabug/Instabug-Cordova",
+  "homepage": "https://www.instabug.com/platforms/cordova",
+  "bugs": "https://github.com/Instabug/Instabug-Cordova/issues",
   "license": "Apache 2.0 License",
-  "bugs": {
-    "url": "https://github.com/Instabug/instabug-cordova/issues"
-  },
-  "dependencies": {},
-  "homepage": "https://github.com/Instabug/instabug-cordova#readme"
+  "main": "www/index.js",
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova",
+    "cordova-android",
+    "cordova-ios",
+    "instabug",
+    "debugging",
+    "errors",
+    "exceptions",
+    "logging"
+  ]
 }
