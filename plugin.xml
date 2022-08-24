@@ -3,19 +3,15 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="instabug-cordova"
-        version="11.0.0">
+        version="11.0.1">
 
     <name>instabug-cordova</name>
-
-    <description>Cordova plugin for integrating Instabug in your application.</description>
-
-    <repo>https://github.com/Instabug/instabug-cordova</repo>
-
-    <keyword>instabug, crash reports, in-app feedback</keyword>
-
+    <description>Cordova plugin for integrating the Instabug SDK.</description>
+    <author>Instabug</author>
+    <repo>https://github.com/Instabug/Instabug-Cordova</repo>
+    <issue>https://github.com/Instabug/Instabug-Cordova/issues</issue>
     <license>Apache 2.0 License</license>
-
-    <author>Elizabeth Rego , Hossam Hassan</author>
+    <keywords>ecosystem:cordova,cordova,cordova-android,cordova-ios,instabug,debugging,errors,exceptions,logging</keywords>
 
     <!-- cordova -->
     <engines>

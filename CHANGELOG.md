@@ -1,4 +1,4 @@
-## Unreleased
+## v11.0.1 (2022-08-24)
 
 * Fixes ArgsRegistry import on iOS
 * Fixes a typo in Instabug.setPrimaryColor causing the API not to work
@@ -25,7 +25,6 @@
 * Removes Instabug.setAutoScreenRecordingMaxDuration
 * Removes Surveys.setThresholdForReshowingSurveyAfterDismiss
 * Removes BugReporting.invocationModes enum
-
 
 ## v9.1.7 (2021-05-11)
 
