@@ -4,10 +4,4 @@ var FeatureRequests = cordova.require("instabug-cordova.FeatureRequests");
 var Surveys = cordova.require("instabug-cordova.Surveys");
 var Replies = cordova.require("instabug-cordova.Replies");
 
-module.exports = {
-  Instabug,
-  BugReporting,
-  FeatureRequests,
-  Surveys,
-  Replies,
-};
+export { Instabug, BugReporting, FeatureRequests, Surveys, Replies };
