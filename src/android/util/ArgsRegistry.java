@@ -7,6 +7,8 @@ import com.instabug.library.InstabugCustomTextPlaceHolder.Key;
 import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
 import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
+import com.instabug.library.visualusersteps.State;
+import com.instabug.library.internal.module.InstabugLocale;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -110,5 +112,33 @@ public class ArgsRegistry {
         put("reproStepsListDescription", Key.REPRO_STEPS_LIST_DESCRIPTION);
         put("reproStepsListEmptyStateDescription", Key.REPRO_STEPS_LIST_EMPTY_STATE_DESCRIPTION);
         put("reproStepsListItemTitle", Key.REPRO_STEPS_LIST_ITEM_NUMBERING_TITLE);
+    }};
+
+    public static final ArgsMap<State> reproStepsModes = new ArgsMap<State>() {{
+        put("enabled", State.ENABLED);
+        put("disabled", State.DISABLED);
+        put("enabledWithNoScreenshots", State.ENABLED_WITH_NO_SCREENSHOTS);
+    }};
+
+    public static final ArgsMap<InstabugLocale> locales = new ArgsMap<InstabugLocale>() {{
+        put("arabic", InstabugLocale.ARABIC);
+        put("azerbaijani", InstabugLocale.AZERBAIJANI);
+        put("chineseSimplified", InstabugLocale.SIMPLIFIED_CHINESE);
+        put("chineseTraditional", InstabugLocale.TRADITIONAL_CHINESE);
+        put("danish", InstabugLocale.DANISH);
+        put("dutch", InstabugLocale.NETHERLANDS);
+        put("english", InstabugLocale.ENGLISH);
+        put("french", InstabugLocale.FRENCH);
+        put("german", InstabugLocale.GERMAN);
+        put("italian", InstabugLocale.ITALIAN);
+        put("japanese", InstabugLocale.JAPANESE);
+        put("korean", InstabugLocale.KOREAN);
+        put("polish", InstabugLocale.POLISH);
+        put("portugueseBrazil", InstabugLocale.PORTUGUESE_BRAZIL);
+        put("russian", InstabugLocale.RUSSIAN);
+        put("spanish", InstabugLocale.SPANISH);
+        put("swedish", InstabugLocale.SWEDISH);
+        put("turkish", InstabugLocale.TURKISH);
+        put("czech", InstabugLocale.CZECH);
     }};
 }
