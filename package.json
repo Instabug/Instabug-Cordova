@@ -18,5 +18,9 @@
     "errors",
     "exceptions",
     "logging"
-  ]
+  ],
+  "devDependencies": {
+    "@types/cordova": "^0.0.34",
+    "typescript": "^4.8.2"
+  }
 }
