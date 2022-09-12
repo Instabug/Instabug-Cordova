@@ -8,6 +8,7 @@
   "bugs": "https://github.com/Instabug/Instabug-Cordova/issues",
   "license": "Apache 2.0 License",
   "main": "www/index.js",
+  "types": "www/index.d.ts",
   "keywords": [
     "ecosystem:cordova",
     "cordova",
