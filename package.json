@@ -20,6 +20,10 @@
     "exceptions",
     "logging"
   ],
+  "scripts": {
+    "build": "tsc",
+    "prepack": "yarn build"
+  },
   "devDependencies": {
     "@types/cordova": "^0.0.34",
     "typescript": "^4.8.2"
