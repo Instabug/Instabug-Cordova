@@ -91,7 +91,7 @@ namespace Instabug {
    * @param error callback on function error.
    */
   export const setReproStepsMode = (
-    reproStepsMode: registry.reproStepsMode | string,
+    reproStepsMode: registry.reproStepsMode | `${registry.reproStepsMode}`,
     success: () => void,
     error: (err: any) => void
   ) => {
@@ -400,7 +400,7 @@ namespace Instabug {
    * @param error callback on function error.
    */
   export const setLocale = (
-    locale: registry.locale | string,
+    locale: registry.locale | `${registry.locale}`,
     success: () => void,
     error: (err: any) => void
   ) => {
