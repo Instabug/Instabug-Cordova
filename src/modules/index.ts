@@ -1,7 +1,7 @@
-var Instabug = cordova.require("instabug-cordova.Instabug");
-var BugReporting = cordova.require("instabug-cordova.BugReporting");
-var FeatureRequests = cordova.require("instabug-cordova.FeatureRequests");
-var Surveys = cordova.require("instabug-cordova.Surveys");
-var Replies = cordova.require("instabug-cordova.Replies");
+import Instabug from "./Instabug";
+import BugReporting from "./BugReporting";
+import FeatureRequests from "./FeatureRequests";
+import Replies from "./Replies";
+import Surveys from "./Surveys";
 
-export { Instabug, BugReporting, FeatureRequests, Surveys, Replies };
+export = { Instabug, BugReporting, FeatureRequests, Surveys, Replies };
