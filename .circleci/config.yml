@@ -6,7 +6,7 @@ orbs:
 jobs:
 
    test_android:
-    working_directory: ~/project/example
+    working_directory: ~/project
     executor:
       name: android/android-machine
       resource-class: xlarge
@@ -18,26 +18,35 @@ jobs:
           name: Install Cordova CLI
           command: npm install -g cordova
       - run:
+          name: Install Node Packages
+          command: yarn
+      - run:
+          name: Compile TS Project
+          command: yarn build
+      - run:
           name: Install Android Platform
+          working_directory: example
           command: cordova platform add android || true
       - run:
           name: Install Plugins
+          working_directory: example
           command: cordova plugins add --link ../ tests
       - run:
           name: Install Build Tools v30.0.3
-          command: sdkmanager "build-tools;30.0.3"
+          working_directory: example
+          command: sdkmanager "build-tools;30.0.3" 
       - android/start-emulator-and-run-tests:
-          run-tests-working-directory: platforms/android
+          run-tests-working-directory: example/platforms/android
           system-image: system-images;android-30;google_apis;x86
           additional-avd-args: -d "Nexus 5"
-          post-emulator-launch-assemble-command: cordova build android
+          post-emulator-launch-assemble-command: cd example && cordova build android
           test-command: ./gradlew app:connectedAndroidTest
       - android/run-tests:
-          working-directory: platforms/android
+          working-directory: example/platforms/android
           test-command: ./gradlew test
 
    test_ios:
-    working_directory: ~/project/example
+    working_directory: ~/project
     macos:
       xcode: 13.3.0
     steps:
@@ -47,17 +56,26 @@ jobs:
           name: Install Cordova CLI
           command: npm install -g cordova
       - run:
+          name: Install Node Packages
+          command: yarn
+      - run:
+          name: Compile TS Project
+          command: yarn build
+      - run:
           name: Install iOS Platform
+          working_directory: example
           command: cordova platform add ios || true
       - run:
           name: Install Plugins
+          working_directory: example
           command: cordova plugins add --link ../ tests
       - run:
           name: Build iOS App
+          working_directory: example
           command: cordova build ios
       - run:
           name: Run Tests
-          working_directory: platforms/ios
+          working_directory: example/platforms/ios
           command: |
               xcodebuild -allowProvisioningUpdates \
                          -workspace InstabugExample.xcworkspace \
