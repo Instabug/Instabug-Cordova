@@ -426,7 +426,7 @@ namespace Instabug {
    * @param error callback on function error.
    */
   export const setString = (
-    key: string,
+    key: registry.strings,
     value: string,
     success: () => void,
     error: (err: any) => void
