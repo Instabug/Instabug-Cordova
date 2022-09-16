@@ -1,7 +1,9 @@
 document.addEventListener("deviceready", onDeviceReady, false);
 
 function onDeviceReady() {
+  /** @type {import('instabug-cordova/www/Instabug')} */
   var Instabug = cordova.require("instabug-cordova.Instabug");
+  /** @type {import('instabug-cordova/www/BugReporting')} */
   var BugReporting = cordova.require("instabug-cordova.BugReporting");
 
   console.log("Running cordova-" + cordova.platformId + "@" + cordova.version);
