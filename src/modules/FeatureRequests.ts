@@ -1,6 +1,9 @@
 /*
  * Instabug Feature Requests module.
  */
+
+import { exec } from "./IBGCordova";
+
 namespace FeatureRequests {
   export enum actionTypes {
     requestNewFeature = "requestNewFeature",
@@ -12,8 +15,8 @@ namespace FeatureRequests {
    * @param success callback on function success.
    * @param error callback on function error.
    */
-  export const show = (success: () => void, error: (err: any) => void) => {
-    cordova.exec(success, error, "IBGPlugin", "showFeatureRequests", []);
+  export const show = (success?: () => void, error?: (err: any) => void) => {
+    exec("IBGPlugin", "showFeatureRequests", [], success, error);
   };
 
   /**
@@ -28,15 +31,15 @@ namespace FeatureRequests {
   export const setEmailFieldRequired = (
     isRequired: boolean,
     actionTypes: actionTypes[],
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(
-      success,
-      error,
+    exec(
       "IBGPlugin",
       "setEmailFieldRequiredForFeatureRequests",
-      [isRequired, actionTypes]
+      [isRequired, actionTypes],
+      success,
+      error
     );
   };
 }

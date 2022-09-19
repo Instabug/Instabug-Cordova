@@ -2,6 +2,7 @@
  * Instabug Bug Reporting module.
  */
 
+import { exec } from "./IBGCordova";
 import registry from "./ArgsRegistry";
 
 namespace BugReporting {
@@ -42,12 +43,10 @@ namespace BugReporting {
    */
   export const setEnabled = (
     isEnabled: boolean,
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "setBugReportingEnabled", [
-      isEnabled,
-    ]);
+    exec("IBGPlugin", "setBugReportingEnabled", [isEnabled], success, error);
   };
 
   /**
@@ -58,10 +57,10 @@ namespace BugReporting {
    */
   export const setReportTypes = (
     reportTypes: reportType[],
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "setReportTypes", [reportTypes]);
+    exec("IBGPlugin", "setReportTypes", [reportTypes], success, error);
   };
 
   /**
@@ -74,15 +73,15 @@ namespace BugReporting {
   export const showWithOptions = (
     reportType: reportType,
     options: option[],
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(
-      success,
-      error,
+    exec(
       "IBGPlugin",
       "showBugReportingWithReportTypeAndOptions",
-      [reportType, options]
+      [reportType, options],
+      success,
+      error
     );
   };
 
@@ -95,12 +94,10 @@ namespace BugReporting {
    */
   export const setOptions = (
     options: option[],
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "setInvocationOptions", [
-      options,
-    ]);
+    exec("IBGPlugin", "setInvocationOptions", [options], success, error);
   };
 
   /**
@@ -112,9 +109,9 @@ namespace BugReporting {
    */
   export const setOnInvokeHandler = (
     success: () => void,
-    error: (err: any) => void
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "setPreInvocationHandler", []);
+    exec("IBGPlugin", "setPreInvocationHandler", [], success, error);
   };
 
   /**
@@ -126,9 +123,9 @@ namespace BugReporting {
    */
   export const setOnDismissHandler = (
     success: (data: { reportType: string; dismissType: string }) => void,
-    error: (err: any) => void
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "setPostInvocationHandler", []);
+    exec("IBGPlugin", "setPostInvocationHandler", [], success, error);
   };
 
   /**
@@ -139,10 +136,10 @@ namespace BugReporting {
    */
   export const setInvocationEvents = (
     events: invocationEvents[],
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "setInvocationEvents", [events]);
+    exec("IBGPlugin", "setInvocationEvents", [events], success, error);
   };
 
   /**
@@ -159,15 +156,16 @@ namespace BugReporting {
     extraScreenshot: boolean,
     galleryImage: boolean,
     screenRecording: boolean,
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "setAttachmentTypesEnabled", [
-      screenshot,
-      extraScreenshot,
-      galleryImage,
-      screenRecording,
-    ]);
+    exec(
+      "IBGPlugin",
+      "setAttachmentTypesEnabled",
+      [screenshot, extraScreenshot, galleryImage, screenRecording],
+      success,
+      error
+    );
   };
 
   /**
@@ -178,12 +176,16 @@ namespace BugReporting {
    */
   export const setExtendedBugReportMode = (
     extendedBugReportMode: extendedBugReportMode,
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "setExtendedBugReportMode", [
-      extendedBugReportMode,
-    ]);
+    exec(
+      "IBGPlugin",
+      "setExtendedBugReportMode",
+      [extendedBugReportMode],
+      success,
+      error
+    );
   };
 
   /**
@@ -197,13 +199,10 @@ namespace BugReporting {
   export const setFloatingButtonEdge = (
     edge: registry.floatingButtonEdge,
     offset: number,
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "setFloatingButtonEdge", [
-      edge,
-      offset,
-    ]);
+    exec("IBGPlugin", "setFloatingButtonEdge", [edge, offset], success, error);
   };
 
   /**
@@ -215,12 +214,16 @@ namespace BugReporting {
    */
   export const setShakingThresholdForiPhone = (
     threshold: number,
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "setShakingThresholdForiPhone", [
-      threshold,
-    ]);
+    exec(
+      "IBGPlugin",
+      "setShakingThresholdForiPhone",
+      [threshold],
+      success,
+      error
+    );
   };
 
   /**
@@ -232,12 +235,16 @@ namespace BugReporting {
    */
   export const setShakingThresholdForiPad = (
     threshold: number,
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "setShakingThresholdForiPad", [
-      threshold,
-    ]);
+    exec(
+      "IBGPlugin",
+      "setShakingThresholdForiPad",
+      [threshold],
+      success,
+      error
+    );
   };
 
   /**
@@ -251,12 +258,10 @@ namespace BugReporting {
    */
   export const setShakingThresholdForAndroid = (
     threshold: number,
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "setShakingThreshold", [
-      threshold,
-    ]);
+    exec("IBGPlugin", "setShakingThreshold", [threshold], success, error);
   };
 
   /**
@@ -270,15 +275,15 @@ namespace BugReporting {
    */
   export const setVideoRecordingFloatingButtonPosition = (
     position: registry.position,
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(
-      success,
-      error,
+    exec(
       "IBGPlugin",
       "setVideoRecordingFloatingButtonPosition",
-      [position]
+      [position],
+      success,
+      error
     );
   };
 }

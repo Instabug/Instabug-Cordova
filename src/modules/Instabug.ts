@@ -1,3 +1,4 @@
+import { exec } from "./IBGCordova";
 import registry from "./ArgsRegistry";
 import bugReporting from "./BugReporting";
 
@@ -25,13 +26,10 @@ namespace Instabug {
   export const start = (
     token: string,
     invocationEvents: bugReporting.invocationEvents[],
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "start", [
-      token,
-      invocationEvents,
-    ]);
+    exec("IBGPlugin", "start", [token, invocationEvents], success, error);
   };
 
   /**
@@ -40,8 +38,8 @@ namespace Instabug {
    * @param success callback on function success.
    * @param error callback on function error.
    */
-  export const show = (success: () => void, error: (err: any) => void) => {
-    cordova.exec(success, error, "IBGPlugin", "show");
+  export const show = (success?: () => void, error?: (err: any) => void) => {
+    exec("IBGPlugin", "show", [], success, error);
   };
 
   /**
@@ -56,10 +54,10 @@ namespace Instabug {
    */
   export const setPrimaryColor = (
     color: string,
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "setPrimaryColor", [color]);
+    exec("IBGPlugin", "setPrimaryColor", [color], success, error);
   };
 
   /**
@@ -72,12 +70,10 @@ namespace Instabug {
    */
   export const logUserEventWithName = (
     userEvent: string,
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "logUserEventWithName", [
-      userEvent,
-    ]);
+    exec("IBGPlugin", "logUserEventWithName", [userEvent], success, error);
   };
 
   /**
@@ -92,12 +88,10 @@ namespace Instabug {
    */
   export const setReproStepsMode = (
     reproStepsMode: registry.reproStepsMode | `${registry.reproStepsMode}`,
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "setReproStepsMode", [
-      reproStepsMode,
-    ]);
+    exec("IBGPlugin", "setReproStepsMode", [reproStepsMode], success, error);
   };
 
   /**
@@ -109,12 +103,10 @@ namespace Instabug {
    */
   export const setSessionProfilerEnabled = (
     isEnabled: boolean,
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "setSessionProfilerEnabled", [
-      isEnabled,
-    ]);
+    exec("IBGPlugin", "setSessionProfilerEnabled", [isEnabled], success, error);
   };
 
   /**
@@ -125,10 +117,10 @@ namespace Instabug {
    */
   export const setWelcomeMessageMode = (
     mode: registry.welcomeMessageMode,
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "setWelcomeMessageMode", [mode]);
+    exec("IBGPlugin", "setWelcomeMessageMode", [mode], success, error);
   };
 
   /**
@@ -139,10 +131,10 @@ namespace Instabug {
    */
   export const showWelcomeMessage = (
     mode: registry.welcomeMessageMode,
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "showWelcomeMessage", [mode]);
+    exec("IBGPlugin", "showWelcomeMessage", [mode], success, error);
   };
 
   /**
@@ -157,10 +149,10 @@ namespace Instabug {
    */
   export const setUserData = (
     data: string,
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "setUserData", [data]);
+    exec("IBGPlugin", "setUserData", [data], success, error);
   };
 
   /**
@@ -172,10 +164,10 @@ namespace Instabug {
    */
   export const addFile = (
     filePath: string,
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "addFile", [filePath]);
+    exec("IBGPlugin", "addFile", [filePath], success, error);
   };
 
   /**
@@ -195,10 +187,10 @@ namespace Instabug {
    */
   export const addLog = (
     message: string,
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "addLog", [message]);
+    exec("IBGPlugin", "addLog", [message], success, error);
   };
 
   /**
@@ -207,8 +199,11 @@ namespace Instabug {
    * @param success callback on function success.
    * @param error callback on function error.
    */
-  export const clearLog = (success: () => void, error: (err: any) => void) => {
-    cordova.exec(success, error, "IBGPlugin", "clearLog", []);
+  export const clearLog = (
+    success?: () => void,
+    error?: (err: any) => void
+  ) => {
+    exec("IBGPlugin", "clearLog", [], success, error);
   };
 
   /**
@@ -221,12 +216,10 @@ namespace Instabug {
    */
   export const setIBGLogPrintsToConsole = (
     isEnabled: boolean,
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "setIBGLogPrintsToConsole", [
-      isEnabled,
-    ]);
+    exec("IBGPlugin", "setIBGLogPrintsToConsole", [isEnabled], success, error);
   };
 
   /**
@@ -236,8 +229,8 @@ namespace Instabug {
    * @param success callback on function success.
    * @param error callback on function error.
    */
-  export const disable = (success: () => void, error: (err: any) => void) => {
-    cordova.exec(success, error, "IBGPlugin", "disable", []);
+  export const disable = (success?: () => void, error?: (err: any) => void) => {
+    exec("IBGPlugin", "disable", [], success, error);
   };
 
   /**
@@ -247,8 +240,8 @@ namespace Instabug {
    * @param success callback on function success.
    * @param error callback on function error.
    */
-  export const enable = (success: () => void, error: (err: any) => void) => {
-    cordova.exec(success, error, "IBGPlugin", "enable", []);
+  export const enable = (success?: () => void, error?: (err: any) => void) => {
+    exec("IBGPlugin", "enable", [], success, error);
   };
 
   /**
@@ -260,9 +253,9 @@ namespace Instabug {
    */
   export const isEnabled = (
     success: (isEnabled: boolean) => void,
-    error: (err: any) => void
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "getIsEnabled", []);
+    exec("IBGPlugin", "getIsEnabled", [], success, error);
   };
 
   /**
@@ -276,10 +269,10 @@ namespace Instabug {
   export const setUserAttribute = (
     key: string,
     value: string,
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "setUserAttribute", [key, value]);
+    exec("IBGPlugin", "setUserAttribute", [key, value], success, error);
   };
 
   /**
@@ -291,10 +284,10 @@ namespace Instabug {
    */
   export const removeUserAttribute = (
     key: string,
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "removeUserAttribute", [key]);
+    exec("IBGPlugin", "removeUserAttribute", [key], success, error);
   };
 
   /**
@@ -305,9 +298,9 @@ namespace Instabug {
    */
   export const getAllUserAttributes = function (
     success: (userAttributes: { key: string; value: string }[]) => void,
-    error: (err: any) => void
+    error?: (err: any) => void
   ) {
-    cordova.exec(success, error, "IBGPlugin", "getAllUserAttributes", []);
+    exec("IBGPlugin", "getAllUserAttributes", [], success, error);
   };
 
   /**
@@ -320,9 +313,9 @@ namespace Instabug {
   export const getUserAttribute = (
     key: string,
     success: (value: string) => void,
-    error: (err: any) => void
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "getUserAttribute", [key]);
+    exec("IBGPlugin", "getUserAttribute", [key], success, error);
   };
 
   /**
@@ -339,20 +332,17 @@ namespace Instabug {
   export const identifyUserWithEmail = (
     email: string,
     name: string,
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "identifyUserWithEmail", [
-      email,
-      name,
-    ]);
+    exec("IBGPlugin", "identifyUserWithEmail", [email, name], success, error);
   };
 
   export const setPreSendingHandler = (
     success: () => void,
-    error: (err: any) => void
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "setPreSendingHandler", []);
+    exec("IBGPlugin", "setPreSendingHandler", [], success, error);
   };
 
   /**
@@ -363,8 +353,8 @@ namespace Instabug {
    * @param success callback on function success.
    * @param error callback on function error.
    */
-  export const logOut = (success: () => void, error: (err: any) => void) => {
-    cordova.exec(success, error, "IBGPlugin", "logOut", []);
+  export const logOut = (success?: () => void, error?: (err: any) => void) => {
+    exec("IBGPlugin", "logOut", [], success, error);
   };
 
   /**
@@ -377,12 +367,10 @@ namespace Instabug {
    */
   export const setDebugEnabled = (
     isDebugEnabled: boolean,
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "setDebugEnabled", [
-      isDebugEnabled,
-    ]);
+    exec("IBGPlugin", "setDebugEnabled", [isDebugEnabled], success, error);
   };
 
   /**
@@ -396,10 +384,10 @@ namespace Instabug {
    */
   export const setLocale = (
     locale: registry.locale | `${registry.locale}`,
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "setLocale", [locale]);
+    exec("IBGPlugin", "setLocale", [locale], success, error);
   };
 
   /**
@@ -411,10 +399,10 @@ namespace Instabug {
    */
   export const setColorTheme = (
     theme: registry.colorTheme,
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "setColorTheme", [theme]);
+    exec("IBGPlugin", "setColorTheme", [theme], success, error);
   };
 
   /**
@@ -428,10 +416,10 @@ namespace Instabug {
   export const setString = (
     key: registry.strings,
     value: string,
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "setString", [key, value]);
+    exec("IBGPlugin", "setString", [key, value], success, error);
   };
 }
 export = Instabug;

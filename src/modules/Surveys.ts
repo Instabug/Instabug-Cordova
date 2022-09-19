@@ -1,6 +1,9 @@
 /*
  * Instabug Surveys module.
  */
+
+import { exec } from "./IBGCordova";
+
 namespace Surveys {
   /**
    * Sets whether auto surveys showing are enabled or not.
@@ -10,12 +13,16 @@ namespace Surveys {
    */
   export const setAutoShowingEnabled = (
     autoShowingSurveysEnabled: boolean,
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "setAutoShowingSurveysEnabled", [
-      autoShowingSurveysEnabled,
-    ]);
+    exec(
+      "IBGPlugin",
+      "setAutoShowingSurveysEnabled",
+      [autoShowingSurveysEnabled],
+      success,
+      error
+    );
   };
 
   /**
@@ -31,10 +38,10 @@ namespace Surveys {
    */
   export const setEnabled = (
     isEnabled: boolean,
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "setSurveysEnabled", [isEnabled]);
+    exec("IBGPlugin", "setSurveysEnabled", [isEnabled], success, error);
   };
 
   /**
@@ -46,10 +53,10 @@ namespace Surveys {
    * @param error callback on function error.
    */
   export const showSurveyIfAvailable = (
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "showSurveyIfAvailable", []);
+    exec("IBGPlugin", "showSurveyIfAvailable", [], success, error);
   };
 
   /**
@@ -61,9 +68,9 @@ namespace Surveys {
    */
   export const setOnShowHandler = (
     success: () => void,
-    error: (err: any) => void
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "willShowSurveyHandler", []);
+    exec("IBGPlugin", "willShowSurveyHandler", [], success, error);
   };
 
   /**
@@ -75,9 +82,9 @@ namespace Surveys {
    */
   export const setOnDismissHandler = (
     success: () => void,
-    error: (err: any) => void
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "didDismissSurveyHandler", []);
+    exec("IBGPlugin", "didDismissSurveyHandler", [], success, error);
   };
 
   /**
@@ -90,12 +97,10 @@ namespace Surveys {
    */
   export const showSurveyWithToken = (
     surveyToken: string,
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "showSurveyWithToken", [
-      surveyToken,
-    ]);
+    exec("IBGPlugin", "showSurveyWithToken", [surveyToken], success, error);
   };
 
   /**
@@ -108,11 +113,15 @@ namespace Surveys {
   export const hasRespondedToSurveyWithToken = (
     surveyToken: string,
     success: (hasResponded: boolean) => void,
-    error: (err: any) => void
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "hasRespondedToSurveyWithToken", [
-      surveyToken,
-    ]);
+    exec(
+      "IBGPlugin",
+      "hasRespondedToSurveyWithToken",
+      [surveyToken],
+      success,
+      error
+    );
   };
 
   /**
@@ -122,9 +131,9 @@ namespace Surveys {
    */
   export const getAvailableSurveys = (
     success: (availableSurveys: string[]) => void,
-    error: (err: any) => void
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "getAvailableSurveys", []);
+    exec("IBGPlugin", "getAvailableSurveys", [], success, error);
   };
 
   /**
@@ -136,15 +145,15 @@ namespace Surveys {
    */
   export const setShouldShowSurveysWelcomeScreen = (
     shouldShowWelcomeScreen: boolean,
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(
-      success,
-      error,
+    exec(
       "IBGPlugin",
       "setShouldShowSurveysWelcomeScreen",
-      [shouldShowWelcomeScreen]
+      [shouldShowWelcomeScreen],
+      success,
+      error
     );
   };
 }

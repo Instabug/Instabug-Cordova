@@ -1,6 +1,9 @@
 /*
  * Instabug Replies module.
  */
+
+import { exec } from "./IBGCordova";
+
 namespace Replies {
   /**
    * Enables or disables all replies functionalities.
@@ -10,10 +13,10 @@ namespace Replies {
    */
   export const setEnabled = (
     isEnabled: boolean,
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "setRepliesEnabled", [isEnabled]);
+    exec("IBGPlugin", "setRepliesEnabled", [isEnabled], success, error);
   };
 
   /**
@@ -21,8 +24,8 @@ namespace Replies {
    * @param success callback on function success.
    * @param error callback on function error.
    */
-  export const show = (success: () => void, error: (err: any) => void) => {
-    cordova.exec(success, error, "IBGPlugin", "showReplies");
+  export const show = (success?: () => void, error?: (err: any) => void) => {
+    exec("IBGPlugin", "showReplies", [], success, error);
   };
 
   /**
@@ -30,8 +33,11 @@ namespace Replies {
    * @param success callback on function success.
    * @param error callback on function error.
    */
-  export const hasChats = (success: () => void, error: (err: any) => void) => {
-    cordova.exec(success, error, "IBGPlugin", "hasChats");
+  export const hasChats = (
+    success: () => void,
+    error?: (err: any) => void
+  ) => {
+    exec("IBGPlugin", "hasChats", [], success, error);
   };
 
   /**
@@ -41,9 +47,9 @@ namespace Replies {
    */
   export const getUnreadRepliesCount = (
     success: (repliesCount: number) => void,
-    error: (err: any) => void
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "getUnreadRepliesCount");
+    exec("IBGPlugin", "getUnreadRepliesCount", [], success, error);
   };
 
   /**
@@ -54,12 +60,16 @@ namespace Replies {
    */
   export const setInAppNotificationEnabled = (
     isEnabled: boolean,
-    success: () => void,
-    error: (err: any) => void
+    success?: () => void,
+    error?: (err: any) => void
   ) => {
-    cordova.exec(success, error, "IBGPlugin", "setChatNotificationEnabled", [
-      isEnabled,
-    ]);
+    exec(
+      "IBGPlugin",
+      "setChatNotificationEnabled",
+      [isEnabled],
+      success,
+      error
+    );
   };
 }
 export = Replies;
