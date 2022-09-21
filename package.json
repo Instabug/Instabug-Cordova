@@ -8,6 +8,7 @@
   "bugs": "https://github.com/Instabug/Instabug-Cordova/issues",
   "license": "Apache 2.0 License",
   "main": "www/index.js",
+  "types": "www/index.d.ts",
   "keywords": [
     "ecosystem:cordova",
     "cordova",
@@ -18,5 +19,13 @@
     "errors",
     "exceptions",
     "logging"
-  ]
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepack": "yarn build"
+  },
+  "devDependencies": {
+    "@types/cordova": "^0.0.34",
+    "typescript": "^4.8.2"
+  }
 }

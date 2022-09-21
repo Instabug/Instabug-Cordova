@@ -110,4 +110,39 @@
     };
 }
 
++ (ArgsDictionary *) reproStepsModes {
+    return @{
+        @"enabled": @(IBGUserStepsModeEnable),
+        @"disabled": @(IBGUserStepsModeDisable),
+        @"enabledWithNoScreenshots": @(IBGUserStepsModeEnabledWithNoScreenshots),
+    };
+}
+
++ (ArgsDictionary *) locales {
+    return @{
+        @"arabic": @(IBGLocaleArabic),
+        @"chineseTaiwan": @(IBGLocaleChineseTaiwan),
+        @"azerbaijani": @(IBGLocaleAzerbaijani),
+        @"chineseSimplified": @(IBGLocaleChineseSimplified),
+        @"chineseTraditional": @(IBGLocaleChineseTraditional),
+        @"czesh": @(IBGLocaleCzech),
+        @"danish": @(IBGLocaleDanish),
+        @"dutch": @(IBGLocaleDutch),
+        @"english": @(IBGLocaleEnglish),
+        @"french": @(IBGLocaleFrench),
+        @"german": @(IBGLocaleGerman),
+        @"italian": @(IBGLocaleItalian),
+        @"japanese": @(IBGLocaleJapanese),
+        @"korean": @(IBGLocaleKorean),
+        @"polish": @(IBGLocalePolish),
+        @"portuguese": @(IBGLocalePortuguese),
+        @"portugueseBrazil": @(IBGLocalePortugueseBrazil),
+        @"russian": @(IBGLocaleRussian),
+        @"solvak": @(IBGLocaleSlovak),
+        @"spanish": @(IBGLocaleSpanish),
+        @"swedish": @(IBGLocaleSwedish),
+        @"turkish": @(IBGLocaleTurkish),
+    };
+}
+
 @end

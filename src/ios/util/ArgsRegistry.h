@@ -10,5 +10,7 @@ typedef NSDictionary<NSString*, NSNumber*> ArgsDictionary;
 + (ArgsDictionary *) colorThemes;
 + (ArgsDictionary *) floatingButtonEdges;
 + (NSDictionary<NSString *, NSString *> *) placeholders;
++ (ArgsDictionary *) reproStepsModes;
++ (ArgsDictionary *) locales;
 
 @end

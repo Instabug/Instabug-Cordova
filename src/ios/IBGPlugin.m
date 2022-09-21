@@ -673,19 +673,13 @@
  */
 - (void) setLocale:(CDVInvokedUrlCommand*)command
 {
-    CDVPluginResult* result;
+    NSString* locale = [command argumentAtIndex:0];
+    IBGLocale parsedLocale = (IBGLocale) [ArgsRegistry.locales[locale] intValue];
 
-    IBGLocale iLocale = [self parseLocale:[command argumentAtIndex:0]];
+    [Instabug setLocale:parsedLocale];
 
-    if (iLocale) {
-        [Instabug setLocale:iLocale];
-        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-    } else {
-        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                   messageAsString:@"A valid locale must be provided."];
-    }
-
-    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK]
+                                callbackId:[command callbackId]];
 }
 
 /**
@@ -696,19 +690,13 @@
  */
 - (void) setReproStepsMode:(CDVInvokedUrlCommand*)command
 {
-    CDVPluginResult* result;
+    NSString* mode = [command argumentAtIndex:0];
+    IBGUserStepsMode parsedMode = (IBGUserStepsMode) [ArgsRegistry.reproStepsModes[mode] intValue];
+    
+    Instabug.reproStepsMode = parsedMode;
 
-    IBGUserStepsMode reproStepsMode = [self parseReproStepsMode:[command argumentAtIndex:0]];
-
-    if (reproStepsMode) {
-        Instabug.reproStepsMode = reproStepsMode;
-        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-    } else {
-        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                   messageAsString:@"A valid user steps mode must be provided."];
-    }
-
-    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK]
+                                callbackId:[command callbackId]];
 }
 
 /**
@@ -1195,25 +1183,6 @@
     } else return 0;
 }
 
-
-/**
- * Convenience method for converting NSString to
- * IBGUserStepsMode.
- *
- * @param  {NSString*} mode
- *         NSString shortcode for IBGUserStepsMode
- */
-- (IBGUserStepsMode) parseReproStepsMode:(NSString*)mode
-{
-    if ([mode isEqualToString:@"enabled"]) {
-        return IBGUserStepsModeEnable;
-    } else if ([mode isEqualToString:@"disabled"]) {
-        return IBGUserStepsModeDisable;
-    } else if ([mode isEqualToString:@"enabledWithNoScreenshots"]) {
-        return IBGUserStepsModeEnabledWithNoScreenshots;
-    } else return 0;
-}
-
 /**
  * Convenience method for converting NSString to
  * IBGExtendedBugReportMode.
@@ -1266,62 +1235,6 @@
     } else if (reportType == IBGReportTypeQuestion) {
         return @"question";
     } else return @"";
-}
-
-/**
- * Convenience method for converting NSString to
- * IBGLocale.
- *
- * @param  {NSString*} locale
- *         NSString shortcode for IBGLocale
- */
-- (IBGLocale) parseLocale:(NSString*)locale
-{
-    if ([locale isEqualToString:@"arabic"]) {
-        return IBGLocaleArabic;
-    } else if ([locale isEqualToString:@"chineseTaiwan"]) {
-        return IBGLocaleChineseTaiwan;
-    } else if ([locale isEqualToString:@"azerbaijani"]) {
-        return IBGLocaleAzerbaijani;
-    } else if ([locale isEqualToString:@"chineseSimplified"]) {
-        return IBGLocaleChineseSimplified;
-    } else if ([locale isEqualToString:@"chineseTraditional"]) {
-        return IBGLocaleChineseTraditional;
-    } else if ([locale isEqualToString:@"czesh"]) {
-        return IBGLocaleEnglish;
-    } else if ([locale isEqualToString:@"danish"]) {
-        return IBGLocaleDanish;
-    } else if ([locale isEqualToString:@"dutch"]) {
-        return IBGLocaleDutch;
-    } else if ([locale isEqualToString:@"english"]) {
-        return IBGLocaleEnglish;
-    } else if ([locale isEqualToString:@"french"]) {
-        return IBGLocaleFrench;
-    } else if ([locale isEqualToString:@"german"]) {
-        return IBGLocaleGerman;
-    } else if ([locale isEqualToString:@"italian"]) {
-        return IBGLocaleItalian;
-    } else if ([locale isEqualToString:@"japanese"]) {
-        return IBGLocaleJapanese;
-    } else if ([locale isEqualToString:@"korean"]) {
-        return IBGLocaleKorean;
-    } else if ([locale isEqualToString:@"polish"]) {
-        return IBGLocalePolish;
-    } else if ([locale isEqualToString:@"portuguese"]) {
-        return IBGLocalePortuguese;
-    } else if ([locale isEqualToString:@"portugueseBrazil"]) {
-        return IBGLocalePortugueseBrazil;
-    } else if ([locale isEqualToString:@"russian"]) {
-        return IBGLocaleRussian;
-    } else if ([locale isEqualToString:@"solvak"]) {
-        return IBGLocaleSlovak;
-    } else if ([locale isEqualToString:@"spanish"]) {
-        return IBGLocaleSpanish;
-    } else if ([locale isEqualToString:@"swedish"]) {
-        return IBGLocaleSwedish;
-    } else if ([locale isEqualToString:@"turkish"]) {
-        return IBGLocaleTurkish;
-    } else return 0;
 }
 
 /**

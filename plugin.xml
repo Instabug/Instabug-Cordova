@@ -22,6 +22,7 @@
 
     <!-- js -->
     <js-module src="www/ArgsRegistry.js" />
+    <js-module src="www/IBGCordova.js" />
     <js-module src="www/Instabug.js" name="Instabug">
         <clobbers target="InstabugLib.Instabug" />
     </js-module>

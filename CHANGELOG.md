@@ -1,3 +1,7 @@
+## Unreleased
+
+* Adds TypeScript support
+
 ## v11.0.1 (2022-08-24)
 
 * Fixes ArgsRegistry import on iOS

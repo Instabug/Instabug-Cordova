@@ -1056,15 +1056,10 @@ public class IBGPlugin extends CordovaPlugin {
      *                        visual or disabled.
      */
     public void setReproStepsMode(final CallbackContext callbackContext, JSONArray args) {
-        String reproStepsMode = args.optString(0);
         try {
-            if (reproStepsMode.equals("enabledWithNoScreenshots")) {
-                Instabug.setReproStepsState(State.ENABLED_WITH_NO_SCREENSHOTS);
-            } else if (reproStepsMode.equals("enabled")) {
-                Instabug.setReproStepsState(State.ENABLED);
-            } else if (reproStepsMode.equals("disabled")) {
-                Instabug.setReproStepsState(State.DISABLED);
-            }
+            final String reproStepsMode = args.optString(0);
+            final State parsedMode = ArgsRegistry.reproStepsModes.get(reproStepsMode);
+            Instabug.setReproStepsState(parsedMode);
             callbackContext.success();
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
@@ -1153,10 +1148,10 @@ public class IBGPlugin extends CordovaPlugin {
      * @param callbackContext Used when calling back into JavaScript
      */
     public void setLocale(final CallbackContext callbackContext, JSONArray args) {
-        String locale = args.optString(0);
         try {
-            InstabugLocale instabugLocale = parseLocale(locale);
-            Instabug.setLocale(new Locale(instabugLocale.getCode(), instabugLocale.getCountry()));
+            final String locale = args.optString(0);
+            final InstabugLocale parsedLocale = ArgsRegistry.locales.get(locale);
+            Instabug.setLocale(new Locale(parsedLocale.getCode(), parsedLocale.getCountry()));
             callbackContext.success();
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
@@ -1199,52 +1194,6 @@ public class IBGPlugin extends CordovaPlugin {
         } else if ("disablePostSendingDialog".equals(invocationOption)) {
             return Option.DISABLE_POST_SENDING_DIALOG;
         } else return -1;
-    }
-
-    /**
-     * Convenience method for converting string to Locale.
-     *
-     * @param locale
-     *        String shortcode for locale
-     */
-    public static InstabugLocale parseLocale(String locale) {
-        if ("arabic".equals(locale)) {
-            return InstabugLocale.ARABIC;
-        } else if ("azerbaijani".equals(locale)) {
-            return InstabugLocale.AZERBAIJANI;
-        } else if ("chineseSimplified".equals(locale)) {
-            return InstabugLocale.SIMPLIFIED_CHINESE;
-        } else if ("chineseTraditional".equals(locale)) {
-            return InstabugLocale.TRADITIONAL_CHINESE;
-        } else if ("danish".equals(locale)) {
-            return InstabugLocale.DANISH;
-        } else if ("english".equals(locale)) {
-            return InstabugLocale.ENGLISH;
-        } else if ("french".equals(locale)) {
-            return InstabugLocale.FRENCH;
-        } else if ("german".equals(locale)) {
-            return InstabugLocale.GERMAN;
-        } else if ("italian".equals(locale)) {
-            return InstabugLocale.ITALIAN;
-        } else if ("japanese".equals(locale)) {
-            return InstabugLocale.JAPANESE;
-        } else if ("korean".equals(locale)) {
-            return InstabugLocale.KOREAN;
-        } else if ("polish".equals(locale)) {
-            return InstabugLocale.POLISH;
-        } else if ("portugueseBrazil".equals(locale)) {
-            return InstabugLocale.PORTUGUESE_BRAZIL;
-        } else if ("russian".equals(locale)) {
-            return InstabugLocale.RUSSIAN;
-        } else if ("spanish".equals(locale)) {
-            return InstabugLocale.SPANISH;
-        } else if ("swedish".equals(locale)) {
-            return InstabugLocale.SWEDISH;
-        } else if ("turkish".equals(locale)) {
-            return InstabugLocale.TURKISH;
-        } else if ("czech".equals(locale)) {
-            return InstabugLocale.CZECH;
-        } else return InstabugLocale.ENGLISH;
     }
 
     /**
