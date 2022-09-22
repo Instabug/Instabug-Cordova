@@ -1,5 +1,6 @@
 ## Unreleased
 
+* Bumps Instabug Android SDK to v11.4.1
 * Adds TypeScript support
 
 ## v11.0.1 (2022-08-24)
