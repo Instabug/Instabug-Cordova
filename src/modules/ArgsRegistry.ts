@@ -56,7 +56,6 @@ namespace ArgsRegistry {
     cancelButtonText = "cancelButtonTitle",
     thankYouText = "thankYouText",
     audio = "audio",
-    video = "video",
     image = "image",
     team = "team",
     messagesNotification = "messagesNotification",
