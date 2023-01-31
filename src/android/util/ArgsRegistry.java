@@ -124,20 +124,27 @@ public class ArgsRegistry {
         put("azerbaijani", InstabugLocale.AZERBAIJANI);
         put("chineseSimplified", InstabugLocale.SIMPLIFIED_CHINESE);
         put("chineseTraditional", InstabugLocale.TRADITIONAL_CHINESE);
+        put("czech", InstabugLocale.CZECH);
         put("danish", InstabugLocale.DANISH);
         put("dutch", InstabugLocale.NETHERLANDS);
         put("english", InstabugLocale.ENGLISH);
+        put("finnish", InstabugLocale.FINNISH);
         put("french", InstabugLocale.FRENCH);
         put("german", InstabugLocale.GERMAN);
+        put("hungarian", InstabugLocale.HUNGARIAN);
+        put("indonesian", InstabugLocale.INDONESIAN);
         put("italian", InstabugLocale.ITALIAN);
         put("japanese", InstabugLocale.JAPANESE);
         put("korean", InstabugLocale.KOREAN);
+        put("norwegian", InstabugLocale.NORWEGIAN);
         put("polish", InstabugLocale.POLISH);
         put("portugueseBrazil", InstabugLocale.PORTUGUESE_BRAZIL);
+        put("portuguesePortugal", InstabugLocale.PORTUGUESE_PORTUGAL);
+        put("romanian", InstabugLocale.ROMANIAN);
         put("russian", InstabugLocale.RUSSIAN);
+        put("slovak", InstabugLocale.SLOVAK);
         put("spanish", InstabugLocale.SPANISH);
         put("swedish", InstabugLocale.SWEDISH);
         put("turkish", InstabugLocale.TURKISH);
-        put("czech", InstabugLocale.CZECH);
     }};
 }
