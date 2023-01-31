@@ -2,6 +2,15 @@
 
 * Bumps Instabug Android SDK to `v11.8.0`
 * Bumps Instabug iOS SDK to `v11.7.0`
+* Adds support for more locales:
+  * czech
+  * finnish
+  * hungarian
+  * indonesian (iOS)
+  * norwegian
+  * portuguesePortugal
+  * romanian
+  * slovak
 
 ## 11.3.0 (2022-10-05)
 
