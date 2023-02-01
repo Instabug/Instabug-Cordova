@@ -300,5 +300,21 @@ namespace BugReporting {
   ) => {
     exec("IBGPlugin", "setDisclaimerText", [text], success, error);
   };
+
+  /**
+   * Sets a minimum number of characters as a requirement for the comments field in the different report types.
+   * @param limit an integer number of characters.
+   * @param reportTypes an optional an array of reportType. If it's not passed, the limit will apply to all report types.
+   * @param success callback on function success.
+   * @param error callback on function error.
+  */
+  export const setCommentMinimumCharacterCount = (
+    limit: number, 
+    reportTypes?: reportType[],
+    success?: () => void,
+    error?: (err: any) => void 
+  ) => {
+    exec("IBGPlugin", "setCommentMinimumCharacterCount", [limit, reportTypes], success, error);
+  };
 }
 export = BugReporting;
