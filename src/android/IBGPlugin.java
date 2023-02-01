@@ -985,6 +985,22 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
+     * Adds a disclaimer text within the bug reporting form, which can include hyperlinked text.
+     * @param callbackContext Used when calling back into JavaScript
+     * @param args [text: String]
+     */
+    public void setDisclaimerText(final CallbackContext callbackContext, JSONArray args) {
+        final String text = args.optString(0);
+        try {
+            BugReporting.setDisclaimerText(text);
+
+            callbackContext.success();
+        } catch (Exception e) {
+            callbackContext.error(e.getMessage());
+        }
+    }
+
+    /**
      * Customize the attachment options available to users to send with a bug reeport.
      *
      * @param callbackContext Used when calling back into JavaScript

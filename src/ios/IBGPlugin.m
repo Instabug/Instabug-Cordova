@@ -393,6 +393,21 @@
 }
 
 /**
+ * Adds a disclaimer text within the bug reporting form, which can include hyperlinked text.
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void)setDisclaimerText:(CDVInvokedUrlCommand*)command
+{
+    NSString* text = [command argumentAtIndex:0];
+    
+    [IBGBugReporting setDisclaimerText:text];
+
+    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK]
+                                callbackId:[command callbackId]];
+}
+
+/**
  * Attaches a new copy of this file with each bug report sent
  * with a maximum size of 1 MB. Calling this method several
  * times overrides the file to be attached. The file has to

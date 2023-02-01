@@ -286,5 +286,19 @@ namespace BugReporting {
       error
     );
   };
+
+  /**
+   * Adds a disclaimer text within the bug reporting form, which can include hyperlinked text.
+   * @param text a String of the disclaimer text.
+   * @param success callback on function success.
+   * @param error callback on function error.
+  */
+  export const setDisclaimerText = (
+    text: string, 
+    success?: () => void,
+    error?: (err: any) => void 
+  ) => {
+    exec("IBGPlugin", "setDisclaimerText", [text], success, error);
+  };
 }
 export = BugReporting;
