@@ -57,6 +57,7 @@ namespace ArgsRegistry {
     thankYouText = "thankYouText",
     audio = "audio",
     image = "image",
+    screenRecording = "screenRecording",
     team = "team",
     messagesNotification = "messagesNotification",
     messagesNotificationAndOthers = "messagesNotificationAndOthers",
@@ -89,6 +90,8 @@ namespace ArgsRegistry {
     reproStepsListDescription = "reproStepsListDescription",
     reproStepsListEmptyStateDescription = "reproStepsListEmptyStateDescription",
     reproStepsListItemTitle = "reproStepsListItemTitle",
+    insufficientContentMessage = "insufficientContentMessage",
+    insufficientContentTitle = "insufficientContentTitle",
   }
 
   export enum reproStepsMode {

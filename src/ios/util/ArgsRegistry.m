@@ -70,8 +70,8 @@
         @"cancelButtonTitle": kIBGCancelButtonTitleStringName,
         @"thankYouText": kIBGThankYouAlertTitleStringName,
         @"audio": kIBGAudioStringName,
-        @"screenRecording": kIBGScreenRecordingStringName,
         @"image": kIBGImageStringName,
+        @"screenRecording": kIBGScreenRecordingStringName,
         @"surveyEnterYourAnswer": kIBGSurveyEnterYourAnswerTextPlaceholder,
         @"videoPressRecord": kIBGVideoPressRecordTitle,
         @"collectingDataText": kIBGCollectingDataText,
@@ -106,7 +106,10 @@
         @"reproStepsListHeader": kIBGReproStepsListTitle,
         @"reproStepsListDescription": kIBGReproStepsListHeader,
         @"reproStepsListEmptyStateDescription": kIBGReproStepsListEmptyStateLabel,
-        @"reproStepsListItemTitle": kIBGReproStepsListItemName
+        @"reproStepsListItemTitle": kIBGReproStepsListItemName,
+
+        @"insufficientContentMessage": kIBGInsufficientContentMessageStringName,
+        @"insufficientContentTitle": kIBGInsufficientContentTitleStringName,
     };
 }
 

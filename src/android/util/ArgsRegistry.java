@@ -69,6 +69,7 @@ public class ArgsRegistry {
         put("reportBug", Key.REPORT_BUG);
         put("reportFeedback", Key.REPORT_FEEDBACK);
         put("conversationsHeaderTitle", Key.CONVERSATIONS_LIST_TITLE);
+        put("okButtonTitle", Key.BUG_ATTACHMENT_DIALOG_OK_BUTTON);
         put("addVoiceMessage", Key.ADD_VOICE_MESSAGE);
         put("addImageFromGallery", Key.ADD_IMAGE_FROM_GALLERY);
         put("addExtraScreenshot", Key.ADD_EXTRA_SCREENSHOT);
@@ -77,6 +78,10 @@ public class ArgsRegistry {
         put("recordingMessageToHoldText", Key.VOICE_MESSAGE_PRESS_AND_HOLD_TO_RECORD);
         put("recordingMessageToReleaseText", Key.VOICE_MESSAGE_RELEASE_TO_ATTACH);
         put("thankYouText", Key.SUCCESS_DIALOG_HEADER);
+        put("audio", Key.CHATS_TYPE_AUDIO);
+        put("image", Key.CHATS_TYPE_IMAGE);
+        put("screenRecording", Key.CHATS_TYPE_VIDEO);
+        put("messagesNotificationAndOthers", Key.CHATS_MULTIPLE_MESSAGE_NOTIFICATION);
         put("videoPressRecord", Key.VIDEO_RECORDING_FAB_BUBBLE_HINT);
         put("conversationTextFieldHint", Key.CONVERSATION_TEXT_FIELD_HINT);
         put("thankYouAlertText", Key.REPORT_SUCCESSFULLY_SENT);
@@ -111,6 +116,8 @@ public class ArgsRegistry {
         put("reproStepsListDescription", Key.REPRO_STEPS_LIST_DESCRIPTION);
         put("reproStepsListEmptyStateDescription", Key.REPRO_STEPS_LIST_EMPTY_STATE_DESCRIPTION);
         put("reproStepsListItemTitle", Key.REPRO_STEPS_LIST_ITEM_NUMBERING_TITLE);
+
+        put("insufficientContentMessage", Key.COMMENT_FIELD_INSUFFICIENT_CONTENT);
     }};
 
     public static final ArgsMap<State> reproStepsModes = new ArgsMap<State>() {{
