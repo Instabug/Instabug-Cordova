@@ -13,7 +13,15 @@
   * portuguesePortugal
   * romanian
   * slovak
-
+* Adds new string keys:
+  * insufficientContentMessage
+  * insufficientContentTitle (iOS)
+  * screenRecording
+* Adds missing mapping for the below string keys on Android:
+  * audio
+  * image
+  * messagesNotificationAndOthers
+  * okButtonTitle
 ## 11.3.0 (2022-10-05)
 
 * Bumps Instabug Android SDK to v11.5.1
