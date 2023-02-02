@@ -393,6 +393,49 @@
 }
 
 /**
+ * Adds a disclaimer text within the bug reporting form, which can include hyperlinked text.
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+ */
+- (void)setDisclaimerText:(CDVInvokedUrlCommand*)command
+{
+    NSString* text = [command argumentAtIndex:0];
+    
+    [IBGBugReporting setDisclaimerText:text];
+
+    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK]
+                                callbackId:[command callbackId]];
+}
+
+/**
+ * Sets a minimum number of characters as a requirement for the comments field in the different report types.
+ * @param {CDVInvokedUrlCommand*} command
+ *        The command sent from JavaScript
+*/
+- (void)setCommentMinimumCharacterCount:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* result;
+    NSNumber* limit = [command argumentAtIndex:0];
+    NSArray* reportTypes = [command argumentAtIndex:1];
+    IBGBugReportingReportType parsedTypes = 0;
+
+    if (![reportTypes count]) {
+        parsedTypes = ([self parseBugReportingReportType:@"bug"] | [self parseBugReportingReportType:@"feedback"] | [self parseBugReportingReportType:@"question"]);
+    }
+    else {
+        for (NSString* type in reportTypes) {
+            parsedTypes |= [self parseBugReportingReportType:type];
+        }
+    }
+
+    [IBGBugReporting setCommentMinimumCharacterCountForReportTypes:parsedTypes withLimit:limit.intValue];
+    result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+
+}
+
+
+/**
  * Attaches a new copy of this file with each bug report sent
  * with a maximum size of 1 MB. Calling this method several
  * times overrides the file to be attached. The file has to

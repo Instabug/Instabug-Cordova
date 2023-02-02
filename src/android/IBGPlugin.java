@@ -985,6 +985,39 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
+     * Adds a disclaimer text within the bug reporting form, which can include hyperlinked text.
+     * @param callbackContext Used when calling back into JavaScript
+     * @param args [text: String]
+     */
+    public void setDisclaimerText(final CallbackContext callbackContext, JSONArray args) {
+        final String text = args.optString(0);
+        try {
+            BugReporting.setDisclaimerText(text);
+
+            callbackContext.success();
+        } catch (Exception e) {
+            callbackContext.error(e.getMessage());
+        }
+    }
+    
+    /**
+     * Sets a minimum number of characters as a requirement for the comments field in the different report types.
+     * @param callbackContext Used when calling back into JavaScript
+     * @param args [limit: int, reportTypes: reportTypes[]]
+     */
+    public void setCommentMinimumCharacterCount(final CallbackContext callbackContext, JSONArray args) {
+        final int limit = args.optInt(0);
+        final JSONArray reportTypes = args.optJSONArray(1);
+        final String[] stringArrayOfReportTypes = toStringArray(reportTypes);
+        try {
+            int [] parsedReportTypes = stringArrayOfReportTypes == null ? new int[0] : Util.parseReportTypes(stringArrayOfReportTypes);
+            BugReporting.setCommentMinimumCharacterCount(limit, parsedReportTypes);
+        } catch (Exception e) {
+            callbackContext.error(e.getMessage());
+        }
+    }
+
+    /**
      * Customize the attachment options available to users to send with a bug reeport.
      *
      * @param callbackContext Used when calling back into JavaScript
