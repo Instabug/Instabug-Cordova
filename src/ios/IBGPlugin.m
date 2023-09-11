@@ -1313,12 +1313,12 @@
     SEL setCurrentPlatformSEL = NSSelectorFromString(@"setCurrentPlatform:cpSDKVersion:");
     if([[Instabug class] respondsToSelector:setCurrentPlatformSEL]) {
         NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[[Instabug class] methodSignatureForSelector:setCurrentPlatformSEL]];
-        [inv setArgument:&(platform) atIndex:2];
-        [inv setArgument:&cpSDKVersion atIndex:3];
-        [inv setSelector:setCurrentPlatformSEL];
-        [inv setTarget:[Instabug class]];
         IBGPlatform platform = IBGPlatformCordova;
         NSString *cpSDKVersion = @"11.7.0"
+        [inv setSelector:setCurrentPlatformSEL];
+        [inv setTarget:[Instabug class]];
+        [inv setArgument:&(platform) atIndex:2];
+        [inv setArgument:&cpSDKVersion atIndex:3];
         
         [inv invoke];
     }
