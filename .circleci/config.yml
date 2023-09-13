@@ -4,8 +4,7 @@ orbs:
   android: circleci/android@2.0
 
 jobs:
-
-   test_android:
+  test_android:
     working_directory: ~/project
     executor:
       name: android/android-machine
@@ -34,7 +33,7 @@ jobs:
       - run:
           name: Install Build Tools v30.0.3
           working_directory: example
-          command: sdkmanager "build-tools;30.0.3" 
+          command: sdkmanager "build-tools;30.0.3"
       - android/start-emulator-and-run-tests:
           run-tests-working-directory: example/platforms/android
           system-image: system-images;android-30;google_apis;x86
@@ -45,10 +44,10 @@ jobs:
           working-directory: example/platforms/android
           test-command: ./gradlew test
 
-   test_ios:
+  test_ios:
     working_directory: ~/project
     macos:
-      xcode: 13.3.0
+      xcode: 13.4.1
     steps:
       - checkout:
           path: ~/project
@@ -77,14 +76,14 @@ jobs:
           name: Run Tests
           working_directory: example/platforms/ios
           command: |
-              xcodebuild -allowProvisioningUpdates \
-                         -workspace InstabugExample.xcworkspace \
-                         -scheme InstabugExample \
-                         -sdk iphonesimulator \
-                         -destination 'name=iPhone 12 Pro Max' \
-                         test | xcpretty
+            xcodebuild -allowProvisioningUpdates \
+                       -workspace InstabugExample.xcworkspace \
+                       -scheme InstabugExample \
+                       -sdk iphonesimulator \
+                       -destination 'name=iPhone 12 Pro Max' \
+                       test | xcpretty
 
-   publish:
+  publish:
     macos:
       xcode: 13.3.0
     working_directory: "~"
