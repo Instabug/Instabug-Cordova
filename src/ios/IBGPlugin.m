@@ -736,8 +736,6 @@
     NSString* mode = [command argumentAtIndex:0];
     IBGUserStepsMode parsedMode = (IBGUserStepsMode) [ArgsRegistry.reproStepsModes[mode] intValue];
     
-    Instabug.reproStepsMode = parsedMode;
-
     [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK]
                                 callbackId:[command callbackId]];
 }
