@@ -9,19 +9,26 @@ import com.instabug.cordova.plugin.IBGPlugin;
 import com.instabug.library.Instabug;
 
 import org.apache.cordova.CallbackContext;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.MockedStatic;
 
-
 public class IBGPluginTests {
     private MockedStatic<Instabug> mockInstabug;
-    private final IBGPlugin mockPlugin = spy(new IBGPlugin());
-    private final CallbackContext mockContext = mock(CallbackContext.class);
+    private IBGPlugin mockPlugin;
+    private CallbackContext mockContext;
 
     @Before
     public void setup() {
         mockInstabug = mockStatic(Instabug.class);
+        mockPlugin = spy(new IBGPlugin());
+        mockContext = mock(CallbackContext.class);
+    }
+
+    @After
+    public void teardown() {
+        mockInstabug.close();
     }
 
     @Test
