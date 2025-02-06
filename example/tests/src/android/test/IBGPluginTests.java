@@ -21,19 +21,34 @@ public class IBGPluginTests {
 
     @Before
     public void setup() {
-        mockInstabug = mockStatic(Instabug.class);
-        mockPlugin = spy(new IBGPlugin());
-        mockContext = mock(CallbackContext.class);
+        try {
+            mockInstabug = mockStatic(Instabug.class);
+            mockPlugin = spy(new IBGPlugin());
+            mockContext = mock(CallbackContext.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @After
     public void teardown() {
-        mockInstabug.close();
+        try {
+            if (mockInstabug != null) {
+                mockInstabug.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void testShow() {
-        mockPlugin.show(mockContext);
-        verify(mockContext).success();
+        try {
+            mockPlugin.show(mockContext);
+            verify(mockContext).success();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 }
