@@ -7,6 +7,7 @@ import static org.mockito.Mockito.verify;
 
 import com.instabug.cordova.plugin.IBGPlugin;
 import com.instabug.library.Instabug;
+import org.junit.After;
 
 import org.apache.cordova.CallbackContext;
 import org.junit.Before;
