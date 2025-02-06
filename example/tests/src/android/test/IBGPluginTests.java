@@ -3,6 +3,7 @@ package com.instabug.example;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
+import com.instabug.library.Instabug;
 
 import com.instabug.cordova.plugin.IBGPlugin;
 import org.junit.After;
