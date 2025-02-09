@@ -104,18 +104,16 @@ export const setReproStepsMode = (
  *
  * @param bugMode an enum to set user steps tracking for bug issues.
  * @param crashMode an enum to set user steps tracking for crash issues.
- * @param sessionReplayMode an enum to set user steps tracking for session replay issues.
  * @param success callback on function success.
  * @param error callback on function error.
  */
 export const setReproStepsConfig = (
   bugMode: registry.reproStepsMode | `${registry.reproStepsMode}`,
   crashMode: registry.reproStepsMode | `${registry.reproStepsMode}`,
-  sessionReplayMode: registry.reproStepsMode | `${registry.reproStepsMode}`,
   success?: () => void,
   error?: (err: any) => void
 ) => {
-  exec("IBGPlugin", "setReproStepsConfig", [bugMode, crashMode, sessionReplayMode], success, error);
+  exec("IBGPlugin", "setReproStepsConfig", [bugMode, crashMode], success, error);
 };
 
   /**

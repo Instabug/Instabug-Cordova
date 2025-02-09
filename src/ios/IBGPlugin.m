@@ -744,10 +744,8 @@
     NSArray* arguments = [command arguments];
     IBGUserStepsMode bugMode = (IBGUserStepsMode)[arguments[0] intValue];
     IBGUserStepsMode crashMode = (IBGUserStepsMode)[arguments[1] intValue];
-    IBGUserStepsMode sessionReplayMode = (IBGUserStepsMode)[arguments[2] intValue];
         [Instabug setReproStepsFor:IBGIssueTypeBug withMode:bugMode];
     [Instabug setReproStepsFor:IBGIssueTypeCrash withMode:crashMode];
-    [Instabug setReproStepsFor:IBGIssueTypeSessionReplay withMode:sessionReplayMode];
     
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:[command callbackId]];
