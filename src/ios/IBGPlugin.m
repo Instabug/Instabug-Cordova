@@ -731,7 +731,7 @@
  * @param {CDVInvokedUrlCommand*} command
  *        The command sent from JavaScript
  */
-- (void) setReproStepsMode:(CDVInvokedUrlCommand*)command
+- (void) setReproStepsMode:(CDVInvokedUrlCommand*)command DEPRECATED_MSG_ATTRIBUTE("This method is deprecated and will be removed in a future version. Use 'setReproStepsConfig:' instead.");
 {
     NSString* mode = [command argumentAtIndex:0];
     IBGUserStepsMode parsedMode = (IBGUserStepsMode) [ArgsRegistry.reproStepsModes[mode] intValue];
@@ -740,7 +740,18 @@
     [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK]
                                 callbackId:[command callbackId]];
 }
-
+- (void)setReproStepsConfig:(CDVInvokedUrlCommand*)command {
+    NSArray* arguments = [command arguments];
+    IBGUserStepsMode bugMode = (IBGUserStepsMode)[arguments[0] intValue];
+    IBGUserStepsMode crashMode = (IBGUserStepsMode)[arguments[1] intValue];
+    IBGUserStepsMode sessionReplayMode = (IBGUserStepsMode)[arguments[2] intValue];
+        [Instabug setReproStepsFor:IBGIssueTypeBug withMode:bugMode];
+    [Instabug setReproStepsFor:IBGIssueTypeCrash withMode:crashMode];
+    [Instabug setReproStepsFor:IBGIssueTypeSessionReplay withMode:sessionReplayMode];
+    
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:[command callbackId]];
+}
 /**
  * Sets the welcome message mode.
  *

@@ -76,23 +76,47 @@ namespace Instabug {
     exec("IBGPlugin", "logUserEventWithName", [userEvent], success, error);
   };
 
-  /**
-   * Sets whether user steps tracking is visual, non visual or disabled.
-   * User Steps tracking is enabled by default if it's available
-   * in your current plan.
-   *
-   * @param reproStepsMode an enum to set user steps tracking
-   * to be enabled, non visual or disabled.
-   * @param success callback on function success.
-   * @param error callback on function error.
-   */
-  export const setReproStepsMode = (
-    reproStepsMode: registry.reproStepsMode | `${registry.reproStepsMode}`,
-    success?: () => void,
-    error?: (err: any) => void
-  ) => {
-    exec("IBGPlugin", "setReproStepsMode", [reproStepsMode], success, error);
-  };
+/**
+ * Sets whether user steps tracking is visual, non visual or disabled.
+ * User Steps tracking is enabled by default if it's available
+ * in your current plan.
+ *
+ * @deprecated This method is deprecated and will be removed in a future version.
+ *             Use `setReproStepsConfig` instead.
+ *
+ * @param reproStepsMode an enum to set user steps tracking
+ * to be enabled, non visual or disabled.
+ * @param success callback on function success.
+ * @param error callback on function error.
+ */
+export const setReproStepsMode = (
+  reproStepsMode: registry.reproStepsMode | `${registry.reproStepsMode}`,
+  success?: () => void,
+  error?: (err: any) => void
+) => {
+  exec("IBGPlugin", "setReproStepsMode", [reproStepsMode], success, error);
+};
+
+/**
+ * Configures user steps tracking for bug, crash, and session replay issue types separately.
+ * User Steps tracking is enabled by default if it's available
+ * in your current plan.
+ *
+ * @param bugMode an enum to set user steps tracking for bug issues.
+ * @param crashMode an enum to set user steps tracking for crash issues.
+ * @param sessionReplayMode an enum to set user steps tracking for session replay issues.
+ * @param success callback on function success.
+ * @param error callback on function error.
+ */
+export const setReproStepsConfig = (
+  bugMode: registry.reproStepsMode | `${registry.reproStepsMode}`,
+  crashMode: registry.reproStepsMode | `${registry.reproStepsMode}`,
+  sessionReplayMode: registry.reproStepsMode | `${registry.reproStepsMode}`,
+  success?: () => void,
+  error?: (err: any) => void
+) => {
+  exec("IBGPlugin", "setReproStepsConfig", [bugMode, crashMode, sessionReplayMode], success, error);
+};
 
   /**
    * The session profiler is enabled by default and it attaches to the bug and
