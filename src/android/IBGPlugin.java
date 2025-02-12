@@ -8,7 +8,8 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-
+import com.instabug.library.IssueType;
+import com.instabug.library.ReproConfigurations;
 import com.instabug.bug.BugReporting;
 import com.instabug.bug.invocation.Option;
 import com.instabug.chat.Replies;
@@ -30,7 +31,6 @@ import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition
 import com.instabug.library.logging.InstabugLog;
 import com.instabug.library.model.Report;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
-import com.instabug.library.visualusersteps.State;
 import com.instabug.survey.callbacks.*;
 import com.instabug.survey.Survey;
 import com.instabug.survey.Surveys;
@@ -784,24 +784,6 @@ public class IBGPlugin extends CordovaPlugin {
     }
 
     /**
-     * Enable/Disable debug logs from Instabug SDK
-     *
-     * @param args .optBoolean(0)  whether debug logs should be printed or not into
-     *                        LogCat
-     *
-     * @param callbackContext Used when calling back into JavaScript
-     */
-    public void setDebugEnabled(final CallbackContext callbackContext, JSONArray args) {
-        Boolean isDebugEnabled = args.optBoolean(0);
-        try {
-            Instabug.setDebugEnabled(isDebugEnabled);
-            callbackContext.success();
-        } catch (IllegalStateException e) {
-            callbackContext.error(errorMsg);
-        }
-    }
-
-    /**
      * Sets whether auto surveys showing are enabled or not.
      *
      * @param args .optBoolean(0) whether debug logs should be printed or not into LogCat
@@ -1079,26 +1061,30 @@ public class IBGPlugin extends CordovaPlugin {
             callbackContext.error(e.getMessage());
         }
     }
-
-    /**
-     * Sets whether user steps tracking is visual, non visual or disabled. User
-     * Steps tracking is enabled by default if it's available in your current plan.
-     *
-     * @param callbackContext Used when calling back into JavaScript
-     * @param args .optString(0)  A string to set user steps tracking to be enabled, non
-     *                        visual or disabled.
-     */
-    public void setReproStepsMode(final CallbackContext callbackContext, JSONArray args) {
+    public void setReproStepsConfig(final CallbackContext callbackContext, JSONArray args) {
         try {
-            final String reproStepsMode = args.optString(0);
-            final State parsedMode = ArgsRegistry.reproStepsModes.get(reproStepsMode);
-            Instabug.setReproStepsState(parsedMode);
+            String bugMode = args.optString(0); 
+            String crashMode = args.optString(1); 
+    
+            final Integer resolvedBugMode = ArgsRegistry.reproModes.get(bugMode);
+            final Integer resolvedCrashMode = ArgsRegistry.reproModes.get(crashMode);
+    
+            if (resolvedBugMode == null || resolvedCrashMode == null) {
+                callbackContext.error("Invalid bugMode or crashMode value");
+                return;
+            }
+    
+            final ReproConfigurations config = new ReproConfigurations.Builder()
+                    .setIssueMode(IssueType.Bug, resolvedBugMode)
+                    .setIssueMode(IssueType.Crash, resolvedCrashMode)
+                    .build();
+    
+            Instabug.setReproConfigurations(config);
             callbackContext.success();
-        } catch (IllegalStateException e) {
-            callbackContext.error(errorMsg);
+        } catch (Exception e) {
+            callbackContext.error(e.getMessage());
         }
-    }
-
+    }   
     /**
      * Sets the welcome message mode.
      *
