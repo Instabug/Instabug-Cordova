@@ -1,6 +1,7 @@
 import { exec } from "./IBGCordova";
 import registry from "./ArgsRegistry";
 import bugReporting from "./BugReporting";
+import ArgsRegistry from "./ArgsRegistry";
 
 namespace Instabug {
   export const welcomeMessageMode = registry.welcomeMessageMode;
@@ -11,6 +12,7 @@ namespace Instabug {
   export const locale = registry.locale;
 
   /**
+   * @deprecated This method is deprecated and will be removed in a future version. Use `init` instead.
    * Starts the SDK.
    * This is the main SDK method that does all the magic. This is the only
    * method that SHOULD be called.
@@ -31,6 +33,31 @@ namespace Instabug {
   ) => {
     exec("IBGPlugin", "start", [token, invocationEvents], success, error);
   };
+
+/**
+ * Initializes the Instabug SDK with additional configurations.
+ *
+ * @param token The token that identifies the app, available on your dashboard.
+ * @param invocationEvents An array of invocation events that trigger the SDK's UI.
+ * @param logLevel The level of detail in logs that you want to print.
+ * @param success Callback on function success.
+ * @param error Callback on function error.
+ */
+export const init = (
+  token: string,
+  invocationEvents: bugReporting.invocationEvents[],
+  logLevel: ArgsRegistry.logLeve,
+  success?: () => void,
+  error?: (err: any) => void
+) => {
+  exec(
+    "IBGPlugin", // Plugin name
+    "init", // Action name
+    [token, invocationEvents, logLevel], // Arguments
+    success,
+    error
+  );
+};
 
   /**
    * Shows default Instabug prompt.
@@ -377,22 +404,6 @@ export const setReproStepsConfig = (
    */
   export const logOut = (success?: () => void, error?: (err: any) => void) => {
     exec("IBGPlugin", "logOut", [], success, error);
-  };
-
-  /**
-   * Enable/Disable debug logs from Instabug SDK
-   * Default state: disabled
-   *
-   * @param isDebugEnabled a boolean to control whether debug logs should be printed or not into LogCat.
-   * @param success callback on function success.
-   * @param error callback on function error.
-   */
-  export const setDebugEnabled = (
-    isDebugEnabled: boolean,
-    success?: () => void,
-    error?: (err: any) => void
-  ) => {
-    exec("IBGPlugin", "setDebugEnabled", [isDebugEnabled], success, error);
   };
 
   /**

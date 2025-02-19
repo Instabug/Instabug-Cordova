@@ -29,6 +29,7 @@ import com.instabug.library.invocation.OnInvokeCallback;
 import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
 import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition;
 import com.instabug.library.logging.InstabugLog;
+import com.instabug.library.LogLevel;
 import com.instabug.library.model.Report;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
 import com.instabug.survey.callbacks.*;
@@ -131,6 +132,44 @@ public class IBGPlugin extends CordovaPlugin {
                     .build();
 
             callbackContext.success();
+        } catch (IllegalStateException e) {
+            callbackContext.error(errorMsg);
+        }
+    }
+    /**
+     * Initializes Instabug.
+     *
+     * @param callbackContext Used when calling back into JavaScript
+     */
+    public void init(final CallbackContext callbackContext, JSONArray args) {
+        if (args == null || args.length() == 0) {
+            callbackContext.error("Initialization parameters are required.");
+            return;
+        }
+    
+        try {
+            JSONObject options = args.getJSONObject(0); // Extract the JSON object from the array
+    
+            String token = options.optString("token");
+            JSONArray invocationEventsArray = options.optJSONArray("invocationEvents");
+            String logLevel = options.optString("debugLogsLevel", "none"); // Default to "none" if missing
+        
+            String[] invocationEventsNames = toStringArray(invocationEventsArray);
+            InstabugInvocationEvent[] invocationEvents = new InstabugInvocationEvent[invocationEventsNames.length];
+    
+            for (int i = 0; i < invocationEventsNames.length; i++) {
+                invocationEvents[i] = parseInvocationEvent(invocationEventsNames[i]);
+            }
+    
+            final Application application = (Application) context.getApplicationContext();
+            new Instabug.Builder(application, token)
+                    .setInvocationEvents(invocationEvents)
+                    .setSdkDebugLogsLevel(parseLogLevel(logLevel)) // Set the log level properly
+                    .build();
+    
+            callbackContext.success();
+        } catch (JSONException e) {
+            callbackContext.error("Invalid JSON format: " + e.getMessage());
         } catch (IllegalStateException e) {
             callbackContext.error(errorMsg);
         }
@@ -1196,7 +1235,18 @@ public class IBGPlugin extends CordovaPlugin {
         } else
             return null;
     }
-
+    public static int parseLogLevel(String log) {
+        if ("none".equals(log)) {
+            return LogLevel.NONE;
+        } else if ("debug".equals(log)) {
+            return LogLevel.DEBUG;
+        } else if ("error".equals(log)) {
+            return LogLevel.ERROR;
+        } else if ("verbose".equals(log)) {
+            return LogLevel.VERBOSE;
+        }else
+            return -1;
+    }
     /**
      * Convenience method for converting string to InvocationOption.
      *
