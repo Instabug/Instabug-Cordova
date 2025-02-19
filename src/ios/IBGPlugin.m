@@ -15,9 +15,13 @@
  *
  * @param {CDVInvokedUrlCommand*} command
  *        The command sent from JavaScript
+ *
+ * @deprecated This method is deprecated. Use `init:` instead.
  */
-- (void) start:(CDVInvokedUrlCommand*)command
+- (void) start:(CDVInvokedUrlCommand*)command __deprecated_msg("This method is deprecated. Use `init:` instead.")
 {
+    NSLog(@"Warning: The `start:` method is deprecated and will be removed in a future version. Please use `init:` instead.");
+
     CDVPluginResult* result;
 
     NSString* token = [command argumentAtIndex:0];
@@ -43,6 +47,44 @@
     }
 
     [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+}
+
+- (void)init:(CDVInvokedUrlCommand*)command {
+    if (command.arguments == nil || [command.arguments count] == 0) {
+        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Initialization parameters are required."];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        return;
+    }
+
+    @try {
+        NSDictionary* options = [command.arguments objectAtIndex:0];
+
+        NSString* token = options[@"token"];
+        NSArray* invocationEventsArray = options[@"invocationEvents"];
+        NSString* logLevel = options[@"debugLogsLevel"] ?: @"none";
+
+        if (token == nil || [token isEqualToString:@""]) {
+            CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Token is required."];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+            return;
+        }
+
+        IBGInvocationEvent invocationEvents = 0;
+        for (NSString* eventName in invocationEventsArray) {
+            invocationEvents |= [self parseInvocationEvent:eventName];
+        }
+
+        IBGSDKDebugLogsLevel parsedLogLevel = [self parseLogLevel:logLevel];
+
+        [Instabug setSdkDebugLogsLevel:parsedLogLevel];
+        [Instabug startWithToken:token invocationEvents:invocationEvents];
+
+        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    } @catch (NSException *exception) {
+        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:[NSString stringWithFormat:@"Error initializing Instabug: %@", exception.reason]];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }
 }
 
 - (void) identifyUserWithEmail:(CDVInvokedUrlCommand*)command {
@@ -1335,6 +1377,18 @@
     NSString* value = [command argumentAtIndex:1];
     NSString* placeholder = ArgsRegistry.placeholders[key];
     [Instabug setValue:value forStringWithKey:placeholder];
+}
+
+- (IBGSDKDebugLogsLevel)parseLogLevel:(NSString*)logLevel {
+    if ([logLevel isEqualToString:@"verbose"]) {
+        return IBGSDKDebugLogsLevelVerbose;
+    } else if ([logLevel isEqualToString:@"debug"]) {
+        return IBGSDKDebugLogsLevelDebug;
+    } else if ([logLevel isEqualToString:@"error"]) {
+        return IBGSDKDebugLogsLevelError;
+    } else {
+        return IBGSDKDebugLogsLevelNone;
+    }
 }
 
 @end
