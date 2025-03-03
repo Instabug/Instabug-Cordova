@@ -1,5 +1,5 @@
 
-## 12.1.0 (2025-02-19)
+## 12.1.0 (2025-03-03)
 * Bumps Instabug iOS SDK to `v12.1.0`
 * Bumps Instabug Android SDK to `v12.1.0`
 
