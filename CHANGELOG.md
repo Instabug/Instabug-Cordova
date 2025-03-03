@@ -1,3 +1,20 @@
+
+## 12.1.0 (2025-03-03)
+* Bumps Instabug iOS SDK to `v12.1.0`
+* Bumps Instabug Android SDK to `v12.1.0`
+
+### Changed
+
+- Add the new repro steps configuration API `Instabug.setReproStepsConfig`
+- Remove deprecated APIs `Instabug.setDebugEnabled` in favour of `debugLogsLevel` property of `Instabug.init`.
+- Adds the new `Instabug.init` API to start the SDK as follows:
+  ```js
+  Instabug.init({
+    token: '<APP_TOKEN>',
+    invocationEvents: [BugReporting.invocationEvents.button],
+    debugLogsLevel: ArgsRegistry.logLeve.verbose,
+  });
+  ```
 ## 11.7.0 (2023-02-02)
 
 * Bumps Instabug Android SDK to `v11.8.0`

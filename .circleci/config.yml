@@ -10,7 +10,7 @@ jobs:
     executor:
       name: android/android-machine
       resource-class: xlarge
-      tag: 2022.04.1
+      tag: '2024.01.1'
     steps:
       - checkout:
           path: ~/project
@@ -32,9 +32,9 @@ jobs:
           working_directory: example
           command: cordova plugins add --link ../ tests
       - run:
-          name: Install Build Tools v30.0.3
+          name: Install Build Tools v32.0.0
           working_directory: example
-          command: sdkmanager "build-tools;30.0.3" 
+          command: sdkmanager "build-tools;32.0.0" 
       - android/start-emulator-and-run-tests:
           run-tests-working-directory: example/platforms/android
           system-image: system-images;android-30;google_apis;x86
@@ -48,7 +48,7 @@ jobs:
    test_ios:
     working_directory: ~/project
     macos:
-      xcode: 13.3.0
+      xcode: 13.4.1
     steps:
       - checkout:
           path: ~/project
@@ -86,7 +86,7 @@ jobs:
 
    publish:
     macos:
-      xcode: 13.3.0
+      xcode: 13.4.1
     working_directory: "~"
     steps:
       - checkout:

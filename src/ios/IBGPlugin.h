@@ -43,4 +43,8 @@
 
 - (void)setString:(CDVInvokedUrlCommand *)command;
 
+- (void)init:(CDVInvokedUrlCommand *)command;
+
+- (IBGSDKDebugLogsLevel)parseLogLevel:(NSString*)logLevel;
+
 @end

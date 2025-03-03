@@ -128,5 +128,12 @@ namespace ArgsRegistry {
     swedish = "swedish",
     turkish = "turkish",
   }
+
+  export enum logLeve {
+    none = "none",
+    debug = "debug",
+    error = "error",
+    verbose = "verbose",
+  }
 }
 export = ArgsRegistry;

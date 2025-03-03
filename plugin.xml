@@ -3,7 +3,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="instabug-cordova"
-        version="11.7.0">
+        version="12.1.0">
 
     <name>instabug-cordova</name>
     <description>Cordova plugin for integrating the Instabug SDK.</description>
@@ -68,7 +68,7 @@
             <uses-permission android:name="android.permission.INTERNET"/>
         </config-file>
 
-        <framework src="com.instabug.library:instabug:11.8.0"/>
+        <framework src="com.instabug.library:instabug:12.1.0"/>
 
         <source-file src="src/android/IBGPlugin.java" target-dir="src/com/instabug/cordova/plugin"/>
         <source-file src="src/android/util/Util.java" target-dir="src/com/instabug/cordova/plugin/util"/>
@@ -89,7 +89,7 @@
                 <source url="https://github.com/CocoaPods/Specs.git"/>
             </config>
             <pods use-frameworks="true">
-                <pod name="Instabug" spec="11.7.0" />
+                <pod name="Instabug" spec="12.1.0" />
             </pods>
         </podspec>
 

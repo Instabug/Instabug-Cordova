@@ -26,7 +26,7 @@ namespace BugReporting {
     swipe = "swipe",
     none = "none",
   }
-
+  
   export enum extendedBugReportMode {
     enabledWithRequiredFields = "enabledWithRequiredFields",
     enabledWithOptionalFields = "enabledWithOptionalFields",
