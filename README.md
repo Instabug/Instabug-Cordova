@@ -1,59 +1,12 @@
-# Instabug Cordova Plugin
+# Deprecation of Cordova Support
+Support for Cordova will officially end on June 30, 2025. As Cordova's adoption has steadily declined and modern alternatives like Flutter and React Native have become the preferred choices for cross-platform development, we are deprecating our support to focus on platforms that align with current developer needs.
 
-The purpose of this plugin is to simplify the process of integrating the Instabug SDK in a hybrid application, as well as to provide an interface to interact with the SDK through JavaScript.
+# Extended Support
+We understand this transition may impact some of our users and are committed to assisting you. If you require extended support for Xamarin, Cordova, or Unity beyond the deprecation date, please reach out to our team.
 
-Instabug is a bug reporting and in-app feedback tool that provides your testers and users with easy “shake to send” feedback from within the app, to [report bugs and issues easily](https://instabug.com/bug-reporting). You’ll get attached screenshots, screen recordings, annotations, network logs to help you take insightful decisions. You’ll also receive all the device details, environment snapshots and bug reproduction steps so that you can fix bugs and iterate faster.
+## Documentation
+For more details about the supported APIs and how to use them, you can refer to our [docs](https://docs.instabug.com/docs/cordova-overview "**docs**").
 
-For more info, visit [Instabug.com](https://instabug.com).
+## Contact Us
 
-## Installation
-
-### Cordova:
-
-```
-cordova plugin add instabug-cordova
-```
-
-### Ionic:
-
-```
-ionic cordova plugin add instabug-cordova
-```
-
-## Integration Steps
-
-- Add the following snippet to your `index.js` file inside `onDeviceReady` function:   
-
-```js
-var Instabug = cordova.require('instabug-cordova.Instabug');
-var BugReporting = cordova.require('instabug-cordova.BugReporting');
-
-Instabug.start(
-    'YOUR_CORDOVA_TOKEN',
-    [BugReporting.invocationEvents.button],
-    function () {
-        console.log('Instabug initialized.');
-    },
-    function (error) {
-        console.log('Instabug could not be initialized - ' + error);
-    }
-);
-```
-
-- Replace `YOUR_CORDOVA_TOKEN` with your application token.
-
-> :warning:  If you're updating the SDK from versions prior to v11, please check our [migration guide](https://docs.instabug.com/docs/cordova-migration-guide).
-
-## Features Not Yet Supported
-- User steps.
-- Repro steps.
-- Network logging.
-- View hierarchy.
-- Crash reporting.
-- Push notification for in-app messaging.
-
-## License
-
-This software is released under the <a href="http://opensource.org/licenses/Apache-2.0">Apache 2.0 License</a>.
-
-© 2022 Instabug. All rights reserved.
+If you have any questions or feedback, don’t hesitate to get in touch. You can reach out to us at any time through  [support@instabug.com](mailto:support@instabug.com).
