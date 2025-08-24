@@ -315,7 +315,7 @@ inherits@2:
   integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
 
 "instabug-cordova@file:..":
-  version "12.1.0"
+  version "12.2.0"
   resolved "file:.."
 
 interpret@^1.0.0:

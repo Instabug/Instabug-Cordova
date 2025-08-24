@@ -3,7 +3,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="instabug-cordova"
-        version="12.1.0">
+        version="12.2.0">
 
     <name>instabug-cordova</name>
     <description>Cordova plugin for integrating the Instabug SDK.</description>
@@ -89,7 +89,7 @@
                 <source url="https://github.com/CocoaPods/Specs.git"/>
             </config>
             <pods use-frameworks="true">
-                <pod name="Instabug" spec="12.1.0" />
+                <pod name="Instabug" spec="15.1.2" />
             </pods>
         </podspec>
 
