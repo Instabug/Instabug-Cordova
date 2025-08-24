@@ -34,7 +34,7 @@ jobs:
       - run:
           name: Install Build Tools v32.0.0
           working_directory: example
-          command: sdkmanager "build-tools;32.0.0" 
+          command: sdkmanager "build-tools;32.0.0"
       - android/start-emulator-and-run-tests:
           run-tests-working-directory: example/platforms/android
           system-image: system-images;android-30;google_apis;x86
@@ -48,7 +48,8 @@ jobs:
    test_ios:
     working_directory: ~/project
     macos:
-      xcode: 13.4.1
+      xcode: 15.4.0
+    resource_class: macos.m1.medium.gen1
     steps:
       - checkout:
           path: ~/project
@@ -81,7 +82,7 @@ jobs:
                          -workspace InstabugExample.xcworkspace \
                          -scheme InstabugExample \
                          -sdk iphonesimulator \
-                         -destination 'name=iPhone 12 Pro Max' \
+                         -destination 'platform=iOS Simulator,name=iPhone 15 Pro Max,OS=17.5' \
                          test | xcpretty
 
    publish:
