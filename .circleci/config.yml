@@ -48,8 +48,7 @@ jobs:
    test_ios:
     working_directory: ~/project
     macos:
-      xcode: 15.4.0
-    resource_class: macos.m1.medium.gen1
+      xcode: 13.4.1
     steps:
       - checkout:
           path: ~/project
@@ -82,7 +81,7 @@ jobs:
                          -workspace InstabugExample.xcworkspace \
                          -scheme InstabugExample \
                          -sdk iphonesimulator \
-                         -destination 'platform=iOS Simulator,name=iPhone 15 Pro Max,OS=17.5' \
+                         -destination 'name=iPhone 12 Pro Max' \
                          test | xcpretty
 
    publish:
