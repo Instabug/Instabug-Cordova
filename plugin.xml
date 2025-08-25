@@ -85,9 +85,6 @@
         </config-file>
 
         <podspec>
-            <config>
-                <source url="https://github.com/CocoaPods/Specs.git"/>
-            </config>
             <pods use-frameworks="true">
                 <pod name="Instabug" spec="15.1.2" />
             </pods>
