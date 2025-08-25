@@ -8,4 +8,9 @@
     <content src="index.html" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
+
+    <!-- iOS specific config -->
+    <platform name="ios">
+        <preference name="deployment-target" value="15.0" />
+    </platform>
 </widget>
