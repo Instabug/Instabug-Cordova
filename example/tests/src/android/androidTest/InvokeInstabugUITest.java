@@ -28,7 +28,10 @@ public class InvokeInstabugUITest {
         Thread.sleep(5000);
 
         onView(withResourceName("instabug_floating_button")).perform(click());
+        Thread.sleep(2000);
+
         onView(withText("Report a bug")).perform(click());
+        Thread.sleep(2000);
 
         onView(
                 allOf(
@@ -36,8 +39,11 @@ public class InvokeInstabugUITest {
                         withParent(withResourceName("instabug_edit_text_email"))
                 )
         ).perform(replaceText("inst@bug.com"));
+        Thread.sleep(2000);
 
         onView(withResourceName("instabug_bugreporting_send")).perform(click());
+                Thread.sleep(2000);
+
         onView(withResourceName("instabug_success_dialog_container")).perform(click());
     }
 
