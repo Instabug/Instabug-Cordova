@@ -34,7 +34,7 @@ jobs:
       - run:
           name: Install Build Tools v32.0.0
           working_directory: example
-          command: sdkmanager "build-tools;32.0.0" 
+          command: sdkmanager "build-tools;32.0.0"
       - android/start-emulator-and-run-tests:
           run-tests-working-directory: example/platforms/android
           system-image: system-images;android-30;google_apis;x86

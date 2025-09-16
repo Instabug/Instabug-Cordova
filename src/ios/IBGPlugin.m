@@ -1,9 +1,11 @@
 #import "IBGPlugin.h"
-#import <Instabug/Instabug.h>
-#import <Instabug/IBGBugReporting.h>
-#import <Instabug/IBGLog.h>
-#import <Instabug/IBGSurveys.h>
-#import <Instabug/IBGFeatureRequests.h>
+#import <InstabugSDK/Instabug.h>
+#import <InstabugSDK/IBGBugReporting.h>
+#import <InstabugSDK/IBGLog.h>
+#import <InstabugSDK/IBGSurveys.h>
+#import <InstabugSDK/IBGFeatureRequests.h>
+#import <InstabugSDK/IBGReport.h>
+#import <InstabugSDK/IBGReplies.h>
 
 /**
  * This plugin initializes Instabug.
